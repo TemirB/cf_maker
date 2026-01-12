@@ -62,14 +62,14 @@ void setRangeWithErrors(TMultiGraph* mg, double padFrac) {
 }
 
 void writeMGWithLegend(
-    TFile* file,
+    TFile& file,
     TMultiGraph* mg,
     const char* canvasName,
     const char* xTitle,
     const char* yTitle,
     const std::vector<std::pair<TObject*, std::string>>& legendEntries
 ) {
-    file->cd();
+    file.cd();
 
     TCanvas c(canvasName, canvasName, 1000, 800);
     mg->Draw("A");                       // создаёт оси

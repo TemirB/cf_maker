@@ -4,6 +4,7 @@
 
 #include "helpers.h"
 #include "fit/types.h"
+#include "analysis/register.h"
 
 static void ResetRanges(TH3D& h) {
     h.GetXaxis()->SetRange(0,0);
@@ -30,8 +31,8 @@ static void SetSlice1D(TH3D& h, LCMSAxis axis, double w = 0.05) {
 
 void BuildAndFit3DCorrelationFunctions( int chargeIndex, TFile* inputFile, TFile* outFile, FitGrid& fitRes);
 
-void MakeKtDependence(TFile* outFile, FitGrid& fitRes);
+void MakeKtDependence(RunContext& ctx);
 
-void MakeRapidityDependence(TFile* outFile, FitGrid& fitRes);
+void MakeRapidityDependence(RunContext& ctx);
 
-void MakeLCMS1DProjections(TFile* input, TFile* out, FitGrid& fitRes);
+void MakeLCMS1DProjections(RunContext& ctx);

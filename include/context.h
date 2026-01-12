@@ -2,7 +2,7 @@
 
 #include <string>
 
-struct RunContext {
+struct Context {
     std::string exeDir;
     std::string projectRoot;
     std::string resDir;
@@ -12,4 +12,4 @@ struct RunContext {
     std::string fitJsonFile;
 };
 
-RunContext BuildContext(char** argv);
+Context BuildContext(char** argv);

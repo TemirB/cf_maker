@@ -5,6 +5,7 @@
 #include <TCanvas.h>
 
 #include <helpers.h>
+#include "analysis/context.h"
 
 // =====================================
 // Slice helper (works on CLONES only)
@@ -78,7 +79,8 @@ void Write2DProjection(
 // Full LCMS 2D pipeline
 // =====================================
 
-void MakeLCMS2DProjections(TFile* input, TFile* out) {
+void MakeLCMS2DProjections(RunContext& rCtx) {
+    TFile& out = rCtx.GetOut("2d");
 
     for (int ch=0;ch<chargeSize;ch++)
     for (int c =0;c <centralitySize;c++)
@@ -87,12 +89,14 @@ void MakeLCMS2DProjections(TFile* input, TFile* out) {
 
         auto tag = getPrefix(ch,c,y) + std::to_string(k);
 
-        auto* A    = (TH3D*)input->Get(("bp_"+tag).c_str());
-        auto* Awei = (TH3D*)input->Get(("bp_"+tag+"wei").c_str());
+        auto* A    = (TH3D*)rCtx.input->Get(("bp_"+tag).c_str());
+        auto* Awei = (TH3D*)rCtx.input->Get(("bp_"+tag+"wei").c_str());
         if (!A || !Awei) continue;
 
-        Write2DProjection(*out,*A,*Awei,LCMSAxis::Out ,LCMSAxis::Side,tag);
-        Write2DProjection(*out,*A,*Awei,LCMSAxis::Out ,LCMSAxis::Long,tag);
-        Write2DProjection(*out,*A,*Awei,LCMSAxis::Side,LCMSAxis::Long,tag);
+        Write2DProjection(out,*A,*Awei,LCMSAxis::Out ,LCMSAxis::Side,tag);
+        Write2DProjection(out,*A,*Awei,LCMSAxis::Out ,LCMSAxis::Long,tag);
+        Write2DProjection(out,*A,*Awei,LCMSAxis::Side,LCMSAxis::Long,tag);
     }
 }
+
+REGISTER_STAGE("2d", MakeLCMS2DProjections);

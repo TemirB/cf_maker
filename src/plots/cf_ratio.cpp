@@ -7,6 +7,7 @@
 
 #include "fit/types.h"
 #include "helpers.h"
+#include "analysis/context.h"
 
 TH1D* Project1D(TH3D& h, LCMSAxis axis, double w = 0.05) {
     SetSlice1D(h, axis, w);
@@ -35,7 +36,10 @@ TH1D* ProjectRatio1D(TH3D& ratio3D, LCMSAxis axis, const char* name) {
     return r;
 }
 
-void do_CF_ratios(TFile* fCF3D, TFile* fRatioProj, TFile* fProjRatio) {
+void do_CF_ratios(RunContext& rCtx) {
+    TFile& fRatioProj = rCtx.GetOut("ratio_proj");
+    TFile& fProjRatio = rCtx.GetOut("ratio_1d");
+
     for (int chIdx=0;chIdx<centralitySize;chIdx++)
     for (int ktIdx=0;ktIdx<ktSize;ktIdx++)
     for (int yIdx=0;yIdx<rapiditySize;yIdx++) {
@@ -44,8 +48,8 @@ void do_CF_ratios(TFile* fCF3D, TFile* fRatioProj, TFile* fProjRatio) {
         std::string pos = "h3d_CF_q_" + getPrefix(1, chIdx, yIdx) + std::to_string(ktIdx) + "_weighted";
 
         TH3D *hNeg=nullptr, *hPos=nullptr;
-        fCF3D->GetObject(neg.c_str(),hNeg);
-        fCF3D->GetObject(pos.c_str(),hPos);
+        rCtx.input->GetObject(neg.c_str(),hNeg);
+        rCtx.input->GetObject(pos.c_str(),hPos);
         if(!hNeg || !hPos) continue;
 
         auto N = std::unique_ptr<TH3D>((TH3D*)hNeg->Clone());
@@ -60,12 +64,14 @@ void do_CF_ratios(TFile* fCF3D, TFile* fRatioProj, TFile* fProjRatio) {
             auto name = Form("ratio_%d_%d_%d_%d", chIdx, ktIdx, yIdx, (int)ax);
 
             auto r1 = std::unique_ptr<TH1D>(MakeRatio1D(*N, *P, ax, name));
-            fRatioProj->cd();
+            fRatioProj.cd();
             r1->Write();
 
             auto r2 = std::unique_ptr<TH1D>(ProjectRatio1D(*R, ax, name));
-            fProjRatio->cd();
+            fProjRatio.cd();
             r2->Write();
         }
     }
 }
+
+REGISTER_STAGE("cf_ratios", do_CF_ratios);

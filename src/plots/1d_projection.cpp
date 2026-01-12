@@ -6,6 +6,7 @@
 
 #include "helpers.h"
 #include "fit/fit.h"
+#include "analysis/context.h"
 
 using std::string;
 
@@ -91,7 +92,9 @@ void Write1DProjection(
 // Full LCMS pipeline
 // ============================================
 
-void MakeLCMS1DProjections(TFile* input, TFile* out, FitGrid& fitRes) {
+void MakeLCMS1DProjections(RunContext& rCtx) {
+    TFile& out = rCtx.GetOut("1d");
+
     std::unique_ptr<TF3> fit(CreateCF3DFit());
 
     for (int ch=0;ch<chargeSize;ch++)
@@ -101,11 +104,11 @@ void MakeLCMS1DProjections(TFile* input, TFile* out, FitGrid& fitRes) {
 
         auto tag = getPrefix(ch,c,y) + std::to_string(k);
 
-        auto* A    = (TH3D*)input->Get(("bp_"+tag).c_str());
-        auto* Awei = (TH3D*)input->Get(("bp_"+tag+"wei").c_str());
+        auto* A    = (TH3D*)rCtx.input->Get(("bp_"+tag).c_str());
+        auto* Awei = (TH3D*)rCtx.input->Get(("bp_"+tag+"wei").c_str());
         if (!A || !Awei) continue;
 
-        const auto& r = fitRes[ch][c][k][y];
+        const auto& r = *rCtx.fit[ch][c][k][y];
         fit->SetParameters(r.R[0],r.R[1],r.R[2],r.lambda);
 
         for (int p=0;p<4;p++)
@@ -113,7 +116,13 @@ void MakeLCMS1DProjections(TFile* input, TFile* out, FitGrid& fitRes) {
 
         auto Fit3D = MakeFitHistogram(*fit);
 
-        for (LCMSAxis ax : {LCMSAxis::Out,LCMSAxis::Side,LCMSAxis::Long})
-            Write1DProjection(*out, *A, *Awei, *Fit3D, ax, tag);
+        for (LCMSAxis ax : {LCMSAxis::Out,LCMSAxis::Side,LCMSAxis::Long}) 
+            Write1DProjection(out, *A, *Awei, *Fit3D, ax, tag);
     }
 }
+
+REGISTER_STAGE("1d", MakeLCMS1DProjections);
+
+
+
+

@@ -1,9 +1,9 @@
 #include "context.h"
+
 #include "helpers.h"
 
-RunContext BuildContext(char** argv)
-{
-    RunContext ctx;
+Context BuildContext(char** argv) {
+    Context ctx;
 
     ctx.exeDir      = GetExeDir();
     ctx.projectRoot = ctx.exeDir + "/..";

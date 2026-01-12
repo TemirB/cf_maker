@@ -8,11 +8,10 @@
 #include "helpers.h"
 #include "fit/types.h"
 #include "draw.h"
+#include "analysis/context.h"
 
-void MakeRapidityDependence(
-    TFile* outFile,
-    FitGrid& fitRes
-) {
+void MakeRapidityDependence(RunContext& rCtx) {
+    TFile& out = rCtx.GetOut("rapidity");
     double yStep = (rapidityValues[1] - rapidityValues[0]) / rapiditySize;
 
     for (int chIdx = 0; chIdx < chargeSize; chIdx++) {
@@ -39,7 +38,7 @@ void MakeRapidityDependence(
                 legendEntries.push_back({g_R[0], ktNames[ktIdx]});
 
                 for (int yIdx = 0; yIdx < rapiditySize; yIdx++) {
-                    FitResult res = fitRes[chIdx][centIdx][ktIdx][yIdx];
+                    FitResult res = *rCtx.fit[chIdx][centIdx][ktIdx][yIdx];
                     if (!res.ok) continue;
 
                     double left  = rapidityValues[0] + yIdx * yStep;
@@ -68,7 +67,7 @@ void MakeRapidityDependence(
             for (int lcmsIdx = 0; lcmsIdx < lcmsSize; lcmsIdx++) {
                 mg_R[lcmsIdx]->SetName(Form("mg_R_%s_%s_centr_%s", LCMS[lcmsIdx].c_str(), chargeNames[chIdx].c_str(), centralityNames[centIdx].c_str()));
                 setRangeWithErrors(mg_R[lcmsIdx], 0.1);
-                writeMGWithLegend(outFile, mg_R[lcmsIdx],
+                writeMGWithLegend(out, mg_R[lcmsIdx],
                     mg_R[lcmsIdx]->GetName(),
                     "rapidity",
                     Form("R_{%s} (fm)", LCMS[lcmsIdx].c_str()),
@@ -77,7 +76,7 @@ void MakeRapidityDependence(
             }
             setRangeWithErrors(mg_L, 0.1);
             mg_L->SetName(Form("mg_L_%s_centr_%s", chargeNames[chIdx].c_str(), centralityNames[centIdx].c_str()));
-            writeMGWithLegend(outFile, mg_L,
+            writeMGWithLegend(out, mg_L,
                 mg_L->GetName(),
                 "rapidity",
                 "lambda",
@@ -86,3 +85,5 @@ void MakeRapidityDependence(
         }
     }
 };
+
+REGISTER_STAGE("rapidity", MakeRapidityDependence);

@@ -9,7 +9,7 @@
 void setRangeWithErrors(TMultiGraph* mg, double padFrac = 0.10);
 
 void writeMGWithLegend(
-    TFile* file,
+    TFile& file,
     TMultiGraph* mg,
     const char* canvasName,
     const char* xTitle,

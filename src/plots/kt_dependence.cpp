@@ -8,11 +8,11 @@
 #include "helpers.h"
 #include "fit/types.h"
 #include "draw.h"
+#include "analysis/context.h"
 
-void MakeKtDependence(
-    TFile* outFile,
-    FitGrid& fitRes
-) {
+void MakeKtDependence(RunContext& rCtx) {
+    TFile& out = rCtx.GetOut("kt");
+
     double yStep = (rapidityValues[1] - rapidityValues[0]) / rapiditySize;
 
     for (int chIdx = 0; chIdx < chargeSize; chIdx++) {
@@ -45,7 +45,7 @@ void MakeKtDependence(
                 legendEntries.push_back({g_R[0], centralityNames[centIdx]});
 
                 for (int ktIdx = 0; ktIdx < ktSize; ktIdx++) {
-                    FitResult res = fitRes[chIdx][centIdx][ktIdx][yIdx];
+                    FitResult res = *rCtx.fit[chIdx][centIdx][ktIdx][yIdx];
                     if (!res.ok) continue;
 
                     double xval = (ktValues[ktIdx+1] + ktValues[ktIdx]) / 2.0;
@@ -69,7 +69,7 @@ void MakeKtDependence(
             for (int lcmsIdx = 0; lcmsIdx < lcmsSize; lcmsIdx++) {
                 mg_R[lcmsIdx]->SetName(Form("mg_R_%s_%s_y_%s", LCMS[lcmsIdx].c_str(), chargeNames[chIdx].c_str(), name.c_str()));
                 setRangeWithErrors(mg_R[lcmsIdx], 0.1);
-                writeMGWithLegend(outFile, mg_R[lcmsIdx],
+                writeMGWithLegend(out, mg_R[lcmsIdx],
                     mg_R[lcmsIdx]->GetName(),
                     "k_{T} (GeV/c)",
                     Form("R_{%s} (fm)", LCMS[lcmsIdx].c_str()),
@@ -78,7 +78,7 @@ void MakeKtDependence(
             }
             setRangeWithErrors(mg_L, 0.1);
             mg_L->SetName(Form("mg_L_%s_y_%s", chargeNames[chIdx].c_str(), name.c_str()));
-            writeMGWithLegend(outFile, mg_L,
+            writeMGWithLegend(out, mg_L,
                 mg_L->GetName(),
                 "k_{T} (GeV/c)",
                 "lambda",
@@ -87,3 +87,5 @@ void MakeKtDependence(
         }
     }
 };
+
+REGISTER_STAGE("kt", MakeKtDependence);
