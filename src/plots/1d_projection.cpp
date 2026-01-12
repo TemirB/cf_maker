@@ -4,7 +4,8 @@
 #include <TF3.h>
 #include <TCanvas.h>
 
-#include <helpers.h>
+#include "helpers.h"
+#include "fit/fit.h"
 
 using std::string;
 
@@ -12,7 +13,7 @@ using std::string;
 // slicing helper (works on a CLONE only)
 // ============================================
 
-inline void SetSlice(TH3D& h, LCMSAxis axis, double w = 0.05) {
+inline void SetSlice1D(TH3D& h, LCMSAxis axis, double w = 0.05) {
     h.GetXaxis()->SetRange(0,0);
     h.GetYaxis()->SetRange(0,0);
     h.GetZaxis()->SetRange(0,0);
@@ -68,14 +69,14 @@ void Write1DProjection(
     Fit3D->SetDirectory(nullptr);
 
     // --- slice in LCMS
-    SetSlice(*A,axis);
-    SetSlice(*Awei,axis);
-    SetSlice(*Fit3D,axis);
+    SetSlice1D(*A,axis);
+    SetSlice1D(*Awei,axis);
+    SetSlice1D(*Fit3D,axis);
 
     // --- project
-    auto* num = Awei->Project3D(ToString(axis));
-    auto* den = A->Project3D(ToString(axis));
-    auto* fit = Fit3D->Project3D(ToString(axis));
+    auto* num = Awei->Project3D(ToString(axis).c_str());
+    auto* den = A->Project3D(ToString(axis).c_str());
+    auto* fit = Fit3D->Project3D(ToString(axis).c_str());
 
     num->SetDirectory(nullptr);
     den->SetDirectory(nullptr);

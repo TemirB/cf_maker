@@ -11,4 +11,4 @@ void MakeKtDependence(TFile* outFile, FitGrid& fitRes);
 
 void MakeRapidityDependence(TFile* outFile, FitGrid& fitRes);
 
-void MakeLCMS1DProjections(TFile* input, TFile* out, FitGrid& fitRes)
+void MakeLCMS1DProjections(TFile* input, TFile* out, FitGrid& fitRes);

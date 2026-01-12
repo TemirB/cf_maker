@@ -6,7 +6,6 @@
 #include "helpers.h"
 #include "fit/cache.h"
 #include "fit/json.h"
-#include "plots/cf3d.h"
 #include "plots.h"
 #include "proj1d.h"
 #include "proj2d.h"

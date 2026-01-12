@@ -4,6 +4,8 @@
 #include <TH3.h>
 #include <TDirectory.h>
 
+#include "fit/types.h"
+
 inline constexpr int chargeSize = 2;
 inline constexpr int centralitySize = 4;
 inline constexpr int ktSize = 4;
@@ -23,7 +25,7 @@ const std::array<std::string, 4> ktNames         = {"0.15-0.25", "0.25-0.35", "0
 
 enum class LCMSAxis { Out, Side, Long };
 
-inline const char* ToString(LCMSAxis a) {
+inline std::string ToString(LCMSAxis a) {
     switch(a) {
         case LCMSAxis::Out:  return "out";
         case LCMSAxis::Side: return "side";

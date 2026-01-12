@@ -20,7 +20,7 @@ void BuildAndFit3DCorrelationFunctions(
         for (int ktIdx = 0; ktIdx < ktSize; ktIdx++) {
             for (int yIdx = 0; yIdx < rapiditySize; yIdx++) {
 
-                std::string mid = getPrefix(chIdx, centIdx, yIdx);
+                std::string mid = getPrefix(chargeIndex, centIdx, yIdx);
 
                 std::string prefix = "bp_" + mid;
                 std::string cfName = "h3d_CF_q_" + mid + std::to_string(ktIdx) + "_weighted";
@@ -58,7 +58,7 @@ void BuildAndFit3DCorrelationFunctions(
                 delete h_A_wei;
 
                 FitResult r = FitCF3D(h_CF_work, fit3d);
-                fitRes[chIdx][centIdx][ktIdx][yIdx] = r;
+                fitRes[chargeIndex][centIdx][ktIdx][yIdx] = r;
 
                 outFile->cd();
                 h_CF_work->SetDirectory(outFile);
