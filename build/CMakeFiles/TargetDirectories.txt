@@ -1,7 +1,0 @@
-/home/ubuntu/Temir/smash/build/data/cf_maker_new/build/CMakeFiles/main.dir
-/home/ubuntu/Temir/smash/build/data/cf_maker_new/build/CMakeFiles/edit_cache.dir
-/home/ubuntu/Temir/smash/build/data/cf_maker_new/build/CMakeFiles/rebuild_cache.dir
-/home/ubuntu/Temir/smash/build/data/cf_maker_new/build/CMakeFiles/list_install_components.dir
-/home/ubuntu/Temir/smash/build/data/cf_maker_new/build/CMakeFiles/install.dir
-/home/ubuntu/Temir/smash/build/data/cf_maker_new/build/CMakeFiles/install/local.dir
-/home/ubuntu/Temir/smash/build/data/cf_maker_new/build/CMakeFiles/install/strip.dir
