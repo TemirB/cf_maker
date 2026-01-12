@@ -29,8 +29,9 @@ int main(int argc, char** argv) {
         return 1;
     }
 
+    std::string resDir = "results/";
     std::string inputFile = argv[1];
-    std::string outDir    = argv[2]; EnsureDir(outDir);
+    std::string outDir    = resDir + argv[2]; EnsureDir(outDir);
 
     TFile* input = TFile::Open(inputFile.c_str(), "READ");
 
