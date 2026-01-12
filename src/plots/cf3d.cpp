@@ -1,4 +1,4 @@
-#include "cf3d.h"
+#include "plots.h"
 
 #include <TFile.h>
 #include <TF3.h>
@@ -7,10 +7,11 @@
 #include "fit/fit.h"
 #include "helpers.h"
 
-void create_and_fit_3d(
-    int chIdx,
-    TFile* inputFile, TFile* outFile,
-    FitResult (&fitRes)[chargeSize][centralitySize][ktSize][rapiditySize]
+void BuildAndFit3DCorrelationFunctions(
+    int chargeIndex,
+    TFile* inputFile,
+    TFile* outFile,
+    FitGrid& fitRes
 ) {
     TF3* fit3d = CreateCF3DFit();
     TH3D* h_CF_work = nullptr;
@@ -69,4 +70,4 @@ void create_and_fit_3d(
 
     delete fit3d;
     delete h_CF_work;
-}
+};

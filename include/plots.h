@@ -2,16 +2,13 @@
 
 #include <TFile.h>
 
-#include "fit/types.h"
 #include "helpers.h"
+#include "fit/types.h"
 
-void do_kt_diff(
-    TFile* outFile,
-    FitResult (&fitRes)[chargeSize][centralitySize][ktSize][rapiditySize]
-);
+void BuildAndFit3DCorrelationFunctions( int chargeIndex, TFile* inputFile, TFile* outFile, FitGrid& fitRes);
 
-void do_rapidity_diff(
-    TFile* outFile,
-    FitResult (&fitRes)[chargeSize][centralitySize][ktSize][rapiditySize]
-);
+void MakeKtDependence(TFile* outFile, FitGrid& fitRes);
 
+void MakeRapidityDependence(TFile* outFile, FitGrid& fitRes);
+
+void MakeLCMS1DProjections(TFile* input, TFile* out, FitGrid& fitRes)

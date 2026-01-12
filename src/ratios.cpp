@@ -104,7 +104,7 @@ void proj_ratio(
 
 void do_CF_ratios(
     TFile* outFile,
-    FitResult (&fitRes)[chargeSize][centralitySize][ktSize][rapiditySize]
+    FitGrid& fitRes
 ) {
     // TODO
     // Отношение проекций CF 3D-гистограмм  proj(CF--)/proj(CF++)

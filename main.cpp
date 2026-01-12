@@ -6,7 +6,7 @@
 #include "helpers.h"
 #include "fit/cache.h"
 #include "fit/json.h"
-#include "cf3d.h"
+#include "plots/cf3d.h"
 #include "plots.h"
 #include "proj1d.h"
 #include "proj2d.h"
@@ -46,8 +46,7 @@ int main(int argc, char** argv) {
             return 1;
         }
 
-        for (int ch=0; ch<chargeSize; ch++)
-            create_and_fit_3d(ch, input.get(), &fCF, fitRes);
+        for (int ch=0; ch<chargeSize; ch++) BuildAndFit3DCorrelationFunctions(ch, input.get(), &fCF, fitRes);
 
         fCF.Write();
         WriteFitJson(ctx.inputFile, ctx.outDir, fitRes);
