@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = -DVECCORE_ENABLE_VC
 
-CXX_INCLUDES = -I/home/ubuntu/Temir/smash/build/data/cf_maker_new/include -isystem /home/ubuntu/Vinh/root_6_28/include
+CXX_INCLUDES = -I/home/ubuntu/Temir/smash/build/data/cf_maker_new/include -I/home/ubuntu/Temir/smash/build/data/cf_maker_new/external -isystem /home/ubuntu/Vinh/root_6_28/include
 
-CXX_FLAGS =   -std=c++17 -pipe -fsigned-char -pthread -std=gnu++17 -fPIE -Wall -O2 -DROOT_STRICT_OWNERSHIP
+CXX_FLAGS =   -std=c++17 -pipe -fsigned-char -pthread -std=gnu++17 -fPIE -Wall -Wextra -O2 -DROOT_STRICT_OWNERSHIP
 

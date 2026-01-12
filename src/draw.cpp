@@ -1,13 +1,13 @@
 #include "draw.h"
 
+#include <TFile.h>
+#include <TCanvas.h>
+#include <TLegend.h>
 #include <TH1.h>
 #include <TGraphErrors.h>
 #include <TAxis.h>
 #include <TList.h>
-#include <TDirectory.h>
 #include <TMultiGraph.h>
-#include <TLegend.h>
-
 
 #include <limits>
 #include <cmath>
@@ -61,19 +61,15 @@ void setRangeWithErrors(TMultiGraph* mg, double padFrac) {
     mg->SetMaximum(ymax);
 }
 
-
-#include <TCanvas.h>
-#include <TLegend.h>
-
 void writeMGWithLegend(
-    TDirectory* dir,
+    TFile* file,
     TMultiGraph* mg,
     const char* canvasName,
     const char* xTitle,
     const char* yTitle,
     const std::vector<std::pair<TObject*, std::string>>& legendEntries
 ) {
-    dir->cd();
+    file->cd();
 
     TCanvas c(canvasName, canvasName, 1000, 800);
     mg->Draw("A");                       // создаёт оси
@@ -98,13 +94,13 @@ void writeMGWithLegend(
 }
 
 void writeHist(
-    TDirectory* dir,
+    TFile* file,
     TH1D* hist,
     const char* canvasName,
     const char* xTitle,
     const char* yTitle
 ) {
-    dir->cd();
+    file->cd();
 
     TCanvas c(canvasName, canvasName, 1000, 800);
     hist->Draw();

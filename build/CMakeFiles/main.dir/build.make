@@ -97,10 +97,24 @@ CMakeFiles/main.dir/src/cf3d.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/src/cf3d.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/Temir/smash/build/data/cf_maker_new/src/cf3d.cpp -o CMakeFiles/main.dir/src/cf3d.cpp.s
 
+CMakeFiles/main.dir/src/context.cpp.o: CMakeFiles/main.dir/flags.make
+CMakeFiles/main.dir/src/context.cpp.o: /home/ubuntu/Temir/smash/build/data/cf_maker_new/src/context.cpp
+CMakeFiles/main.dir/src/context.cpp.o: CMakeFiles/main.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/ubuntu/Temir/smash/build/data/cf_maker_new/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/main.dir/src/context.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/src/context.cpp.o -MF CMakeFiles/main.dir/src/context.cpp.o.d -o CMakeFiles/main.dir/src/context.cpp.o -c /home/ubuntu/Temir/smash/build/data/cf_maker_new/src/context.cpp
+
+CMakeFiles/main.dir/src/context.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/main.dir/src/context.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/Temir/smash/build/data/cf_maker_new/src/context.cpp > CMakeFiles/main.dir/src/context.cpp.i
+
+CMakeFiles/main.dir/src/context.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/src/context.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/Temir/smash/build/data/cf_maker_new/src/context.cpp -o CMakeFiles/main.dir/src/context.cpp.s
+
 CMakeFiles/main.dir/src/draw.cpp.o: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/src/draw.cpp.o: /home/ubuntu/Temir/smash/build/data/cf_maker_new/src/draw.cpp
 CMakeFiles/main.dir/src/draw.cpp.o: CMakeFiles/main.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/ubuntu/Temir/smash/build/data/cf_maker_new/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/main.dir/src/draw.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/ubuntu/Temir/smash/build/data/cf_maker_new/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/main.dir/src/draw.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/src/draw.cpp.o -MF CMakeFiles/main.dir/src/draw.cpp.o.d -o CMakeFiles/main.dir/src/draw.cpp.o -c /home/ubuntu/Temir/smash/build/data/cf_maker_new/src/draw.cpp
 
 CMakeFiles/main.dir/src/draw.cpp.i: cmake_force
@@ -111,24 +125,66 @@ CMakeFiles/main.dir/src/draw.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/src/draw.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/Temir/smash/build/data/cf_maker_new/src/draw.cpp -o CMakeFiles/main.dir/src/draw.cpp.s
 
-CMakeFiles/main.dir/src/fit.cpp.o: CMakeFiles/main.dir/flags.make
-CMakeFiles/main.dir/src/fit.cpp.o: /home/ubuntu/Temir/smash/build/data/cf_maker_new/src/fit.cpp
-CMakeFiles/main.dir/src/fit.cpp.o: CMakeFiles/main.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/ubuntu/Temir/smash/build/data/cf_maker_new/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/main.dir/src/fit.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/src/fit.cpp.o -MF CMakeFiles/main.dir/src/fit.cpp.o.d -o CMakeFiles/main.dir/src/fit.cpp.o -c /home/ubuntu/Temir/smash/build/data/cf_maker_new/src/fit.cpp
+CMakeFiles/main.dir/src/fit/cache.cpp.o: CMakeFiles/main.dir/flags.make
+CMakeFiles/main.dir/src/fit/cache.cpp.o: /home/ubuntu/Temir/smash/build/data/cf_maker_new/src/fit/cache.cpp
+CMakeFiles/main.dir/src/fit/cache.cpp.o: CMakeFiles/main.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/ubuntu/Temir/smash/build/data/cf_maker_new/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/main.dir/src/fit/cache.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/src/fit/cache.cpp.o -MF CMakeFiles/main.dir/src/fit/cache.cpp.o.d -o CMakeFiles/main.dir/src/fit/cache.cpp.o -c /home/ubuntu/Temir/smash/build/data/cf_maker_new/src/fit/cache.cpp
 
-CMakeFiles/main.dir/src/fit.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/main.dir/src/fit.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/Temir/smash/build/data/cf_maker_new/src/fit.cpp > CMakeFiles/main.dir/src/fit.cpp.i
+CMakeFiles/main.dir/src/fit/cache.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/main.dir/src/fit/cache.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/Temir/smash/build/data/cf_maker_new/src/fit/cache.cpp > CMakeFiles/main.dir/src/fit/cache.cpp.i
 
-CMakeFiles/main.dir/src/fit.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/src/fit.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/Temir/smash/build/data/cf_maker_new/src/fit.cpp -o CMakeFiles/main.dir/src/fit.cpp.s
+CMakeFiles/main.dir/src/fit/cache.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/src/fit/cache.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/Temir/smash/build/data/cf_maker_new/src/fit/cache.cpp -o CMakeFiles/main.dir/src/fit/cache.cpp.s
+
+CMakeFiles/main.dir/src/fit/fit.cpp.o: CMakeFiles/main.dir/flags.make
+CMakeFiles/main.dir/src/fit/fit.cpp.o: /home/ubuntu/Temir/smash/build/data/cf_maker_new/src/fit/fit.cpp
+CMakeFiles/main.dir/src/fit/fit.cpp.o: CMakeFiles/main.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/ubuntu/Temir/smash/build/data/cf_maker_new/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/main.dir/src/fit/fit.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/src/fit/fit.cpp.o -MF CMakeFiles/main.dir/src/fit/fit.cpp.o.d -o CMakeFiles/main.dir/src/fit/fit.cpp.o -c /home/ubuntu/Temir/smash/build/data/cf_maker_new/src/fit/fit.cpp
+
+CMakeFiles/main.dir/src/fit/fit.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/main.dir/src/fit/fit.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/Temir/smash/build/data/cf_maker_new/src/fit/fit.cpp > CMakeFiles/main.dir/src/fit/fit.cpp.i
+
+CMakeFiles/main.dir/src/fit/fit.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/src/fit/fit.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/Temir/smash/build/data/cf_maker_new/src/fit/fit.cpp -o CMakeFiles/main.dir/src/fit/fit.cpp.s
+
+CMakeFiles/main.dir/src/fit/json.cpp.o: CMakeFiles/main.dir/flags.make
+CMakeFiles/main.dir/src/fit/json.cpp.o: /home/ubuntu/Temir/smash/build/data/cf_maker_new/src/fit/json.cpp
+CMakeFiles/main.dir/src/fit/json.cpp.o: CMakeFiles/main.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/ubuntu/Temir/smash/build/data/cf_maker_new/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/main.dir/src/fit/json.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/src/fit/json.cpp.o -MF CMakeFiles/main.dir/src/fit/json.cpp.o.d -o CMakeFiles/main.dir/src/fit/json.cpp.o -c /home/ubuntu/Temir/smash/build/data/cf_maker_new/src/fit/json.cpp
+
+CMakeFiles/main.dir/src/fit/json.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/main.dir/src/fit/json.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/Temir/smash/build/data/cf_maker_new/src/fit/json.cpp > CMakeFiles/main.dir/src/fit/json.cpp.i
+
+CMakeFiles/main.dir/src/fit/json.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/src/fit/json.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/Temir/smash/build/data/cf_maker_new/src/fit/json.cpp -o CMakeFiles/main.dir/src/fit/json.cpp.s
+
+CMakeFiles/main.dir/src/fit/result.cpp.o: CMakeFiles/main.dir/flags.make
+CMakeFiles/main.dir/src/fit/result.cpp.o: /home/ubuntu/Temir/smash/build/data/cf_maker_new/src/fit/result.cpp
+CMakeFiles/main.dir/src/fit/result.cpp.o: CMakeFiles/main.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/ubuntu/Temir/smash/build/data/cf_maker_new/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/main.dir/src/fit/result.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/src/fit/result.cpp.o -MF CMakeFiles/main.dir/src/fit/result.cpp.o.d -o CMakeFiles/main.dir/src/fit/result.cpp.o -c /home/ubuntu/Temir/smash/build/data/cf_maker_new/src/fit/result.cpp
+
+CMakeFiles/main.dir/src/fit/result.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/main.dir/src/fit/result.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/Temir/smash/build/data/cf_maker_new/src/fit/result.cpp > CMakeFiles/main.dir/src/fit/result.cpp.i
+
+CMakeFiles/main.dir/src/fit/result.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/src/fit/result.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/Temir/smash/build/data/cf_maker_new/src/fit/result.cpp -o CMakeFiles/main.dir/src/fit/result.cpp.s
 
 CMakeFiles/main.dir/src/helpers.cpp.o: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/src/helpers.cpp.o: /home/ubuntu/Temir/smash/build/data/cf_maker_new/src/helpers.cpp
 CMakeFiles/main.dir/src/helpers.cpp.o: CMakeFiles/main.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/ubuntu/Temir/smash/build/data/cf_maker_new/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/main.dir/src/helpers.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/ubuntu/Temir/smash/build/data/cf_maker_new/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/main.dir/src/helpers.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/src/helpers.cpp.o -MF CMakeFiles/main.dir/src/helpers.cpp.o.d -o CMakeFiles/main.dir/src/helpers.cpp.o -c /home/ubuntu/Temir/smash/build/data/cf_maker_new/src/helpers.cpp
 
 CMakeFiles/main.dir/src/helpers.cpp.i: cmake_force
@@ -142,7 +198,7 @@ CMakeFiles/main.dir/src/helpers.cpp.s: cmake_force
 CMakeFiles/main.dir/src/plots.cpp.o: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/src/plots.cpp.o: /home/ubuntu/Temir/smash/build/data/cf_maker_new/src/plots.cpp
 CMakeFiles/main.dir/src/plots.cpp.o: CMakeFiles/main.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/ubuntu/Temir/smash/build/data/cf_maker_new/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/main.dir/src/plots.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/ubuntu/Temir/smash/build/data/cf_maker_new/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/main.dir/src/plots.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/src/plots.cpp.o -MF CMakeFiles/main.dir/src/plots.cpp.o.d -o CMakeFiles/main.dir/src/plots.cpp.o -c /home/ubuntu/Temir/smash/build/data/cf_maker_new/src/plots.cpp
 
 CMakeFiles/main.dir/src/plots.cpp.i: cmake_force
@@ -156,7 +212,7 @@ CMakeFiles/main.dir/src/plots.cpp.s: cmake_force
 CMakeFiles/main.dir/src/proj1d.cpp.o: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/src/proj1d.cpp.o: /home/ubuntu/Temir/smash/build/data/cf_maker_new/src/proj1d.cpp
 CMakeFiles/main.dir/src/proj1d.cpp.o: CMakeFiles/main.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/ubuntu/Temir/smash/build/data/cf_maker_new/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/main.dir/src/proj1d.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/ubuntu/Temir/smash/build/data/cf_maker_new/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/main.dir/src/proj1d.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/src/proj1d.cpp.o -MF CMakeFiles/main.dir/src/proj1d.cpp.o.d -o CMakeFiles/main.dir/src/proj1d.cpp.o -c /home/ubuntu/Temir/smash/build/data/cf_maker_new/src/proj1d.cpp
 
 CMakeFiles/main.dir/src/proj1d.cpp.i: cmake_force
@@ -170,7 +226,7 @@ CMakeFiles/main.dir/src/proj1d.cpp.s: cmake_force
 CMakeFiles/main.dir/src/proj2d.cpp.o: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/src/proj2d.cpp.o: /home/ubuntu/Temir/smash/build/data/cf_maker_new/src/proj2d.cpp
 CMakeFiles/main.dir/src/proj2d.cpp.o: CMakeFiles/main.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/ubuntu/Temir/smash/build/data/cf_maker_new/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/main.dir/src/proj2d.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/ubuntu/Temir/smash/build/data/cf_maker_new/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/main.dir/src/proj2d.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/src/proj2d.cpp.o -MF CMakeFiles/main.dir/src/proj2d.cpp.o.d -o CMakeFiles/main.dir/src/proj2d.cpp.o -c /home/ubuntu/Temir/smash/build/data/cf_maker_new/src/proj2d.cpp
 
 CMakeFiles/main.dir/src/proj2d.cpp.i: cmake_force
@@ -184,7 +240,7 @@ CMakeFiles/main.dir/src/proj2d.cpp.s: cmake_force
 CMakeFiles/main.dir/src/ratios.cpp.o: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/src/ratios.cpp.o: /home/ubuntu/Temir/smash/build/data/cf_maker_new/src/ratios.cpp
 CMakeFiles/main.dir/src/ratios.cpp.o: CMakeFiles/main.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/ubuntu/Temir/smash/build/data/cf_maker_new/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/main.dir/src/ratios.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/ubuntu/Temir/smash/build/data/cf_maker_new/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/main.dir/src/ratios.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/src/ratios.cpp.o -MF CMakeFiles/main.dir/src/ratios.cpp.o.d -o CMakeFiles/main.dir/src/ratios.cpp.o -c /home/ubuntu/Temir/smash/build/data/cf_maker_new/src/ratios.cpp
 
 CMakeFiles/main.dir/src/ratios.cpp.i: cmake_force
@@ -199,8 +255,12 @@ CMakeFiles/main.dir/src/ratios.cpp.s: cmake_force
 main_OBJECTS = \
 "CMakeFiles/main.dir/main.cpp.o" \
 "CMakeFiles/main.dir/src/cf3d.cpp.o" \
+"CMakeFiles/main.dir/src/context.cpp.o" \
 "CMakeFiles/main.dir/src/draw.cpp.o" \
-"CMakeFiles/main.dir/src/fit.cpp.o" \
+"CMakeFiles/main.dir/src/fit/cache.cpp.o" \
+"CMakeFiles/main.dir/src/fit/fit.cpp.o" \
+"CMakeFiles/main.dir/src/fit/json.cpp.o" \
+"CMakeFiles/main.dir/src/fit/result.cpp.o" \
 "CMakeFiles/main.dir/src/helpers.cpp.o" \
 "CMakeFiles/main.dir/src/plots.cpp.o" \
 "CMakeFiles/main.dir/src/proj1d.cpp.o" \
@@ -212,8 +272,12 @@ main_EXTERNAL_OBJECTS =
 
 main: CMakeFiles/main.dir/main.cpp.o
 main: CMakeFiles/main.dir/src/cf3d.cpp.o
+main: CMakeFiles/main.dir/src/context.cpp.o
 main: CMakeFiles/main.dir/src/draw.cpp.o
-main: CMakeFiles/main.dir/src/fit.cpp.o
+main: CMakeFiles/main.dir/src/fit/cache.cpp.o
+main: CMakeFiles/main.dir/src/fit/fit.cpp.o
+main: CMakeFiles/main.dir/src/fit/json.cpp.o
+main: CMakeFiles/main.dir/src/fit/result.cpp.o
 main: CMakeFiles/main.dir/src/helpers.cpp.o
 main: CMakeFiles/main.dir/src/plots.cpp.o
 main: CMakeFiles/main.dir/src/proj1d.cpp.o
@@ -222,6 +286,7 @@ main: CMakeFiles/main.dir/src/ratios.cpp.o
 main: CMakeFiles/main.dir/build.make
 main: /home/ubuntu/Vinh/root_6_28/lib/libTreePlayer.so.6.28.04
 main: /home/ubuntu/Vinh/root_6_28/lib/libPhysics.so.6.28.04
+main: /usr/lib/x86_64-linux-gnu/libcrypto.so
 main: /home/ubuntu/Vinh/root_6_28/lib/libGraf3d.so.6.28.04
 main: /home/ubuntu/Vinh/root_6_28/lib/libGpad.so.6.28.04
 main: /home/ubuntu/Vinh/root_6_28/lib/libGraf.so.6.28.04
@@ -237,7 +302,7 @@ main: /home/ubuntu/Vinh/root_6_28/lib/libRIO.so.6.28.04
 main: /home/ubuntu/Vinh/root_6_28/lib/libThread.so.6.28.04
 main: /home/ubuntu/Vinh/root_6_28/lib/libCore.so.6.28.04
 main: CMakeFiles/main.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/ubuntu/Temir/smash/build/data/cf_maker_new/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Linking CXX executable main"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/ubuntu/Temir/smash/build/data/cf_maker_new/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Linking CXX executable main"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/main.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

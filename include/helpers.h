@@ -30,3 +30,9 @@ bool sameBinning(const TH3D* a, const TH3D* b);
 TDirectory* getOrMakeDir(TDirectory* base, const std::string& name);
 
 void EnsureDir(const std::string& dir);
+
+std::string GetExeDir();
+
+std::string Sha256OfFile(const std::string& fname);
+int FindCentralityIndex(const std::string& name);
+int FindKtIndex(double low, double high);

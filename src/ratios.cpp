@@ -1,8 +1,9 @@
+#include <iostream>
 #include <TDirectory.h>
 #include <TH3D.h>
 #include <TFile.h>
 
-#include "fit.h"
+#include "fit/types.h"
 #include "helpers.h"
 #include "draw.h"
 

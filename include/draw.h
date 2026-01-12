@@ -2,13 +2,14 @@
 
 #include <TH1.h>
 #include <TMultiGraph.h>
+#include <TFile.h>
 
 // Устанавливает диапазоны осей TMultiGraph
 // с учётом ошибок TGraphErrors
 void setRangeWithErrors(TMultiGraph* mg, double padFrac = 0.10);
 
 void writeMGWithLegend(
-    TDirectory* dir,
+    TFile* file,
     TMultiGraph* mg,
     const char* canvasName,
     const char* xTitle,
@@ -17,7 +18,7 @@ void writeMGWithLegend(
 );
 
 void writeHist(
-    TDirectory* dir,
+    TFile* file,
     TH1D* hist,
     const char* canvasName,
     const char* xTitle,

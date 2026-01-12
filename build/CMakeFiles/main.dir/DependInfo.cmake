@@ -10,8 +10,12 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/ubuntu/Temir/smash/build/data/cf_maker_new/main.cpp" "CMakeFiles/main.dir/main.cpp.o" "gcc" "CMakeFiles/main.dir/main.cpp.o.d"
   "/home/ubuntu/Temir/smash/build/data/cf_maker_new/src/cf3d.cpp" "CMakeFiles/main.dir/src/cf3d.cpp.o" "gcc" "CMakeFiles/main.dir/src/cf3d.cpp.o.d"
+  "/home/ubuntu/Temir/smash/build/data/cf_maker_new/src/context.cpp" "CMakeFiles/main.dir/src/context.cpp.o" "gcc" "CMakeFiles/main.dir/src/context.cpp.o.d"
   "/home/ubuntu/Temir/smash/build/data/cf_maker_new/src/draw.cpp" "CMakeFiles/main.dir/src/draw.cpp.o" "gcc" "CMakeFiles/main.dir/src/draw.cpp.o.d"
-  "/home/ubuntu/Temir/smash/build/data/cf_maker_new/src/fit.cpp" "CMakeFiles/main.dir/src/fit.cpp.o" "gcc" "CMakeFiles/main.dir/src/fit.cpp.o.d"
+  "/home/ubuntu/Temir/smash/build/data/cf_maker_new/src/fit/cache.cpp" "CMakeFiles/main.dir/src/fit/cache.cpp.o" "gcc" "CMakeFiles/main.dir/src/fit/cache.cpp.o.d"
+  "/home/ubuntu/Temir/smash/build/data/cf_maker_new/src/fit/fit.cpp" "CMakeFiles/main.dir/src/fit/fit.cpp.o" "gcc" "CMakeFiles/main.dir/src/fit/fit.cpp.o.d"
+  "/home/ubuntu/Temir/smash/build/data/cf_maker_new/src/fit/json.cpp" "CMakeFiles/main.dir/src/fit/json.cpp.o" "gcc" "CMakeFiles/main.dir/src/fit/json.cpp.o.d"
+  "/home/ubuntu/Temir/smash/build/data/cf_maker_new/src/fit/result.cpp" "CMakeFiles/main.dir/src/fit/result.cpp.o" "gcc" "CMakeFiles/main.dir/src/fit/result.cpp.o.d"
   "/home/ubuntu/Temir/smash/build/data/cf_maker_new/src/helpers.cpp" "CMakeFiles/main.dir/src/helpers.cpp.o" "gcc" "CMakeFiles/main.dir/src/helpers.cpp.o.d"
   "/home/ubuntu/Temir/smash/build/data/cf_maker_new/src/plots.cpp" "CMakeFiles/main.dir/src/plots.cpp.o" "gcc" "CMakeFiles/main.dir/src/plots.cpp.o.d"
   "/home/ubuntu/Temir/smash/build/data/cf_maker_new/src/proj1d.cpp" "CMakeFiles/main.dir/src/proj1d.cpp.o" "gcc" "CMakeFiles/main.dir/src/proj1d.cpp.o.d"

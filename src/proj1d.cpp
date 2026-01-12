@@ -6,7 +6,8 @@
 #include <TCanvas.h>
 
 #include "helpers.h"
-#include "fit.h"
+#include "fit/types.h"
+#include "fit/fit.h"
 
 void prepare_for_1d_proj(TH3D* h_A_wei, TH3D* h_A, TH3D* denominator, TH3D* numerator, const std::string& LCMS){
     if (LCMS == "out") {

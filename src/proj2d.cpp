@@ -1,9 +1,11 @@
+#include <iostream>
+
 #include <TFile.h>
 #include <TH2.h>
 #include <TDirectory.h>
 #include <string>
 
-#include "fit.h"
+#include "fit/types.h"
 #include "helpers.h"
 
 bool contains(const std::string str, const std::string sub) {

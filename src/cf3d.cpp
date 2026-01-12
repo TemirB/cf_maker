@@ -1,8 +1,10 @@
 #include "cf3d.h"
 
 #include <TFile.h>
+#include <TF3.h>
 
-#include "fit.h"
+#include "fit/types.h"
+#include "fit/fit.h"
 #include "helpers.h"
 
 void create_and_fit_3d(
@@ -10,10 +12,6 @@ void create_and_fit_3d(
     TFile* inputFile, TFile* outFile,
     FitResult (&fitRes)[chargeSize][centralitySize][ktSize][rapiditySize]
 ) {
-    TDirectory* dir = outFile->GetDirectory("cf3d");
-    if (!dir) dir = outFile->mkdir("cf3d");
-    dir->cd();
-
     TF3* fit3d = CreateCF3DFit();
     TH3D* h_CF_work = nullptr;
 
@@ -47,33 +45,24 @@ void create_and_fit_3d(
                     if (!h_CF_work->GetSumw2N()) h_CF_work->Sumw2();
                 }
 
-                // Создаем новую 3D-гистограмму для CF = A_wei / A с тем же бинированием, что и у входных
                 h_CF_work->Reset("ICES");
+                // I	Integral — сбросить интеграл (общее число заполнений)
+                // C	Contents — обнулить содержимое бинов (counts)
+                // E	Errors — обнулить ошибки (Sumw2)
+                // S	Statistics — сбросить статистику (mean, RMS, entries и т.д.)
+
                 h_CF_work->Divide(h_A_wei, h_A);
 
                 delete h_A;
                 delete h_A_wei;
 
-                // if (emptyForFit(h_CF_work)) {
-                //     h_CF_work->Write(cfName.c_str(), TObject::kOverwrite);
-                //     continue;
-                // }
-                
-                // if (h_CF_work->GetEntries() == 0) {
-                //     std::cerr << "EMPTY CF for "
-                //             << "ch=" << chIdx
-                //             << " cent=" << centIdx
-                //             << " kt=" << ktIdx
-                //             << " y=" << yIdx
-                //             << std::endl;
-                //     h_CF_work->Write(cfName.c_str(), TObject::kOverwrite);
-                //     continue;
-                // }
-
                 FitResult r = FitCF3D(h_CF_work, fit3d);
                 fitRes[chIdx][centIdx][ktIdx][yIdx] = r;
 
+                outFile->cd();
+                h_CF_work->SetDirectory(outFile);
                 h_CF_work->Write(cfName.c_str(), TObject::kOverwrite);
+                h_CF_work->SetDirectory(nullptr);
             }
         }
     }

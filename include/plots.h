@@ -2,7 +2,7 @@
 
 #include <TFile.h>
 
-#include "fit.h"
+#include "fit/types.h"
 #include "helpers.h"
 
 void do_kt_diff(

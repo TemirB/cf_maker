@@ -158,7 +158,6 @@ preinstall/fast:
 
 # clear depends
 depend:
-	$(CMAKE_COMMAND) -P /home/ubuntu/Temir/smash/build/data/cf_maker_new/build/CMakeFiles/VerifyGlobs.cmake
 	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
@@ -223,6 +222,30 @@ src/cf3d.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/cf3d.cpp.s
 .PHONY : src/cf3d.cpp.s
 
+src/context.o: src/context.cpp.o
+.PHONY : src/context.o
+
+# target to build an object file
+src/context.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/context.cpp.o
+.PHONY : src/context.cpp.o
+
+src/context.i: src/context.cpp.i
+.PHONY : src/context.i
+
+# target to preprocess a source file
+src/context.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/context.cpp.i
+.PHONY : src/context.cpp.i
+
+src/context.s: src/context.cpp.s
+.PHONY : src/context.s
+
+# target to generate assembly for a file
+src/context.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/context.cpp.s
+.PHONY : src/context.cpp.s
+
 src/draw.o: src/draw.cpp.o
 .PHONY : src/draw.o
 
@@ -247,29 +270,101 @@ src/draw.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/draw.cpp.s
 .PHONY : src/draw.cpp.s
 
-src/fit.o: src/fit.cpp.o
-.PHONY : src/fit.o
+src/fit/cache.o: src/fit/cache.cpp.o
+.PHONY : src/fit/cache.o
 
 # target to build an object file
-src/fit.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/fit.cpp.o
-.PHONY : src/fit.cpp.o
+src/fit/cache.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/fit/cache.cpp.o
+.PHONY : src/fit/cache.cpp.o
 
-src/fit.i: src/fit.cpp.i
-.PHONY : src/fit.i
+src/fit/cache.i: src/fit/cache.cpp.i
+.PHONY : src/fit/cache.i
 
 # target to preprocess a source file
-src/fit.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/fit.cpp.i
-.PHONY : src/fit.cpp.i
+src/fit/cache.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/fit/cache.cpp.i
+.PHONY : src/fit/cache.cpp.i
 
-src/fit.s: src/fit.cpp.s
-.PHONY : src/fit.s
+src/fit/cache.s: src/fit/cache.cpp.s
+.PHONY : src/fit/cache.s
 
 # target to generate assembly for a file
-src/fit.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/fit.cpp.s
-.PHONY : src/fit.cpp.s
+src/fit/cache.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/fit/cache.cpp.s
+.PHONY : src/fit/cache.cpp.s
+
+src/fit/fit.o: src/fit/fit.cpp.o
+.PHONY : src/fit/fit.o
+
+# target to build an object file
+src/fit/fit.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/fit/fit.cpp.o
+.PHONY : src/fit/fit.cpp.o
+
+src/fit/fit.i: src/fit/fit.cpp.i
+.PHONY : src/fit/fit.i
+
+# target to preprocess a source file
+src/fit/fit.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/fit/fit.cpp.i
+.PHONY : src/fit/fit.cpp.i
+
+src/fit/fit.s: src/fit/fit.cpp.s
+.PHONY : src/fit/fit.s
+
+# target to generate assembly for a file
+src/fit/fit.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/fit/fit.cpp.s
+.PHONY : src/fit/fit.cpp.s
+
+src/fit/json.o: src/fit/json.cpp.o
+.PHONY : src/fit/json.o
+
+# target to build an object file
+src/fit/json.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/fit/json.cpp.o
+.PHONY : src/fit/json.cpp.o
+
+src/fit/json.i: src/fit/json.cpp.i
+.PHONY : src/fit/json.i
+
+# target to preprocess a source file
+src/fit/json.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/fit/json.cpp.i
+.PHONY : src/fit/json.cpp.i
+
+src/fit/json.s: src/fit/json.cpp.s
+.PHONY : src/fit/json.s
+
+# target to generate assembly for a file
+src/fit/json.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/fit/json.cpp.s
+.PHONY : src/fit/json.cpp.s
+
+src/fit/result.o: src/fit/result.cpp.o
+.PHONY : src/fit/result.o
+
+# target to build an object file
+src/fit/result.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/fit/result.cpp.o
+.PHONY : src/fit/result.cpp.o
+
+src/fit/result.i: src/fit/result.cpp.i
+.PHONY : src/fit/result.i
+
+# target to preprocess a source file
+src/fit/result.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/fit/result.cpp.i
+.PHONY : src/fit/result.cpp.i
+
+src/fit/result.s: src/fit/result.cpp.s
+.PHONY : src/fit/result.s
+
+# target to generate assembly for a file
+src/fit/result.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/fit/result.cpp.s
+.PHONY : src/fit/result.cpp.s
 
 src/helpers.o: src/helpers.cpp.o
 .PHONY : src/helpers.o
@@ -410,12 +505,24 @@ help:
 	@echo "... src/cf3d.o"
 	@echo "... src/cf3d.i"
 	@echo "... src/cf3d.s"
+	@echo "... src/context.o"
+	@echo "... src/context.i"
+	@echo "... src/context.s"
 	@echo "... src/draw.o"
 	@echo "... src/draw.i"
 	@echo "... src/draw.s"
-	@echo "... src/fit.o"
-	@echo "... src/fit.i"
-	@echo "... src/fit.s"
+	@echo "... src/fit/cache.o"
+	@echo "... src/fit/cache.i"
+	@echo "... src/fit/cache.s"
+	@echo "... src/fit/fit.o"
+	@echo "... src/fit/fit.i"
+	@echo "... src/fit/fit.s"
+	@echo "... src/fit/json.o"
+	@echo "... src/fit/json.i"
+	@echo "... src/fit/json.s"
+	@echo "... src/fit/result.o"
+	@echo "... src/fit/result.i"
+	@echo "... src/fit/result.s"
 	@echo "... src/helpers.o"
 	@echo "... src/helpers.i"
 	@echo "... src/helpers.s"
@@ -442,7 +549,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	$(CMAKE_COMMAND) -P /home/ubuntu/Temir/smash/build/data/cf_maker_new/build/CMakeFiles/VerifyGlobs.cmake
 	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

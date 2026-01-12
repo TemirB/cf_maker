@@ -281,7 +281,30 @@ CMakeFiles/main.dir/src/cf3d.cpp.o: \
  /usr/include/c++/13/bits/parse_numbers.h \
  /usr/include/c++/13/bits/std_mutex.h \
  /usr/include/c++/13/bits/unique_lock.h /usr/include/c++/13/mutex \
- /home/ubuntu/Temir/smash/build/data/cf_maker_new/include/fit.h \
+ /home/ubuntu/Temir/smash/build/data/cf_maker_new/include/fit/types.h \
+ /home/ubuntu/Temir/smash/build/data/cf_maker_new/include/helpers.h \
+ /home/ubuntu/Vinh/root_6_28/include/TH3.h \
+ /home/ubuntu/Vinh/root_6_28/include/TH1.h \
+ /home/ubuntu/Vinh/root_6_28/include/TAxis.h \
+ /home/ubuntu/Vinh/root_6_28/include/TAttAxis.h \
+ /home/ubuntu/Vinh/root_6_28/include/TArrayD.h \
+ /home/ubuntu/Vinh/root_6_28/include/TArray.h \
+ /home/ubuntu/Vinh/root_6_28/include/TAttLine.h \
+ /home/ubuntu/Vinh/root_6_28/include/TAttFill.h \
+ /home/ubuntu/Vinh/root_6_28/include/TAttMarker.h \
+ /home/ubuntu/Vinh/root_6_28/include/TArrayC.h \
+ /home/ubuntu/Vinh/root_6_28/include/TArrayS.h \
+ /home/ubuntu/Vinh/root_6_28/include/TArrayI.h \
+ /home/ubuntu/Vinh/root_6_28/include/TArrayF.h \
+ /home/ubuntu/Vinh/root_6_28/include/Foption.h \
+ /home/ubuntu/Vinh/root_6_28/include/ROOT/EExecutionPolicy.hxx \
+ /home/ubuntu/Vinh/root_6_28/include/TVectorFfwd.h \
+ /home/ubuntu/Vinh/root_6_28/include/TVectorDfwd.h \
+ /home/ubuntu/Vinh/root_6_28/include/TFitResultPtr.h \
+ /usr/include/c++/13/cfloat \
+ /usr/lib/gcc/x86_64-linux-gnu/13/include/float.h \
+ /home/ubuntu/Vinh/root_6_28/include/TAtt3D.h \
+ /home/ubuntu/Vinh/root_6_28/include/TDirectory.h \
  /home/ubuntu/Vinh/root_6_28/include/TF3.h \
  /home/ubuntu/Vinh/root_6_28/include/TF2.h \
  /home/ubuntu/Vinh/root_6_28/include/TF1.h \
@@ -602,8 +625,6 @@ CMakeFiles/main.dir/src/cf3d.cpp.o: \
  /home/ubuntu/Vinh/root_6_28/include/VecCore/Backend/Implementation.h \
  /home/ubuntu/Vinh/root_6_28/include/VecCore/Backend/Interface.h \
  /home/ubuntu/Vinh/root_6_28/include/VecCore/Limits.h \
- /usr/include/c++/13/cfloat \
- /usr/lib/gcc/x86_64-linux-gnu/13/include/float.h \
  /usr/include/c++/13/climits \
  /usr/lib/gcc/x86_64-linux-gnu/13/include/limits.h \
  /usr/lib/gcc/x86_64-linux-gnu/13/include/syslimits.h \
@@ -628,9 +649,6 @@ CMakeFiles/main.dir/src/cf3d.cpp.o: \
  /home/ubuntu/Vinh/root_6_28/include/VecCore/VecMath.h \
  /home/ubuntu/Vinh/root_6_28/include/VecCore/Utilities.h \
  /home/ubuntu/Vinh/root_6_28/include/TMethodCall.h \
- /home/ubuntu/Vinh/root_6_28/include/TAttLine.h \
- /home/ubuntu/Vinh/root_6_28/include/TAttFill.h \
- /home/ubuntu/Vinh/root_6_28/include/TAttMarker.h \
  /home/ubuntu/Vinh/root_6_28/include/TF1AbsComposition.h \
  /home/ubuntu/Vinh/root_6_28/include/TMath.h \
  /home/ubuntu/Vinh/root_6_28/include/TError.h \
@@ -639,21 +657,23 @@ CMakeFiles/main.dir/src/cf3d.cpp.o: \
  /home/ubuntu/Vinh/root_6_28/include/Math/Types.h \
  /home/ubuntu/Vinh/root_6_28/include/Math/ParamFunctor.h \
  /home/ubuntu/Vinh/root_6_28/include/RtypesCore.h \
- /home/ubuntu/Vinh/root_6_28/include/TArrayD.h \
- /home/ubuntu/Vinh/root_6_28/include/TArray.h \
- /home/ubuntu/Vinh/root_6_28/include/TH3.h \
- /home/ubuntu/Vinh/root_6_28/include/TH1.h \
- /home/ubuntu/Vinh/root_6_28/include/TAxis.h \
- /home/ubuntu/Vinh/root_6_28/include/TAttAxis.h \
- /home/ubuntu/Vinh/root_6_28/include/TArrayC.h \
- /home/ubuntu/Vinh/root_6_28/include/TArrayS.h \
- /home/ubuntu/Vinh/root_6_28/include/TArrayI.h \
- /home/ubuntu/Vinh/root_6_28/include/TArrayF.h \
- /home/ubuntu/Vinh/root_6_28/include/Foption.h \
- /home/ubuntu/Vinh/root_6_28/include/ROOT/EExecutionPolicy.hxx \
- /home/ubuntu/Vinh/root_6_28/include/TVectorFfwd.h \
- /home/ubuntu/Vinh/root_6_28/include/TVectorDfwd.h \
- /home/ubuntu/Vinh/root_6_28/include/TFitResultPtr.h \
- /home/ubuntu/Vinh/root_6_28/include/TAtt3D.h \
- /home/ubuntu/Temir/smash/build/data/cf_maker_new/include/helpers.h \
- /home/ubuntu/Vinh/root_6_28/include/TDirectory.h
+ /home/ubuntu/Temir/smash/build/data/cf_maker_new/include/fit/fit.h \
+ /home/ubuntu/Temir/smash/build/data/cf_maker_new/include/fit/result.h \
+ /home/ubuntu/Temir/smash/build/data/cf_maker_new/external/nlohmann/json.hpp \
+ /usr/include/c++/13/forward_list /usr/include/c++/13/bits/forward_list.h \
+ /usr/include/c++/13/bits/forward_list.tcc /usr/include/c++/13/valarray \
+ /usr/include/c++/13/bits/valarray_array.h \
+ /usr/include/c++/13/bits/valarray_array.tcc \
+ /usr/include/c++/13/bits/valarray_before.h \
+ /usr/include/c++/13/bits/slice_array.h \
+ /usr/include/c++/13/bits/valarray_after.h \
+ /usr/include/c++/13/bits/gslice.h \
+ /usr/include/c++/13/bits/gslice_array.h \
+ /usr/include/c++/13/bits/mask_array.h \
+ /usr/include/c++/13/bits/indirect_array.h /usr/include/c++/13/version \
+ /usr/include/c++/13/filesystem /usr/include/c++/13/bits/fs_fwd.h \
+ /usr/include/c++/13/bits/fs_path.h /usr/include/c++/13/codecvt \
+ /usr/include/c++/13/bits/fs_dir.h /usr/include/c++/13/bits/fs_ops.h \
+ /usr/include/c++/13/optional /usr/include/c++/13/numeric \
+ /usr/include/c++/13/bits/stl_numeric.h \
+ /usr/include/c++/13/pstl/glue_numeric_defs.h /usr/include/c++/13/any

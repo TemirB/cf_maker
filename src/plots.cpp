@@ -2,7 +2,7 @@
 #include <TMultiGraph.h>
 #include <TGraphErrors.h>
 
-#include "fit.h"
+#include "fit/types.h"
 #include "helpers.h"
 #include "draw.h"
 
@@ -10,10 +10,6 @@ void do_kt_diff(
     TFile* outFile,
     FitResult (&fitRes)[chargeSize][centralitySize][ktSize][rapiditySize]
 ) {
-    TDirectory* dir = outFile->GetDirectory("kt_diff_with_cut");
-    if (!dir) dir = outFile->mkdir("kt_diff_with_cut");
-    dir->cd();
-
     double yStep = (rapidityValues[1] - rapidityValues[0]) / rapiditySize;
 
     for (int chIdx = 0; chIdx < chargeSize; chIdx++) {
@@ -70,7 +66,7 @@ void do_kt_diff(
             for (int lcmsIdx = 0; lcmsIdx < lcmsSize; lcmsIdx++) {
                 mg_R[lcmsIdx]->SetName(Form("mg_R_%s_%s_y_%s", LCMS[lcmsIdx].c_str(), chargeNames[chIdx].c_str(), name.c_str()));
                 setRangeWithErrors(mg_R[lcmsIdx], 0.1);
-                writeMGWithLegend(dir, mg_R[lcmsIdx],
+                writeMGWithLegend(outFile, mg_R[lcmsIdx],
                     mg_R[lcmsIdx]->GetName(),
                     "k_{T} (GeV/c)",
                     Form("R_{%s} (fm)", LCMS[lcmsIdx].c_str()),
@@ -79,7 +75,7 @@ void do_kt_diff(
             }
             setRangeWithErrors(mg_L, 0.1);
             mg_L->SetName(Form("mg_L_%s_y_%s", chargeNames[chIdx].c_str(), name.c_str()));
-            writeMGWithLegend(dir, mg_L,
+            writeMGWithLegend(outFile, mg_L,
                 mg_L->GetName(),
                 "k_{T} (GeV/c)",
                 "lambda",
@@ -94,10 +90,6 @@ void do_rapidity_diff(
     FitResult (&fitRes)[chargeSize][centralitySize][ktSize][rapiditySize]
 ) {
     double yStep = (rapidityValues[1] - rapidityValues[0]) / rapiditySize;
-
-    TDirectory* dir = outFile->GetDirectory("rapidity_diff");
-    if (!dir) dir = outFile->mkdir("rapidity_diff");
-    dir->cd();
 
     for (int chIdx = 0; chIdx < chargeSize; chIdx++) {
         for (int centIdx = 0; centIdx < centralitySize; centIdx++) {
@@ -152,7 +144,7 @@ void do_rapidity_diff(
             for (int lcmsIdx = 0; lcmsIdx < lcmsSize; lcmsIdx++) {
                 mg_R[lcmsIdx]->SetName(Form("mg_R_%s_%s_centr_%s", LCMS[lcmsIdx].c_str(), chargeNames[chIdx].c_str(), centralityNames[centIdx].c_str()));
                 setRangeWithErrors(mg_R[lcmsIdx], 0.1);
-                writeMGWithLegend(dir, mg_R[lcmsIdx],
+                writeMGWithLegend(outFile, mg_R[lcmsIdx],
                     mg_R[lcmsIdx]->GetName(),
                     "rapidity",
                     Form("R_{%s} (fm)", LCMS[lcmsIdx].c_str()),
@@ -161,7 +153,7 @@ void do_rapidity_diff(
             }
             setRangeWithErrors(mg_L, 0.1);
             mg_L->SetName(Form("mg_L_%s_centr_%s", chargeNames[chIdx].c_str(), centralityNames[centIdx].c_str()));
-            writeMGWithLegend(dir, mg_L,
+            writeMGWithLegend(outFile, mg_L,
                 mg_L->GetName(),
                 "rapidity",
                 "lambda",
