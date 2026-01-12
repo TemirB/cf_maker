@@ -7,9 +7,6 @@
 #include "fit/cache.h"
 #include "fit/json.h"
 #include "plots.h"
-#include "proj1d.h"
-#include "proj2d.h"
-#include "ratios.h"
 #include "context.h"
 
 int main(int argc, char** argv) {
