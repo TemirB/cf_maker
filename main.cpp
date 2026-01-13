@@ -47,6 +47,7 @@ int main(int argc, char** argv) {
         fCF.Write();
         WriteFitJson(ctx.inputFile, ctx.outDir, fitRes);
     }
+    
     {
         TFile* f = new TFile("kt.root", "RECREATE");
         MakeKtDependence(f, fitRes);
@@ -55,17 +56,37 @@ int main(int argc, char** argv) {
         f->Close();
     }
     {
-        TFile* f1 = new TFile("ratio_projs.root", "RECREATE");
-        TFile* f2 = new TFile("proj_ratios.root", "RECREATE");
-        TFile* fCF3D = new TFile(ctx.cf3dFile.c_str(), "READ");
-        do_CF_ratios(fCF3D, f1, f2);
+        TFile* f = new TFile("rapidity.root", "RECREATE");
+        MakeRapidityDependence(f, fitRes);
 
-        f1->Write();
-        f1->Close();
-        f2->Write();
-        f2->Close();
+        f->Write();
+        f->Close();
     }
-    
+    {
+        TFile* f = new TFile("1d.root", "RECREATE");
+        MakeLCMS1DProjections(input, f, fitRes);
+
+        f->Write();
+        f->Close();
+    }
+    {
+        TFile* f = new TFile("2d.root", "RECREATE");
+        MakeLCMS2DProjections(input, f);
+
+        f->Write();
+        f->Close();
+    }
+    // {
+    //     TFile* f1 = new TFile("ratio_projs.root", "RECREATE");
+    //     TFile* f2 = new TFile("proj_ratios.root", "RECREATE");
+    //     TFile* fCF3D = new TFile(ctx.cf3dFile.c_str(), "READ");
+    //     do_CF_ratios(fCF3D, f1, f2);
+
+    //     f1->Write();
+    //     f1->Close();
+    //     f2->Write();
+    //     f2->Close();
+    // }
 
     std::cout << "All outputs written to " << ctx.outDir << "\n";
     return 0;

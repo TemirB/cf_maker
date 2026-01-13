@@ -25,14 +25,11 @@ void Write2DProjection(
     LCMSAxis ax1, LCMSAxis ax2,
     const std::string& tag
 ) {
-    // --- clone (ROOT ranges are global state!)
     TH3D* A     = (TH3D*)A0.Clone();
     TH3D* Awei  = (TH3D*)Awei0.Clone();
-
     A->SetDirectory(nullptr);
     Awei->SetDirectory(nullptr);
 
-    // --- freeze third axis
     LCMSAxis freeze;
     if      ((ax1==LCMSAxis::Out  && ax2==LCMSAxis::Side) ||
              (ax1==LCMSAxis::Side && ax2==LCMSAxis::Out))  freeze = LCMSAxis::Long;
@@ -45,26 +42,28 @@ void Write2DProjection(
 
     std::string proj = ToString(ax1) + ToString(ax2);
 
-    // --- project
-    auto* num = (TH2D*)Awei->Project3D(proj.c_str());
-    auto* den = (TH2D*)A->Project3D(proj.c_str());
+    // --- project + CLONE (this is critical)
+    TH2D* num = (TH2D*)Awei->Project3D(proj.c_str())->Clone();
+    TH2D* den = (TH2D*)A->Project3D(proj.c_str())->Clone();
+
+    delete A;
+    delete Awei;
 
     num->SetDirectory(nullptr);
     den->SetDirectory(nullptr);
 
     auto name = "CF_" + tag + "_" + ToString(ax1) + "_" + ToString(ax2);
-    auto* CF = (TH2D*)num->Clone(name.c_str());
+    TH2D* CF = (TH2D*)num->Clone(name.c_str());
     CF->Divide(num,den);
 
     delete num;
     delete den;
 
-    // --- axes cosmetics
+    // --- cosmetics
     CF->GetXaxis()->SetTitle(("q_{"+ToString(ax2)+"} [GeV/c]").c_str());
     CF->GetYaxis()->SetTitle(("q_{"+ToString(ax1)+"} [GeV/c]").c_str());
     CF->GetZaxis()->SetRangeUser(0.95,1.30);
 
-    // --- draw
     TCanvas c(("c_"+name).c_str(),"",650,600);
     CF->Draw("COLZ");
 

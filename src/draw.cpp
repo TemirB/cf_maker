@@ -110,3 +110,31 @@ void writeHist(
     c.Write(canvasName);
     hist->Write(hist->GetName(), TObject::kOverwrite);
 }
+
+void Style1DCF(TH1* h) {
+    h->SetMarkerStyle(20);
+    h->SetMarkerSize(1.0);
+    h->SetMarkerColor(kBlack);
+    h->SetLineColor(kBlack);
+    h->SetLineWidth(2);
+
+    h->GetXaxis()->SetTitle("q (GeV/c)");
+    h->GetYaxis()->SetTitle("C(q)");
+
+    h->GetXaxis()->CenterTitle();
+    h->GetYaxis()->CenterTitle();
+
+    h->GetXaxis()->SetTitleSize(0.05);
+    h->GetYaxis()->SetTitleSize(0.05);
+
+    h->GetXaxis()->SetLabelSize(0.045);
+    h->GetYaxis()->SetLabelSize(0.045);
+
+    h->GetYaxis()->SetTitleOffset(1.2);
+}
+
+void StyleFit(TH1* h) {
+    h->SetLineColor(kRed+1);
+    h->SetLineWidth(3);
+    h->SetLineStyle(1);
+}

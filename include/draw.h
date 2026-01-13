@@ -24,3 +24,7 @@ void writeHist(
     const char* xTitle,
     const char* yTitle
 );
+
+void Style1DCF(TH1* h);
+
+void StyleFit(TH1* h);
