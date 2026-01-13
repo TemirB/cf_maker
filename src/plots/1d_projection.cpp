@@ -13,8 +13,8 @@ using std::string;
 // Build dense 3D histogram of the fitted CF
 // ============================================
 
-std::unique_ptr<TH3D> MakeFitHistogram(const TF3& fit) {
-    auto h = std::make_unique<TH3D>(
+TH3D* MakeFitHistogram(const TF3& fit) {
+    TH3D* h = new TH3D(
         "fit3d","fit3d",
         80,-0.4,0.4,
         80,-0.4,0.4,
@@ -46,9 +46,10 @@ void Write1DProjection(
     const string& tag
 ) {
     // --- clone everything (ROOT ranges are stateful!)
-    auto A    = std::unique_ptr<TH3D>((TH3D*)A0.Clone());
-    auto Awei = std::unique_ptr<TH3D>((TH3D*)Awei0.Clone());
-    auto Fit3D = std::unique_ptr<TH3D>((TH3D*)Fit3D0.Clone());
+    TH3D* A     = (TH3D*)A0.Clone();
+    TH3D* Awei  = (TH3D*)Awei0.Clone();
+    TH3D* Fit3D = (TH3D*)Fit3D0.Clone();
+
 
     A->SetDirectory(nullptr);
     Awei->SetDirectory(nullptr);
@@ -92,7 +93,7 @@ void Write1DProjection(
 // ============================================
 
 void MakeLCMS1DProjections(TFile* input, TFile* out, FitGrid& fitRes) {
-    std::unique_ptr<TF3> fit(CreateCF3DFit());
+    TF3* fit = CreateCF3DFit();
 
     for (int ch=0;ch<chargeSize;ch++)
     for (int c =0;c <centralitySize;c++)

@@ -35,3 +35,6 @@ void MakeKtDependence(TFile* outFile, FitGrid& fitRes);
 void MakeRapidityDependence(TFile* outFile, FitGrid& fitRes);
 
 void MakeLCMS1DProjections(TFile* input, TFile* out, FitGrid& fitRes);
+void MakeLCMS2DProjections(TFile* input, TFile* out);
+
+void do_CF_ratios(TFile* fCF3D, TFile* fRatioProj, TFile* fProjRatio);

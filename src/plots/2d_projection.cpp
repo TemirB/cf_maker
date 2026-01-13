@@ -26,8 +26,8 @@ void Write2DProjection(
     const std::string& tag
 ) {
     // --- clone (ROOT ranges are global state!)
-    auto A    = std::unique_ptr<TH3D>((TH3D*)A0.Clone());
-    auto Awei = std::unique_ptr<TH3D>((TH3D*)Awei0.Clone());
+    TH3D* A     = (TH3D*)A0.Clone();
+    TH3D* Awei  = (TH3D*)Awei0.Clone();
 
     A->SetDirectory(nullptr);
     Awei->SetDirectory(nullptr);

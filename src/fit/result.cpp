@@ -1,4 +1,4 @@
-#include "fit/result.h"
+#include "fit/json.h"
 #include <cmath>
 
 bool FitResult::IsFinite() const {

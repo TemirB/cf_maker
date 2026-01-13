@@ -20,7 +20,7 @@ int main(int argc, char** argv) {
 
     auto ctx = BuildContext(argv);
 
-    std::unique_ptr<TFile> input(TFile::Open(ctx.inputFile.c_str(), "READ"));
+    TFile* input = new TFile(ctx.inputFile.c_str(), "READ");
     if (!input || input->IsZombie()) {
         std::cerr << "ERROR: cannot open " << ctx.inputFile << "\n";
         return 1;
@@ -42,11 +42,30 @@ int main(int argc, char** argv) {
             return 1;
         }
 
-        for (int ch=0; ch<chargeSize; ch++) BuildAndFit3DCorrelationFunctions(ch, input.get(), &fCF, fitRes);
+        for (int ch=0; ch<chargeSize; ch++) BuildAndFit3DCorrelationFunctions(ch, input, &fCF, fitRes);
 
         fCF.Write();
         WriteFitJson(ctx.inputFile, ctx.outDir, fitRes);
     }
+    {
+        TFile* f = new TFile("kt.root", "RECREATE");
+        MakeKtDependence(f, fitRes);
+
+        f->Write();
+        f->Close();
+    }
+    {
+        TFile* f1 = new TFile("ratio_projs.root", "RECREATE");
+        TFile* f2 = new TFile("proj_ratios.root", "RECREATE");
+        TFile* fCF3D = new TFile(ctx.cf3dFile.c_str(), "READ");
+        do_CF_ratios(fCF3D, f1, f2);
+
+        f1->Write();
+        f1->Close();
+        f2->Write();
+        f2->Close();
+    }
+    
 
     std::cout << "All outputs written to " << ctx.outDir << "\n";
     return 0;
