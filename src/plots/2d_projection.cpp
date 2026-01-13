@@ -1,10 +1,15 @@
 #include "plots.h"
 
+#include <memory>
+
 #include <TH3.h>
 #include <TH2.h>
 #include <TCanvas.h>
 
 #include <helpers.h>
+
+template<class T>
+using RootPtr = std::unique_ptr<T>;
 
 // =====================================
 // Slice helper (works on CLONES only)
@@ -25,17 +30,15 @@ void Write2DProjection(
     LCMSAxis ax1, LCMSAxis ax2,
     const std::string& tag
 ) {
-    TH3D* A     = (TH3D*)A0.Clone();
-    TH3D* Awei  = (TH3D*)Awei0.Clone();
+    auto A    = RootPtr<TH3D>((TH3D*)A0.Clone());
+    auto Awei = RootPtr<TH3D>((TH3D*)Awei0.Clone());
     A->SetDirectory(nullptr);
     Awei->SetDirectory(nullptr);
 
     LCMSAxis freeze;
-    if      ((ax1==LCMSAxis::Out  && ax2==LCMSAxis::Side) ||
-             (ax1==LCMSAxis::Side && ax2==LCMSAxis::Out))  freeze = LCMSAxis::Long;
-    else if ((ax1==LCMSAxis::Out  && ax2==LCMSAxis::Long) ||
-             (ax1==LCMSAxis::Long && ax2==LCMSAxis::Out))  freeze = LCMSAxis::Side;
-    else                                                   freeze = LCMSAxis::Out;
+    if      (ax1 != LCMSAxis::Long && ax2 != LCMSAxis::Long)    freeze = LCMSAxis::Long;
+    else if (ax1 != LCMSAxis::Side && ax2 != LCMSAxis::Side)    freeze = LCMSAxis::Side;
+    else                                                        freeze = LCMSAxis::Out;
 
     SetSlice2D(*A,freeze);
     SetSlice2D(*Awei,freeze);
@@ -43,21 +46,15 @@ void Write2DProjection(
     std::string proj = ToString(ax1) + ToString(ax2);
 
     // --- project + CLONE (this is critical)
-    TH2D* num = (TH2D*)Awei->Project3D(proj.c_str())->Clone();
-    TH2D* den = (TH2D*)A->Project3D(proj.c_str())->Clone();
-
-    delete A;
-    delete Awei;
+    auto num = RootPtr<TH2D>((TH2D*)Awei->Project3D(proj.c_str())->Clone());
+    auto den = RootPtr<TH2D>((TH2D*)A->Project3D(proj.c_str())->Clone());
 
     num->SetDirectory(nullptr);
     den->SetDirectory(nullptr);
 
     auto name = "CF_" + tag + "_" + ToString(ax1) + "_" + ToString(ax2);
     TH2D* CF = (TH2D*)num->Clone(name.c_str());
-    CF->Divide(num,den);
-
-    delete num;
-    delete den;
+    CF->Divide(num.get(),den.get());
 
     // --- cosmetics
     CF->GetXaxis()->SetTitle(("q_{"+ToString(ax2)+"} [GeV/c]").c_str());
