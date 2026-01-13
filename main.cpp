@@ -49,28 +49,36 @@ int main(int argc, char** argv) {
     }
     
     {
-        TFile* f = new TFile("kt.root", "RECREATE");
+        std::string name = ctx.outDir + "/kt.root";
+        TFile* f = new TFile(name.c_str(), "RECREATE");
+
         MakeKtDependence(f, fitRes);
 
         f->Write();
         f->Close();
     }
     {
-        TFile* f = new TFile("rapidity.root", "RECREATE");
+        std::string name = ctx.outDir + "/rapidity.root";
+        TFile* f = new TFile(name.c_str(), "RECREATE");
+
         MakeRapidityDependence(f, fitRes);
 
         f->Write();
         f->Close();
     }
     {
-        TFile* f = new TFile("1d.root", "RECREATE");
+        std::string name = ctx.outDir + "/1d.root";
+        TFile* f = new TFile(name.c_str(), "RECREATE");
+
         MakeLCMS1DProjections(input, f, fitRes);
 
         f->Write();
         f->Close();
     }
     {
-        TFile* f = new TFile("2d.root", "RECREATE");
+        std::string name = ctx.outDir + "/2d.root";
+        TFile* f = new TFile(name.c_str(), "RECREATE");
+
         MakeLCMS2DProjections(input, f);
 
         f->Write();
