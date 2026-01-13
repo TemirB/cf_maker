@@ -53,7 +53,7 @@ void Write2DProjection(
     den->SetDirectory(nullptr);
 
     auto name = "CF_" + tag + "_" + ToString(ax1) + "_" + ToString(ax2);
-    TH2D* CF = (TH2D*)num->Clone(name.c_str());
+    auto CF = RootPtr<TH2D>((TH2D*)num->Clone(name.c_str()));
     CF->Divide(num.get(),den.get());
 
     // --- cosmetics
@@ -66,8 +66,6 @@ void Write2DProjection(
 
     outFile.cd();
     c.Write();
-
-    delete CF;
 }
 
 // =====================================
@@ -80,15 +78,15 @@ void MakeLCMS2DProjections(TFile* input, TFile* out) {
     for (int c =0;c <centralitySize;c++)
     for (int k =0;k <ktSize;k++)
     for (int y =0;y <rapiditySize;y++) {
+        std::string ending = getPrefix(ch, c, y);
+        std::string name   = "bp_" + ending;
 
-        auto tag = getPrefix(ch,c,y) + std::to_string(k);
-
-        auto* A    = (TH3D*)input->Get(("bp_"+tag).c_str());
-        auto* Awei = (TH3D*)input->Get(("bp_"+tag+"wei").c_str());
+        TH3D* A     = (TH3D*) input->Get((name + std::to_string(k)).c_str());
+        TH3D* Awei = (TH3D*) input->Get((name + "wei_" + std::to_string(k)).c_str());
         if (!A || !Awei) continue;
 
-        Write2DProjection(*out,*A,*Awei,LCMSAxis::Out ,LCMSAxis::Side,tag);
-        Write2DProjection(*out,*A,*Awei,LCMSAxis::Out ,LCMSAxis::Long,tag);
-        Write2DProjection(*out,*A,*Awei,LCMSAxis::Side,LCMSAxis::Long,tag);
+        Write2DProjection(*out, *A, *Awei, LCMSAxis::Out, LCMSAxis::Side, ending);
+        Write2DProjection(*out, *A, *Awei, LCMSAxis::Out , LCMSAxis::Long, ending);
+        Write2DProjection(*out, *A, *Awei, LCMSAxis::Side, LCMSAxis::Long, ending);
     }
 }
