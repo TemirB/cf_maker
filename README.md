@@ -31,4 +31,6 @@ make
 
 ---
 
-Есть магия в 1d_projection.cpp
+Есть магия в:
+- 1d_projection.cpp
+- 2d_projection.cpp (много лишнего)

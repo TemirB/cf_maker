@@ -12,6 +12,25 @@
 template<class T>
 using RootPtr = std::unique_ptr<T>;
 
+inline char AxisChar(LCMSAxis ax) {
+    if (ax == LCMSAxis::Out)  return 'x';
+    if (ax == LCMSAxis::Side) return 'y';
+    return 'z';
+}
+
+inline LCMSAxis ThirdAxis(LCMSAxis a, LCMSAxis b)
+{
+    if (a != LCMSAxis::Out  && b != LCMSAxis::Out)  return LCMSAxis::Out;
+    if (a != LCMSAxis::Side && b != LCMSAxis::Side) return LCMSAxis::Side;
+    return LCMSAxis::Long;
+}
+
+inline void Crop2D(TH2D& h, double q = 0.08)
+{
+    h.GetXaxis()->SetRangeUser(-q, q);
+    h.GetYaxis()->SetRangeUser(-q, q);
+}
+
 // =====================================
 // Slice helper (works on CLONES only)
 // =====================================
@@ -31,43 +50,56 @@ void Write2DProjection(
     LCMSAxis ax1, LCMSAxis ax2,
     const std::string& tag
 ) {
+    // --- clone input (ROOT global state!)
     auto A    = RootPtr<TH3D>((TH3D*)A0.Clone());
     auto Awei = RootPtr<TH3D>((TH3D*)Awei0.Clone());
     A->SetDirectory(nullptr);
     Awei->SetDirectory(nullptr);
 
-    LCMSAxis freeze;
-    if      (ax1 != LCMSAxis::Long && ax2 != LCMSAxis::Long)    freeze = LCMSAxis::Long;
-    else if (ax1 != LCMSAxis::Side && ax2 != LCMSAxis::Side)    freeze = LCMSAxis::Side;
-    else                                                        freeze = LCMSAxis::Out;
-
+    // --- freeze third LCMS axis
+    LCMSAxis freeze = ThirdAxis(ax1, ax2);
     SetSlice2D(*A,freeze);
     SetSlice2D(*Awei,freeze);
 
-    std::string proj = ToString(ax1) + ToString(ax2);
+    // --- build ROOT projection string
+    std::string proj;
+    proj += AxisChar(ax1);
+    proj += AxisChar(ax2);
 
-    // --- project + CLONE (this is critical)
-    auto num = RootPtr<TH2D>((TH2D*)Awei->Project3D(proj.c_str())->Clone());
-    auto den = RootPtr<TH2D>((TH2D*)A->Project3D(proj.c_str())->Clone());
+    // --- project safely
+    auto* pNum = Awei->Project3D(proj.c_str());
+    auto* pDen = A->Project3D(proj.c_str());
+    if (!pNum || !pDen) {
+        std::cerr << "Project3D failed for " << proj << " in " << tag << "\n";
+        return;
+    }
 
+    auto num = RootPtr<TH2D>((TH2D*)pNum->Clone());
+    auto den = RootPtr<TH2D>((TH2D*)pDen->Clone());
     num->SetDirectory(nullptr);
     den->SetDirectory(nullptr);
 
+    // --- CF
     auto name = "CF_" + tag + "_" + ToString(ax1) + "_" + ToString(ax2);
     auto CF = RootPtr<TH2D>((TH2D*)num->Clone(name.c_str()));
-    CF->Divide(num.get(),den.get());
+    CF->Divide(num.get(), den.get());
+
+    // --- crop to |q| < 0.05
+    Crop2D(*CF, 0.05);
 
     // --- cosmetics
     CF->GetXaxis()->SetTitle(("q_{"+ToString(ax2)+"} [GeV/c]").c_str());
     CF->GetYaxis()->SetTitle(("q_{"+ToString(ax1)+"} [GeV/c]").c_str());
     CF->GetZaxis()->SetRangeUser(0.95,1.30);
 
+    // --- draw
     TCanvas c(("c_"+name).c_str(),"",650,600);
     CF->Draw("COLZ");
 
     outFile.cd();
     c.Write();
 }
+
 
 // =====================================
 // Full LCMS 2D pipeline
