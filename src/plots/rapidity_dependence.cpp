@@ -4,12 +4,42 @@
 
 #include <TMultiGraph.h>
 #include <TGraphErrors.h>
+#include <TTree.h>
 
 #include "helpers.h"
 #include "fit/types.h"
 #include "draw.h"
 
-void MakeRapidityDependence(
+struct BadFitPoint {
+    int charge;
+    int cent;
+    int kt;
+    int y;
+
+    double ktVal;
+    double yVal;
+
+    double chi2ndf;
+    double pvalue;
+    double lambda, elambda;
+    double R[3], eR[3];
+};
+
+
+
+std::vector<BadFitPoint> badPoints;
+
+inline bool IsBadFit(const FitResult& r) {
+    if (!r.ok) return true;
+    if (!r.IsFinite()) return true;
+    if (!r.IsValid()) return true;
+    if (r.ndf <= 0) return true;
+    if (r.Chi2Ndf() > 3.0) return true;
+    return false;
+}
+
+
+TTree* MakeRapidityDependence(
     TFile* outFile,
     FitGrid& fitRes
 ) {
@@ -40,10 +70,41 @@ void MakeRapidityDependence(
 
                 for (int yIdx = 0; yIdx < rapiditySize; yIdx++) {
                     FitResult res = fitRes[chIdx][centIdx][ktIdx][yIdx];
-                    if (!res.ok) continue;
+
+                    bool isBad = (!res.ok || res.ndf <= 0 || res.chi2 / res.ndf > 3.0);
+
+                    FitResult res = fitRes[chIdx][centIdx][ktIdx][yIdx];
 
                     double left  = rapidityValues[0] + yIdx * yStep;
                     double right = left + yStep;
+
+                    if (IsBadFit(res)) {
+                        BadFitPoint p;
+                        p.charge  = chIdx;
+                        p.cent    = centIdx;
+                        p.kt      = ktIdx;
+                        p.y       = yIdx;
+
+                        p.chi2ndf = (res.ndf > 0 ? res.Chi2Ndf() : -1);
+                        p.pvalue  = res.pvalue;
+
+                        p.lambda  = res.lambda;
+                        p.elambda = res.elambda;
+
+                        for (int i = 0; i < 3; ++i) {
+                            p.R[i]  = res.R[i];
+                            p.eR[i] = res.eR[i];
+                        }
+
+                        double xval = (ktValues[ktIdx+1] + ktValues[ktIdx]) / 2.0;
+                        double yval = 0.5 * (left + right);
+
+                        p.ktVal = xval;
+                        p.yVal  = yval;
+
+                        badPoints.push_back(p);
+                        continue;   // ❗️не кладём в графики
+                    }
 
                     std::string name = Form("[%.2f;%.2f]", left, right);
                     double xVal = rapidityValues[0] + (yIdx + 0.5) * yStep;
@@ -85,4 +146,35 @@ void MakeRapidityDependence(
             );
         }
     }
+
+    outFile->cd();
+
+    TTree* tbad = new TTree("badFits", "Bad fit points");
+
+    BadFitPoint p;
+
+    tbad->Branch("charge",  &p.charge);
+    tbad->Branch("cent",    &p.cent);
+    tbad->Branch("kt",      &p.kt);
+    tbad->Branch("y",       &p.y);
+
+    tbad->Branch("chi2ndf", &p.chi2ndf);
+    tbad->Branch("pvalue", &p.pvalue);
+
+    tbad->Branch("lambda", &p.lambda);
+    tbad->Branch("elambda",&p.elambda);
+
+    tbad->Branch("R",      p.R,  "R[3]/D");
+    tbad->Branch("eR",     p.eR, "eR[3]/D");
+    tbad->Branch("ktVal", &p.ktVal);
+    tbad->Branch("yVal",  &p.yVal);
+
+    for (auto& b : badPoints) {
+        p = b;
+        tbad->Fill();
+    }
+
+    tbad->Write();
+
+    return tbad;
 };

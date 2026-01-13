@@ -2,6 +2,7 @@
 #include <TFile.h>
 #include <TSystem.h>
 #include <TH1.h>
+#include <TTree.h>
 
 #include "helpers.h"
 #include "fit/cache.h"
@@ -61,10 +62,18 @@ int main(int argc, char** argv) {
         std::string name = ctx.outDir + "/rapidity.root";
         TFile* f = new TFile(name.c_str(), "RECREATE");
 
-        MakeRapidityDependence(f, fitRes);
+        TTree* badTree = MakeRapidityDependence(f, fitRes);
 
         f->Write();
         f->Close();
+
+        std::string heatmap = ctx.outDir + "/badfit_heatmap.root";
+        TFile* fBadTree = new TFile(heatmap.c_str(), "RECREATE");
+
+        MakeBadFitMaps(f, badTree);
+
+        fBadTree->Write();
+        fBadTree->Close();
     }
     {
         std::string name = ctx.outDir + "/1d.root";
