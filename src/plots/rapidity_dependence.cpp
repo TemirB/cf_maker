@@ -38,7 +38,7 @@ void MakeRapidityDependence(RunContext& rCtx) {
                 legendEntries.push_back({g_R[0], ktNames[ktIdx]});
 
                 for (int yIdx = 0; yIdx < rapiditySize; yIdx++) {
-                    FitResult res = *rCtx.fit[chIdx][centIdx][ktIdx][yIdx];
+                    const FitResult& res = (*rCtx.fit)[chIdx][centIdx][ktIdx][yIdx];
                     if (!res.ok) continue;
 
                     double left  = rapidityValues[0] + yIdx * yStep;

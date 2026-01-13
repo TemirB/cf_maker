@@ -1,6 +1,7 @@
 #include "draw.h"
 
 #include <TFile.h>
+#include <TDirectory.h>
 #include <TCanvas.h>
 #include <TLegend.h>
 #include <TH1.h>
@@ -62,36 +63,42 @@ void setRangeWithErrors(TMultiGraph* mg, double padFrac) {
 }
 
 void writeMGWithLegend(
-    TFile& file,
+    TFile& out,
     TMultiGraph* mg,
-    const char* canvasName,
-    const char* xTitle,
-    const char* yTitle,
+    const char* name,
+    const char* xtitle,
+    const char* ytitle,
     const std::vector<std::pair<TObject*, std::string>>& legendEntries
 ) {
-    file.cd();
+    // --- deep clone for ROOT
+    auto* mgc = (TMultiGraph*)mg->Clone(name);
 
-    TCanvas c(canvasName, canvasName, 1000, 800);
-    mg->Draw("A");                       // создаёт оси
-    mg->GetXaxis()->SetTitle(xTitle);
-    mg->GetYaxis()->SetTitle(yTitle);
-
-    // твой helper для range (если надо)
-    // setRangeWithErrors(mg, 0.1);
-
-    TLegend leg(0.65, 0.65, 0.88, 0.88);
-    leg.SetBorderSize(0);
-    leg.SetFillStyle(0);
-    leg.SetTextSize(0.03);
-
-    for (auto& [obj, label] : legendEntries) {
-        leg.AddEntry(obj, label.c_str(), "lp");
+    // clone all graphs inside
+    for (auto* obj : *mg->GetListOfGraphs()) {
+        auto* g = (TGraph*)obj;
+        auto* gc = (TGraph*)g->Clone();
+        mgc->Add(gc, "lp");
     }
+
+    TCanvas c(("c_"+std::string(name)).c_str(), "", 700, 600);
+    mgc->Draw("A");
+
+    mgc->GetXaxis()->SetTitle(xtitle);
+    mgc->GetYaxis()->SetTitle(ytitle);
+
+    TLegend leg(0.65,0.65,0.88,0.88);
+    for (auto& [obj, label] : legendEntries)
+        leg.AddEntry(obj, label.c_str(), "lp");
+
     leg.Draw();
 
-    c.Write(canvasName);                 // в root-файл попадёт картинка со всем
-    // mg->Write(mg->GetName(), TObject::kOverwrite); // и сам mg отдельно, если нужно
+    out.cd();
+    mgc->Write(name);
+    c.Write();
+
+    delete mgc;   // canvas already owns its primitives
 }
+
 
 void writeHist(
     TFile* file,
@@ -100,13 +107,12 @@ void writeHist(
     const char* xTitle,
     const char* yTitle
 ) {
-    file->cd();
-
     TCanvas c(canvasName, canvasName, 1000, 800);
     hist->Draw();
     hist->GetXaxis()->SetTitle(xTitle);
     hist->GetYaxis()->SetTitle(yTitle);
 
-    c.Write(canvasName);
+    file->cd();
     hist->Write(hist->GetName(), TObject::kOverwrite);
+    c.Write(canvasName);
 }

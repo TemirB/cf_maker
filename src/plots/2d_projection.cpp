@@ -70,6 +70,8 @@ void Write2DProjection(
     CF->Draw("COLZ");
 
     outFile.cd();
+    CF->SetDirectory(&outFile);
+    CF->Write();
     c.Write();
 
     delete CF;

@@ -45,7 +45,7 @@ void MakeKtDependence(RunContext& rCtx) {
                 legendEntries.push_back({g_R[0], centralityNames[centIdx]});
 
                 for (int ktIdx = 0; ktIdx < ktSize; ktIdx++) {
-                    FitResult res = *rCtx.fit[chIdx][centIdx][ktIdx][yIdx];
+                    const FitResult& res = (*rCtx.fit)[chIdx][centIdx][ktIdx][yIdx];
                     if (!res.ok) continue;
 
                     double xval = (ktValues[ktIdx+1] + ktValues[ktIdx]) / 2.0;

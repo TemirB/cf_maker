@@ -82,6 +82,9 @@ void Write1DProjection(
     fit->Draw("L SAME");
 
     outFile.cd();
+    CF->SetDirectory(&outFile);
+    CF->Write();
+    fit->Write();
     c.Write();
 
     delete fit;

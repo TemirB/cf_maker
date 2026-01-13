@@ -110,10 +110,10 @@ json BuildDataPoint(int ch, int cent, int kt, int y, const FitResult& r) {
     d["charge"] = (ch==0) ? "pos" : "neg";
 
     static const std::array<std::pair<std::string,std::array<double,2>>,4> centInfo = {{
-        {"0-10%",{0.0,4.6}},
-        {"10-30%",{4.6,8.0}},
-        {"30-50%",{8.0,10.4}},
-        {"50-80%",{10.4,13.1}}
+        {"0-10",{0.0,4.6}},
+        {"10-30",{4.6,8.0}},
+        {"30-50",{8.0,10.4}},
+        {"50-80",{10.4,13.1}}
     }};
 
     d["centrality"] = {
