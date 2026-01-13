@@ -1,5 +1,6 @@
 #include "plots.h"
 
+#include <iostream>
 #include <memory>
 
 #include <TH3.h>
@@ -83,7 +84,11 @@ void MakeLCMS2DProjections(TFile* input, TFile* out) {
 
         TH3D* A     = (TH3D*) input->Get((name + std::to_string(k)).c_str());
         TH3D* Awei = (TH3D*) input->Get((name + "wei_" + std::to_string(k)).c_str());
-        if (!A || !Awei) continue;
+        if (!A || !Awei) {
+            std::cerr << "Warning: missing " << name << " kt=" << k << "\n";
+            continue;
+        }
+        ending = ending + std::to_string(k);
 
         Write2DProjection(*out, *A, *Awei, LCMSAxis::Out, LCMSAxis::Side, ending);
         Write2DProjection(*out, *A, *Awei, LCMSAxis::Out , LCMSAxis::Long, ending);
