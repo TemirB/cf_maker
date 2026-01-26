@@ -13,6 +13,6 @@ enum class CacheStatus {
 CacheStatus LoadFitCache(
     const std::string& inputFile, 
     const std::string& outDir,
-    FitResult fitRes[chargeSize][centralitySize][ktSize][rapiditySize],
+    FitGrid fitRes,
     std::string& reason
 );

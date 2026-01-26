@@ -90,8 +90,8 @@ void Write1DProjection(
     const TH3D& A0,
     const TH3D& Awei0,
     const TH3D& Fit3D0,
-    LCMSAxis axis,
-    const std::string& tag
+    const LCMSAxis axis,
+    const std::string tag
 ) {
     auto A    = RootPtr<TH3D>((TH3D*)A0.Clone());
     auto Awei = RootPtr<TH3D>((TH3D*)Awei0.Clone());
@@ -109,7 +109,7 @@ void Write1DProjection(
     auto hA    = RootPtr<TH1D>((TH1D*)A->Project3D(proj)->Clone());
     auto hAwei = RootPtr<TH1D>((TH1D*)Awei->Project3D(proj)->Clone());
 
-    std::string name = "CF_"+tag+"_"+ToString(axis);
+    std::string name = tag + ToString(axis);
 
     auto CF = RootPtr<TH1D>((TH1D*)hA->Clone(name.c_str()));
     CF->Divide(hAwei.get(), hA.get());
@@ -152,22 +152,11 @@ void MakeLCMS1DProjections(TFile* input, TFile* out, FitGrid& fitRes)
 
     for (int chIdx = 0; chIdx < chargeSize; chIdx++)
     for (int centIdx = 0; centIdx < centralitySize; centIdx++)
-    for (int ktIdx = 0; ktIdx < ktSize; ktIdx++)
-    for (int yIdx = 0; yIdx < rapiditySize; yIdx++)
-    {
-        std::string ending = getPrefix(chIdx, centIdx, yIdx);
-        std::string name   = "bp_" + ending;
+    for (int ktIdx = 0; ktIdx < ktSize; ktIdx++) {
+        TH3D* h_A = getNum(input, chIdx, centIdx, ktIdx);
+        TH3D* h_A_wei = getNumWei(input, chIdx, centIdx, ktIdx);
 
-        TH3D* h_A     = (TH3D*) input->Get((name + std::to_string(ktIdx)).c_str());
-        TH3D* h_A_wei = (TH3D*) input->Get((name + "wei_" + std::to_string(ktIdx)).c_str());
-        if (!h_A || !h_A_wei) {
-            std::cerr << "Warning: missing " << name << " kt=" << ktIdx << "\n";
-            continue;
-        }
-
-        ending = ending + std::to_string(ktIdx);
-
-        const FitResult& r = fitRes[chIdx][centIdx][ktIdx][yIdx];
+        const FitResult& r = fitRes[chIdx][centIdx][ktIdx];
 
         fit->SetParameter(0, r.R[0]);
         fit->SetParameter(1, r.R[1]);
@@ -179,7 +168,8 @@ void MakeLCMS1DProjections(TFile* input, TFile* out, FitGrid& fitRes)
 
         auto Fit3D = MakeFitHistogram(*fit);
 
+        std::string cf_name = getCFName(chIdx, centIdx, ktIdx);
         for (LCMSAxis ax : {LCMSAxis::Out, LCMSAxis::Side, LCMSAxis::Long})
-            Write1DProjection(*out, *h_A, *h_A_wei, *Fit3D, ax, ending);
+            Write1DProjection(*out, *h_A, *h_A_wei, *Fit3D, ax, cf_name);
     }
 }

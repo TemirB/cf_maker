@@ -12,7 +12,7 @@ nlohmann::json BuildDataPoint(int ch,int c,int k,int y,const FitResult&);
 void WriteFitJson(
     const std::string& inputFile,
     const std::string& outDir,
-    FitResult fitRes[chargeSize][centralitySize][ktSize][rapiditySize]
+    FitResult fitRes[chargeSize][centralitySize][ktSize]
 );
 
 FitResult FitResultFromJson(const nlohmann::json& j);

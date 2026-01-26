@@ -79,11 +79,11 @@ json BuildMeta(const std::string& inputFile) {
         {0.45,0.60}
     };
 
-    m["axes"]["rapidity"] = {
-        {"range", {-1.0,1.0}},
-        {"bins", 10},
-        {"step", 0.2}
-    };
+    // m["axes"]["rapidity"] = {
+    //     {"range", {-1.0,1.0}},
+    //     {"bins", 10},
+    //     {"step", 0.2}
+    // };
 
     m["cf"] = {
         {"type","BPLCMS3D"},

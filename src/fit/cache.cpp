@@ -36,7 +36,7 @@ int FindRapidityIndex(double y0, double y1)
 CacheStatus LoadFitCache(
     const std::string& inputFile,
     const std::string& outDir,
-    FitResult fitRes[chargeSize][centralitySize][ktSize][rapiditySize],
+    FitResult fitRes[chargeSize][centralitySize][ktSize],
     std::string& reason
 ) {
     std::string cfFile   = outDir + "/cf3d.root";
@@ -92,17 +92,17 @@ CacheStatus LoadFitCache(
             continue;
         }
 
-        // rapidity
-        double y0 = p["rapidity"]["range"][0];
-        double y1 = p["rapidity"]["range"][1];
-        int y = FindRapidityIndex(y0, y1);
-        if (y < 0 || y >= rapiditySize) {
-            dropY++;
-            continue;
-        }
+        // // rapidity
+        // double y0 = p["rapidity"]["range"][0];
+        // double y1 = p["rapidity"]["range"][1];
+        // int y = FindRapidityIndex(y0, y1);
+        // if (y < 0 || y >= rapiditySize) {
+        //     dropY++;
+        //     continue;
+        // }
 
         // store
-        fitRes[ch][cent][kt][y] = FitResultFromJson(p["fit"]);
+        fitRes[ch][cent][kt] = FitResultFromJson(p["fit"]);
         ok++;
     }
 

@@ -2,6 +2,8 @@
 
 #include <string>
 #include <TH3.h>
+#include <TTree.h>
+#include <TFile.h>
 #include <TDirectory.h>
 
 #include "fit/types.h"
@@ -34,15 +36,14 @@ inline std::string ToString(LCMSAxis a) {
     return "";
 }
 
-using FitGrid = FitResult[chargeSize][centralitySize][ktSize][rapiditySize];
+using FitGrid = FitResult[chargeSize][centralitySize][ktSize];
 
-int getIdx(int chIdx, int centIdx, int ktIdx, int yIdx);
-
-std::string getPrefix(int chIdx, int centIdx, int yIdx);
+// Геттеры
+TH3D* getNum(TFile* f, int charge, int cent, int ktIdx);
+TH3D* getNumWei(TFile* f, int charge, int cent, int ktIdx);
+std::string getCFName(int chIdx, int centIdx, int ktIdx);
 
 bool sameBinning(const TH3D* a, const TH3D* b);
-
-TDirectory* getOrMakeDir(TDirectory* base, const std::string& name);
 
 void EnsureDir(const std::string& dir);
 
@@ -51,3 +52,27 @@ std::string GetExeDir();
 std::string Sha256OfFile(const std::string& fname);
 int FindCentralityIndex(const std::string& name);
 int FindKtIndex(double low, double high);
+
+// Bad fit
+struct BadFitPoint {
+    int charge;
+    int cent;
+    int kt;
+
+    double ktVal;
+
+    double chi2ndf;
+    double pvalue;
+    double lambda, elambda;
+    double R[3], eR[3];
+};
+
+std::vector<BadFitPoint> badPoints;
+
+bool IsBadFit(const FitResult& r);
+void CollectBadFits(
+    FitGrid& fitRes,
+    std::vector<BadFitPoint>& badPoints
+);
+
+TTree* WriteBadFitTree(TFile* f, const std::vector<BadFitPoint>& badPoints);

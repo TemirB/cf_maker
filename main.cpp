@@ -27,7 +27,7 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    FitResult fitRes[chargeSize][centralitySize][ktSize][rapiditySize]{};
+    FitResult fitRes[chargeSize][centralitySize][ktSize]{};
 
     std::string reason;
     auto cache = LoadFitCache(ctx.inputFile, ctx.outDir, fitRes, reason);
@@ -43,12 +43,24 @@ int main(int argc, char** argv) {
             return 1;
         }
 
-        for (int ch=0; ch<chargeSize; ch++) BuildAndFit3DCorrelationFunctions(ch, input, &fCF, fitRes);
+        BuildAndFit3DCorrelationFunctions(input, &fCF, fitRes);
 
         fCF.Write();
         WriteFitJson(ctx.inputFile, ctx.outDir, fitRes);
     }
-    
+    // bad fit collect
+    std::vector<BadFitPoint> badPoints;
+    CollectBadFits(fitRes, badPoints);
+    {
+        std::string name = ctx.outDir + "/badfit_heatmap.root";
+        TFile f(name.c_str(), "RECREATE");
+        
+        TTree* t = WriteBadFitTree(&f, badPoints);
+
+        f.Close();
+    }
+
+    // kt_diff
     {
         std::string name = ctx.outDir + "/kt.root";
         TFile* f = new TFile(name.c_str(), "RECREATE");
@@ -58,23 +70,18 @@ int main(int argc, char** argv) {
         f->Write();
         f->Close();
     }
-    {
-        std::string name = ctx.outDir + "/rapidity.root";
-        TFile* f = new TFile(name.c_str(), "RECREATE");
 
-        TTree* badTree = MakeRapidityDependence(f, fitRes);
+    // // rapidity_diff
+    // {
+    //     std::string name = ctx.outDir + "/rapidity.root";
+    //     TFile f(name.c_str(), "RECREATE");
 
-        f->Write();
-        f->Close();
+    //     MakeRapidityDependence(&f, fitRes);
 
-        std::string heatmap = ctx.outDir + "/badfit_heatmap.root";
-        TFile* fBadTree = new TFile(heatmap.c_str(), "RECREATE");
+    //     f.Close();
+    // }
 
-        MakeBadFitMaps(f, badTree);
-
-        fBadTree->Write();
-        fBadTree->Close();
-    }
+    // 1d_proj
     {
         std::string name = ctx.outDir + "/1d.root";
         TFile* f = new TFile(name.c_str(), "RECREATE");
@@ -84,6 +91,8 @@ int main(int argc, char** argv) {
         f->Write();
         f->Close();
     }
+    
+    // 2d_proj
     {
         std::string name = ctx.outDir + "/2d.root";
         TFile* f = new TFile(name.c_str(), "RECREATE");

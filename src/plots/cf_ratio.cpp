@@ -45,14 +45,10 @@ TH1D* ProjectRatio1D(TH3D& ratio3D, LCMSAxis axis, const char* name) {
 
 void do_CF_ratios(TFile* fCF3D, TFile* fRatioProj, TFile* fProjRatio)
 {
-    for (int chIdx=0; chIdx<centralitySize; chIdx++)
-    for (int ktIdx=0; ktIdx<ktSize; ktIdx++)
-    for (int yIdx=0; yIdx<rapiditySize; yIdx++)
-    {
-        std::string neg = "h3d_CF_q_" + getPrefix(0, chIdx, yIdx)
-                        + std::to_string(ktIdx) + "_weighted";
-        std::string pos = "h3d_CF_q_" + getPrefix(1, chIdx, yIdx)
-                        + std::to_string(ktIdx) + "_weighted";
+    for (int centIdx = 0; centIdx < centralitySize; centIdx++)
+    for (int ktIdx = 0; ktIdx < ktSize; ktIdx++) {
+        std::string neg = getCFName(0, centIdx, ktIdx);
+        std::string pos = getCFName(1, centIdx, ktIdx);
 
         TH3D *hNeg = nullptr, *hPos = nullptr;
         fCF3D->GetObject(neg.c_str(), hNeg);
@@ -70,10 +66,8 @@ void do_CF_ratios(TFile* fCF3D, TFile* fRatioProj, TFile* fProjRatio)
         R->SetDirectory(nullptr);
         R->Divide(N, P);
 
-        for (auto ax : {LCMSAxis::Out, LCMSAxis::Side, LCMSAxis::Long})
-        {
-            auto name = Form("ratio_%d_%d_%d_%d",
-                             chIdx, ktIdx, yIdx, (int)ax);
+        for (auto ax : {LCMSAxis::Out, LCMSAxis::Side, LCMSAxis::Long}) {
+            auto name = Form("ratio_%d_%d_%d", centIdx, ktIdx, (int)ax);
 
             // Ratio of projections
             TH1D* r1 = MakeRatio1D(*N, *P, ax, name);

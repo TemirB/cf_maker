@@ -29,15 +29,19 @@ static void SetSlice1D(TH3D& h, LCMSAxis axis, double w = 0.05) {
     ProjectOnAxis(h, axis, w);
 }
 
-void BuildAndFit3DCorrelationFunctions( int chargeIndex, TFile* inputFile, TFile* outFile, FitGrid& fitRes);
+// cf_3d.cpp
+void BuildAndFit3DCorrelationFunctions(TFile* inputFile, TFile* outFile, FitGrid& fitRes);
 
+// kt_dependence.cpp
 void MakeKtDependence(TFile* outFile, FitGrid& fitRes);
 
-TTree* MakeRapidityDependence(TFile* outFile, FitGrid& fitRes);
-
+// 1d_projection.cpp
 void MakeLCMS1DProjections(TFile* input, TFile* out, FitGrid& fitRes);
+
+// 2d_projection.cpp
 void MakeLCMS2DProjections(TFile* input, TFile* out);
 
+// ratios
 void do_CF_ratios(TFile* fCF3D, TFile* fRatioProj, TFile* fProjRatio);
 
-void MakeBadFitMaps(TFile* outFile, TTree* badFits);
+// void MakeBadFitMaps(TFile* outFile, TTree* badFits);

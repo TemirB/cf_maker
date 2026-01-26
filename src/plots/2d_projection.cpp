@@ -80,7 +80,7 @@ void Write2DProjection(
     den->SetDirectory(nullptr);
 
     // --- CF
-    auto name = "CF_" + tag + "_" + ToString(ax1) + "_" + ToString(ax2);
+    auto name = tag + "_" + ToString(ax1) + "_" + ToString(ax2);
     auto CF = RootPtr<TH2D>((TH2D*)num->Clone(name.c_str()));
     CF->Divide(num.get(), den.get());
 
@@ -107,23 +107,16 @@ void Write2DProjection(
 
 void MakeLCMS2DProjections(TFile* input, TFile* out) {
 
-    for (int ch=0;ch<chargeSize;ch++)
-    for (int c =0;c <centralitySize;c++)
-    for (int k =0;k <ktSize;k++)
-    for (int y =0;y <rapiditySize;y++) {
-        std::string ending = getPrefix(ch, c, y);
-        std::string name   = "bp_" + ending;
+    for (int chIdx=0; chIdx < chargeSize; chIdx++)
+    for (int centIdx =0; centIdx < centralitySize; centIdx++)
+    for (int ktIdx =0; ktIdx < ktSize;ktIdx++) {
+        TH3D* A = getNum(input, chIdx, centIdx, ktIdx);
+        TH3D* Awei = getNumWei(input, chIdx, centIdx, ktIdx);
 
-        TH3D* A     = (TH3D*) input->Get((name + std::to_string(k)).c_str());
-        TH3D* Awei = (TH3D*) input->Get((name + "wei_" + std::to_string(k)).c_str());
-        if (!A || !Awei) {
-            std::cerr << "Warning: missing " << name << " kt=" << k << "\n";
-            continue;
-        }
-        ending = ending + std::to_string(k);
+        std::string cf_name = getCFName(chIdx, centIdx, ktIdx); 
 
-        Write2DProjection(*out, *A, *Awei, LCMSAxis::Out, LCMSAxis::Side, ending);
-        Write2DProjection(*out, *A, *Awei, LCMSAxis::Out , LCMSAxis::Long, ending);
-        Write2DProjection(*out, *A, *Awei, LCMSAxis::Side, LCMSAxis::Long, ending);
+        Write2DProjection(*out, *A, *Awei, LCMSAxis::Out, LCMSAxis::Side, cf_name);
+        Write2DProjection(*out, *A, *Awei, LCMSAxis::Out , LCMSAxis::Long, cf_name);
+        Write2DProjection(*out, *A, *Awei, LCMSAxis::Side, LCMSAxis::Long, cf_name);
     }
 }
