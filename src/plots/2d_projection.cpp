@@ -84,8 +84,8 @@ void Write2DProjection(
     auto CF = RootPtr<TH2D>((TH2D*)num->Clone(name.c_str()));
     CF->Divide(num.get(), den.get());
 
-    // --- crop to |q| < 0.05
-    Crop2D(*CF, 0.05);
+    // --- crop to |q| < n
+    Crop2D(*CF, 0.1);
 
     // --- cosmetics
     CF->GetXaxis()->SetTitle(("q_{"+ToString(ax2)+"} [GeV/c]").c_str());
@@ -93,7 +93,7 @@ void Write2DProjection(
     CF->GetZaxis()->SetRangeUser(0.95,1.30);
 
     // --- draw
-    TCanvas c(("c_"+name).c_str(),"",650,600);
+    TCanvas c((name).c_str(),"",650,600);
     CF->Draw("COLZ");
 
     outFile.cd();
@@ -106,7 +106,6 @@ void Write2DProjection(
 // =====================================
 
 void MakeLCMS2DProjections(TFile* input, TFile* out) {
-
     for (int chIdx=0; chIdx < chargeSize; chIdx++)
     for (int centIdx =0; centIdx < centralitySize; centIdx++)
     for (int ktIdx =0; ktIdx < ktSize;ktIdx++) {

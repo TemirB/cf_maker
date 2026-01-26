@@ -109,14 +109,14 @@ void Write1DProjection(
     auto hA    = RootPtr<TH1D>((TH1D*)A->Project3D(proj)->Clone());
     auto hAwei = RootPtr<TH1D>((TH1D*)Awei->Project3D(proj)->Clone());
 
-    std::string name = tag + ToString(axis);
+    std::string name = tag + "_" + ToString(axis);
 
     auto CF = RootPtr<TH1D>((TH1D*)hA->Clone(name.c_str()));
     CF->Divide(hAwei.get(), hA.get());
 
     auto fit = BuildLCMSFitFrom3D(*A, Fit3D0, axis, tag);
 
-    Style1DCF(CF.get());
+    Style1DCF(CF.get(), name);
     StyleFit(fit.get());
 
     CF->GetYaxis()->SetRangeUser(0.9,1.7);

@@ -111,13 +111,14 @@ void writeHist(
     hist->Write(hist->GetName(), TObject::kOverwrite);
 }
 
-void Style1DCF(TH1* h) {
+void Style1DCF(TH1* h, std::string name) {
     h->SetMarkerStyle(20);
     h->SetMarkerSize(1.0);
     h->SetMarkerColor(kBlack);
     h->SetLineColor(kBlack);
     h->SetLineWidth(2);
 
+    h->SetTitle(name.c_str());
     h->GetXaxis()->SetTitle("q (GeV/c)");
     h->GetYaxis()->SetTitle("C(q)");
 
