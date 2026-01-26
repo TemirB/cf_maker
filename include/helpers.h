@@ -67,7 +67,7 @@ struct BadFitPoint {
     double R[3], eR[3];
 };
 
-std::vector<BadFitPoint> badPoints;
+inline std::vector<BadFitPoint> badPoints;
 
 bool IsBadFit(const FitResult& r);
 void CollectBadFits(

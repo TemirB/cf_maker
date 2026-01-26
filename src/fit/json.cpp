@@ -104,7 +104,7 @@ json BuildMeta(const std::string& inputFile) {
 // One data point
 // ----------------------
 
-json BuildDataPoint(int ch, int cent, int kt, int y, const FitResult& r) {
+json BuildDataPoint(int ch, int cent, int kt, const FitResult& r) {
     json d;
 
     d["charge"] = (ch==0) ? "pos" : "neg";
@@ -129,13 +129,13 @@ json BuildDataPoint(int ch, int cent, int kt, int y, const FitResult& r) {
         {"mean",0.5*(ktLow[kt]+ktHigh[kt])}
     };
 
-    double yLow  = -1.0 + 0.2*y;
-    double yHigh = yLow + 0.2;
+    // double yLow  = -1.0 + 0.2*y;
+    // double yHigh = yLow + 0.2;
 
-    d["rapidity"] = {
-        {"range",{yLow,yHigh}},
-        {"mean",0.5*(yLow+yHigh)}
-    };
+    // d["rapidity"] = {
+    //     {"range",{yLow,yHigh}},
+    //     {"mean",0.5*(yLow+yHigh)}
+    // };
 
     d["fit"] = FitResultToJson(r);
 
@@ -148,17 +148,16 @@ json BuildDataPoint(int ch, int cent, int kt, int y, const FitResult& r) {
 
 void WriteFitJson(const std::string& inputFile,
                   const std::string& outDir,
-                  FitResult fitRes[chargeSize][centralitySize][ktSize][rapiditySize])
+                  FitResult fitRes[chargeSize][centralitySize][ktSize])
 {
     json J;
     J["meta"] = BuildMeta(inputFile);
     J["data"] = json::array();
 
-    for (int ch=0; ch<chargeSize; ch++)
-    for (int c =0; c <centralitySize; c++)
-    for (int k =0; k <ktSize; k++)
-    for (int y =0; y <rapiditySize; y++) {
-        J["data"].push_back(BuildDataPoint(ch,c,k,y, fitRes[ch][c][k][y]));
+    for (int chIdx = 0; chIdx < chargeSize; chIdx++)
+    for (int centrIdx = 0; centrIdx < centralitySize; centrIdx++)
+    for (int ktIdx = 0; ktIdx < ktSize; ktIdx++) {
+        J["data"].push_back(BuildDataPoint(chIdx,chIdx,ktIdx, fitRes[chIdx][centrIdx][ktIdx]));
     }
 
     std::ofstream f(outDir + "/fit3d.json");

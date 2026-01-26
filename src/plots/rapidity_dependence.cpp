@@ -21,7 +21,7 @@ void MakeRapidityDependence(
         TMultiGraph* mg_L = new TMultiGraph();
         std::vector<std::pair<TObject*, std::string>> legendEntries;
 
-        for (int centIdx = 0; centIdx < centralitySize; centIdx) {
+        for (int centIdx = 0; centIdx < centralitySize; centIdx++) {
             TGraphErrors* g_R[3] = { new TGraphErrors(), new TGraphErrors(), new TGraphErrors() };
             TGraphErrors* g_L    = new TGraphErrors();
             for (int lcmsIdx = 0; lcmsIdx < lcmsSize; lcmsIdx++) {

@@ -56,7 +56,7 @@ int main(int argc, char** argv) {
         TFile f(name.c_str(), "RECREATE");
         
         TTree* t = WriteBadFitTree(&f, badPoints);
-
+        t->Write();
         f.Close();
     }
 
