@@ -39,7 +39,7 @@ void MakeKtDependence(
 
             for (int ktIdx = 0; ktIdx < ktSize; ktIdx++) {
                 FitResult res = fitRes[chIdx][centIdx][ktIdx];
-                if (!res.ok) continue;
+                if (IsBadFit(res)) continue;
 
                 double xval = (ktValues[ktIdx+1] + ktValues[ktIdx]) / 2.0;
                 double xerr = ktValues[ktIdx+1] - xval;
