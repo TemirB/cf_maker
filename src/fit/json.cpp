@@ -148,7 +148,7 @@ json BuildDataPoint(int ch, int cent, int kt, const FitResult& r) {
 
 void WriteFitJson(const std::string& inputFile,
                   const std::string& outDir,
-                  FitResult fitRes[chargeSize][centralitySize][ktSize])
+                  FitGrid fitRes)
 {
     json J;
     J["meta"] = BuildMeta(inputFile);
@@ -156,8 +156,10 @@ void WriteFitJson(const std::string& inputFile,
 
     for (int chIdx = 0; chIdx < chargeSize; chIdx++)
     for (int centrIdx = 0; centrIdx < centralitySize; centrIdx++)
-    for (int ktIdx = 0; ktIdx < ktSize; ktIdx++) {
-        J["data"].push_back(BuildDataPoint(chIdx,chIdx,ktIdx, fitRes[chIdx][centrIdx][ktIdx]));
+    for (int yIdx = 0; yIdx < rapiditySize; yIdx++) {
+        J["data"].push_back(
+            BuildDataPoint(chIdx,chIdx,yIdx, fitRes[chIdx][centrIdx][yIdx])
+        );
     }
 
     std::ofstream f(outDir + "/fit3d.json");

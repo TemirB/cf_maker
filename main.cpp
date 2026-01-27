@@ -27,7 +27,7 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    FitResult fitRes[chargeSize][centralitySize][ktSize]{};
+    FitGrid fitRes{};
 
     std::string reason;
     auto cache = LoadFitCache(ctx.inputFile, ctx.outDir, fitRes, reason);
@@ -60,26 +60,26 @@ int main(int argc, char** argv) {
         f.Close();
     }
 
-    // kt_diff
-    {
-        std::string name = ctx.outDir + "/kt.root";
-        TFile* f = new TFile(name.c_str(), "RECREATE");
-
-        MakeKtDependence(f, fitRes);
-
-        f->Write();
-        f->Close();
-    }
-
-    // // rapidity_diff
+    // // kt_diff
     // {
-    //     std::string name = ctx.outDir + "/rapidity.root";
-    //     TFile f(name.c_str(), "RECREATE");
+    //     std::string name = ctx.outDir + "/kt.root";
+    //     TFile* f = new TFile(name.c_str(), "RECREATE");
 
-    //     MakeRapidityDependence(&f, fitRes);
+    //     MakeKtDependence(f, fitRes);
 
-    //     f.Close();
+    //     f->Write();
+    //     f->Close();
     // }
+
+    // rapidity_diff
+    {
+        std::string name = ctx.outDir + "/rapidity.root";
+        TFile f(name.c_str(), "RECREATE");
+
+        MakeRapidityDependence(&f, fitRes);
+
+        f.Close();
+    }
 
     // 1d_proj
     {

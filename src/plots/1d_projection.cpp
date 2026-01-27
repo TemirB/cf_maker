@@ -152,11 +152,11 @@ void MakeLCMS1DProjections(TFile* input, TFile* out, FitGrid& fitRes)
 
     for (int chIdx = 0; chIdx < chargeSize; chIdx++)
     for (int centIdx = 0; centIdx < centralitySize; centIdx++)
-    for (int ktIdx = 0; ktIdx < ktSize; ktIdx++) {
-        TH3D* h_A = getNum(input, chIdx, centIdx, ktIdx);
-        TH3D* h_A_wei = getNumWei(input, chIdx, centIdx, ktIdx);
+    for (int yIdx = 0; yIdx < rapiditySize; yIdx++) {
+        TH3D* h_A = getNum(input, chIdx, centIdx, yIdx);
+        TH3D* h_A_wei = getNumWei(input, chIdx, centIdx, yIdx);
 
-        const FitResult& r = fitRes[chIdx][centIdx][ktIdx];
+        const FitResult& r = fitRes[chIdx][centIdx][yIdx];
 
         fit->SetParameter(0, r.R[0]);
         fit->SetParameter(1, r.R[1]);
@@ -168,7 +168,7 @@ void MakeLCMS1DProjections(TFile* input, TFile* out, FitGrid& fitRes)
 
         auto Fit3D = MakeFitHistogram(*fit);
 
-        std::string cf_name = getCFName(chIdx, centIdx, ktIdx);
+        std::string cf_name = getCFName(chIdx, centIdx, yIdx);
         for (LCMSAxis ax : {LCMSAxis::Out, LCMSAxis::Side, LCMSAxis::Long})
             Write1DProjection(*out, *h_A, *h_A_wei, *Fit3D, ax, cf_name);
     }

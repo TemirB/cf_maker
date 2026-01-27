@@ -17,9 +17,9 @@ void BuildAndFit3DCorrelationFunctions(
 
     for (int chIdx = 0; chIdx < chargeSize; chIdx++)
     for (int centIdx = 0; centIdx < centralitySize; centIdx++)
-    for (int ktIdx = 0; ktIdx < ktSize; ktIdx++) {
-        TH3D* h_A = getNum(inputFile, chIdx, centIdx, ktIdx);
-        TH3D* h_A_wei = getNumWei(inputFile, chIdx, centIdx, ktIdx);
+    for (int yIdx = 0; yIdx < rapiditySize; yIdx++) {
+        TH3D* h_A = getNum(inputFile, chIdx, centIdx, yIdx);
+        TH3D* h_A_wei = getNumWei(inputFile, chIdx, centIdx, yIdx);
         if (!h_A || !h_A_wei) {
             delete h_A;
             delete h_A_wei;
@@ -51,9 +51,9 @@ void BuildAndFit3DCorrelationFunctions(
         delete h_A_wei;
 
         FitResult r = FitCF3D(h_CF_work, fit3d);
-        fitRes[chIdx][centIdx][ktIdx] = r;
+        fitRes[chIdx][centIdx][yIdx] = r;
 
-        std::string cfName = getCFName(chIdx, centIdx, ktIdx); 
+        std::string cfName = getCFName(chIdx, centIdx, yIdx); 
         outFile->cd();
         h_CF_work->SetDirectory(outFile);
         h_CF_work->Write(cfName.c_str(), TObject::kOverwrite);

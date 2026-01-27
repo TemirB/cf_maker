@@ -17,8 +17,8 @@
 
 #include "fit/types.h"
 
-TH3D* getNum(TFile* f, int charge, int cent, int ktIdx) {
-    TString name = Form("bp_%d_%d_num_%d", charge, cent, ktIdx);
+TH3D* getNum(TFile* f, int charge, int cent, int yIdx) {
+    TString name = Form("bp_%d_%d_num_%d", charge, cent, yIdx);
     TH3D* h = (TH3D*) f->Get(name);
 
     if (!h) {
@@ -28,8 +28,8 @@ TH3D* getNum(TFile* f, int charge, int cent, int ktIdx) {
     return h;
 };
 
-TH3D* getNumWei(TFile* f, int charge, int cent, int ktIdx) {
-    TString name = Form("bp_%d_%d_num_wei_%d", charge, cent, ktIdx);
+TH3D* getNumWei(TFile* f, int charge, int cent, int yIdx) {
+    TString name = Form("bp_%d_%d_num_wei_%d", charge, cent, yIdx);
     TH3D* h = (TH3D*) f->Get(name);
 
     if (!h) {
@@ -39,8 +39,8 @@ TH3D* getNumWei(TFile* f, int charge, int cent, int ktIdx) {
     return h;
 };
 
-std::string getCFName(int chIdx, int centIdx, int ktIdx) {
-    return Form("CF_%d_%d_%d", chIdx, centIdx, ktIdx);
+std::string getCFName(int chIdx, int centIdx, int yIdx) {
+    return Form("CF_%d_%d_%d", chIdx, centIdx, yIdx);
 }
 
 bool sameBinning(const TH3D* a, const TH3D* b) {
@@ -119,14 +119,16 @@ void CollectBadFits(
 ) {
     for (int ch = 0; ch < chargeSize; ch++)
     for (int cent = 0; cent < centralitySize; cent++)
-    for (int kt = 0; kt < ktSize; kt++){
-        const FitResult& res = fitRes[ch][cent][kt];
+    for (int y = 0; y < rapiditySize; y++){
+        const FitResult& res = fitRes[ch][cent][y];
         if (!IsBadFit(res)) continue;
 
         BadFitPoint p{};
         p.charge = ch;
         p.cent   = cent;
-        p.kt     = kt;
+        p.y     = y;
+
+        double yStep = (rapidityValues[1] - rapidityValues[0])/rapiditySize ;
 
         p.chi2ndf = (res.ndf > 0 ? res.Chi2Ndf() : -1);
         p.pvalue  = res.pvalue;
@@ -138,7 +140,7 @@ void CollectBadFits(
             p.eR[i] = res.eR[i];
         }
 
-        p.ktVal = 0.5 * (ktValues[kt] + ktValues[kt + 1]);
+        p.yVal = 0.5 * (rapidityValues[y] + rapidityValues[y + yStep]);
 
         badPoints.push_back(p);
     }
@@ -152,7 +154,7 @@ TTree* WriteBadFitTree(TFile* f, const std::vector<BadFitPoint>& badPoints) {
 
     t->Branch("charge", &p.charge);
     t->Branch("cent", &p.cent);
-    t->Branch("kt", &p.kt);
+    t->Branch("y", &p.y);
 
     t->Branch("chi2ndf", &p.chi2ndf);
     t->Branch("pvalue", &p.pvalue);
@@ -161,7 +163,7 @@ TTree* WriteBadFitTree(TFile* f, const std::vector<BadFitPoint>& badPoints) {
 
     t->Branch("R", p.R, "R[3]/D");
     t->Branch("eR", p.eR, "eR[3]/D");
-    t->Branch("ktVal", &p.ktVal);
+    t->Branch("yVal", &p.yVal);
 
     for (const auto& b : badPoints) {
         p = b;

@@ -20,6 +20,9 @@ void BuildAndFit3DCorrelationFunctions(TFile* inputFile, TFile* outFile, FitGrid
 // kt_dependence.cpp
 void MakeKtDependence(TFile* outFile, FitGrid& fitRes);
 
+// rapidity_dependence.cpp
+void MakeRapidityDependence(TFile* outFile, FitGrid& fitRes);
+
 // 1d_projection.cpp
 void MakeLCMS1DProjections(TFile* input, TFile* out, FitGrid& fitRes);
 

@@ -36,7 +36,7 @@ inline std::string ToString(LCMSAxis a) {
     return "";
 }
 
-using FitGrid = FitResult[chargeSize][centralitySize][ktSize];
+using FitGrid = FitResult[chargeSize][centralitySize][rapiditySize];
 
 // Геттеры
 TH3D* getNum(TFile* f, int charge, int cent, int ktIdx);
@@ -57,9 +57,9 @@ int FindKtIndex(double low, double high);
 struct BadFitPoint {
     int charge;
     int cent;
-    int kt;
+    int y;
 
-    double ktVal;
+    double yVal;
 
     double chi2ndf;
     double pvalue;

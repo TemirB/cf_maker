@@ -108,11 +108,11 @@ void Write2DProjection(
 void MakeLCMS2DProjections(TFile* input, TFile* out) {
     for (int chIdx=0; chIdx < chargeSize; chIdx++)
     for (int centIdx =0; centIdx < centralitySize; centIdx++)
-    for (int ktIdx =0; ktIdx < ktSize;ktIdx++) {
-        TH3D* A = getNum(input, chIdx, centIdx, ktIdx);
-        TH3D* Awei = getNumWei(input, chIdx, centIdx, ktIdx);
+    for (int yIdx =0; yIdx < rapiditySize;yIdx++) {
+        TH3D* A = getNum(input, chIdx, centIdx, yIdx);
+        TH3D* Awei = getNumWei(input, chIdx, centIdx, yIdx);
 
-        std::string cf_name = getCFName(chIdx, centIdx, ktIdx); 
+        std::string cf_name = getCFName(chIdx, centIdx, yIdx); 
 
         Write2DProjection(*out, *A, *Awei, LCMSAxis::Out, LCMSAxis::Side, cf_name);
         Write2DProjection(*out, *A, *Awei, LCMSAxis::Out , LCMSAxis::Long, cf_name);
