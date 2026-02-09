@@ -82,7 +82,7 @@ RootPtr<TH1D> BuildLCMSFitFrom3D(
 }
 
 // ============================================
-// One LCMS projection → canvas in output ROOT
+// One LCMS projection -> canvas in output ROOT
 // ============================================
 
 void Write1DProjection(

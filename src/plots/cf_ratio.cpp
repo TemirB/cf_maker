@@ -8,6 +8,9 @@
 #include "fit/types.h"
 #include "helpers.h"
 
+template<class T>
+using RootPtr = std::unique_ptr<T>;
+
 TH1D* Project1D(TH3D& h, LCMSAxis axis, double w = 0.05) {
     SetSlice1D(h, axis, w);
 
@@ -42,50 +45,103 @@ TH1D* ProjectRatio1D(TH3D& ratio3D, LCMSAxis axis, const char* name) {
     return r;
 }
 
+TH1D* MakeProject1D(
+    const TH3D& Neg, const TH3D& Pos,
+    const LCMSAxis axis, std::string name
+) {
+    auto neg = RootPtr<TH3D>((TH3D*)Neg.Clone()); neg->SetDirectory(nullptr);
+    auto pos = RootPtr<TH3D>((TH3D*)Pos.Clone()); pos->SetDirectory(nullptr);
 
-void do_CF_ratios(TFile* fCF3D, TFile* fRatioProj, TFile* fProjRatio)
-{
+    SetSlice1D(*neg, axis);
+    SetSlice1D(*pos, axis);
+
+    const char* proj =
+        axis == LCMSAxis::Out  ? "x" :
+        axis == LCMSAxis::Side ? "y" :
+                                 "z";
+
+    auto neg1D = RootPtr<TH1D>((TH1D*)neg->Project3D(proj)->Clone());
+    auto pos1D = RootPtr<TH1D>((TH1D*)neg->Project3D(proj)->Clone());
+
+    auto ratio = RootPtr<TH1D>((TH1D*)neg1D->Clone(name.c_str()));
+    ratio->Divide(pos1D.get(), neg1D.get());
+
+    return ratio.get();
+}
+
+void Make_Ratio_of_1D_Projection(
+    TFile& output, 
+    TH1D& hNeg, TH1D& hPos, 
+    std::string name
+) {
+    auto pos = RootPtr<TH1D>((TH1D*)hPos.Clone()); pos->SetDirectory(nullptr);
+    auto neg = RootPtr<TH1D>((TH1D*)hNeg.Clone()); neg->SetDirectory(nullptr);
+    
+    auto ratio = RootPtr<TH1D>((TH1D*)pos->Clone(name.c_str()));
+    ratio->Divide(neg.get());
+
+    /*
+        Красоту делаем тут
+        Подписи маштабы etc etc etc
+    */
+    
+    output.cd();
+    ratio->Write();
+}
+
+void do_CF_ratios(TFile* fCF3D, TFile* fRatioProj, TFile* fProjRatio) {
     for (int centIdx = 0; centIdx < centralitySize; centIdx++)
     for (int ktIdx = 0; ktIdx < ktSize; ktIdx++) {
-        std::string neg = getCFName(0, centIdx, ktIdx);
-        std::string pos = getCFName(1, centIdx, ktIdx);
+        std::string nPos = getCFName(1, centIdx, ktIdx);
+        std::string nNeg = getCFName(0, centIdx, ktIdx);
 
         TH3D *hNeg = nullptr, *hPos = nullptr;
-        fCF3D->GetObject(neg.c_str(), hNeg);
-        fCF3D->GetObject(pos.c_str(), hPos);
+        fCF3D->GetObject(nNeg.c_str(), hNeg);
+        fCF3D->GetObject(nPos.c_str(), hPos);
+
         if (!hNeg || !hPos) continue;
 
-        // Клонируем входные гистограммы
-        TH3D* N = (TH3D*)hNeg->Clone();
-        TH3D* P = (TH3D*)hPos->Clone();
-        N->SetDirectory(nullptr);
-        P->SetDirectory(nullptr);
+        TH3D* neg = (TH3D*)hNeg->Clone(); neg->SetDirectory(nullptr);
+        TH3D* pos = (TH3D*)hPos->Clone(); pos->SetDirectory(nullptr);
 
-        // 3D ratio
-        TH3D* R = (TH3D*)N->Clone();
-        R->SetDirectory(nullptr);
-        R->Divide(N, P);
+        TH3D* ratio = (TH3D*)neg->Clone(); ratio->SetDirectory(nullptr);
+        ratio->Divide(neg, pos);
 
         for (auto ax : {LCMSAxis::Out, LCMSAxis::Side, LCMSAxis::Long}) {
-            auto name = Form("ratio_%d_%d_%d", centIdx, ktIdx, (int)ax);
+            std::string proj_name = Form("ratios_of_proj_%d_%d_%s", centIdx, ktIdx, ToString(ax).c_str());
+            TH1D* ratio_of_proj = MakeProject1D(*neg, *pos, ax, proj_name);
 
-            // Ratio of projections
-            TH1D* r1 = MakeRatio1D(*N, *P, ax, name);
-            r1->SetDirectory(gDirectory);
             fRatioProj->cd();
-            r1->Write();
-            delete r1;
+            ratio_of_proj->Write();
 
-            // Projection of 3D ratio
-            TH1D* r2 = ProjectRatio1D(*R, ax, name);
-            r2->SetDirectory(gDirectory);
+            std::string proj_of_ratio_name = Form("proj_of_ratios_%d_%d_%s", centIdx, ktIdx, ToString(ax).c_str());
+            TH1D* proj_of_ratio = ProjectRatio1D(*ratio, ax, proj_of_ratio_name.c_str());
+
             fProjRatio->cd();
-            r2->Write();
-            delete r2;
+            proj_of_ratio->Write();
         }
 
-        delete R;
-        delete N;
-        delete P;
+
+        // for (auto ax : {LCMSAxis::Out, LCMSAxis::Side, LCMSAxis::Long}) {
+        //     auto name = Form("ratio_%d_%d_%d", centIdx, ktIdx, (int)ax);
+
+        //     // // Ratio of projections
+        //     // TH1D* r1 = MakeRatio1D(*N, *P, ax, name);
+        //     // r1->SetDirectory(gDirectory);
+        //     // fRatioProj->cd();
+        //     // r1->Write();
+        //     // delete r1;
+
+        //     // Projection of 3D ratio
+        //     TH1D* r2 = ProjectRatio1D(*R, ax, name);
+        //     r2->SetDirectory(gDirectory);
+        //     fProjRatio->cd();
+        //     r2->Write();
+        //     delete r2;
+        // }
+
+        // delete R;
+        // delete N;
+        // delete P;
     }
 }

@@ -102,17 +102,20 @@ int main(int argc, char** argv) {
         f->Write();
         f->Close();
     }
-    // {
-    //     TFile* f1 = new TFile("ratio_projs.root", "RECREATE");
-    //     TFile* f2 = new TFile("proj_ratios.root", "RECREATE");
-    //     TFile* fCF3D = new TFile(ctx.cf3dFile.c_str(), "READ");
-    //     do_CF_ratios(fCF3D, f1, f2);
+    {
+        std::string name1 = ctx.outDir + "/ratio_projs.root";
+        std::string name2 = ctx.outDir + "/proj_ratios.root";
 
-    //     f1->Write();
-    //     f1->Close();
-    //     f2->Write();
-    //     f2->Close();
-    // }
+        TFile* f1 = new TFile(name1.c_str(), "RECREATE");
+        TFile* f2 = new TFile(name2.c_str(), "RECREATE");
+        TFile* fCF3D = new TFile(ctx.cf3dFile.c_str(), "READ");
+        do_CF_ratios(fCF3D, f1, f2);
+
+        f1->Write();
+        f1->Close();
+        f2->Write();
+        f2->Close();
+    }
 
     std::cout << "All outputs written to " << ctx.outDir << "\n";
     return 0;
