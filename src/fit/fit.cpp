@@ -3,14 +3,21 @@
 #include <TFitResult.h>
 #include <TMath.h>
 
-Double_t CF_fit_3d(Double_t* q, Double_t* par) {
-    const Double_t hc2 = 0.197 * 0.197;
+const Double_t hc2 = 0.197 * 0.197;
 
-    return 1.0 + par[3] * TMath::Exp(
-        (-(q[0] * par[0]) * (q[0] * par[0])
-         -(q[1] * par[1]) * (q[1] * par[1])
-         -(q[2] * par[2]) * (q[2] * par[2])) / hc2
-    );
+Double_t CF_fit_3d(Double_t* q, Double_t* par) {
+    Double_t q_out = q[0];
+    Double_t q_side = q[1];
+    Double_t q_long = q[2];
+
+    Double_t qRq = par[0]*par[0] * q_out*q_out +
+                   par[1]*par[1] * q_side*q_side +
+                   par[2]*par[2] * q_long*q_long +
+                 2.*par[4]*par[4] * q_out*q_side +
+                 2.*par[5]*par[5] * q_out*q_long +
+                 2.*par[6]*par[6] * q_side*q_long;
+
+    return 1.0 + par[3] * TMath::Exp(-qRq / hc2);
 }
 
 TF3* CreateCF3DFit() {
@@ -20,22 +27,29 @@ TF3* CreateCF3DFit() {
         -0.05, 0.05,
         -0.05, 0.05,
         -0.05, 0.05,
-        4
+        7
     );
-
-    fit3d->SetParameters(4.0, 4.0, 4.0, 0.5);
-
-    fit3d->SetParLimits(0, 1.0, 10.0);
-    fit3d->SetParLimits(1, 1.0, 10.0);
-    fit3d->SetParLimits(2, 1.0, 10.0);
-    fit3d->SetParLimits(3, 0.1, 1.0);
-
+    fit3d->SetParameters(4.0, 4.0, 4.0, 0.5, 0.0, 0.0, 0.0);
+    fit3d->SetParLimits(0, 0., 10.);
+    fit3d->SetParLimits(1, 0., 10.);
+    fit3d->SetParLimits(2, 0., 10.);
+    fit3d->SetParLimits(3, 0., 1.);
+    fit3d->SetParLimits(4, -5., 5.);
+    fit3d->SetParLimits(5, -5., 5.);
+    fit3d->SetParLimits(6, -5., 5.);
+    fit3d->SetParName(0, "R_out");
+    fit3d->SetParName(1, "R_side");
+    fit3d->SetParName(2, "R_long");
+    fit3d->SetParName(3, "lambda");
+    fit3d->SetParName(4, "R_os");
+    fit3d->SetParName(5, "R_ol");
+    fit3d->SetParName(6, "R_sl");
     return fit3d;
 }
 
 FitResult FitCF3D(TH3D* hCF, TF3* fit3d) {
     FitResult res{};
-    if (!hCF || hCF->GetEntries()==0 || !fit3d) return res;
+    if (!hCF || hCF->GetEntries() == 0 || !fit3d) return res;
 
     auto fitPtr = hCF->Fit(fit3d, "RMQS0");
 
@@ -43,15 +57,23 @@ FitResult FitCF3D(TH3D* hCF, TF3* fit3d) {
         res.chi2   = fitPtr->Chi2();
         res.ndf    = fitPtr->Ndf();
         res.pvalue = TMath::Prob(res.chi2, res.ndf);
-        res.ok     = true;
+        res.ok     = (res.chi2 >= 0 && res.ndf > 0);
     }
 
-    for (int i=0;i<3;i++) {
-        res.R[i]  = fit3d->GetParameter(i);
-        res.eR[i] = fit3d->GetParError(i);
+    for (int i = 0; i < 7; i++) {
+        Double_t val = fit3d->GetParameter(i);
+        Double_t err = fit3d->GetParError(i);
+        if (i < 3) {
+            res.R[i] = val;
+            res.eR[i] = err;
+        } else if (i == 3) {
+            res.lambda = val;
+            res.elambda = err;
+        } else {
+            res.R[i - 1] = val;
+            res.eR[i - 1] = err;
+        }
     }
-    res.lambda  = fit3d->GetParameter(3);
-    res.elambda = fit3d->GetParError(3);
 
     return res;
 }
