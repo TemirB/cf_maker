@@ -75,6 +75,7 @@ void writeMGWithLegend(
     mg->Draw("A");                       // создаёт оси
     mg->GetXaxis()->SetTitle(xTitle);
     mg->GetYaxis()->SetTitle(yTitle);
+    mg->GetYaxis()->SetRangeUser(2.5, 6.5);
 
     // твой helper для range (если надо)
     // setRangeWithErrors(mg, 0.1);
@@ -89,8 +90,7 @@ void writeMGWithLegend(
     }
     leg.Draw();
 
-    c.Write(canvasName);                 // в root-файл попадёт картинка со всем
-    // mg->Write(mg->GetName(), TObject::kOverwrite); // и сам mg отдельно, если нужно
+    c.Write(canvasName);
 }
 
 void writeHist(
