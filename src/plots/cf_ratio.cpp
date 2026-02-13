@@ -36,8 +36,8 @@ void Style(
         TString title = TString::Format(
             "%s at centrality=[%s] %%, y=[%s] GeV/c and %s axis",
             fmt.Data(),
-            centralityNames[centIdx], 
-            ktNames[yIdx], 
+            centralityNames[centIdx].data(), 
+            rapidityRangeName, 
             axisStr.Data()
         );
 
@@ -82,7 +82,7 @@ TH1D* ProjectRatio(
 ) {
     TString name = TString::Format(
         "proj_of_ratios_%d_%d_%s",
-        centIdx, yIdx, ToString(axis)
+        centIdx, yIdx, ToString(axis).data()
     );
 
     TH1D* r = Project1D(ratio, axis);
@@ -102,7 +102,7 @@ TH1D* RatioProject(
 ) {
     TString name = TString::Format(
         "ratio_proj_%d_%d_%s",
-        centIdx, yIdx, ToString(axis)
+        centIdx, yIdx, ToString(axis).data()
     );
 
     TH1D* n = Project1D(Neg, axis);
@@ -133,6 +133,7 @@ void do_CF_ratios(TFile* fCF3D, TFile* fRatioProj, TFile* fProjRatio) {
         TH3D* pos = (TH3D*)hPos->Clone(); pos->SetDirectory(nullptr);
 
         TH3D* ratio = (TH3D*)neg->Clone(); ratio->SetDirectory(nullptr);
+        ratio->Reset();
         ratio->Divide(pos, neg);
 
         for (auto axis : {LCMSAxis::Out, LCMSAxis::Side, LCMSAxis::Long}) {
