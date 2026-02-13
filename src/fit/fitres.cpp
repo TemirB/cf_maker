@@ -2,7 +2,7 @@
 #include <cmath>
 
 bool FitResult::IsFinite() const {
-    for(int i=0;i<3;i++)
+    for(int i=0;i<6;i++)
         if(!std::isfinite(R[i]) || !std::isfinite(eR[i])) return false;
     return std::isfinite(lambda) && std::isfinite(elambda);
 }
