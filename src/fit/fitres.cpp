@@ -3,9 +3,9 @@
 
 #include <iostream>
 
-void FitResult::returnAllR(int i) const {
-    std::cout << Form("R[%d]=%f+-%f\t", i, R[i], eR[i])
-}
+// void FitResult::returnAllR(int i) const {
+//     std::cout << Form("R[%d]=%f+-%f\t", i, R[i], eR[i])
+// }
 
 bool FitResult::IsFinite() const {
     for(int i = 0; i < 3; i++)
@@ -21,7 +21,7 @@ bool FitResult::IsValid() const {
     bool basic_valid = ok && IsFinite() && lambda > 0. && lambda < 1.;
     bool r_valid = true;
     for (int i = 0; i < 3; i++) {
-        if (R[i] > 9.5 || R[i] < 2.) {
+        if (R[i] > 6.5 || R[i] < 2.) {
             r_valid = false;
             break;
         }
