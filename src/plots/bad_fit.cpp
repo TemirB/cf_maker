@@ -3,8 +3,6 @@
 #include <TTree.h>
 #include <TH2D.h>
 
-#include <helpers.h>
-
 // void MakeBadFitMaps(TFile* outFile, TTree* t)
 // {
 //     outFile->cd();

@@ -5,7 +5,7 @@
 
 #include "fit/types.h"
 #include "fit/fit.h"
-#include "helpers.h"
+#include "helpers/root_utils.h"
 
 void BuildAndFit3DCorrelationFunctions(
     TFile* inputFile,
@@ -31,11 +31,6 @@ void BuildAndFit3DCorrelationFunctions(
         if (!h_CF_work) {
             h_CF_work = (TH3D*)h_A_wei->Clone("h_CF_work");
             h_CF_work->SetDirectory(nullptr); // не привязывать никуда
-            if (!h_CF_work->GetSumw2N()) h_CF_work->Sumw2();
-        } else if (!sameBinning(h_CF_work, h_A_wei)) {
-            delete h_CF_work;
-            h_CF_work = (TH3D*)h_A_wei->Clone("h_CF_work");
-            h_CF_work->SetDirectory(nullptr);
             if (!h_CF_work->GetSumw2N()) h_CF_work->Sumw2();
         }
 

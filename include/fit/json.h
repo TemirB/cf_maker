@@ -4,10 +4,9 @@
 #include <nlohmann/json.hpp>
 
 #include "fit/types.h"
-#include "helpers.h"
 
 nlohmann::json BuildMeta(const std::string& inputFile);
-nlohmann::json BuildDataPoint(int ch,int c,int k,int y,const FitResult&);
+nlohmann::json BuildDataPoint(int ch, int c, int k, const FitResult&);
 
 void WriteFitJson(
     const std::string& inputFile,

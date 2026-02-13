@@ -7,7 +7,7 @@
 #include <TH2.h>
 #include <TCanvas.h>
 
-#include <helpers.h>
+#include <helpers/root_utils.h>
 
 template<class T>
 using RootPtr = std::unique_ptr<T>;
@@ -88,8 +88,8 @@ void Write2DProjection(
     Crop2D(*CF, 0.1);
 
     // --- cosmetics
-    CF->GetXaxis()->SetTitle(("q_{"+ToString(ax2)+"} [GeV/c]").c_str());
-    CF->GetYaxis()->SetTitle(("q_{"+ToString(ax1)+"} [GeV/c]").c_str());
+    CF->GetXaxis()->SetTitle(Form("q_{%s} [GeV/c]", ToString(ax2)));
+    CF->GetYaxis()->SetTitle(Form("q_{%s} [GeV/c]", ToString(ax1)));
     CF->GetZaxis()->SetRangeUser(0.95,1.30);
 
     // --- draw

@@ -2,9 +2,10 @@
 
 #include <TFile.h>
 #include <TTree.h>
+#include "TH3.h"
 
-#include "helpers.h"
 #include "fit/types.h"
+#include "helpers/constants.h"
 
 void ResetRanges(TH3D& h);
 

@@ -4,13 +4,10 @@
 #include <TDirectory.h>
 #include <TH3D.h>
 #include <TH1D.h>
-#include <TLine.h>
-#include <TLatex.h>
-#include <TSystem.h>
 #include <TCanvas.h>
 
 #include "fit/types.h"
-#include "helpers.h"
+#include "helpers/root_utils.h"
 
 TH1D* Project1D(TH3D& h, LCMSAxis axis, double w = 0.05) {
     SetSlice1D(h, axis, w);
@@ -36,8 +33,8 @@ void Style(
         TString title = TString::Format(
             "%s at centrality=[%s] %%, k_{T}=[%s] GeV/c and %s axis",
             fmt.Data(),
-            centralityNames[centIdx].data(), 
-            ktNames[ktIdx].data(), 
+            centralityNames[centIdx], 
+            ktNames[ktIdx], 
             axisStr.Data()
         );
 
@@ -82,7 +79,7 @@ TH1D* ProjectRatio(
 ) {
     TString name = TString::Format(
         "proj_of_ratios_%d_%d_%s",
-        centIdx, ktIdx, ToString(axis).data()
+        centIdx, ktIdx, ToString(axis)
     );
 
     TH1D* r = Project1D(ratio, axis);
@@ -102,7 +99,7 @@ TH1D* RatioProject(
 ) {
     TString name = TString::Format(
         "ratio_proj_%d_%d_%s",
-        centIdx, ktIdx, ToString(axis).data()
+        centIdx, ktIdx, ToString(axis)
     );
 
     TH1D* n = Project1D(Neg, axis);

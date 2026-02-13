@@ -5,8 +5,8 @@
 #include <TMultiGraph.h>
 #include <TGraphErrors.h>
 
-#include "helpers.h"
 #include "fit/types.h"
+#include "fit/badfit.h"
 #include "draw.h"
 
 void MakeKtDependence(
@@ -25,12 +25,12 @@ void MakeKtDependence(
             TGraphErrors* g_L    = new TGraphErrors();
             for (int lcmsIdx = 0; lcmsIdx < lcmsSize; lcmsIdx++) {
                 g_R[lcmsIdx]->SetName(
-                    Form("g_R_%s_%s_centr_%s", LCMS[lcmsIdx].c_str(), chargeNames[chIdx].c_str(), centralityNames[centIdx].c_str()));
+                    Form("g_R_%s_%s_centr_%s", LCMS[lcmsIdx], chargeNames[chIdx], centralityNames[centIdx]));
                 g_R[lcmsIdx]->SetLineColor(colors[centIdx]);
                 g_R[lcmsIdx]->SetMarkerColor(colors[centIdx]);
                 g_R[lcmsIdx]->SetMarkerStyle(markers[centIdx]);
             }
-            g_L->SetName(Form("g_L_%s_centr_%s", chargeNames[chIdx].c_str(), centralityNames[centIdx].c_str()));
+            g_L->SetName(Form("g_L_%s_centr_%s", chargeNames[chIdx], centralityNames[centIdx]));
             g_L->SetLineColor(colors[centIdx]);
             g_L->SetMarkerColor(colors[centIdx]);
             g_L->SetMarkerStyle(markers[centIdx]);
@@ -60,17 +60,17 @@ void MakeKtDependence(
         }
 
         for (int lcmsIdx = 0; lcmsIdx < lcmsSize; lcmsIdx++) {
-            mg_R[lcmsIdx]->SetName(Form("mg_R_%s_%s", LCMS[lcmsIdx].c_str(), chargeNames[chIdx].c_str()));
+            mg_R[lcmsIdx]->SetName(Form("mg_R_%s_%s", LCMS[lcmsIdx], chargeNames[chIdx]));
             setRangeWithErrors(mg_R[lcmsIdx], 0.1);
             writeMGWithLegend(outFile, mg_R[lcmsIdx],
                 mg_R[lcmsIdx]->GetName(),
                 "k_{T} (GeV/c)",
-                Form("R_{%s} (fm)", LCMS[lcmsIdx].c_str()),
+                Form("R_{%s} (fm)", LCMS[lcmsIdx]),
                 legendEntries
             );
         }
         setRangeWithErrors(mg_L, 0.1);
-        mg_L->SetName(Form("mg_L_%s", chargeNames[chIdx].c_str()));
+        mg_L->SetName(Form("mg_L_%s", chargeNames[chIdx]));
         writeMGWithLegend(outFile, mg_L,
             mg_L->GetName(),
             "k_{T} (GeV/c)",

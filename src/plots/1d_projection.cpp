@@ -8,8 +8,9 @@
 #include "TLegend.h"
 #include "TDirectory.h"
 
-#include "helpers.h"
 #include "fit/fit.h"
+#include "fit/badfit.h"
+#include "helpers/root_utils.h"
 #include "draw.h"
 
 template<class T>

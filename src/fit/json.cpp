@@ -5,7 +5,7 @@
 #include <ctime>
 #include <cmath>
 
-#include "helpers.h"   // NowUTC(), Sha256OfFile(), chargeNames, centralityNames, ktNames …
+#include "helpers/utils.h"
 
 using json = nlohmann::json;
 
@@ -28,8 +28,8 @@ json FitResultToJson(const FitResult& r) {
     return {
         {"ok", r.ok},
         {"valid", r.IsValid()},
-        {"R",  {r.R[0],  r.R[1],  r.R[2]}},
-        {"eR", {r.eR[0], r.eR[1], r.eR[2]}},
+        {"R",  {r.R[0],  r.R[1],  r.R[2],  r.R[3],  r.R[4],  r.R[5]}},
+        {"eR", {r.eR[0], r.eR[1], r.eR[2], r.eR[3], r.eR[4], r.eR[5]}},
         {"lambda",  r.lambda},
         {"elambda", r.elambda},
         {"chi2",    r.chi2},
@@ -166,7 +166,6 @@ void WriteFitJson(const std::string& inputFile,
 
 FitResult FitResultFromJson(const nlohmann::json& j) {
     FitResult r;
-
     r.ok      = j.at("ok").get<bool>();
     r.lambda  = j.at("lambda").get<double>();
     r.elambda = j.at("elambda").get<double>();
@@ -174,7 +173,7 @@ FitResult FitResultFromJson(const nlohmann::json& j) {
     r.ndf     = j.at("ndf").get<int>();
     r.pvalue  = j.value("pvalue", 0.0);
 
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 6; i++) {
         r.R[i]  = j.at("R")[i].get<double>();
         r.eR[i] = j.at("eR")[i].get<double>();
     }

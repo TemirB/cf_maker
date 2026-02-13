@@ -1,7 +1,6 @@
 #include <string>
 
 #include "fit/types.h"
-#include "helpers.h"
 
 enum class CacheStatus {
     Ok,

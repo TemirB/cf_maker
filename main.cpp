@@ -4,11 +4,12 @@
 #include <TH1.h>
 #include <TTree.h>
 
-#include "helpers.h"
 #include "fit/cache.h"
 #include "fit/json.h"
+#include "fit/badfit.h"
 #include "plots.h"
 #include "context.h"
+
 
 int main(int argc, char** argv) {
     TH1::AddDirectory(kFALSE);
