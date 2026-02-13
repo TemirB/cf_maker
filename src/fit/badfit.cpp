@@ -32,7 +32,7 @@ void CollectBadFits(
         p.lambda  = res.lambda;
         p.elambda = res.elambda;
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 6; i++) {
             p.R[i]  = res.R[i];
             p.eR[i] = res.eR[i];
         }

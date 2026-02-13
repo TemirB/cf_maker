@@ -34,9 +34,9 @@ TF3* CreateCF3DFit() {
     fit3d->SetParLimits(1, 0., 10.);
     fit3d->SetParLimits(2, 0., 10.);
     fit3d->SetParLimits(3, 0., 1.);
-    fit3d->SetParLimits(4, -10.0, 10.0);
-    fit3d->SetParLimits(5, -10.0, 10.0);
-    fit3d->SetParLimits(6, -10.0, 10.0);
+    fit3d->SetParLimits(4, -5., 5.);
+    fit3d->SetParLimits(5, -5., 5.);
+    fit3d->SetParLimits(6, -5., 5.);
     fit3d->SetParName(0, "R_out");
     fit3d->SetParName(1, "R_side");
     fit3d->SetParName(2, "R_long");

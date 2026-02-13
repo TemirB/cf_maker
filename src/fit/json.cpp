@@ -166,17 +166,77 @@ void WriteFitJson(const std::string& inputFile,
 
 FitResult FitResultFromJson(const nlohmann::json& j) {
     FitResult r;
-    r.ok      = j.at("ok").get<bool>();
-    r.lambda  = j.at("lambda").get<double>();
-    r.elambda = j.at("elambda").get<double>();
-    r.chi2    = j.at("chi2").get<double>();
-    r.ndf     = j.at("ndf").get<int>();
-    r.pvalue  = j.value("pvalue", 0.0);
 
-    for (int i = 0; i < 6; i++) {
-        r.R[i]  = j.at("R")[i].get<double>();
-        r.eR[i] = j.at("eR")[i].get<double>();
+    if (j.at("ok").is_boolean()) {
+        r.ok = j.at("ok").get<bool>();
+    } else {
+        r.ok = false;
     }
 
+    if (j.contains("lambda") && j.at("lambda").is_number()) {
+        r.lambda = j.at("lambda").get<double>();
+    } else {
+        r.lambda = 0.0;
+    }
+
+    if (j.contains("elambda") && !j.at("elambda").is_null()) {
+        r.elambda = j.at("elambda").get<double>();
+    } else {
+        r.elambda = 0.0;
+    }
+
+    if (j.contains("chi2") && j.at("chi2").is_number()) {
+        r.chi2 = j.at("chi2").get<double>();
+    } else {
+        r.chi2 = 0.0;
+    }
+
+    if (j.contains("ndf") && j.at("ndf").is_number()) {
+        r.ndf = j.at("ndf").get<int>();
+    } else {
+        r.ndf = 0;
+    }
+
+    r.pvalue = j.value("pvalue", 0.0);
+
+    if (j.contains("R") && j.at("R").is_array()) {
+        size_t r_size = j.at("R").size();
+        for (int i = 0; i < 6; i++) {
+            if (i < r_size) {
+                if (!j.at("R")[i].is_null()) {
+                    r.R[i] = j.at("R")[i].get<double>();
+                } else {
+                    r.R[i] = 0.0;
+                }
+            } else {
+                r.R[i] = 0.0;
+            }
+        }
+    } else {
+        for (int i = 0; i < 6; i++) {
+            r.R[i] = 0.0;
+        }
+    }
+
+    if (j.contains("eR") && j.at("eR").is_array()) {
+        size_t er_size = j.at("eR").size();
+        for (int i = 0; i < 6; i++) {
+            if (i < er_size) {
+                if (!j.at("eR")[i].is_null()) {
+                    r.eR[i] = j.at("eR")[i].get<double>();
+                } else {
+                    r.eR[i] = 0.0;
+                }
+            } else {
+                r.eR[i] = 0.0;
+            }
+        }
+    } else {
+        for (int i = 0; i < 6; i++) {
+            r.eR[i] = 0.0;
+        }
+    }
+
+    std::cout << "Read FitResult: R[0]=" << r.R[0] << ", lambda=" << r.lambda << ", ndf=" << r.ndf << ", chi2=" << r.chi2 << std::endl;
     return r;
 }
