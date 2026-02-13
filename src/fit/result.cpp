@@ -12,5 +12,13 @@ double FitResult::Chi2Ndf() const {
 }
 
 bool FitResult::IsValid() const {
-    return ok && IsFinite() && ndf>0;
+    bool basic_valid = ok && IsFinite() && lambda > 0. && lambda < 1.;
+    bool r_valid = true;
+    for (int i = 0; i < 3; i++) {
+        if (R[i] > 8 || R[i] < 2.) {
+            r_valid = false;
+            break;
+        }
+    }
+    return basic_valid && r_valid;
 }
