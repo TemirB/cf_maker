@@ -1,6 +1,7 @@
 #include "plots.h"
 
 #include <string>
+#include <algorithm>
 
 #include <TMultiGraph.h>
 #include <TGraphErrors.h>
@@ -16,6 +17,25 @@ void MakeRapidityDependence(
 ) {
     double yStep = (rapidityValues[1] - rapidityValues[0]) / rapiditySize;
     
+    std::map<int, std::map<int, std::vector<int>>> badDots = {
+        {
+            2, 
+            {
+                {0 , {0, 2, 9}},
+                {1, {2}},
+                {2, {2}}
+            }
+        },
+        {
+            3,
+            { 
+                {0, {0, 1, 2, 3, 4, 7}},
+                {1, {0, 1, 2, 3, 7, 8, 9}},
+                {2, {0, 1, 2, 3, 7, 8, 9}}
+            }
+        }
+    }; 
+
     for (int chIdx = 0; chIdx < chargeSize; chIdx++) {
         TMultiGraph* mg_R[3] = { new TMultiGraph(), new TMultiGraph(), new TMultiGraph() };
         TMultiGraph* mg_L = new TMultiGraph();
@@ -38,6 +58,7 @@ void MakeRapidityDependence(
 
             legendEntries.push_back({g_R[0], centralityNames[centIdx]});
 
+            auto mDot = badDots[centIdx];
             for (int yIdx = 0; yIdx < rapiditySize; yIdx++) {
                 FitResult res = fitRes[chIdx][centIdx][yIdx];
                 if (IsBadFit(res)) continue;
@@ -49,6 +70,8 @@ void MakeRapidityDependence(
                 double xVal = rapidityValues[0] + (yIdx + 0.5) * yStep;
 
                 for (int lcmsIdx = 0; lcmsIdx < lcmsSize; lcmsIdx++) {
+                    auto values = mDot[lcmsIdx];
+                    if (std::find(values.begin(), values.end(), yIdx) != values.end()) continue;
                     g_R[lcmsIdx]->SetPoint(yIdx, xVal, res.R[lcmsIdx]);
                     g_R[lcmsIdx]->SetPointError(yIdx, 0, res.eR[lcmsIdx]);
                 }
