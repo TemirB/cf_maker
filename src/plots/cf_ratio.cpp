@@ -4,6 +4,7 @@
 #include <TDirectory.h>
 #include <TH3D.h>
 #include <TH1D.h>
+#include <TCanvas.h>
 
 #include "fit/types.h"
 #include "helpers.h"
@@ -13,79 +14,141 @@ TH1D* Project1D(TH3D& h, LCMSAxis axis, double w = 0.05) {
 
     const char* proj =
         axis==LCMSAxis::Out  ? "x" :
-        axis==LCMSAxis::Side ? "yIdx" : "z";
+        axis==LCMSAxis::Side ? "y" : "z";
 
     TH1D* out = (TH1D*)h.Project3D(proj);
     out->SetDirectory(nullptr);
     return out;
 }
 
+// h - target hist
+// fmt - formatted title string (ROOT syntax)
+void Style(
+    TH1D* h, const TString& fmt,
+    LCMSAxis axis, int centIdx, int yIdx
+) {
+    // General
+    {
+        TString axisStr = ToString(axis);
+        Double_t rapidityStep = (rapidityValues[1] - rapidityValues[0]) / rapiditySize;
+        Double_t left = rapidityValues[0] + rapidityStep * yIdx;
+        char* rapidityRangeName = Form("%.2f-%.2f", left, left + rapidityStep);
+        TString title = TString::Format(
+            "%s at centrality=[%s] %%, y=[%s] GeV/c and %s axis",
+            fmt.Data(),
+            centralityNames[centIdx], 
+            ktNames[yIdx], 
+            axisStr.Data()
+        );
 
-TH1D* MakeRatio1D(TH3D& neg, TH3D& pos, LCMSAxis axis, const char* name) {
-    TH1D* n = Project1D(neg, axis);
-    TH1D* p = Project1D(pos, axis);
+        h->SetTitle(title);
 
-    TH1D* r = (TH1D*)n->Clone(name);
-    r->SetDirectory(nullptr);
-    r->Divide(n, p);
+        h->SetMarkerStyle(kFullCircle);
+        h->SetMarkerSize(1.0);
+        h->SetMarkerColor(kBlack);
+        h->SetLineColor(kBlack);
+        h->SetLineWidth(2);
+    }    
 
-    delete n;
-    delete p;
+    // X axis
+    {
+        TAxis* xAxis = h->GetXaxis();
+        TString axisStr = ToString(axis);
+        TString xTitle = "q_{" + axisStr + "} [GeV/c]";
 
-    return r;
+        xAxis->SetTitle(xTitle);
+        xAxis->CenterTitle();
+        xAxis->SetTitleSize(0.05);
+        xAxis->SetLabelSize(0.045);
+        xAxis->SetRangeUser(-0.4, 0.4);
+    }
+
+    // Y axis
+    {
+        TAxis* yAxis = h->GetYaxis();
+        yAxis->SetTitle(fmt);
+        yAxis->CenterTitle();
+        yAxis->SetTitleSize(0.05);
+        yAxis->SetLabelSize(0.045);
+        yAxis->SetTitleOffset(1.2);
+        yAxis->SetRangeUser(0.5, 1.5);
+    }
 }
 
+TH1D* ProjectRatio(
+    TH3D& ratio,
+    int centIdx, int yIdx,
+    LCMSAxis axis
+) {
+    TString name = TString::Format(
+        "proj_of_ratios_%d_%d_%s",
+        centIdx, yIdx, ToString(axis)
+    );
 
-TH1D* ProjectRatio1D(TH3D& ratio3D, LCMSAxis axis, const char* name) {
-    TH1D* r = Project1D(ratio3D, axis);
+    TH1D* r = Project1D(ratio, axis);
     r->SetName(name);
+
+    TString axisStr = ToString(axis);
+    TString fmt = "C^{++}/C^{--}_{" + axisStr + "}";
+    
+    Style(r, fmt, axis, centIdx, yIdx);
     return r;
 }
 
+TH1D* RatioProject(
+    TH3D& Neg, TH3D& Pos,
+    int centIdx, int yIdx,
+    LCMSAxis axis
+) {
+    TString name = TString::Format(
+        "ratio_proj_%d_%d_%s",
+        centIdx, yIdx, ToString(axis)
+    );
 
-void do_CF_ratios(TFile* fCF3D, TFile* fRatioProj, TFile* fProjRatio)
-{
+    TH1D* n = Project1D(Neg, axis);
+    TH1D* p = Project1D(Pos, axis);
+
+    TH1D* ratio = (TH1D*)n->Clone(name);
+    ratio->Divide(p, n);
+
+    TString axisStr = ToString(axis);
+    TString fmt = "C^{++}(q_{" + axisStr + "}) / C^{--}(q_{" + axisStr + "})";
+    
+    Style(ratio, fmt, axis, centIdx, yIdx);
+    return ratio;
+}
+
+void do_CF_ratios(TFile* fCF3D, TFile* fRatioProj, TFile* fProjRatio) {
     for (int centIdx = 0; centIdx < centralitySize; centIdx++)
-    for (int ktIdx = 0; ktIdx < ktSize; ktIdx++) {
-        std::string neg = getCFName(0, centIdx, ktIdx);
-        std::string pos = getCFName(1, centIdx, ktIdx);
+    for (int yIdx = 0; yIdx < rapiditySize; yIdx++) {
+        TString nPos = getCFName(1, centIdx, yIdx);
+        TString nNeg = getCFName(0, centIdx, yIdx);
 
-        TH3D *hNeg = nullptr, *hPos = nullptr;
-        fCF3D->GetObject(neg.c_str(), hNeg);
-        fCF3D->GetObject(pos.c_str(), hPos);
+        TH3D* hNeg = (TH3D*) fCF3D->Get(nNeg);
+        TH3D* hPos = (TH3D*) fCF3D->Get(nPos);
+
         if (!hNeg || !hPos) continue;
 
-        // Клонируем входные гистограммы
-        TH3D* N = (TH3D*)hNeg->Clone();
-        TH3D* P = (TH3D*)hPos->Clone();
-        N->SetDirectory(nullptr);
-        P->SetDirectory(nullptr);
+        TH3D* neg = (TH3D*)hNeg->Clone(); neg->SetDirectory(nullptr);
+        TH3D* pos = (TH3D*)hPos->Clone(); pos->SetDirectory(nullptr);
 
-        // 3D ratio
-        TH3D* R = (TH3D*)N->Clone();
-        R->SetDirectory(nullptr);
-        R->Divide(N, P);
+        TH3D* ratio = (TH3D*)neg->Clone(); ratio->SetDirectory(nullptr);
+        ratio->Divide(pos, neg);
 
-        for (auto ax : {LCMSAxis::Out, LCMSAxis::Side, LCMSAxis::Long}) {
-            auto name = Form("ratio_%d_%d_%d", centIdx, ktIdx, (int)ax);
+        for (auto axis : {LCMSAxis::Out, LCMSAxis::Side, LCMSAxis::Long}) {
+            // Отношение проекций
+            {
+                TH1D* h = RatioProject(*neg, *pos, centIdx, yIdx, axis);
+                fRatioProj->cd();
+                h->Write();
+            }
 
-            // Ratio of projections
-            TH1D* r1 = MakeRatio1D(*N, *P, ax, name);
-            r1->SetDirectory(gDirectory);
-            fRatioProj->cd();
-            r1->Write();
-            delete r1;
-
-            // Projection of 3D ratio
-            TH1D* r2 = ProjectRatio1D(*R, ax, name);
-            r2->SetDirectory(gDirectory);
-            fProjRatio->cd();
-            r2->Write();
-            delete r2;
+            // Проекция отношения
+            {
+                TH1D* h = ProjectRatio(*ratio, centIdx, yIdx, axis);
+                fProjRatio->cd();
+                h->Write();
+            }
         }
-
-        delete R;
-        delete N;
-        delete P;
     }
 }
