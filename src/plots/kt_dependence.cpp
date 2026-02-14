@@ -15,13 +15,13 @@ void MakeKtDependence(
 ) {
     for (int chIdx = 0; chIdx < chargeSize; chIdx++) {
         // 3 мультиграфа тут
-        TMultiGraph* mg_R[3] = { new TMultiGraph(), new TMultiGraph(), new TMultiGraph() };
+        TMultiGraph* mg_R[6] = { new TMultiGraph(), new TMultiGraph(), new TMultiGraph(), new TMultiGraph(), new TMultiGraph(), new TMultiGraph() };
         TMultiGraph* mg_L = new TMultiGraph();
 
         std::vector<std::pair<TObject*, std::string>> legendEntries;
         
         for (int centIdx = 0; centIdx < centralitySize; centIdx++) {
-            TGraphErrors* g_R[3] = { new TGraphErrors(), new TGraphErrors(), new TGraphErrors() };
+            TGraphErrors* g_R[6] = { new TGraphErrors(), new TGraphErrors(), new TGraphErrors(), new TGraphErrors(), new TGraphErrors(), new TGraphErrors() };
             TGraphErrors* g_L    = new TGraphErrors();
             for (int lcmsIdx = 0; lcmsIdx < lcmsSize; lcmsIdx++) {
                 g_R[lcmsIdx]->SetName(

@@ -2,3 +2,4 @@ results
 input
 build
 .vscode
+*.root

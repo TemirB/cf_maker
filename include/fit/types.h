@@ -18,8 +18,6 @@ struct FitResult {
     bool IsFinite() const;
     double Chi2Ndf() const;
     bool IsValid() const;
-    //
-    void returnAllR(int i) const;
 };
 
 using FitGrid = FitResult[chargeSize][centralitySize][ktSize];

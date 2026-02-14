@@ -4,8 +4,6 @@
 #include <TH1.h>
 #include <TTree.h>
 
-#include "fit/cache.h"
-#include "fit/json.h"
 #include "fit/badfit.h"
 #include "plots.h"
 #include "context.h"
@@ -30,14 +28,7 @@ int main(int argc, char** argv) {
 
     FitResult fitRes[chargeSize][centralitySize][ktSize]{};
 
-    std::string reason;
-    auto cache = LoadFitCache(ctx.inputFile, ctx.outDir, fitRes, reason);
-
-    if (cache == CacheStatus::Ok) {
-        std::cout << "Using cached CF and fits\n";
-    } else {
-        std::cout << "Recomputing (" << reason << ")\n";
-
+    {
         TFile fCF(ctx.cf3dFile.c_str(), "RECREATE");
         if (fCF.IsZombie()) {
             std::cerr << "ERROR: cannot create " << ctx.cf3dFile << "\n";
@@ -47,7 +38,6 @@ int main(int argc, char** argv) {
         BuildAndFit3DCorrelationFunctions(input, &fCF, fitRes);
 
         fCF.Write();
-        WriteFitJson(ctx.inputFile, ctx.outDir, fitRes);
     }
     // bad fit collect
     std::vector<BadFitPoint> badPoints;

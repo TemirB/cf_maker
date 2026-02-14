@@ -113,7 +113,7 @@ void Write1DProjection(
     std::string name = tag + "_" + ToString(axis);
 
     auto CF = RootPtr<TH1D>((TH1D*)hA->Clone(name.c_str()));
-    CF->Divide(hAwei.get(), hA.get());
+    CF->Divide(hAwei.get(), hA.get(), 1., 1., "B");
 
     auto fit = BuildLCMSFitFrom3D(*A, Fit3D0, axis, tag);
 
