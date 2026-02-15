@@ -149,22 +149,26 @@ void Write1DProjection(
 
 void MakeLCMS1DProjections(TFile* input, TFile* out, FitGrid& fitRes)
 {
-    auto fit = std::unique_ptr<TF3>(CreateCF3DFit());
-
     for (int chIdx = 0; chIdx < chargeSize; chIdx++)
     for (int centIdx = 0; centIdx < centralitySize; centIdx++)
     for (int ktIdx = 0; ktIdx < ktSize; ktIdx++) {
         TH3D* h_A = getNum(input, chIdx, centIdx, ktIdx);
         TH3D* h_A_wei = getNumWei(input, chIdx, centIdx, ktIdx);
 
+        auto fit = std::unique_ptr<TF3>(CreateCF3DFit(centIdx, ktIdx));
+
         const FitResult& r = fitRes[chIdx][centIdx][ktIdx];
 
         fit->SetParameter(0, r.R[0]);
         fit->SetParameter(1, r.R[1]);
         fit->SetParameter(2, r.R[2]);
+        fit->SetParameter(3, r.R[3]);
+        fit->SetParameter(4, r.R[4]);
+        fit->SetParameter(5, r.R[5]);
+
         fit->SetParameter(3, r.lambda);
 
-        for (int p = 0; p < 4; p++)
+        for (int p = 0; p < 7; p++)
             fit->FixParameter(p, fit->GetParameter(p));
 
         auto Fit3D = MakeFitHistogram(*fit);
