@@ -23,7 +23,6 @@ Double_t CF_fit_3d(Double_t* q, Double_t* par) {
 TF3* CreateCF3DFit(int centrality, int rapidity) {
     TF3* fit3d = new TF3("fit3d", CF_fit_3d, -0.05, 0.05, -0.05, 0.05, -0.05, 0.05, 7);
     
-    // === ФИЗИЧЕСКИЕ НАЧАЛЬНЫЕ УСЛОВИЯ (зависят ТОЛЬКО от centrality) ===
     double R_out, R_side, R_long, R_os, R_ol, R_sl, lambda;
     
     switch (centrality) {
@@ -43,14 +42,12 @@ TF3* CreateCF3DFit(int centrality, int rapidity) {
             R_out = 5.5; R_side = 4.0; R_long = 4.5; lambda = 0.88;
     }
     
-    // Кросс-термы: R_sl часто ненулевой, остальные близки к 0
     R_os = 0.0;
     R_ol = 0.0;
-    R_sl = 0.25 * TMath::Sqrt(R_side * R_long); // ~25% от геом. среднего
+    R_sl = 0.0;
     
     fit3d->SetParameters(R_out, R_side, R_long, R_os, R_ol, R_sl, lambda);
     
-    // === АДАПТИВНЫЕ ГРАНИЦЫ ПОД ЦЕНТРАЛЬНОСТЬ (без завышения!) ===
     switch (centrality) {
         case 0: // 0-5%
             fit3d->SetParLimits(0, 4.5, 7.2); // R_out
@@ -67,8 +64,8 @@ TF3* CreateCF3DFit(int centrality, int rapidity) {
             fit3d->SetParLimits(1, 2.5, 4.6);
             fit3d->SetParLimits(2, 2.6, 4.7);
             break;
-        case 3: // 20-30% — САМОЕ ВАЖНОЕ: верхние границы НЕ завышены!
-            fit3d->SetParLimits(0, 2.8, 5.2); // R_out: макс 5.2 (не 10.0!)
+        case 3: // 20-30%
+            fit3d->SetParLimits(0, 2.8, 5.2); // R_out
             fit3d->SetParLimits(1, 2.2, 4.2); // R_side
             fit3d->SetParLimits(2, 2.3, 4.3); // R_long
             break;
@@ -78,15 +75,12 @@ TF3* CreateCF3DFit(int centrality, int rapidity) {
             fit3d->SetParLimits(2, 2.9, 5.6);
     }
     
-    // Кросс-термы: умеренные границы (±3.0 достаточно для физики)
     fit3d->SetParLimits(3, -3.0, 3.0); // R_os
     fit3d->SetParLimits(4, -3.0, 3.0); // R_ol
     fit3d->SetParLimits(5, -3.0, 3.0); // R_sl
     
-    // Lambda: физичные границы (0.6 — минимальное разумное значение)
     fit3d->SetParLimits(6, 0.6, 1.0); // lambda
     
-    // Имена параметров (уже корректны в вашем коде)
     fit3d->SetParName(0, "R_out");
     fit3d->SetParName(1, "R_side");
     fit3d->SetParName(2, "R_long");
