@@ -26,7 +26,7 @@ TF3* CreateCF3DFit(int centrality, int rapidity) {
     double R_out, R_side, R_long, R_os, R_ol, R_sl, lambda;
     
     switch (centrality) {
-        case 0: // 0-5% (центральные)
+        case 0: // 0-5%
             R_out = 6.0; R_side = 4.5; R_long = 4.8; lambda = 0.87;
             break;
         case 1: // 5-10%
@@ -35,7 +35,7 @@ TF3* CreateCF3DFit(int centrality, int rapidity) {
         case 2: // 10-20%
             R_out = 4.8; R_side = 3.6; R_long = 3.9; lambda = 0.89;
             break;
-        case 3: // 20-30% (периферия) — КЛЮЧЕВО: низкие значения!
+        case 3: // 20-30%
             R_out = 4.2; R_side = 3.1; R_long = 3.4; lambda = 0.91;
             break;
         default:
