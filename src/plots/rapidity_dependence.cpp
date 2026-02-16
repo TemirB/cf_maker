@@ -38,12 +38,12 @@ void MakeRapidityDependence(
     // }; 
 
     for (int chIdx = 0; chIdx < chargeSize; chIdx++) {
-        TMultiGraph* mg_R[3] = { new TMultiGraph(), new TMultiGraph(), new TMultiGraph() };
+        TMultiGraph* mg_R[6] = { new TMultiGraph(), new TMultiGraph(), new TMultiGraph(), new TMultiGraph(), new TMultiGraph(), new TMultiGraph() };
         TMultiGraph* mg_L = new TMultiGraph();
         std::vector<std::pair<TObject*, std::string>> legendEntries;
 
         for (int centIdx = 0; centIdx < centralitySize; centIdx++) {
-            TGraphErrors* g_R[3] = { new TGraphErrors(), new TGraphErrors(), new TGraphErrors() };
+            TGraphErrors* g_R[6] = { new TGraphErrors(), new TGraphErrors(), new TGraphErrors(),new TGraphErrors(), new TGraphErrors(), new TGraphErrors() };
             TGraphErrors* g_L    = new TGraphErrors();
             for (int lcmsIdx = 0; lcmsIdx < lcmsSize; lcmsIdx++) {
                 g_R[lcmsIdx]->SetName(Form("g_R_%s_%s_centr_%s", LCMS[lcmsIdx].c_str(), chargeNames[chIdx].c_str(), centralityNames[centIdx].c_str()));
