@@ -13,11 +13,11 @@ Double_t CF_fit_3d(Double_t* q, Double_t* par) {
     Double_t qRq = par[0]*par[0] * q_out*q_out +
                    par[1]*par[1] * q_side*q_side +
                    par[2]*par[2] * q_long*q_long +
-                 2.*par[4]*par[4] * q_out*q_side +
-                 2.*par[5]*par[5] * q_out*q_long +
-                 2.*par[6]*par[6] * q_side*q_long;
+                 2.*par[3]*par[3] * q_out*q_side +
+                 2.*par[4]*par[4] * q_out*q_long +
+                 2.*par[5]*par[5] * q_side*q_long;
 
-    return 1.0 + par[3] * TMath::Exp(-qRq / hc2);
+    return 1.0 + par[6] * TMath::Exp(-qRq / hc2);
 }
 
 TF3* CreateCF3DFit() {
@@ -30,13 +30,15 @@ TF3* CreateCF3DFit() {
         7
     );
     fit3d->SetParameters(4.0, 4.0, 4.0, 0.5, 0.0, 0.0, 0.0);
+    
     fit3d->SetParLimits(0, 0., 10.);
     fit3d->SetParLimits(1, 0., 10.);
     fit3d->SetParLimits(2, 0., 10.);
-    fit3d->SetParLimits(3, 0., 1.);
+    fit3d->SetParLimits(3, -5., 5.);
     fit3d->SetParLimits(4, -5., 5.);
     fit3d->SetParLimits(5, -5., 5.);
-    fit3d->SetParLimits(6, -5., 5.);
+    fit3d->SetParLimits(6, 0., 1.);
+
     fit3d->SetParName(0, "R_out");
     fit3d->SetParName(1, "R_side");
     fit3d->SetParName(2, "R_long");
@@ -63,15 +65,12 @@ FitResult FitCF3D(TH3D* hCF, TF3* fit3d) {
     for (int i = 0; i < 7; i++) {
         Double_t val = fit3d->GetParameter(i);
         Double_t err = fit3d->GetParError(i);
-        if (i < 3) {
+        if (i < 6) {
             res.R[i] = val;
             res.eR[i] = err;
-        } else if (i == 3) {
+        } else if (i == 6) {
             res.lambda = val;
             res.elambda = err;
-        } else {
-            res.R[i - 1] = val;
-            res.eR[i - 1] = err;
         }
     }
 

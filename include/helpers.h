@@ -20,8 +20,8 @@ const std::array<int, 4> colors = {kRed, kBlue, kMagenta, kGreen};
 const std::array<int, 4> markers = {20, 21, 22, 23};
 
 const std::array<std::string, 3> axises          = {"x", "y", "z"};
-const std::array<std::string, 3> LCMS            = {"out", "side", "long"};
-const std::array<std::string, 2> chargeNames     = {"neg", "pos"};
+const std::array<std::string, 6> LCMS            = {"out", "side", "long", "out-side", "out-long", "side-long"};
+const std::array<std::string, 2> chargeNames     = {"pos", "neg"};
 const std::array<std::string, 4> centralityNames = {"0-10", "10-30", "30-50", "50-80"};
 const std::array<std::string, 4> ktNames         = {"0.15-0.25", "0.25-0.35", "0.35-0.45", "0.45-0.60"};
 

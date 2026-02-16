@@ -76,7 +76,7 @@ void MakeRapidityDependence(
                     // if (std::find(values.begin(), values.end(), yIdx) != values.end()) continue;
                     g_R[lcmsIdx]->SetPoint(yIdx, xVal, res.R[lcmsIdx]);
                     g_R[lcmsIdx]->SetPointError(yIdx, 0, res.eR[lcmsIdx]);
-                    std::cout << Form("R(%s)=%f+-%f\t", LCMS[lcmsIdx], res.R[lcmsIdx], res.eR[lcmsIdx]);
+                    std::cout << Form("R(%s)=%f+-%f\t", LCMS[lcmsIdx].data(), res.R[lcmsIdx], res.eR[lcmsIdx]);
                 }
 
                 g_L->SetPoint(yIdx, xVal, res.lambda);
