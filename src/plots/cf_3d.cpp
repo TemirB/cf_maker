@@ -12,12 +12,13 @@ void BuildAndFit3DCorrelationFunctions(
     TFile* outFile,
     FitGrid& fitRes
 ) {
-    TF3* fit3d = CreateCF3DFit();
     TH3D* h_CF_work = nullptr;
 
     for (int chIdx = 0; chIdx < chargeSize; chIdx++)
     for (int centIdx = 0; centIdx < centralitySize; centIdx++)
     for (int yIdx = 0; yIdx < rapiditySize; yIdx++) {
+        TF3* fit3d = CreateCF3DFit(centIdx, yIdx);
+
         TH3D* h_A = getNum(inputFile, chIdx, centIdx, yIdx);
         TH3D* h_A_wei = getNumWei(inputFile, chIdx, centIdx, yIdx);
         if (!h_A || !h_A_wei) {
@@ -60,6 +61,5 @@ void BuildAndFit3DCorrelationFunctions(
         h_CF_work->SetDirectory(nullptr);
     }
 
-    delete fit3d;
     delete h_CF_work;
 };

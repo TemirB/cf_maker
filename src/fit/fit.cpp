@@ -20,7 +20,7 @@ Double_t CF_fit_3d(Double_t* q, Double_t* par) {
     return 1.0 + par[6] * TMath::Exp(-qRq / hc2);
 }
 
-TF3* CreateCF3DFit() {
+TF3* CreateCF3DFit(int centrality, int rapidity) {
     TF3* fit3d = new TF3(
         "fit3d",
         CF_fit_3d,
