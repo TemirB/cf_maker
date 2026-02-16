@@ -22,11 +22,17 @@ Double_t CF_fit_3d(Double_t* q, Double_t* par) {
 }
 
 TF3* CreateCF3DFit(int centrality, int kt) {
+    double fitLim = 0.05;
+    if (centrality + kt > 4) {
+        fitLim = 0.15;
+    } else if (kt == 3) {
+        fitLim = 0.1;
+    }
     TF3* fit3d = new TF3(
         "fit3d", CF_fit_3d, 
-        -0.05, 0.05,
-        -0.05, 0.05,
-        -0.05, 0.05,
+        -fitLim, fitLim,
+        -fitLim, fitLim,
+        -fitLim, fitLim,
         7
     );
     
