@@ -70,7 +70,7 @@ void MakeRapidityDependence(
                 std::string name = Form("[%.2f;%.2f]", left, right);
                 double xVal = rapidityValues[0] + (yIdx + 0.5) * yStep;
 
-                std::cout << Form("charge: %d, centrality: %d, rapidity: %d, chi2: %f, ndf %d", chIdx, centIdx, yIdx, res.chi2, res.ndf) << std::endl;
+                std::cout << Form("charge: %d, centrality: %d, rapidity: %d, chi2: %f, ndf %d, chi2/ndf = %f", chIdx, centIdx, yIdx, res.chi2, res.ndf, res.chi2/res.ndf) << std::endl;
                 for (int lcmsIdx = 0; lcmsIdx < lcmsSize; lcmsIdx++) {
                     // auto values = mDot[lcmsIdx];
                     // if (std::find(values.begin(), values.end(), yIdx) != values.end()) continue;
