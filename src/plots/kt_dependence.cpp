@@ -10,6 +10,10 @@
 #include "fit/badfit.h"
 #include "draw.h"
 
+bool deletePoint(int cent, int kt, LCMSAxis lcms) {
+
+}
+
 void MakeKtDependence(
     TFile* outFile,
     FitGrid& fitRes
