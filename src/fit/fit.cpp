@@ -29,7 +29,7 @@ TF3* CreateCF3DFit() {
         -0.05, 0.05,
         7
     );
-    fit3d->SetParameters(4.0, 4.0, 4.0, 0.5, 0.0, 0.0, 0.0);
+    fit3d->SetParameters(4.0, 4.0, 4.0, 0.0, 0.0, 0.0, 0.5);
     
     fit3d->SetParLimits(0, 0., 10.);
     fit3d->SetParLimits(1, 0., 10.);
@@ -42,10 +42,10 @@ TF3* CreateCF3DFit() {
     fit3d->SetParName(0, "R_out");
     fit3d->SetParName(1, "R_side");
     fit3d->SetParName(2, "R_long");
-    fit3d->SetParName(3, "lambda");
-    fit3d->SetParName(4, "R_os");
-    fit3d->SetParName(5, "R_ol");
-    fit3d->SetParName(6, "R_sl");
+    fit3d->SetParName(3, "R_os");
+    fit3d->SetParName(4, "R_ol");
+    fit3d->SetParName(5, "R_sl");
+    fit3d->SetParName(6, "lambda");
     return fit3d;
 }
 
