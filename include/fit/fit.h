@@ -3,7 +3,7 @@
 #include <TF3.h>
 #include <TH3.h>
 
-#include "fit/json.h"
+#include "fit/types.h"
 
 // 3D Gaussian CF model
 Double_t CF_fit_3d(Double_t* q, Double_t* par);
