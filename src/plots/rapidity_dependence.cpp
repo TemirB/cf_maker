@@ -1,5 +1,6 @@
 #include "plots.h"
 
+#include <iostream>
 #include <string>
 #include <algorithm>
 
@@ -17,24 +18,24 @@ void MakeRapidityDependence(
 ) {
     double yStep = (rapidityValues[1] - rapidityValues[0]) / rapiditySize;
     
-    std::map<int, std::map<int, std::vector<int>>> badDots = {
-        {
-            2, 
-            {
-                {0 , {0, 2, 9}},
-                {1, {2}},
-                {2, {2}}
-            }
-        },
-        {
-            3,
-            { 
-                {0, {0, 1, 2, 3, 4, 7}},
-                {1, {0, 1, 2, 3, 7, 8, 9}},
-                {2, {0, 1, 2, 3, 7, 8, 9}}
-            }
-        }
-    }; 
+    // std::map<int, std::map<int, std::vector<int>>> badDots = {
+    //     {
+    //         2, 
+    //         {
+    //             {0 , {0, 2, 9}},
+    //             {1, {2}},
+    //             {2, {2}}
+    //         }
+    //     },
+    //     {
+    //         3,
+    //         { 
+    //             {0, {0, 1, 2, 3, 4, 7}},
+    //             {1, {0, 1, 2, 3, 7, 8, 9}},
+    //             {2, {0, 1, 2, 3, 7, 8, 9}}
+    //         }
+    //     }
+    // }; 
 
     for (int chIdx = 0; chIdx < chargeSize; chIdx++) {
         TMultiGraph* mg_R[3] = { new TMultiGraph(), new TMultiGraph(), new TMultiGraph() };
@@ -58,10 +59,10 @@ void MakeRapidityDependence(
 
             legendEntries.push_back({g_R[0], centralityNames[centIdx]});
 
-            auto mDot = badDots[centIdx];
+            // auto mDot = badDots[centIdx];
             for (int yIdx = 0; yIdx < rapiditySize; yIdx++) {
                 FitResult res = fitRes[chIdx][centIdx][yIdx];
-                if (IsBadFit(res)) continue;
+                // if (IsBadFit(res)) continue;
 
                 double left  = rapidityValues[0] + yIdx * yStep;
                 double right = left + yStep;
@@ -69,15 +70,18 @@ void MakeRapidityDependence(
                 std::string name = Form("[%.2f;%.2f]", left, right);
                 double xVal = rapidityValues[0] + (yIdx + 0.5) * yStep;
 
+                std::cout << Form("charge: %d, centrality: %d, rapidity: %d, chi2: %f, ndf %d", chIdx, centIdx, yIdx, res.chi2, res.ndf) << std::endl;
                 for (int lcmsIdx = 0; lcmsIdx < lcmsSize; lcmsIdx++) {
-                    auto values = mDot[lcmsIdx];
-                    if (std::find(values.begin(), values.end(), yIdx) != values.end()) continue;
+                    // auto values = mDot[lcmsIdx];
+                    // if (std::find(values.begin(), values.end(), yIdx) != values.end()) continue;
                     g_R[lcmsIdx]->SetPoint(yIdx, xVal, res.R[lcmsIdx]);
                     g_R[lcmsIdx]->SetPointError(yIdx, 0, res.eR[lcmsIdx]);
+                    std::cout << Form("R(%s)=%f+-%f\t", LCMS[lcmsIdx], res.R[lcmsIdx], res.eR[lcmsIdx]);
                 }
 
                 g_L->SetPoint(yIdx, xVal, res.lambda);
                 g_L->SetPointError(yIdx, 0, res.elambda);
+                std::cout << Form("lambda=%f\t", res.lambda) << std::endl;
             }
             for (int lcmsIdx = 0; lcmsIdx < lcmsSize; lcmsIdx++) {
                 mg_R[lcmsIdx]->Add(g_R[lcmsIdx], "lp");
