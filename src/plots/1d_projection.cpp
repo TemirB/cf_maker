@@ -5,6 +5,7 @@
 #include <TH3.h>
 #include <TF3.h>
 #include <TCanvas.h>
+#include <TStyle.h>
 #include "TLegend.h"
 #include "TDirectory.h"
 
@@ -87,15 +88,18 @@ RootPtr<TH1D> BuildLCMSFitFrom3D(
 // ============================================
 
 void Write1DProjection(
+    int charge, int centr, int kt,
     TFile& outFile,
     const TH3D& A0,
     const TH3D& Awei0,
     const TH3D& Fit3D0,
     const LCMSAxis axis,
-    const std::string tag,
-    TCanvas* canvas,
-    int idx
+    // FitResult r,
+    TCanvas* canvas
 ) {
+
+    std::string tag = getCFName(charge, centr, kt);
+
     auto A    = RootPtr<TH3D>((TH3D*)A0.Clone());
     auto Awei = RootPtr<TH3D>((TH3D*)Awei0.Clone());
     A->SetDirectory(nullptr);
@@ -124,7 +128,17 @@ void Write1DProjection(
 
     CF->GetYaxis()->SetRangeUser(0.9,1.7);
     CF->GetXaxis()->SetRangeUser(-0.2,0.2);
+    CF->SetStats(0);
+
+    // double chi2 = r.chi2;
+    // double ndf = r.ndf;
+    // double chi2ndf = chi2/ndf;
+
+    // TPaveText* pt = TPaveText(0.6, 0.7, 0.9, 0.9, "NDC");
+
+
     fit->GetXaxis()->SetRangeUser(-0.2,0.2);
+    gStyle->SetOptFit(0102);
 
     TCanvas c(name.c_str(), name.c_str(), 800, 600);
     c.SetTicks(1,1);
@@ -141,7 +155,7 @@ void Write1DProjection(
     leg.AddEntry(fit.get(),"3D Gaussian fit","l");
     leg.Draw();
 
-    canvas->cd(idx);
+    canvas->cd(4*centr + kt);
     CF->Draw("P");
     fit->Draw("L SAME");
 
@@ -156,10 +170,19 @@ void Write1DProjection(
 void MakeLCMS1DProjections(TFile* input, TFile* out, FitGrid& fitRes)
 {
     std::vector<TCanvas*> canvases = {
-        new TCanvas("all_out_1d_histos", "All 1d out projects", 800, 600),
-        new TCanvas("all_side_1d_histos", "All 1d side projects", 800, 600),
-        new TCanvas("all_long_1d_histos", "All 1d long projects", 800, 600)
+        new TCanvas("all_out_1d_histos_pos", "All 1d(+) out projects", 800, 600),
+        new TCanvas("all_out_1d_histos_neg", "All 1d(-) out projects", 800, 600),
+        new TCanvas("all_side_1d_histos_pos", "All 1d(+) side projects", 800, 600),
+        new TCanvas("all_side_1d_histos_neg", "All 1d(-) side projects", 800, 600),
+        new TCanvas("all_long_1d_histos_pos", "All 1d(+) long projects", 800, 600),
+        new TCanvas("all_long_1d_histos_neg", "All 1d(-) long projects", 800, 600)
     };
+
+    for (int chIdx = 0; chIdx < chargeSize; chIdx++)
+    for (int lcmsIdx = 0; lcmsIdx < 3; lcmsIdx++) {
+        canvases[3 * chIdx + lcmsIdx]->Divide(4, 4);
+    }
+
     for (int chIdx = 0; chIdx < chargeSize; chIdx++)
     for (int centIdx = 0; centIdx < centralitySize; centIdx++)
     for (int ktIdx = 0; ktIdx < ktSize; ktIdx++) {
@@ -177,18 +200,19 @@ void MakeLCMS1DProjections(TFile* input, TFile* out, FitGrid& fitRes)
         fit->SetParameter(4, r.R[4]);
         fit->SetParameter(5, r.R[5]);
 
-        fit->SetParameter(3, r.lambda);
+        fit->SetParameter(6, r.lambda);
 
         for (int p = 0; p < 7; p++)
             fit->FixParameter(p, fit->GetParameter(p));
 
         auto Fit3D = MakeFitHistogram(*fit);
 
-        std::string cf_name = getCFName(chIdx, centIdx, ktIdx);
         for (int lcmsIdx = 0; lcmsIdx < 3; lcmsIdx++)
             Write1DProjection(
-                *out, *h_A, *h_A_wei, *Fit3D, LCMSAxis(lcmsIdx), cf_name, 
-                canvases[lcmsIdx], 4*centIdx + ktIdx
+                chIdx, centIdx, ktIdx,
+                *out, *h_A, *h_A_wei, *Fit3D, LCMSAxis(lcmsIdx), 
+                // r, 
+                canvases[3 * chIdx + lcmsIdx]
             );
     }
 
