@@ -10,9 +10,9 @@
 #include "fit/badfit.h"
 #include "draw.h"
 
-bool deletePoint(int cent, int kt, LCMSAxis lcms) {
+// bool deletePoint(int cent, int kt, LCMSAxis lcms) {
 
-}
+// }
 
 void MakeKtDependence(
     TFile* outFile,
@@ -49,20 +49,20 @@ void MakeKtDependence(
                 double xval = (ktValues[ktIdx+1] + ktValues[ktIdx]) / 2.0;
                 double xerr = ktValues[ktIdx+1] - xval;
 
-                std::cout << Form("charge: %d, centrality: %d, kt: %d, chi2: %f, ndf %d", chIdx, centIdx, ktIdx, res.chi2, res.ndf) << std::endl;
+                // std::cout << Form("charge: %d, centrality: %d, kt: %d, chi2: %f, ndf %d", chIdx, centIdx, ktIdx, res.chi2, res.ndf) << std::endl;
                 for (int lcmsIdx = 0; lcmsIdx < lcmsSize; lcmsIdx++) {
 
                     g_R[lcmsIdx]->SetPoint(ktIdx, xval, res.R[lcmsIdx]);
                     g_R[lcmsIdx]->SetPointError(ktIdx, xerr, res.eR[lcmsIdx]);
 
-                    std::cout << Form("R(%s)=%f+-%f\t", LCMS[lcmsIdx], res.R[lcmsIdx], res.eR[lcmsIdx]);
+                    // std::cout << Form("R(%s)=%f+-%f\t", LCMS[lcmsIdx], res.R[lcmsIdx], res.eR[lcmsIdx]);
                 }
                 g_L->SetPoint(ktIdx, xval, res.lambda);
                 g_L->SetPointError(ktIdx, xerr, res.elambda);
 
-                std::cout << Form("lambda=%f\t", res.lambda);
+                // std::cout << Form("lambda=%f\t", res.lambda);
 
-                std::cout << std::endl;
+                // std::cout << std::endl;
             }
 
             for (int lcmsIdx = 0; lcmsIdx < lcmsSize; lcmsIdx++) {

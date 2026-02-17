@@ -1,4 +1,5 @@
 #include <iostream>
+
 #include <TFile.h>
 #include <TSystem.h>
 #include <TH1.h>
@@ -60,6 +61,32 @@ int main(int argc, char** argv) {
 
         f->Write();
         f->Close();
+    }
+    {
+        for(int ch = 0; ch < 1; ch++)
+        for(int centr = 0; centr < 1; centr++) {
+            auto rKt = fitRes[ch][centr];
+            for (int lcms = 0; lcms < 3; lcms++) {
+                std::cout << Form(
+                    "// %s, %s(%d): %.2f, %.2f, %.2f, %.2f", 
+                    LCMS[lcms], chargeNames[ch], centr,
+                    rKt[0].R[lcms], rKt[1].R[lcms], rKt[2].R[lcms], rKt[3].R[lcms]
+                ) << std::endl;
+            }
+
+            std::cout << Form(
+                "// lambda, %s(%d): %.3f, %.3f, %.3f, %.3f",
+                chargeNames[ch], centr,
+                rKt[0].lambda, rKt[1].lambda, rKt[2].lambda, rKt[3].lambda
+            ) << std::endl;
+            for (int kt = 0; kt < ktSize; kt++) {
+                auto r = fitRes[ch][centr][kt];
+                std::cout << Form(
+                    "%s(%d) kt: %d, out: %.2f, side: %.2f, long: %.2f, lambda: %.3f",
+                    chargeNames[ch], centr, kt, r.R[0], r.R[1], r.R[2], r.lambda
+                ) << std::endl;
+            }
+        }
     }
 
     // // rapidity_diff

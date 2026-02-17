@@ -17,7 +17,7 @@ void BuildAndFit3DCorrelationFunctions(
     for (int chIdx = 0; chIdx < chargeSize; chIdx++)
     for (int centIdx = 0; centIdx < centralitySize; centIdx++)
     for (int ktIdx = 0; ktIdx < ktSize; ktIdx++) {
-        TF3* fit3d = CreateCF3DFit(centIdx, ktIdx);
+        TF3* fit3d = CreateCF3DFit(chIdx, centIdx, ktIdx);
 
         TH3D* h_A = getNum(inputFile, chIdx, centIdx, ktIdx);
         TH3D* h_A_wei = getNumWei(inputFile, chIdx, centIdx, ktIdx);

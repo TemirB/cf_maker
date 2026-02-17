@@ -25,8 +25,17 @@ Double_t CF_fit_3d(Double_t* q, Double_t* par) {
 
 InitialParameters ip = InitialParameters();
 
-TF3* CreateCF3DFit(int centrality, int kt) {
+TF3* CreateCF3DFit(int charge, int centrality, int kt) {
     double fitLim = 0.2;
+    // if (centrality == 0 && kt == 3) {
+    //     fitLim = 0.15;
+    // } else if (centrality == 1) {
+    //     fitLim = 0.1;
+    // } else if (centrality == 2) {
+    //     fitLim = 0.15;
+    // } else if (centrality == 3) {
+    //     fitLim = 0.2;
+    // }
     TF3* fit3d = new TF3(
         "fit3d", CF_fit_3d, 
         -fitLim, fitLim,
@@ -35,30 +44,23 @@ TF3* CreateCF3DFit(int centrality, int kt) {
         7
     );
 
-    double Rout = ip.get("out", centrality, kt);
-    double Rside = ip.get("side", centrality, kt);
-    double Rlong = ip.get("long", centrality, kt);
+    double Rout = ip.get(charge, "out", centrality, kt);
+    double Rside = ip.get(charge, "side", centrality, kt);
+    double Rlong = ip.get(charge, "long", centrality, kt);
     double Routside = 0;
     double Routlong = 0;
     double Rsidelong = 0;
-    double Lambda = ip.get("lambda", centrality, kt);
-    
-    Routside = 0; // OS
-    Routlong = 0; // OL
-    Rsidelong = 0; // SL
+    double Lambda = ip.get(charge, "lambda", centrality, kt);
     
     fit3d->SetParameters(Rout, Rside, Rlong, Routside, Routlong, Rsidelong, Lambda);
-
-    fit3d->FixParameter(3, 0.0); // OS
-    fit3d->FixParameter(5, 0.0); // SL
     
-    fit3d->SetParLimits(0, 0.0, 10.0);
-    fit3d->SetParLimits(1, 0.0, 10.0);
-    fit3d->SetParLimits(2, 0.0, 10.0);
+    fit3d->SetParLimits(0, 0.0, 10.);
+    fit3d->SetParLimits(1, 0.0, 10.);
+    fit3d->SetParLimits(2, 0.0, 10.);
     fit3d->SetParLimits(3, -30., 30.);
     fit3d->SetParLimits(4, -30., 30.);
     fit3d->SetParLimits(5, -30., 30.);
-    fit3d->SetParLimits(6, 0.0, 1.0);
+    fit3d->SetParLimits(6, 0.7, 1.0);
     
     fit3d->SetParName(0, "R_out");
     fit3d->SetParName(1, "R_side");
@@ -79,6 +81,9 @@ FitResult FitCF3D(TH3D* hCF, TF3* fit3d) {
     // ROOT::Math::MinimizerOptions::SetDefaultTolerance(1e-3); // смягчить критерий сходимости
     // ROOT::Math::MinimizerOptions::SetDefaultMinimizer("Minuit2", "Simplex");
     // fit3d->FixParameter(6, 0.9);
+    fit3d->FixParameter(3, 0.0); // OS
+    fit3d->FixParameter(4, 0.0);
+    fit3d->FixParameter(5, 0.0); // SL
     auto fitPtr = hCF->Fit(fit3d, "RMQS0");
 
     gSystem->RedirectOutput("fit_result.txt", "w");

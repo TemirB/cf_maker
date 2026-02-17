@@ -189,7 +189,7 @@ void MakeLCMS1DProjections(TFile* input, TFile* out, FitGrid& fitRes)
         TH3D* h_A = getNum(input, chIdx, centIdx, ktIdx);
         TH3D* h_A_wei = getNumWei(input, chIdx, centIdx, ktIdx);
 
-        auto fit = std::unique_ptr<TF3>(CreateCF3DFit(centIdx, ktIdx));
+        auto fit = std::unique_ptr<TF3>(CreateCF3DFit(chIdx, centIdx, ktIdx));
 
         const FitResult& r = fitRes[chIdx][centIdx][ktIdx];
 
