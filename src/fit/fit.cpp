@@ -4,6 +4,8 @@
 #include <TFitResult.h>
 #include <TMath.h>
 
+#include <fit/initial_parameters.h>
+
 const Double_t hc2 = 0.197 * 0.197;
 
 Double_t CF_fit_3d(Double_t* q, Double_t* par) {
@@ -21,42 +23,10 @@ Double_t CF_fit_3d(Double_t* q, Double_t* par) {
     return 1.0 + par[6] * TMath::Exp(-qRq / hc2);
 }
 
-std::map<LCMSAxis, std::map<int, std::vector<double>>> initialFitPoints = {
-    {
-        LCMS::Out, {
-            {0, {6.2, 5.9, 5.7, 5.4}}, // 3?
-            {1, {5.35, 5.15, 4.9, 4.75}}, // 3?
-            {2, {4.6, 4.4, 4.2, 4.0}}, // 23?
-            {3, {4.2, 4.0, 3.8, 3.6}} // 123?
-        }
-    },
-    {
-        LCMS::Side, {
-            {0, {4.8, 4.1, 3.8, 3.6}}, // 3?
-            {1, {4.1, 3.6, 3.15, 2.8}},
-            {2, {3.4, 3.0, 2.8, 2.6}}, // 3?
-            {3, {2.8, 2.5, 2.3, 2.15}} // 123?
-        }
-    }
-    {
-        {
-        LCMS::Long, {
-            {0, {4.5, 3.5, 3.0, 2.8}}, // 3?
-            {1, {4.3, 3.35, 2.85, 2.6}},
-            {2, {3.67, 2.86, 2.5, 2.3}}, // 23?
-            {3, {2.8, 2.5, 2.3, 2.15}} // 0123?
-        }
-    }
-    },
-};
+InitialParameters ip = InitialParameters();
 
 TF3* CreateCF3DFit(int centrality, int kt) {
     double fitLim = 0.2;
-    // if (centrality + kt > 4) {
-    //     fitLim = 0.15;
-    // } else if (kt == 3) {
-    //     fitLim = 0.1;
-    // }
     TF3* fit3d = new TF3(
         "fit3d", CF_fit_3d, 
         -fitLim, fitLim,
@@ -65,28 +35,13 @@ TF3* CreateCF3DFit(int centrality, int kt) {
         7
     );
 
-    double Roout = initialFitPoint[LCMS::Out][centrality][kt];
-    double Rside = initialFitPoint[LCMS::Side][centrality][kt];
-    double Rlong = initialFitPoint[LCMS::Long][centrality][kt];
-    
-    double Routside, Routlong, Rsidelong, Lambda;
-    
-    switch (centrality) {
-        case 0:
-            Lambda = 0.88;
-            break;
-        case 1:
-            Lambda = 0.89;
-            break;
-        case 2:
-            Lambda = 0.90;
-            break;
-        case 3:
-            Lambda = 0.92;
-            break;
-        default:
-            Lambda = 0.88;
-    }
+    double Rout = ip.get("out", centrality, kt);
+    double Rside = ip.get("side", centrality, kt);
+    double Rlong = ip.get("long", centrality, kt);
+    double Routside = 0;
+    double Routlong = 0;
+    double Rsidelong = 0;
+    double Lambda = ip.get("lambda", centrality, kt);
     
     Routside = 0; // OS
     Routlong = 0; // OL
