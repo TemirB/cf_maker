@@ -21,6 +21,35 @@ Double_t CF_fit_3d(Double_t* q, Double_t* par) {
     return 1.0 + par[6] * TMath::Exp(-qRq / hc2);
 }
 
+std::map<LCMSAxis, std::map<int, std::vector<double>>> initialFitPoints = {
+    {
+        LCMS::Out, {
+            {0, {6.2, 5.9, 5.7, 5.4}}, // 3?
+            {1, {5.35, 5.15, 4.9, 4.75}}, // 3?
+            {2, {4.6, 4.4, 4.2, 4.0}}, // 23?
+            {3, {4.2, 4.0, 3.8, 3.6}} // 123?
+        }
+    },
+    {
+        LCMS::Side, {
+            {0, {4.8, 4.1, 3.8, 3.6}}, // 3?
+            {1, {4.1, 3.6, 3.15, 2.8}},
+            {2, {3.4, 3.0, 2.8, 2.6}}, // 3?
+            {3, {2.8, 2.5, 2.3, 2.15}} // 123?
+        }
+    }
+    {
+        {
+        LCMS::Long, {
+            {0, {4.5, 3.5, 3.0, 2.8}}, // 3?
+            {1, {4.3, 3.35, 2.85, 2.6}},
+            {2, {3.67, 2.86, 2.5, 2.3}}, // 23?
+            {3, {2.8, 2.5, 2.3, 2.15}} // 0123?
+        }
+    }
+    },
+};
+
 TF3* CreateCF3DFit(int centrality, int kt) {
     double fitLim = 0.2;
     // if (centrality + kt > 4) {
@@ -35,76 +64,38 @@ TF3* CreateCF3DFit(int centrality, int kt) {
         -fitLim, fitLim,
         7
     );
+
+    double Roout = initialFitPoint[LCMS::Out][centrality][kt];
+    double Rside = initialFitPoint[LCMS::Side][centrality][kt];
+    double Rlong = initialFitPoint[LCMS::Long][centrality][kt];
     
-    double p0, p1, p2, p3, p4, p5, p6;
+    double Routside, Routlong, Rsidelong, Lambda;
     
     switch (centrality) {
-        case 0: // 0-5%
-            p0 = 6.0 - 0.30*kt;
-            p1 = 4.6 - 0.5*kt;
-            p2 = 4.5 - 0.25*kt;
-            p6 = 0.88;
+        case 0:
+            Lambda = 0.88;
             break;
-        case 1: // 5-10%
-            p0 = 5.3 - 0.35*kt;
-            p1 = 4.0 - 0.30*kt;
-            p2 = 3.8 - 0.30*kt;
-            p6 = 0.89;
+        case 1:
+            Lambda = 0.89;
             break;
-        case 2: // 10-20%
-            p0 = 4.5 - 0.50*kt;
-            p1 = 3.3 - 0.40*kt;
-            p2 = 3.2 - 0.40*kt;
-            p6 = 0.90;
+        case 2:
+            Lambda = 0.90;
             break;
-        case 3: // 20-30%
-            p0 = 3.8 - 0.70*kt;  // 3.8 → 1.7 при kt=3
-            p1 = 2.7 - 0.55*kt;  // 2.7 → 1.05
-            p2 = 2.6 - 0.60*kt;  // 2.6 → 0.8
-            p6 = 0.92;
+        case 3:
+            Lambda = 0.92;
             break;
         default:
-            p0 = 5.5 - 0.4*kt;
-            p1 = 4.0 - 0.3*kt;
-            p2 = 3.6 - 0.3*kt;
-            p6 = 0.88;
+            Lambda = 0.88;
     }
     
-    p3 = 0; // OS
-    p4 = 0; // OL
-    p5 = 0; // SL
+    Routside = 0; // OS
+    Routlong = 0; // OL
+    Rsidelong = 0; // SL
     
-    fit3d->SetParameters(p0, p1, p2, p3, p4, p5, p6);
+    fit3d->SetParameters(Rout, Rside, Rlong, Routside, Routlong, Rsidelong, Lambda);
 
     fit3d->FixParameter(3, 0.0); // OS
     fit3d->FixParameter(5, 0.0); // SL
-    
-    // switch (centrality) {
-    //     case 0: // 0-5%
-    //         fit3d->SetParLimits(0, 4.0, 8.5);   // R_out
-    //         fit3d->SetParLimits(1, 2.8, 6.8);   // R_side
-    //         fit3d->SetParLimits(2, 2.8, 6.5);   // R_long
-    //         break;
-    //     case 1: // 5-10%
-    //         fit3d->SetParLimits(0, 3.0, 7.5);
-    //         fit3d->SetParLimits(1, 2.2, 5.8);
-    //         fit3d->SetParLimits(2, 2.1, 5.6);
-    //         break;
-    //     case 2: // 10-20%
-    //         fit3d->SetParLimits(0, 2.0, 6.5);
-    //         fit3d->SetParLimits(1, 1.4, 5.0);
-    //         fit3d->SetParLimits(2, 1.3, 4.8);
-    //         break;
-    //     case 3: // 20-30%
-    //         fit3d->SetParLimits(0, 0.8, 4.8);
-    //         fit3d->SetParLimits(1, 0.7, 4.2);
-    //         fit3d->SetParLimits(2, 0.6, 4.0);
-    //         break;
-    //     default:
-    //         fit3d->SetParLimits(0, 3.5, 8.5);
-    //         fit3d->SetParLimits(1, 2.5, 6.8);
-    //         fit3d->SetParLimits(2, 2.4, 6.5);
-    // }
     
     fit3d->SetParLimits(0, 0.0, 10.0);
     fit3d->SetParLimits(1, 0.0, 10.0);
