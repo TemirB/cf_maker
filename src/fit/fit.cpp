@@ -70,11 +70,14 @@ TF3* CreateCF3DFit(int centrality, int kt) {
             p6 = 0.88;
     }
     
-    p3 = 0.10 * TMath::Sqrt(p0 * p1);
-    p4 = 0.05 * TMath::Sqrt(p0 * p2);
-    p5 = 0.20 * TMath::Sqrt(p1 * p2);
+    p3 = 0; // OS
+    p4 = 0; // OL
+    p5 = 0; // SL
     
     fit3d->SetParameters(p0, p1, p2, p3, p4, p5, p6);
+
+    fit3d->FixParameter(3, 0.0); // OS
+    fit3d->FixParameter(5, 0.0); // SL
     
     // switch (centrality) {
     //     case 0: // 0-5%
