@@ -92,19 +92,38 @@ void MakeRapidityDependence(
             legendEntries
         );
 
-        std::string name = Form("c_all_graphs_%s", chargeNames[chIdx].data());
-        std::string title = Form("Graphs for %s", chargeNames[chIdx].data());
-        TCanvas* c = new TCanvas(name.c_str(), title.c_str(), 1000, 800);
-        c->Divide(2, 2);
-        for (int lcms = 0; lcms < 3; lcms++) {
-            c->cd(lcms + 1);
-            mg_R[lcms]->Draw("APL");
+        // Saved for article
+        {
+            std::string name = Form("c_all_graphs_%s", chargeNames[chIdx].data());
+            std::string title = Form("Graphs for radii and #lambda(%s)", chargeNames[chIdx].data());
+            TCanvas* c = new TCanvas(name.c_str(), title.c_str(), 1000, 800);
+            c->Divide(2, 2);
+            for (int lcms = 0; lcms < 3; lcms++) {
+                c->cd(lcms + 1);
+                mg_R[lcms]->Draw("APL");
+            }
+
+            c->cd(4);
+            mg_L->Draw("APL");
+            std::string nSave = name + ".pdf";
+            c->SaveAs(nSave.c_str());
         }
 
-        c->cd(4);
-        mg_L->Draw("APL");
+        // Saved for article
+        {
+            std::string name = Form("c_all_cross_graphs_%s", chargeNames[chIdx].data());
+            std::string title = Form("Graphs for cross radii(%s)", chargeNames[chIdx].data());
+            TCanvas* c = new TCanvas(name.c_str(), title.c_str(), 1000, 800);
+            c->Divide(2, 2);
+            int idx = 1;
+            for (int lcms = 0; lcms < 3; lcms++) {
+                c->cd(idx);
+                mg_R[lcms+3]->Draw("APL");
+                idx++;
+            }
 
-        std::string nSave = name + ".pdf";
-        c->SaveAs(nSave.c_str());
+            std::string nSave = name + ".pdf";
+            c->SaveAs(nSave.c_str());
+        }
     }
 }
