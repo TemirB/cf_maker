@@ -21,7 +21,15 @@ Double_t CF_fit_3d(Double_t* q, Double_t* par) {
 }
 
 TF3* CreateCF3DFit(int centrality, int rapidity) {
-    TF3* fit3d = new TF3("fit3d", CF_fit_3d, -0.05, 0.05, -0.05, 0.05, -0.05, 0.05, 7);
+    double fitLim = 0.2;
+
+    TF3* fit3d = new TF3(
+        "fit3d", CF_fit_3d, 
+        -fitLim, fitLim, 
+        -fitLim, fitLim, 
+        -fitLim, fitLim, 
+        7
+    );
     
     double R_out, R_side, R_long, R_os, R_ol, R_sl, lambda;
     
@@ -60,34 +68,11 @@ TF3* CreateCF3DFit(int centrality, int rapidity) {
     
     fit3d->SetParameters(R_out, R_side, R_long, R_os, R_ol, R_sl, lambda);
 
-    switch (centrality) {
-        case 0:
-            fit3d->SetParLimits(0, 5.0, 7.5);
-            fit3d->SetParLimits(1, 3.5, 5.5);
-            fit3d->SetParLimits(2, 3.8, 6.0);
-            break;
-        case 1:
-            fit3d->SetParLimits(0, 4.5, 6.8);
-            fit3d->SetParLimits(1, 3.2, 5.0);
-            fit3d->SetParLimits(2, 3.5, 5.3);
-            break;
-        case 2:
-            fit3d->SetParLimits(0, 3.8, 6.0);
-            fit3d->SetParLimits(1, 2.7, 4.5);
-            fit3d->SetParLimits(2, 3.0, 4.8);
-            break;
-        case 3:
-            fit3d->SetParLimits(0, 0., 6.2);
-            fit3d->SetParLimits(1, 0., 4.4);
-            fit3d->SetParLimits(2, 0., 4.9);
-            break;
-        default:
-            fit3d->SetParLimits(0, 2., 10.);
-            fit3d->SetParLimits(1, 2., 10.);
-            fit3d->SetParLimits(2, 2., 10.);
-    }
+    fit3d->SetParLimits(0, 2., 10.);
+    fit3d->SetParLimits(1, 2., 10.);
+    fit3d->SetParLimits(2, 2., 10.);
     
-    double corr_limit = (centrality <= 1) ? 15.0 : 30.0;
+    double corr_limit = 30.0;
     fit3d->SetParLimits(3, -corr_limit, corr_limit); // R_os
     fit3d->SetParLimits(4, -corr_limit, corr_limit); // R_ol
     fit3d->SetParLimits(5, -corr_limit, corr_limit); // R_sl
