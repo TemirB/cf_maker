@@ -151,7 +151,7 @@ void MakeLCMS1DProjections(TFile* input, TFile* out, FitGrid& fitRes)
     for (int chIdx = 0; chIdx < chargeSize; chIdx++)
     for (int centIdx = 0; centIdx < centralitySize; centIdx++)
     for (int yIdx = 0; yIdx < rapiditySize; yIdx++) {
-        auto fit = std::unique_ptr<TF3>(CreateCF3DFit(centIdx, yIdx));
+        auto fit = std::unique_ptr<TF3>(CreateCF3DFit(chIdx, centIdx, yIdx));
 
         TH3D* h_A = getNum(input, chIdx, centIdx, yIdx);
         TH3D* h_A_wei = getNumWei(input, chIdx, centIdx, yIdx);

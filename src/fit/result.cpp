@@ -15,7 +15,7 @@ bool FitResult::IsValid() const {
     bool basic_valid = ok && IsFinite() && lambda > 0. && lambda < 1.;
     bool r_valid = true;
     for (int i = 0; i < 3; i++) {
-        if (R[i] > 8 || R[i] < 2.) {
+        if (R[i] > 9 || R[i] < 1.) {
             r_valid = false;
             break;
         }

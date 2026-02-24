@@ -12,30 +12,13 @@
 #include "fit/types.h"
 #include "draw.h"
 
+#include <TCanvas.h>
+
 void MakeRapidityDependence(
     TFile* outFile,
     FitGrid& fitRes
 ) {
     double yStep = (rapidityValues[1] - rapidityValues[0]) / rapiditySize;
-    
-    // std::map<int, std::map<int, std::vector<int>>> badDots = {
-    //     {
-    //         2, 
-    //         {
-    //             {0 , {0, 2, 9}},
-    //             {1, {2}},
-    //             {2, {2}}
-    //         }
-    //     },
-    //     {
-    //         3,
-    //         { 
-    //             {0, {0, 1, 2, 3, 4, 7}},
-    //             {1, {0, 1, 2, 3, 7, 8, 9}},
-    //             {2, {0, 1, 2, 3, 7, 8, 9}}
-    //         }
-    //     }
-    // }; 
 
     for (int chIdx = 0; chIdx < chargeSize; chIdx++) {
         TMultiGraph* mg_R[6] = { new TMultiGraph(), new TMultiGraph(), new TMultiGraph(), new TMultiGraph(), new TMultiGraph(), new TMultiGraph() };
@@ -98,15 +81,30 @@ void MakeRapidityDependence(
                 Form("R_{%s} (fm)", LCMS[lcmsIdx].c_str()),
                 legendEntries
             );
-
-            setRangeWithErrors(mg_L, 0.1);
-            mg_L->SetName(Form("mg_L_%s", chargeNames[chIdx].c_str()));
-            writeMGWithLegend(outFile, mg_L,
-                mg_L->GetName(),
-                "rapidity",
-                "lambda",
-                legendEntries
-            );
         }
+
+        setRangeWithErrors(mg_L, 0.1);
+        mg_L->SetName(Form("mg_L_%s", chargeNames[chIdx].c_str()));
+        writeMGWithLegend(outFile, mg_L,
+            mg_L->GetName(),
+            "rapidity",
+            "lambda",
+            legendEntries
+        );
+
+        std::string name = Form("c_all_graphs_%s", chargeNames[chIdx].data());
+        std::string title = Form("Graphs for %s", chargeNames[chIdx].data());
+        TCanvas* c = new TCanvas(name.c_str(), title.c_str(), 1000, 800);
+        c->Divide(2, 2);
+        for (int lcms = 0; lcms < 3; lcms++) {
+            c->cd(lcms + 1);
+            mg_R[lcms]->Draw("APL");
+        }
+
+        c->cd(4);
+        mg_L->Draw("APL");
+
+        std::string nSave = name + ".pdf";
+        c->SaveAs(nSave.c_str());
     }
 }
