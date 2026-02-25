@@ -14,7 +14,8 @@ void writeMGWithLegend(
     const char* canvasName,
     const char* xTitle,
     const char* yTitle,
-    const std::vector<std::pair<TObject*, std::string>>& legendEntries
+    const std::vector<std::pair<TObject*, std::string>>& legendEntries,
+    const int type
 );
 
 void writeHist(

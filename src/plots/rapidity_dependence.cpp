@@ -65,11 +65,16 @@ void MakeRapidityDependence(
         for (int lcmsIdx = 0; lcmsIdx < lcmsSize; lcmsIdx++) {
             mg_R[lcmsIdx]->SetName(Form("mg_R_%s_%s", LCMS[lcmsIdx], chargeNames[chIdx]));
             setRangeWithErrors(mg_R[lcmsIdx], 0.1);
+            int type = 0;
+            if (lcmsIdx >= 3) {
+                type = 1;
+            }
             writeMGWithLegend(outFile, mg_R[lcmsIdx],
                 mg_R[lcmsIdx]->GetName(),
                 "rapidity",
                 Form("R_{%s} (fm)", LCMS[lcmsIdx]),
-                legendEntries
+                legendEntries,
+                type
             );
 
             setRangeWithErrors(mg_L, 0.1);
@@ -78,7 +83,8 @@ void MakeRapidityDependence(
                 mg_L->GetName(),
                 "rapidity",
                 "lambda",
-                legendEntries
+                legendEntries,
+                2
             );
         }
     }

@@ -10,6 +10,8 @@
 #include "fit/badfit.h"
 #include "draw.h"
 
+#include "TCanvas.h"
+
 // bool deletePoint(int cent, int kt, LCMSAxis lcms) {
 
 // }
@@ -74,11 +76,16 @@ void MakeKtDependence(
         for (int lcmsIdx = 0; lcmsIdx < lcmsSize; lcmsIdx++) {
             mg_R[lcmsIdx]->SetName(Form("mg_R_%s_%s", LCMS[lcmsIdx], chargeNames[chIdx]));
             setRangeWithErrors(mg_R[lcmsIdx], 0.1);
+            int type = 0;
+            if (lcmsIdx >= 3) {
+                type = 1;
+            }
             writeMGWithLegend(outFile, mg_R[lcmsIdx],
                 mg_R[lcmsIdx]->GetName(),
                 "k_{T} (GeV/c)",
                 Form("R_{%s} (fm)", LCMS[lcmsIdx]),
-                legendEntries
+                legendEntries,
+                type
             );
         }
         setRangeWithErrors(mg_L, 0.1);
@@ -87,7 +94,43 @@ void MakeKtDependence(
             mg_L->GetName(),
             "k_{T} (GeV/c)",
             "lambda",
-            legendEntries
+            legendEntries,
+            2
         );
+
+        // Saved for article
+        {
+            std::string name = Form("c_all_kt_graphs_%s", chargeNames[chIdx]);
+            std::string title = Form("Graphs for radii and #lambda(%s)", chargeNames[chIdx]);
+            TCanvas* c = new TCanvas(name.c_str(), title.c_str(), 1000, 800);
+            c->Divide(2, 2);
+            for (int lcms = 0; lcms < 3; lcms++) {
+                c->cd(lcms + 1);
+                mg_R[lcms]->Draw("APL");
+            }
+
+            c->cd(4);
+            mg_L->Draw("APL");
+
+            std::string nSave = name + ".pdf";
+            c->SaveAs(nSave.c_str());
+        }
+
+        // Saved for article
+        {
+            std::string name = Form("c_all_kt_cross_graphs_%s", chargeNames[chIdx]);
+            std::string title = Form("Graphs for cross radii(%s)", chargeNames[chIdx]);
+            TCanvas* c = new TCanvas(name.c_str(), title.c_str(), 1000, 800);
+            c->Divide(2, 2);
+            int idx = 1;
+            for (int lcms = 0; lcms < 3; lcms++) {
+                c->cd(idx);
+                mg_R[lcms+3]->Draw("APL");
+                idx++;
+            }
+
+            std::string nSave = name + ".pdf";
+            c->SaveAs(nSave.c_str());
+        }
     }
 };

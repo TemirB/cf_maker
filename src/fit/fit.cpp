@@ -82,13 +82,13 @@ FitResult FitCF3D(TH3D* hCF, TF3* fit3d) {
     // ROOT::Math::MinimizerOptions::SetDefaultMinimizer("Minuit2", "Simplex");
     // fit3d->FixParameter(6, 0.9);
     fit3d->FixParameter(3, 0.0); // OS
-    fit3d->FixParameter(4, 0.0);
+    // fit3d->FixParameter(4, 0.0);
     fit3d->FixParameter(5, 0.0); // SL
     auto fitPtr = hCF->Fit(fit3d, "RMQS0");
 
-    gSystem->RedirectOutput("fit_result.txt", "w");
-    fitPtr->Print("V");
-    gSystem->RedirectOutput(0);
+    // gSystem->RedirectOutput("fit_result.txt", "w");
+    // fitPtr->Print("V");
+    // gSystem->RedirectOutput(0);
 
     if (fitPtr.Get()) {
         res.chi2   = fitPtr->Chi2();

@@ -14,22 +14,19 @@
 #include "helpers/root_utils.h"
 #include "draw.h"
 
-template<class T>
-using RootPtr = std::unique_ptr<T>;
-
 using std::string;
 
 // ============================================
 // Build dense 3D histogram of the fitted CF
 // ============================================
 
-RootPtr<TH3D> MakeFitHistogram(const TF3& fit) {
-    auto h = RootPtr<TH3D>(new TH3D(
+TH3D* MakeFitHistogram(const TF3& fit) {
+    auto h = new TH3D(
         "fit3d","fit3d",
         80,-0.4,0.4,
         80,-0.4,0.4,
         80,-0.4,0.4
-    ));
+    );
     h->SetDirectory(nullptr);
 
     for (int i=1;i<=80;i++)
@@ -43,7 +40,7 @@ RootPtr<TH3D> MakeFitHistogram(const TF3& fit) {
     return h;
 }
 
-RootPtr<TH1D> BuildLCMSFitFrom3D(
+TH1D* BuildLCMSFitFrom3D(
     const TH3D& slicedVolume,
     const TH3D& fit3D,
     LCMSAxis axis,
@@ -54,8 +51,8 @@ RootPtr<TH1D> BuildLCMSFitFrom3D(
         axis == LCMSAxis::Side ? "y" :
                                  "z";
 
-    auto den = RootPtr<TH3D>((TH3D*)slicedVolume.Clone());
-    auto num = RootPtr<TH3D>((TH3D*)slicedVolume.Clone());
+    auto den = (TH3D*)slicedVolume.Clone();
+    auto num = (TH3D*)slicedVolume.Clone();
     den->Reset(); num->Reset();
     den->SetDirectory(nullptr);
     num->SetDirectory(nullptr);
@@ -74,11 +71,11 @@ RootPtr<TH1D> BuildLCMSFitFrom3D(
         num->SetBinContent(x,y,z, fit3D.GetBinContent(x,y,z));
     }
 
-    auto hNum = RootPtr<TH1D>((TH1D*)num->Project3D(proj)->Clone());
-    auto hDen = RootPtr<TH1D>((TH1D*)den->Project3D(proj)->Clone());
+    auto hNum = (TH1D*)num->Project3D(proj)->Clone();
+    auto hDen = (TH1D*)den->Project3D(proj)->Clone();
 
-    auto fit = RootPtr<TH1D>((TH1D*)hDen->Clone(("fit_"+tag+"_"+ToString(axis)).c_str()));
-    fit->Divide(hNum.get(), hDen.get());
+    auto fit = (TH1D*)hDen->Clone(("fit_"+tag+"_"+ToString(axis)).c_str());
+    fit->Divide(hNum, hDen);
 
     return fit;
 }
@@ -100,8 +97,8 @@ void Write1DProjection(
 
     std::string tag = getCFName(charge, centr, kt);
 
-    auto A    = RootPtr<TH3D>((TH3D*)A0.Clone());
-    auto Awei = RootPtr<TH3D>((TH3D*)Awei0.Clone());
+    auto A    = (TH3D*)A0.Clone();
+    auto Awei = (TH3D*)Awei0.Clone();
     A->SetDirectory(nullptr);
     Awei->SetDirectory(nullptr);
 
@@ -113,18 +110,19 @@ void Write1DProjection(
         axis == LCMSAxis::Side ? "y" :
                                  "z";
 
-    auto hA    = RootPtr<TH1D>((TH1D*)A->Project3D(proj)->Clone());
-    auto hAwei = RootPtr<TH1D>((TH1D*)Awei->Project3D(proj)->Clone());
+    auto hA    = (TH1D*)A->Project3D(proj)->Clone();
+    auto hAwei = (TH1D*)Awei->Project3D(proj)->Clone();
 
-    std::string name = tag + "_" + ToString(axis);
+    // std::string name = tag + "_" + ToString(axis);
+    std::string name = Form("CF at charge=%s, centrality=%s, kt=%s", chargeNames[charge], centralityNames[centr], ktNames[kt]);
 
-    auto CF = RootPtr<TH1D>((TH1D*)hA->Clone(name.c_str()));
-    CF->Divide(hAwei.get(), hA.get(), 1., 1., "B");
+    auto CF = (TH1D*)hA->Clone(name.c_str());
+    CF->Divide(hAwei, hA, 1., 1., "B");
 
     auto fit = BuildLCMSFitFrom3D(*A, Fit3D0, axis, tag);
 
-    Style1DCF(CF.get(), name);
-    StyleFit(fit.get());
+    Style1DCF(CF, name);
+    StyleFit(fit);
 
     CF->GetYaxis()->SetRangeUser(0.9,1.7);
     CF->GetXaxis()->SetRangeUser(-0.2,0.2);
@@ -151,13 +149,21 @@ void Write1DProjection(
     TLegend leg(0.60,0.75,0.88,0.88);
     leg.SetBorderSize(0);
     leg.SetFillStyle(0);
-    leg.AddEntry(CF.get(),"Data","pe");
-    leg.AddEntry(fit.get(),"3D Gaussian fit","l");
+    leg.AddEntry(CF,"Data","pe");
+    leg.AddEntry(fit,"3D Gaussian fit","l");
     leg.Draw();
 
-    canvas->cd(4*centr + kt);
-    CF->Draw("P");
-    fit->Draw("L SAME");
+    canvas->cd(4*centr + kt + 1);
+    gPad->SetTicks(1,1);        // Риски со всех сторон
+    gPad->SetLeftMargin(0.12);  // Отступы (важно для Divide!)
+    gPad->SetBottomMargin(0.12);
+    auto* CF_clone = (TH1D*)CF->Clone(Form("%s_clone", CF->GetName()));
+    auto* fit_clone = (TH1D*)fit->Clone(Form("%s_clone", fit->GetName()));
+
+    CF_clone->Draw("P");
+    fit_clone->Draw("AL SAME");
+    gPad->Modified();
+    gPad->Update();             // Принудительное обновление пада
 
     outFile.cd();
     c.Write();
@@ -217,7 +223,10 @@ void MakeLCMS1DProjections(TFile* input, TFile* out, FitGrid& fitRes)
     }
 
     out->cd();
+    for (int chIdx = 0; chIdx < chargeSize; chIdx++)
     for (int lcmsIdx = 0; lcmsIdx < 3; lcmsIdx++) {
-        canvases[lcmsIdx]->Write();
+        canvases[3 * chIdx + lcmsIdx]->SaveAs(
+            Form("all_%s_1d_histos_%s.pdf", LCMS[lcmsIdx], chargeNames[chIdx])
+        );
     }
 }
