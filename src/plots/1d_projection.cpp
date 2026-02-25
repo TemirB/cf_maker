@@ -148,6 +148,22 @@ void Write1DProjection(
 
 void MakeLCMS1DProjections(TFile* input, TFile* out, FitGrid& fitRes)
 {
+    std::vector<TCanvas*> canvases;
+    for (int ch = 0; ch < chargeSize; ch++)
+    for (int centr = 0; centr < centralitySize; centr++) 
+    for (int lcms = 0; lcms < 3; lcms++) {
+        auto name = Form(
+            "all_%s_1d_histos_centr_%s_%s", 
+            LCMS[lcms].data(), centralityNames[centr].data(), chargeNames[ch].data()
+        );
+        auto title = Form(
+            "CF_{%s} at ch=%s, centrality=%s", 
+            LCMS[lcms].data(), chargeNames[ch].data(), centralityNames[centr].data()
+        );
+        canvases[ch*centralitySize + centr] = new TCanvas(name, title);
+    }
+
+
     for (int chIdx = 0; chIdx < chargeSize; chIdx++)
     for (int centIdx = 0; centIdx < centralitySize; centIdx++)
     for (int yIdx = 0; yIdx < rapiditySize; yIdx++) {
