@@ -26,6 +26,6 @@ void writeHist(
     const char* yTitle
 );
 
-void Style1DCF(TH1* h, std::string name);
+void Style1DCF(TH1* h, std::string name, const char* axis);
 
 void StyleFit(TH1* h);
