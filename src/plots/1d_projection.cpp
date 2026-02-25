@@ -91,7 +91,9 @@ void Write1DProjection(
     const TH3D& Awei0,
     const TH3D& Fit3D0,
     const LCMSAxis axis,
-    const std::string tag
+    const std::string tag,
+    TCanvas* canvas,
+    const int y
 ) {
     auto A    = RootPtr<TH3D>((TH3D*)A0.Clone());
     auto Awei = RootPtr<TH3D>((TH3D*)Awei0.Clone());
@@ -109,7 +111,7 @@ void Write1DProjection(
     auto hA    = RootPtr<TH1D>((TH1D*)A->Project3D(proj)->Clone());
     auto hAwei = RootPtr<TH1D>((TH1D*)Awei->Project3D(proj)->Clone());
 
-    std::string name = tag + "_" + ToString(axis);
+    std::string name = tag + " " + ToString(axis);
 
     auto CF = RootPtr<TH1D>((TH1D*)hA->Clone(name.c_str()));
     CF->Divide(hAwei.get(), hA.get());
@@ -140,6 +142,18 @@ void Write1DProjection(
 
     outFile.cd();
     c.Write();
+
+    canvas->cd(y+1);
+    gPad->SetTicks(1,1);
+    gPad->SetLeftMargin(0.12);
+    gPad->SetBottomMargin(0.12);
+    auto* CF_clone = (TH1D*)CF->Clone(Form("%s_clone", CF->GetName()));
+    auto* fit_clone = (TH1D*)fit->Clone(Form("%s_clone", fit->GetName()));
+
+    CF_clone->Draw("P");
+    fit_clone->Draw("AL SAME");
+    gPad->Modified();
+    gPad->Update(); 
 }
 
 // ============================================
@@ -148,7 +162,7 @@ void Write1DProjection(
 
 void MakeLCMS1DProjections(TFile* input, TFile* out, FitGrid& fitRes)
 {
-    std::vector<TCanvas*> canvases;
+    std::vector<TCanvas*> canvases(chargeSize * centralitySize * 3, nullptr);
     for (int ch = 0; ch < chargeSize; ch++)
     for (int centr = 0; centr < centralitySize; centr++) 
     for (int lcms = 0; lcms < 3; lcms++) {
@@ -160,7 +174,8 @@ void MakeLCMS1DProjections(TFile* input, TFile* out, FitGrid& fitRes)
             "CF_{%s} at ch=%s, centrality=%s", 
             LCMS[lcms].data(), chargeNames[ch].data(), centralityNames[centr].data()
         );
-        canvases[ch*centralitySize + centr] = new TCanvas(name, title);
+        canvases[ch*centralitySize*3 + centr*3 + lcms] = new TCanvas(name, title);
+        canvases[ch*centralitySize*3 + centr*3 + lcms]->Divide(5, 2);
     }
 
 
@@ -185,7 +200,23 @@ void MakeLCMS1DProjections(TFile* input, TFile* out, FitGrid& fitRes)
         auto Fit3D = MakeFitHistogram(*fit);
 
         std::string cf_name = getCFName(chIdx, centIdx, yIdx);
-        for (LCMSAxis ax : {LCMSAxis::Out, LCMSAxis::Side, LCMSAxis::Long})
-            Write1DProjection(*out, *h_A, *h_A_wei, *Fit3D, ax, cf_name);
+        for (int lcms = 0; lcms < 3; lcms++) {
+            Write1DProjection(
+                *out, *h_A, *h_A_wei, *Fit3D,
+                LCMSAxis(lcms), cf_name,
+                canvases[chIdx*centralitySize*3 + centIdx*3 + lcms],
+                yIdx
+            );
+        }
+    }
+
+    for (int ch = 0; ch < chargeSize; ch++)
+    for (int centr = 0; centr < centralitySize; centr++)
+    for (int lcms = 0; lcms < 3; lcms++) {
+        auto name = Form(
+            "all_%s_1d_histos_centr_%s_%s.pdf", 
+            LCMS[lcms].data(), centralityNames[centr].data(), chargeNames[ch].data()
+        );
+        canvases[ch*centralitySize + centr]->SaveAs(name);
     }
 }

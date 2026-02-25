@@ -113,10 +113,10 @@ void writeHist(
 
 void Style1DCF(TH1* h, std::string name) {
     h->SetMarkerStyle(20);
-    h->SetMarkerSize(1.0);
+    h->SetMarkerSize(0.5);
     h->SetMarkerColor(kBlack);
     h->SetLineColor(kBlack);
-    h->SetLineWidth(2);
+    h->SetLineWidth(1);
 
     h->SetTitle(name.c_str());
     h->GetXaxis()->SetTitle("q (GeV/c)");

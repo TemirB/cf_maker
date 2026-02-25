@@ -70,7 +70,7 @@ FitResult FitCF3D(TH3D* hCF, TF3* fit3d) {
     if (!hCF || hCF->GetEntries() == 0 || !fit3d) return res;
 
     fit3d->FixParameter(3, 0);
-    fit3d->FixParameter(4, 0);
+    // fit3d->FixParameter(4, 0);
     fit3d->FixParameter(5, 0);
     auto fitPtr = hCF->Fit(fit3d, "RMQS0");
 
