@@ -43,7 +43,7 @@ std::string getCFName(int chIdx, int centIdx, int yIdx) {
     double step = (rapidityValues[1] - rapidityValues[0])/rapiditySize;
     double left = rapidityValues[0] + step*yIdx;
     double right = left + step;
-    return Form("CF at charge=%s, centrality=%s, y=%.2f-%.2f", chargeNames[chIdx], centralityNames[centIdx], left, right);
+    return Form("CF at charge=%s, centrality=%s, y=[%.2f,%.2f]", chargeNames[chIdx].data(), centralityNames[centIdx].data(), left, right);
 }
 
 bool sameBinning(const TH3D* a, const TH3D* b) {

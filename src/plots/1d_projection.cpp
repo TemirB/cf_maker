@@ -7,6 +7,9 @@
 #include <TCanvas.h>
 #include "TLegend.h"
 #include "TDirectory.h"
+#include <TPaveText.h>
+#include <TStyle.h>
+#include <TSystem.h>
 
 #include "helpers.h"
 #include "fit/fit.h"
@@ -85,6 +88,24 @@ RootPtr<TH1D> BuildLCMSFitFrom3D(
 // One LCMS projection → canvas in output ROOT
 // ============================================
 
+void AddFitStats(const FitResult& r, 
+                 double x1=0.70, double y1=0.75, double x2=0.88, double y2=0.88) {
+                    //0.60,0.75,0.88,0.88
+    auto* stats = new TPaveText(x1, y1, x2, y2, "NDC");
+    stats->SetBorderSize(1);
+    stats->SetFillColor(kWhite);
+    stats->SetTextAlign(12);
+    stats->SetTextFont(42);
+    stats->SetTextSize(0.032);
+    
+    stats->AddText(Form("#chi^{2}/ndf = %.1f / %d = %.3f", r.chi2, r.ndf, r.chi2/r.ndf));
+    stats->AddText(Form("R_{out}  = %.3f #pm %.3f fm", r.R[0], r.eR[0]));
+    stats->AddText(Form("R_{side} = %.3f #pm %.3f fm", r.R[1], r.eR[1]));
+    stats->AddText(Form("R_{long} = %.3f #pm %.3f fm", r.R[2], r.eR[2]));
+    stats->AddText(Form("#lambda  = %.3f #pm %.3f", r.lambda, r.elambda));
+    stats->Draw();
+}
+
 void Write1DProjection(
     TFile& outFile,
     const TH3D& A0,
@@ -92,6 +113,7 @@ void Write1DProjection(
     const TH3D& Fit3D0,
     const LCMSAxis axis,
     const std::string tag,
+    FitResult r,
     TCanvas* canvas,
     const int y
 ) {
@@ -114,16 +136,19 @@ void Write1DProjection(
     std::string name = tag + " " + ToString(axis);
 
     auto CF = RootPtr<TH1D>((TH1D*)hA->Clone(name.c_str()));
-    CF->Divide(hAwei.get(), hA.get());
+    CF->Divide(hAwei.get(), hA.get(), 1, 1, "B");
 
     auto fit = BuildLCMSFitFrom3D(*A, Fit3D0, axis, tag);
 
-    Style1DCF(CF.get(), name);
+    Style1DCF(CF.get(), name, ToString(axis).data());
     StyleFit(fit.get());
 
     CF->GetYaxis()->SetRangeUser(0.9,1.7);
     CF->GetXaxis()->SetRangeUser(-0.2,0.2);
+    CF->SetStats(0);
+
     fit->GetXaxis()->SetRangeUser(-0.2,0.2);
+    gStyle->SetOptFit(0102);
 
     TCanvas c(name.c_str(), name.c_str(), 800, 600);
     c.SetTicks(1,1);
@@ -132,13 +157,7 @@ void Write1DProjection(
 
     CF->Draw("P");
     fit->Draw("L SAME");
-
-    TLegend leg(0.60,0.75,0.88,0.88);
-    leg.SetBorderSize(0);
-    leg.SetFillStyle(0);
-    leg.AddEntry(CF.get(),"Data","pe");
-    leg.AddEntry(fit.get(),"3D Gaussian fit","l");
-    leg.Draw();
+    AddFitStats(r);
 
     outFile.cd();
     c.Write();
@@ -174,7 +193,7 @@ void MakeLCMS1DProjections(TFile* input, TFile* out, FitGrid& fitRes)
             "CF_{%s} at ch=%s, centrality=%s", 
             LCMS[lcms].data(), chargeNames[ch].data(), centralityNames[centr].data()
         );
-        canvases[ch*centralitySize*3 + centr*3 + lcms] = new TCanvas(name, title);
+        canvases[ch*centralitySize*3 + centr*3 + lcms] = new TCanvas(name, title, 2000, 800);
         canvases[ch*centralitySize*3 + centr*3 + lcms]->Divide(5, 2);
     }
 
@@ -204,19 +223,22 @@ void MakeLCMS1DProjections(TFile* input, TFile* out, FitGrid& fitRes)
             Write1DProjection(
                 *out, *h_A, *h_A_wei, *Fit3D,
                 LCMSAxis(lcms), cf_name,
+                r,
                 canvases[chIdx*centralitySize*3 + centIdx*3 + lcms],
                 yIdx
             );
         }
     }
 
+    gSystem->mkdir("all_1d_histos"); 
+
     for (int ch = 0; ch < chargeSize; ch++)
     for (int centr = 0; centr < centralitySize; centr++)
     for (int lcms = 0; lcms < 3; lcms++) {
         auto name = Form(
-            "all_%s_1d_histos_centr_%s_%s.pdf", 
+            "all_1d_histos/all_%s_1d_histos_centr_%s_%s.png", 
             LCMS[lcms].data(), centralityNames[centr].data(), chargeNames[ch].data()
         );
-        canvases[ch*centralitySize + centr]->SaveAs(name);
+        canvases[ch*centralitySize*3 + centr*3 + lcms]->SaveAs(name);
     }
 }

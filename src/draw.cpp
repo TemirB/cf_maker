@@ -67,7 +67,8 @@ void writeMGWithLegend(
     const char* canvasName,
     const char* xTitle,
     const char* yTitle,
-    const std::vector<std::pair<TObject*, std::string>>& legendEntries
+    const std::vector<std::pair<TObject*, std::string>>& legendEntries,
+    const int type
 ) {
     file->cd();
 
@@ -75,6 +76,18 @@ void writeMGWithLegend(
     mg->Draw("A");                       // создаёт оси
     mg->GetXaxis()->SetTitle(xTitle);
     mg->GetYaxis()->SetTitle(yTitle);
+
+    switch (type) {
+    case 0: // Radii
+        mg->GetYaxis()->SetRangeUser(3, 7.5);
+        break;
+    case 1: // cross
+        mg->GetYaxis()->SetRangeUser(-1, 6);
+        break;
+    case 2: // lambda
+        mg->GetYaxis()->SetRangeUser(0.7, 1.1);
+        break;
+    }
 
     // твой helper для range (если надо)
     // setRangeWithErrors(mg, 0.1);
@@ -111,7 +124,7 @@ void writeHist(
     hist->Write(hist->GetName(), TObject::kOverwrite);
 }
 
-void Style1DCF(TH1* h, std::string name) {
+void Style1DCF(TH1* h, std::string name, const char* axis) {
     h->SetMarkerStyle(20);
     h->SetMarkerSize(0.5);
     h->SetMarkerColor(kBlack);
@@ -119,7 +132,7 @@ void Style1DCF(TH1* h, std::string name) {
     h->SetLineWidth(1);
 
     h->SetTitle(name.c_str());
-    h->GetXaxis()->SetTitle("q (GeV/c)");
+    h->GetXaxis()->SetTitle(Form("q_{%s} (GeV/c)", axis));
     h->GetYaxis()->SetTitle("C(q)");
 
     h->GetXaxis()->CenterTitle();

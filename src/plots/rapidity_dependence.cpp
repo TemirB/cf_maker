@@ -75,11 +75,14 @@ void MakeRapidityDependence(
         for (int lcmsIdx = 0; lcmsIdx < lcmsSize; lcmsIdx++) {
             mg_R[lcmsIdx]->SetName(Form("mg_R_%s_%s", LCMS[lcmsIdx].c_str(), chargeNames[chIdx].c_str()));
             setRangeWithErrors(mg_R[lcmsIdx], 0.1);
+            int type = 0;
+            if (lcmsIdx >= 3) type = 1;
             writeMGWithLegend(outFile, mg_R[lcmsIdx],
                 mg_R[lcmsIdx]->GetName(),
                 "rapidity",
                 Form("R_{%s} (fm)", LCMS[lcmsIdx].c_str()),
-                legendEntries
+                legendEntries,
+                type
             );
         }
 
@@ -89,14 +92,15 @@ void MakeRapidityDependence(
             mg_L->GetName(),
             "rapidity",
             "lambda",
-            legendEntries
+            legendEntries,
+            2
         );
 
         // Saved for article
         {
             std::string name = Form("c_all_graphs_%s", chargeNames[chIdx].data());
             std::string title = Form("Graphs for radii and #lambda(%s)", chargeNames[chIdx].data());
-            TCanvas* c = new TCanvas(name.c_str(), title.c_str(), 1000, 800);
+            TCanvas* c = new TCanvas(name.c_str(), title.c_str(), 3200, 1600);
             c->Divide(2, 2);
             for (int lcms = 0; lcms < 3; lcms++) {
                 c->cd(lcms + 1);
@@ -105,7 +109,7 @@ void MakeRapidityDependence(
 
             c->cd(4);
             mg_L->Draw("APL");
-            std::string nSave = name + ".pdf";
+            std::string nSave = name + ".png";
             c->SaveAs(nSave.c_str());
         }
 
@@ -113,7 +117,7 @@ void MakeRapidityDependence(
         {
             std::string name = Form("c_all_cross_graphs_%s", chargeNames[chIdx].data());
             std::string title = Form("Graphs for cross radii(%s)", chargeNames[chIdx].data());
-            TCanvas* c = new TCanvas(name.c_str(), title.c_str(), 1000, 800);
+            TCanvas* c = new TCanvas(name.c_str(), title.c_str(), 3200, 1600);
             c->Divide(2, 2);
             int idx = 1;
             for (int lcms = 0; lcms < 3; lcms++) {
@@ -122,7 +126,7 @@ void MakeRapidityDependence(
                 idx++;
             }
 
-            std::string nSave = name + ".pdf";
+            std::string nSave = name + ".png";
             c->SaveAs(nSave.c_str());
         }
     }

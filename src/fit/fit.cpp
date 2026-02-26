@@ -61,6 +61,11 @@ TF3* CreateCF3DFit(int charge, int centrality, int y) {
     fit3d->SetParName(4, "R_ol");
     fit3d->SetParName(5, "R_sl");
     fit3d->SetParName(6, "lambda");
+
+    // fit3d->FixParameter(0, Rout);
+    // fit3d->FixParameter(1, Rside);
+    // fit3d->FixParameter(2, Rlong);
+    // fit3d->FixParameter(6, Lambda);
     
     return fit3d;
 }
@@ -70,7 +75,7 @@ FitResult FitCF3D(TH3D* hCF, TF3* fit3d) {
     if (!hCF || hCF->GetEntries() == 0 || !fit3d) return res;
 
     fit3d->FixParameter(3, 0);
-    // fit3d->FixParameter(4, 0);
+    fit3d->FixParameter(4, 0);
     fit3d->FixParameter(5, 0);
     auto fitPtr = hCF->Fit(fit3d, "RMQS0");
 

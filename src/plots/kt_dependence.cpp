@@ -62,11 +62,14 @@ void MakeKtDependence(
         for (int lcmsIdx = 0; lcmsIdx < lcmsSize; lcmsIdx++) {
             mg_R[lcmsIdx]->SetName(Form("mg_R_%s_%s", LCMS[lcmsIdx].c_str(), chargeNames[chIdx].c_str()));
             setRangeWithErrors(mg_R[lcmsIdx], 0.1);
+            int type = 0;
+            if (lcmsIdx >= 3) type = 1; 
             writeMGWithLegend(outFile, mg_R[lcmsIdx],
                 mg_R[lcmsIdx]->GetName(),
                 "k_{T} (GeV/c)",
                 Form("R_{%s} (fm)", LCMS[lcmsIdx].c_str()),
-                legendEntries
+                legendEntries,
+                type
             );
         }
         setRangeWithErrors(mg_L, 0.1);
@@ -75,7 +78,8 @@ void MakeKtDependence(
             mg_L->GetName(),
             "k_{T} (GeV/c)",
             "lambda",
-            legendEntries
+            legendEntries,
+            2
         );
     }
 };

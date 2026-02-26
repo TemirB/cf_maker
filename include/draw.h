@@ -14,7 +14,8 @@ void writeMGWithLegend(
     const char* canvasName,
     const char* xTitle,
     const char* yTitle,
-    const std::vector<std::pair<TObject*, std::string>>& legendEntries
+    const std::vector<std::pair<TObject*, std::string>>& legendEntries,
+    const int type
 );
 
 void writeHist(
@@ -25,6 +26,6 @@ void writeHist(
     const char* yTitle
 );
 
-void Style1DCF(TH1* h, std::string name);
+void Style1DCF(TH1* h, std::string name, const char* axis);
 
 void StyleFit(TH1* h);
