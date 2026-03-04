@@ -2,8 +2,8 @@
 #include <array>
 
 struct FitResult {
-    std::array<double,3> R{};
-    std::array<double,3> eR{};
+    std::array<double,6> R{};
+    std::array<double,6> eR{};
     double lambda{};
     double elambda{};
     double chi2{};

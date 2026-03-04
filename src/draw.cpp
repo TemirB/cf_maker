@@ -82,7 +82,7 @@ void writeMGWithLegend(
         mg->GetYaxis()->SetRangeUser(3, 7.5);
         break;
     case 1: // cross
-        mg->GetYaxis()->SetRangeUser(-1, 6);
+        mg->GetYaxis()->SetRangeUser(-30, 30);
         break;
     case 2: // lambda
         mg->GetYaxis()->SetRangeUser(0.7, 1.1);

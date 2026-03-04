@@ -2,6 +2,20 @@
 
 #include <TH3D.h>
 
+std::pair<int, int> GetBinRange(const TAxis* axis, double w) {
+    int first = axis->FindFixBin(-w);
+    int second = axis->FindFixBin(w);
+
+    if (first > second) std::swap(first, second);
+    
+    return {std::max(1, first), std::min(axis->GetNbins(), second)};
+}
+
+const char* findRootProjectAxis(LCMSAxis axis) {
+    return axis == LCMSAxis::Out  ? "x" :
+           axis == LCMSAxis::Side ? "y" : "z";
+}
+
 void ResetRanges(TH3D& h) {
     h.GetXaxis()->SetRange(0,0);
     h.GetYaxis()->SetRange(0,0);

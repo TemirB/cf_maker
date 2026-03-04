@@ -33,3 +33,5 @@ void MakeLCMS2DProjections(TFile* input, TFile* out);
 void do_CF_ratios(TFile* fCF3D, TFile* fRatioProj, TFile* fProjRatio);
 
 // void MakeBadFitMaps(TFile* outFile, TTree* badFits);
+
+std::pair<int, int> GetBinRange(const TAxis* axis, double w);

@@ -9,7 +9,7 @@
 #include "fit/types.h"
 #include "helpers.h"
 
-TH1D* Project1D(TH3D& h, LCMSAxis axis, double w = 0.05) {
+TH1D* Project1D_internal(TH3D& h, LCMSAxis axis, double w = 0.05) {
     SetSlice1D(h, axis, w);
 
     const char* proj =
@@ -85,7 +85,7 @@ TH1D* ProjectRatio(
         centIdx, yIdx, ToString(axis).data()
     );
 
-    TH1D* r = Project1D(ratio, axis);
+    TH1D* r = Project1D_internal(ratio, axis);
     r->SetName(name);
 
     TString axisStr = ToString(axis);
@@ -105,8 +105,8 @@ TH1D* RatioProject(
         centIdx, yIdx, ToString(axis).data()
     );
 
-    TH1D* n = Project1D(Neg, axis);
-    TH1D* p = Project1D(Pos, axis);
+    TH1D* n = Project1D_internal(Neg, axis);
+    TH1D* p = Project1D_internal(Pos, axis);
 
     TH1D* ratio = (TH1D*)n->Clone(name);
     ratio->Divide(p, n);

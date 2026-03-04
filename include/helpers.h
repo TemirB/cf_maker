@@ -14,6 +14,8 @@ inline constexpr int ktSize = 4;
 inline constexpr int rapiditySize = 10;
 inline constexpr int lcmsSize = 6;
 
+inline constexpr int defaultRange = 0.05;
+
 const std::array<double, 2> rapidityValues = {-1.0, 1.0};
 const std::array<double, 5> ktValues = {0.15, 0.25, 0.35, 0.45, 0.60};
 const std::array<int, 4> colors = {kRed, kBlue, kMagenta, kGreen};

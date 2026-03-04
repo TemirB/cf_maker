@@ -15,9 +15,9 @@ Double_t CF_fit_3d(Double_t* q, Double_t* par) {
     Double_t qRq = par[0]*par[0] * q_out*q_out +
                    par[1]*par[1] * q_side*q_side +
                    par[2]*par[2] * q_long*q_long +
-                 2.*par[3]*par[3] * q_out*q_side +
-                 2.*par[4]*par[4] * q_out*q_long +
-                 2.*par[5]*par[5] * q_side*q_long;
+                 2.*par[3] * q_out*q_side +
+                 2.*par[4] * q_out*q_long +
+                 2.*par[5] * q_side*q_long;
 
     return 1.0 + par[6] * TMath::Exp(-qRq / hc2);
 }
@@ -75,7 +75,7 @@ FitResult FitCF3D(TH3D* hCF, TF3* fit3d) {
     if (!hCF || hCF->GetEntries() == 0 || !fit3d) return res;
 
     fit3d->FixParameter(3, 0);
-    fit3d->FixParameter(4, 0);
+    // fit3d->FixParameter(4, 0);
     fit3d->FixParameter(5, 0);
     auto fitPtr = hCF->Fit(fit3d, "RMQS0");
 
