@@ -16,16 +16,18 @@ inline constexpr int lcmsSize = 6;
 
 inline constexpr int defaultRange = 0.05;
 
-const std::array<double, 2> rapidityValues = {-1.0, 1.0};
-const std::array<double, 5> ktValues = {0.15, 0.25, 0.35, 0.45, 0.60};
-const std::array<int, 4> colors = {kRed, kBlue, kMagenta, kGreen};
-const std::array<int, 4> markers = {20, 21, 22, 23};
+inline constexpr std::array<double, 2> rapidityValues = {-1.0, 1.0};
+inline constexpr std::array<double, 5> ktValues = {0.15, 0.25, 0.35, 0.45, 0.60};
+inline constexpr std::array<int, 4> colors = {kRed, kBlue, kMagenta, kGreen};
+inline constexpr std::array<int, 4> markers = {20, 21, 22, 23};
 
-const std::array<std::string, 3> axises          = {"x", "y", "z"};
-const std::array<std::string, 6> LCMS            = {"out", "side", "long", "out-side", "out-long", "side-long"};
-const std::array<std::string, 2> chargeNames     = {"pos", "neg"};
-const std::array<std::string, 4> centralityNames = {"0-10", "10-30", "30-50", "50-80"};
-const std::array<std::string, 4> ktNames         = {"0.15-0.25", "0.25-0.35", "0.35-0.45", "0.45-0.60"};
+inline constexpr double step = (rapidityValues[1] - rapidityValues[0])/rapiditySize;
+
+inline constexpr std::array<const char*, 3> axises = {"x", "y", "z"};
+inline constexpr std::array<const char*, 6> LCMS = {"out", "side", "long", "out-side", "out-long", "side-long"};
+inline constexpr std::array<const char*, 2> chargeNames = {"pos", "neg"};
+inline constexpr std::array<const char*, 4> centralityNames = {"0-10", "10-30", "30-50", "50-80"};
+inline constexpr std::array<const char*, 4> ktNames = {"0.15-0.25", "0.25-0.35", "0.35-0.45", "0.45-0.60"};
 
 enum class LCMSAxis { Out, Side, Long };
 

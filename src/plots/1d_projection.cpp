@@ -58,10 +58,10 @@ TH1D* CreateFit(
             fit = fit3d->ProjectionX((baseName + "_fit").c_str(), yF, yL, zF, zL);
             break;
         case LCMSAxis::Side:
-            fit = fit3d->ProjectionX((baseName + "_fit").c_str(), xF, xL, zF, zL);
+            fit = fit3d->ProjectionY((baseName + "_fit").c_str(), xF, xL, zF, zL);
             break;
         case LCMSAxis::Long:
-            fit = fit3d->ProjectionX((baseName + "_fit").c_str(), xF, xL, yF, yL);
+            fit = fit3d->ProjectionZ((baseName + "_fit").c_str(), xF, xL, yF, yL);
             break;
     }
 
@@ -177,93 +177,34 @@ std::pair<TH1D*, TH1D*> Create1D(
     return {std::move(hNum), std::move(fit)};
 }
 
-// void Write1DProjection(
-//     TFile& outFile,
-//     const TH3D& A0,
-//     const TH3D& Awei0,
-//     const TH3D& Fit3D0,
-//     const LCMSAxis axis,
-//     const std::string tag,
-//     FitResult r,
-//     TCanvas* canvas,
-//     const int y,
-//     TCanvas* can,
-//     int canPad,
-//     int centr 
-// ) {
-//     auto A    = RootPtr<TH3D>((TH3D*)A0.Clone());
-//     auto Awei = RootPtr<TH3D>((TH3D*)Awei0.Clone());
-//     A->SetDirectory(nullptr);
-//     Awei->SetDirectory(nullptr);
+TCanvas* CreateCanvas(
+    TH1* CF, TH1* fit, 
+    const char* name, 
+    const LCMSAxis axis, 
+    const FitResult& r
+) {
+    TCanvas* c = new TCanvas(name, name, 800, 600);
 
-//     // SetSlice1D(*A,axis);
-//     // SetSlice1D(*Awei,axis);
+    c->SetTicks(1,1);
+    c->SetLeftMargin(0.12);
+    c->SetBottomMargin(0.12);
 
-//     const char* proj =
-//         axis == LCMSAxis::Out  ? "x" :
-//         axis == LCMSAxis::Side ? "y" :
-//                                  "z";
+    Style1DCF(CF, name, ToString(axis).data());
+    StyleFit(fit);
 
-//     auto hA    = RootPtr<TH1D>((TH1D*)A->Project3D(proj)->Clone());
-//     auto hAwei = RootPtr<TH1D>((TH1D*)Awei->Project3D(proj)->Clone());
+    CF->GetYaxis()->SetRangeUser(0.9,1.7);
+    CF->GetXaxis()->SetRangeUser(-0.2,0.2);
+    CF->SetStats(0);
 
-//     std::string name = tag + " " + ToString(axis);
+    fit->GetXaxis()->SetRangeUser(-0.2,0.2);
+    gStyle->SetOptFit(0102);
 
-//     auto CF = RootPtr<TH1D>((TH1D*)hA->Clone(name.c_str()));
-//     CF->Divide(hAwei.get(), hA.get(), 1, 1, "B");
+    CF->Draw("P");
+    fit->Draw("L SAME");
+    AddFitStats(r, 0.032);
 
-//     auto fit = BuildLCMSFitFrom3D(*A, Fit3D0, axis, tag);
-
-//     Style1DCF(CF.get(), name, ToString(axis).data());
-//     StyleFit(fit.get());
-
-//     CF->GetYaxis()->SetRangeUser(0.9,1.7);
-//     CF->GetXaxis()->SetRangeUser(-0.2,0.2);
-//     CF->SetStats(0);
-
-//     fit->GetXaxis()->SetRangeUser(-0.2,0.2);
-//     gStyle->SetOptFit(0102);
-
-//     TCanvas c(name.c_str(), name.c_str(), 800, 600);
-//     c.SetTicks(1,1);
-//     c.SetLeftMargin(0.12);
-//     c.SetBottomMargin(0.12);
-
-//     CF->Draw("P");
-//     fit->Draw("L SAME");
-//     AddFitStats(r, 0.032);
-
-//     outFile.cd();
-//     c.Write();
-
-//     canvas->cd(y+1);
-//     gPad->SetTicks(1,1);
-//     gPad->SetLeftMargin(0.12);
-//     gPad->SetBottomMargin(0.12);
-//     auto* CF_clone = (TH1D*)CF->Clone(Form("%s_clone", CF->GetName()));
-//     auto* fit_clone = (TH1D*)fit->Clone(Form("%s_clone", fit->GetName()));
-
-//     CF_clone->Draw("P");
-//     fit_clone->Draw("AL SAME");
-//     gPad->Modified();
-//     gPad->Update(); 
-
-//     if (y >=4 && y <=5 && centr < 2) {
-//         can->cd(canPad+1);
-//         // gPad->SetTicks(1,1);
-//         // gPad->SetLeftMargin(0.12);
-//         // gPad->SetBottomMargin(0.12);
-
-//         CF_clone->Draw("P");
-//         fit_clone->Draw("AL SAME");
-//         if (canPad == 2) {
-//             AddFitStats(r, 0.025);
-//         }
-
-//         gPad->Modified();
-//         gPad->Update(); 
-//     }
-// }
+    return c;
+}
 
 // ============================================
 // Full LCMS pipeline
@@ -271,22 +212,10 @@ std::pair<TH1D*, TH1D*> Create1D(
 
 void MakeLCMS1DProjections(TFile* input, TFile* out, FitGrid& fitRes)
 {
-    // std::vector<TCanvas*> canvases(chargeSize * centralitySize * 3, nullptr);
-    // for (int ch = 0; ch < chargeSize; ch++)
-    // for (int centr = 0; centr < centralitySize; centr++) 
-    // for (int lcms = 0; lcms < 3; lcms++) {
-    //     auto name = Form(
-    //         "all_%s_1d_histos_centr_%s_%s", 
-    //         LCMS[lcms].data(), centralityNames[centr].data(), chargeNames[ch].data()
-    //     );
-    //     auto title = Form(
-    //         "CF_{%s} at ch=%s, centrality=%s", 
-    //         LCMS[lcms].data(), chargeNames[ch].data(), centralityNames[centr].data()
-    //     );
-    //     canvases[ch*centralitySize*3 + centr*3 + lcms] = new TCanvas(name, title, 2000, 800);
-    //     canvases[ch*centralitySize*3 + centr*3 + lcms]->Divide(5, 2);
-    // }
+    std::string dir = "all_1d_histos";
+    std::string format = "pdf";
 
+    gSystem->mkdir(dir.data());
 
     for (int chIdx = 0; chIdx < chargeSize; chIdx++)
     for (int centIdx = 0; centIdx < centralitySize; centIdx++)
@@ -313,74 +242,44 @@ void MakeLCMS1DProjections(TFile* input, TFile* out, FitGrid& fitRes)
 
         std::string cf_name = getCFName(chIdx, centIdx, yIdx);
 
-        // double step = (rapidityValues[1] - rapidityValues[0])/rapiditySize;
-        // double left = rapidityValues[0] + step*yIdx;
-        // double right = left + step;
+        double left = rapidityValues[0] + step*yIdx;
+        double right = left + step;
 
         TCanvas* can = new TCanvas(cf_name.data(), cf_name.data(), 2400, 800); 
         can->SetTitle(cf_name.data());
         can->Divide(3,1);
 
         for (int lcms = 0; lcms < 3; lcms++) {
-            // Write1DProjection(
-            //     *out, *h_A, *h_A_wei, *Fit3D,
-            //     LCMSAxis(lcms), cf_name,
-            //     r,
-            //     canvases[chIdx*centralitySize*3 + centIdx*3 + lcms],
-            //     yIdx,
-            //     can,
-            //     lcms,
-            //     centIdx
-            // );
-
             LCMSAxis axis = LCMSAxis(lcms);
 
             auto [CF, fit] = Create1D(*h_A, *h_A_wei, fit3d, axis, defaultRange, cf_name);
 
             std::string canvasName = cf_name + "_" + ToString(axis);
 
-            TCanvas c(cf_name.c_str(), cf_name.c_str(), 800, 600);
-            c.SetTicks(1,1);
-            c.SetLeftMargin(0.12);
-            c.SetBottomMargin(0.12);
-
-            Style1DCF(CF, cf_name.c_str(), ToString(axis).data());
-            StyleFit(fit);
-
-            CF->GetYaxis()->SetRangeUser(0.9,1.7);
-            CF->GetXaxis()->SetRangeUser(-0.2,0.2);
-            CF->SetStats(0);
-
-            fit->GetXaxis()->SetRangeUser(-0.2,0.2);
-            gStyle->SetOptFit(0102);
-
-            CF->Draw("P");
-            fit->Draw("L SAME");
-            AddFitStats(r, 0.032);
+            TCanvas* c = CreateCanvas(CF, fit, canvasName.c_str(), axis, r);
 
             out->cd();
-            c.Write();
+            c->Write();
+
+            {
+                can->cd(lcms + 1);
+
+                CF->Draw("P");
+                fit->Draw("L SAME");
+                
+                if (lcms == 2) {
+                    AddFitStats(r, 0.032);
+                }
+            }
         }
 
-        // if (yIdx >=4 && yIdx <=6 && centIdx <= 2) {
-        //     can->SaveAs(
-        //         Form(
-        //             "cfs_%s_%s_%.2f_%.2f.pdf", 
-        //             chargeNames[chIdx].data(), centralityNames[centIdx].data(), left, right
-        //         )
-        //     );
-        // }
+        // Rewrite condition bw overview
+        if (yIdx >=4 && yIdx <=6 && centIdx <= 2) {
+            auto name = Form(
+                    "%s/cfs_%s_%s_%.2f_%.2f.%s", 
+                    dir.data(), chargeNames[chIdx], centralityNames[centIdx], left, right, format.data()
+                );
+            can->SaveAs(name);
+        }
     }
-
-    // gSystem->mkdir("all_1d_histos"); 
-
-    // for (int ch = 0; ch < chargeSize; ch++)
-    // for (int centr = 0; centr < centralitySize; centr++)
-    // for (int lcms = 0; lcms < 3; lcms++) {
-    //     auto name = Form(
-    //         "all_1d_histos/all_%s_1d_histos_centr_%s_%s.png", 
-    //         LCMS[lcms].data(), centralityNames[centr].data(), chargeNames[ch].data()
-    //     );
-    //     canvases[ch*centralitySize*3 + centr*3 + lcms]->SaveAs(name);
-    // }
 }

@@ -131,11 +131,11 @@ void MakeLCMS2DProjections(TFile* input, TFile* out) {
     for (int centr = 0; centr < centralitySize; centr++) {
         auto name = Form(
             "all_out-long_2d_histos_centr_%s_%s",
-            centralityNames[centr].data(), chargeNames[ch].data()
+            centralityNames[centr], chargeNames[ch]
         );
         auto title = Form(
             "CF_{out-long} at ch=%s, centrality=%s", 
-            chargeNames[ch].data(), centralityNames[centr].data()
+            chargeNames[ch], centralityNames[centr]
         );
         canvases[ch*centralitySize + centr] = new TCanvas(name, title, 2000, 800);
         canvases[ch*centralitySize + centr]->Divide(5, 2);
@@ -162,7 +162,7 @@ void MakeLCMS2DProjections(TFile* input, TFile* out) {
     for (int centr = 0; centr < centralitySize; centr++) {
          auto name = Form(
             "all_2d_histos/all_out-long_2d_histos_centr_%s_%s.png", 
-            centralityNames[centr].data(), chargeNames[ch].data()
+            centralityNames[centr], chargeNames[ch]
         );
         canvases[ch * centralitySize + centr]->SaveAs(name);
     }

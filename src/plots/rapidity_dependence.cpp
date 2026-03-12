@@ -18,8 +18,6 @@ void MakeRapidityDependence(
     TFile* outFile,
     FitGrid& fitRes
 ) {
-    double yStep = (rapidityValues[1] - rapidityValues[0]) / rapiditySize;
-
     for (int chIdx = 0; chIdx < chargeSize; chIdx++) {
         TMultiGraph* mg_R[6] = { new TMultiGraph(), new TMultiGraph(), new TMultiGraph(), new TMultiGraph(), new TMultiGraph(), new TMultiGraph() };
         TMultiGraph* mg_L = new TMultiGraph();
@@ -29,13 +27,13 @@ void MakeRapidityDependence(
             TGraphErrors* g_R[6] = { new TGraphErrors(), new TGraphErrors(), new TGraphErrors(),new TGraphErrors(), new TGraphErrors(), new TGraphErrors() };
             TGraphErrors* g_L    = new TGraphErrors();
             for (int lcmsIdx = 0; lcmsIdx < lcmsSize; lcmsIdx++) {
-                g_R[lcmsIdx]->SetName(Form("g_R_%s_%s_centr_%s", LCMS[lcmsIdx].c_str(), chargeNames[chIdx].c_str(), centralityNames[centIdx].c_str()));
+                g_R[lcmsIdx]->SetName(Form("g_R_%s_%s_centr_%s", LCMS[lcmsIdx], chargeNames[chIdx], centralityNames[centIdx]));
                 g_R[lcmsIdx]->SetLineColor(colors[centIdx]);
                 g_R[lcmsIdx]->SetMarkerColor(colors[centIdx]);
                 g_R[lcmsIdx]->SetMarkerStyle(markers[centIdx]);
             }
 
-            g_L->SetName(Form("g_L_%s_centr_%s", chargeNames[chIdx].c_str(), centralityNames[centIdx].c_str()));
+            g_L->SetName(Form("g_L_%s_centr_%s", chargeNames[chIdx], centralityNames[centIdx]));
             g_L->SetLineColor(colors[centIdx]);
             g_L->SetMarkerColor(colors[centIdx]);
             g_L->SetMarkerStyle(markers[centIdx]);
@@ -51,24 +49,19 @@ void MakeRapidityDependence(
                     continue;
                 }
 
-                double left  = rapidityValues[0] + yIdx * yStep;
-                double right = left + yStep;
+                double left  = rapidityValues[0] + yIdx * step;
+                double right = left + step;
 
                 std::string name = Form("[%.2f;%.2f]", left, right);
-                double xVal = rapidityValues[0] + (yIdx + 0.5) * yStep;
+                double xVal = rapidityValues[0] + (yIdx + 0.5) * step;
 
-                std::cout << Form("charge: %d, centrality: %d, rapidity: %d, chi2: %f, ndf %d, chi2/ndf = %f", chIdx, centIdx, yIdx, res.chi2, res.ndf, res.chi2/res.ndf) << std::endl;
                 for (int lcmsIdx = 0; lcmsIdx < lcmsSize; lcmsIdx++) {
-                    // auto values = mDot[lcmsIdx];
-                    // if (std::find(values.begin(), values.end(), yIdx) != values.end()) continue;
                     g_R[lcmsIdx]->SetPoint(yIdx - shift, xVal, res.R[lcmsIdx]);
                     g_R[lcmsIdx]->SetPointError(yIdx - shift, 0, res.eR[lcmsIdx]);
-                    std::cout << Form("R(%s)=%f+-%f\t", LCMS[lcmsIdx].data(), res.R[lcmsIdx], res.eR[lcmsIdx]);
                 }
 
                 g_L->SetPoint(yIdx - shift, xVal, res.lambda);
                 g_L->SetPointError(yIdx - shift, 0, res.elambda);
-                std::cout << Form("lambda=%f\t", res.lambda) << std::endl;
             }
             for (int lcmsIdx = 0; lcmsIdx < lcmsSize; lcmsIdx++) {
                 mg_R[lcmsIdx]->Add(g_R[lcmsIdx], "lp");
@@ -77,21 +70,21 @@ void MakeRapidityDependence(
         }
 
         for (int lcmsIdx = 0; lcmsIdx < lcmsSize; lcmsIdx++) {
-            mg_R[lcmsIdx]->SetName(Form("mg_R_%s_%s", LCMS[lcmsIdx].c_str(), chargeNames[chIdx].c_str()));
+            mg_R[lcmsIdx]->SetName(Form("mg_R_%s_%s", LCMS[lcmsIdx], chargeNames[chIdx]));
             setRangeWithErrors(mg_R[lcmsIdx], 0.1);
             int type = 0;
             if (lcmsIdx >= 3) type = 1;
             writeMGWithLegend(outFile, mg_R[lcmsIdx],
                 mg_R[lcmsIdx]->GetName(),
                 "rapidity",
-                Form("R_{%s} (fm)", LCMS[lcmsIdx].c_str()),
+                Form("R_{%s} (fm)", LCMS[lcmsIdx]),
                 legendEntries,
                 type
             );
         }
 
         setRangeWithErrors(mg_L, 0.1);
-        mg_L->SetName(Form("mg_L_%s", chargeNames[chIdx].c_str()));
+        mg_L->SetName(Form("mg_L_%s", chargeNames[chIdx]));
         writeMGWithLegend(outFile, mg_L,
             mg_L->GetName(),
             "rapidity",
@@ -102,8 +95,8 @@ void MakeRapidityDependence(
 
         // Saved for article
         {
-            std::string name = Form("c_all_graphs_%s", chargeNames[chIdx].data());
-            std::string title = Form("Graphs for radii and #lambda(%s)", chargeNames[chIdx].data());
+            std::string name = Form("c_all_graphs_%s", chargeNames[chIdx]);
+            std::string title = Form("Graphs for radii and #lambda(%s)", chargeNames[chIdx]);
             TCanvas* c = new TCanvas(name.c_str(), title.c_str(), 3200, 1600);
             c->Divide(2, 2);
             for (int lcms = 0; lcms < 3; lcms++) {
@@ -119,8 +112,8 @@ void MakeRapidityDependence(
 
         // Saved for article
         {
-            std::string name = Form("c_all_cross_graphs_%s", chargeNames[chIdx].data());
-            std::string title = Form("Graphs for cross radii(%s)", chargeNames[chIdx].data());
+            std::string name = Form("c_all_cross_graphs_%s", chargeNames[chIdx]);
+            std::string title = Form("Graphs for cross radii(%s)", chargeNames[chIdx]);
             TCanvas* c = new TCanvas(name.c_str(), title.c_str(), 3200, 1600);
             c->Divide(2, 2);
             int idx = 1;

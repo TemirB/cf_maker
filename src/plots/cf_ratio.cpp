@@ -30,13 +30,12 @@ void Style(
     // General
     {
         TString axisStr = ToString(axis);
-        Double_t rapidityStep = (rapidityValues[1] - rapidityValues[0]) / rapiditySize;
-        Double_t left = rapidityValues[0] + rapidityStep * yIdx;
-        char* rapidityRangeName = Form("%.2f-%.2f", left, left + rapidityStep);
+        Double_t left = rapidityValues[0] + step * yIdx;
+        char* rapidityRangeName = Form("%.2f-%.2f", left, left + step);
         TString title = TString::Format(
             "%s at centrality=[%s] %%, y=[%s] GeV/c and %s axis",
             fmt.Data(),
-            centralityNames[centIdx].data(), 
+            centralityNames[centIdx], 
             rapidityRangeName, 
             axisStr.Data()
         );

@@ -40,10 +40,9 @@ TH3D* getNumWei(TFile* f, int charge, int cent, int yIdx) {
 };
 
 std::string getCFName(int chIdx, int centIdx, int yIdx) {
-    double step = (rapidityValues[1] - rapidityValues[0])/rapiditySize;
     double left = rapidityValues[0] + step*yIdx;
     double right = left + step;
-    return Form("CF at charge=%s, centrality=%s, y=[%.2f,%.2f]", chargeNames[chIdx].data(), centralityNames[centIdx].data(), left, right);
+    return Form("CF at charge=%s, centrality=%s, y=[%.2f,%.2f]", chargeNames[chIdx], centralityNames[centIdx], left, right);
 }
 
 bool sameBinning(const TH3D* a, const TH3D* b) {
@@ -131,8 +130,6 @@ void CollectBadFits(
         p.cent   = cent;
         p.y     = y;
 
-        double yStep = (rapidityValues[1] - rapidityValues[0])/rapiditySize ;
-
         p.chi2ndf = (res.ndf > 0 ? res.Chi2Ndf() : -1);
         p.pvalue  = res.pvalue;
         p.lambda  = res.lambda;
@@ -143,7 +140,7 @@ void CollectBadFits(
             p.eR[i] = res.eR[i];
         }
 
-        p.yVal = 0.5 * (rapidityValues[y] + rapidityValues[y + yStep]);
+        p.yVal = 0.5 * (rapidityValues[y] + rapidityValues[y + step]);
 
         badPoints.push_back(p);
     }
