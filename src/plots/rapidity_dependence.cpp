@@ -43,9 +43,13 @@ void MakeRapidityDependence(
             legendEntries.push_back({g_R[0], centralityNames[centIdx]});
 
             // auto mDot = badDots[centIdx];
+            int shift = 0;
             for (int yIdx = 0; yIdx < rapiditySize; yIdx++) {
                 FitResult res = fitRes[chIdx][centIdx][yIdx];
-                // if (IsBadFit(res)) continue;
+                if (IsBadFit(res)) {
+                    shift++;
+                    continue;
+                }
 
                 double left  = rapidityValues[0] + yIdx * yStep;
                 double right = left + yStep;
@@ -57,13 +61,13 @@ void MakeRapidityDependence(
                 for (int lcmsIdx = 0; lcmsIdx < lcmsSize; lcmsIdx++) {
                     // auto values = mDot[lcmsIdx];
                     // if (std::find(values.begin(), values.end(), yIdx) != values.end()) continue;
-                    g_R[lcmsIdx]->SetPoint(yIdx, xVal, res.R[lcmsIdx]);
-                    g_R[lcmsIdx]->SetPointError(yIdx, 0, res.eR[lcmsIdx]);
+                    g_R[lcmsIdx]->SetPoint(yIdx - shift, xVal, res.R[lcmsIdx]);
+                    g_R[lcmsIdx]->SetPointError(yIdx - shift, 0, res.eR[lcmsIdx]);
                     std::cout << Form("R(%s)=%f+-%f\t", LCMS[lcmsIdx].data(), res.R[lcmsIdx], res.eR[lcmsIdx]);
                 }
 
-                g_L->SetPoint(yIdx, xVal, res.lambda);
-                g_L->SetPointError(yIdx, 0, res.elambda);
+                g_L->SetPoint(yIdx - shift, xVal, res.lambda);
+                g_L->SetPointError(yIdx - shift, 0, res.elambda);
                 std::cout << Form("lambda=%f\t", res.lambda) << std::endl;
             }
             for (int lcmsIdx = 0; lcmsIdx < lcmsSize; lcmsIdx++) {
