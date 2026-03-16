@@ -6,6 +6,7 @@
 #include <TH3.h>
 #include <TH2.h>
 #include <TCanvas.h>
+#include <TSystem.h>
 
 #include <helpers.h>
 
@@ -48,7 +49,10 @@ void Write2DProjection(
     TFile& outFile,
     const TH3D& A0, const TH3D& Awei0,
     LCMSAxis ax1, LCMSAxis ax2,
-    const std::string& tag
+    const std::string& tag,
+    TCanvas* canvas,
+    const int y,
+    bool draw
 ) {
     // --- clone input (ROOT global state!)
     auto A    = RootPtr<TH3D>((TH3D*)A0.Clone());
@@ -80,24 +84,39 @@ void Write2DProjection(
     den->SetDirectory(nullptr);
 
     // --- CF
-    auto name = "CF_" + tag + "_" + ToString(ax1) + "_" + ToString(ax2);
+    auto name = tag + " " + ToString(ax1) + "-" + ToString(ax2);
     auto CF = RootPtr<TH2D>((TH2D*)num->Clone(name.c_str()));
     CF->Divide(num.get(), den.get());
 
-    // --- crop to |q| < 0.05
-    Crop2D(*CF, 0.05);
+    // --- crop to |q| < n
+    Crop2D(*CF, 0.1);
 
     // --- cosmetics
+    CF->SetTitle(name.data());
     CF->GetXaxis()->SetTitle(("q_{"+ToString(ax2)+"} [GeV/c]").c_str());
     CF->GetYaxis()->SetTitle(("q_{"+ToString(ax1)+"} [GeV/c]").c_str());
     CF->GetZaxis()->SetRangeUser(0.95,1.30);
+    CF->SetStats(0);
 
     // --- draw
-    TCanvas c(("c_"+name).c_str(),"",650,600);
+    TCanvas c((name).c_str(),"",650,600);
     CF->Draw("COLZ");
 
     outFile.cd();
     c.Write();
+
+    if (draw) {
+        canvas->cd(y+1);
+        gPad->SetTicks(1,1);
+        gPad->SetLeftMargin(0.12);
+        gPad->SetBottomMargin(0.12);
+
+        auto* CF_clone = (TH2D*)CF->Clone(Form("%s_clone", CF->GetName()));
+        CF_clone->Draw("COLZ");
+
+        gPad->Modified();
+        gPad->Update(); 
+    }
 }
 
 
@@ -107,23 +126,44 @@ void Write2DProjection(
 
 void MakeLCMS2DProjections(TFile* input, TFile* out) {
 
-    for (int ch=0;ch<chargeSize;ch++)
-    for (int c =0;c <centralitySize;c++)
-    for (int k =0;k <ktSize;k++)
-    for (int y =0;y <rapiditySize;y++) {
-        std::string ending = getPrefix(ch, c, y);
-        std::string name   = "bp_" + ending;
+    std::vector<TCanvas*> canvases(chargeSize * centralitySize, nullptr);
+    for (int ch = 0; ch < chargeSize; ch++)
+    for (int centr = 0; centr < centralitySize; centr++) {
+        auto name = Form(
+            "all_out-long_2d_histos_centr_%s_%s",
+            centralityNames[centr], chargeNames[ch]
+        );
+        auto title = Form(
+            "CF_{out-long} at ch=%s, centrality=%s", 
+            chargeNames[ch], centralityNames[centr]
+        );
+        canvases[ch*centralitySize + centr] = new TCanvas(name, title, 2000, 800);
+        canvases[ch*centralitySize + centr]->Divide(5, 2);
+    }
 
-        TH3D* A     = (TH3D*) input->Get((name + std::to_string(k)).c_str());
-        TH3D* Awei = (TH3D*) input->Get((name + "wei_" + std::to_string(k)).c_str());
-        if (!A || !Awei) {
-            std::cerr << "Warning: missing " << name << " kt=" << k << "\n";
-            continue;
-        }
-        ending = ending + std::to_string(k);
+    for (int chIdx=0; chIdx < chargeSize; chIdx++)
+    for (int centIdx =0; centIdx < centralitySize; centIdx++)
+    for (int yIdx =0; yIdx < rapiditySize;yIdx++) {
+        TH3D* A = getNum(input, chIdx, centIdx, yIdx);
+        TH3D* Awei = getNumWei(input, chIdx, centIdx, yIdx);
 
-        Write2DProjection(*out, *A, *Awei, LCMSAxis::Out, LCMSAxis::Side, ending);
-        Write2DProjection(*out, *A, *Awei, LCMSAxis::Out , LCMSAxis::Long, ending);
-        Write2DProjection(*out, *A, *Awei, LCMSAxis::Side, LCMSAxis::Long, ending);
+        std::string cf_name = getCFName(chIdx, centIdx, yIdx); 
+
+        Write2DProjection(*out, *A, *Awei, LCMSAxis::Out, LCMSAxis::Side, cf_name, 
+            canvases[chIdx * centralitySize + centIdx], yIdx, false);
+        Write2DProjection(*out, *A, *Awei, LCMSAxis::Out , LCMSAxis::Long, cf_name,
+            canvases[chIdx * centralitySize + centIdx], yIdx, true);
+        Write2DProjection(*out, *A, *Awei, LCMSAxis::Side, LCMSAxis::Long, cf_name,
+            canvases[chIdx * centralitySize + centIdx], yIdx, false);
+    }
+
+    gSystem->mkdir("all_2d_histos"); 
+    for (int ch = 0; ch < chargeSize; ch++)
+    for (int centr = 0; centr < centralitySize; centr++) {
+         auto name = Form(
+            "all_2d_histos/all_out-long_2d_histos_centr_%s_%s.png", 
+            centralityNames[centr], chargeNames[ch]
+        );
+        canvases[ch * centralitySize + centr]->SaveAs(name);
     }
 }

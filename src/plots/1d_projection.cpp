@@ -7,6 +7,9 @@
 #include <TCanvas.h>
 #include "TLegend.h"
 #include "TDirectory.h"
+#include <TPaveText.h>
+#include <TStyle.h>
+#include <TSystem.h>
 
 #include "helpers.h"
 #include "fit/fit.h"
@@ -21,13 +24,13 @@ using std::string;
 // Build dense 3D histogram of the fitted CF
 // ============================================
 
-RootPtr<TH3D> MakeFitHistogram(const TF3& fit) {
-    auto h = RootPtr<TH3D>(new TH3D(
+TH3D* MakeFitHistogram(const TF3& fit) {
+    auto h = new TH3D(
         "fit3d","fit3d",
         80,-0.4,0.4,
         80,-0.4,0.4,
         80,-0.4,0.4
-    ));
+    );
     h->SetDirectory(nullptr);
 
     for (int i=1;i<=80;i++)
@@ -41,6 +44,30 @@ RootPtr<TH3D> MakeFitHistogram(const TF3& fit) {
     return h;
 }
 
+TH1D* CreateFit(
+    TH3D* fit3d,
+    const LCMSAxis axis, 
+    const std::string& baseName,
+    int xF = 1, int xL = -1,
+    int yF = 1, int yL = -1,
+    int zF = 1, int zL = -1
+) {
+    TH1D* fit = nullptr;
+    switch (axis) {
+        case LCMSAxis::Out:
+            fit = fit3d->ProjectionX((baseName + "_fit").c_str(), yF, yL, zF, zL);
+            break;
+        case LCMSAxis::Side:
+            fit = fit3d->ProjectionY((baseName + "_fit").c_str(), xF, xL, zF, zL);
+            break;
+        case LCMSAxis::Long:
+            fit = fit3d->ProjectionZ((baseName + "_fit").c_str(), xF, xL, yF, yL);
+            break;
+    }
+
+    fit->SetDirectory(nullptr);
+    return fit;
+}
 RootPtr<TH1D> BuildLCMSFitFrom3D(
     const TH3D& slicedVolume,
     const TH3D& fit3D,
@@ -85,61 +112,98 @@ RootPtr<TH1D> BuildLCMSFitFrom3D(
 // One LCMS projection → canvas in output ROOT
 // ============================================
 
-void Write1DProjection(
-    TFile& outFile,
-    const TH3D& A0,
-    const TH3D& Awei0,
-    const TH3D& Fit3D0,
-    LCMSAxis axis,
-    const std::string& tag
+void AddFitStats(const FitResult& r, double textSize,
+                 double x1=0.55, double y1=0.70, double x2=0.88, double y2=0.88) {
+                    //0.60,0.75,0.88,0.88
+    auto* stats = new TPaveText(x1, y1, x2, y2, "NDC");
+    stats->SetBorderSize(1);
+    stats->SetFillColor(kWhite);
+    stats->SetTextAlign(12);
+    stats->SetTextFont(42);
+    stats->SetTextSize(textSize);
+    
+    stats->AddText(Form("#chi^{2}/ndf = %.1f / %d = %.3f", r.chi2, r.ndf, r.chi2/r.ndf));
+    stats->AddText(Form("R_{out}  = %.3f #pm %.3f fm", r.R[0], r.eR[0]));
+    stats->AddText(Form("R_{side} = %.3f #pm %.3f fm", r.R[1], r.eR[1]));
+    stats->AddText(Form("R_{long} = %.3f #pm %.3f fm", r.R[2], r.eR[2]));
+    stats->AddText(Form("R_{out-long}^2 = %.3f #pm %.3f fm", r.R[4], r.eR[4]));
+    stats->AddText(Form("#lambda  = %.3f #pm %.3f", r.lambda, r.elambda));
+    stats->Draw();
+}
+
+std::pair<TH1D*, TH1D*> Create1D(
+    const TH3D& A,
+    const TH3D& Awei,
+    TH3D* fit3d,
+    const LCMSAxis axis,
+    double w,
+    const std::string& name
 ) {
-    auto A    = RootPtr<TH3D>((TH3D*)A0.Clone());
-    auto Awei = RootPtr<TH3D>((TH3D*)Awei0.Clone());
-    A->SetDirectory(nullptr);
-    Awei->SetDirectory(nullptr);
+    std::string baseName = name + " " + ToString(axis);
+    const auto [xF, xL] = (axis != LCMSAxis::Out)  ? GetBinRange(A.GetXaxis(), w) : std::pair{1, A.GetNbinsX()};
+    const auto [yF, yL] = (axis != LCMSAxis::Side) ? GetBinRange(A.GetYaxis(), w) : std::pair{1, A.GetNbinsY()};
+    const auto [zF, zL] = (axis != LCMSAxis::Long) ? GetBinRange(A.GetZaxis(), w) : std::pair{1, A.GetNbinsZ()};
 
-    SetSlice1D(*A,axis);
-    SetSlice1D(*Awei,axis);
+    TH1D* hDen = nullptr;
+    switch (axis) {
+        case LCMSAxis::Out:  hDen = A.ProjectionX((baseName + "_num").c_str(), yF, yL, zF, zL); break;
+        case LCMSAxis::Side: hDen = A.ProjectionY((baseName + "_num").c_str(), xF, xL, zF, zL); break;
+        case LCMSAxis::Long: hDen = A.ProjectionZ((baseName + "_num").c_str(), xF, xL, yF, yL); break;
+    }
+    hDen->SetDirectory(nullptr);
 
-    const char* proj =
-        axis == LCMSAxis::Out  ? "x" :
-        axis == LCMSAxis::Side ? "y" :
-                                 "z";
+    TH1D* hNum = nullptr;
+    switch (axis) {
+        case LCMSAxis::Out:  hNum = Awei.ProjectionX((baseName + "_den").c_str(), yF, yL, zF, zL); break;
+        case LCMSAxis::Side: hNum = Awei.ProjectionY((baseName + "_den").c_str(), xF, xL, zF, zL); break;
+        case LCMSAxis::Long: hNum = Awei.ProjectionZ((baseName + "_den").c_str(), xF, xL, yF, yL); break;
+    }
+    hNum->SetDirectory(nullptr);
 
-    auto hA    = RootPtr<TH1D>((TH1D*)A->Project3D(proj)->Clone());
-    auto hAwei = RootPtr<TH1D>((TH1D*)Awei->Project3D(proj)->Clone());
+    hNum->Divide(hNum, hDen, 1.0, 1.0, "B");
 
-    std::string name = "CF_"+tag+"_"+ToString(axis);
+    std::string n = name + " " + ToString(axis);
+    hNum->SetTitle(n.c_str());
 
-    auto CF = RootPtr<TH1D>((TH1D*)hA->Clone(name.c_str()));
-    CF->Divide(hAwei.get(), hA.get());
+    TH1D* fit = CreateFit(
+        fit3d, axis, n, 
+        xF, xL,
+        yF, yL,
+        zF, zL
+    );
 
-    auto fit = BuildLCMSFitFrom3D(*A, Fit3D0, axis, tag);
+    delete hDen;
 
-    Style1DCF(CF.get());
-    StyleFit(fit.get());
+    return {std::move(hNum), std::move(fit)};
+}
+
+TCanvas* CreateCanvas(
+    TH1* CF, TH1* fit, 
+    const char* name, 
+    const LCMSAxis axis, 
+    const FitResult& r
+) {
+    TCanvas* c = new TCanvas(name, name, 800, 600);
+
+    c->SetTicks(1,1);
+    c->SetLeftMargin(0.12);
+    c->SetBottomMargin(0.12);
+
+    Style1DCF(CF, name, ToString(axis).data());
+    StyleFit(fit);
 
     CF->GetYaxis()->SetRangeUser(0.9,1.7);
     CF->GetXaxis()->SetRangeUser(-0.2,0.2);
-    fit->GetXaxis()->SetRangeUser(-0.2,0.2);
+    CF->SetStats(0);
 
-    TCanvas c(name.c_str(), name.c_str(), 800, 600);
-    c.SetTicks(1,1);
-    c.SetLeftMargin(0.12);
-    c.SetBottomMargin(0.12);
+    fit->GetXaxis()->SetRangeUser(-0.2,0.2);
+    gStyle->SetOptFit(0102);
 
     CF->Draw("P");
     fit->Draw("L SAME");
+    AddFitStats(r, 0.032);
 
-    TLegend leg(0.60,0.75,0.88,0.88);
-    leg.SetBorderSize(0);
-    leg.SetFillStyle(0);
-    leg.AddEntry(CF.get(),"Data","pe");
-    leg.AddEntry(fit.get(),"3D Gaussian fit","l");
-    leg.Draw();
-
-    outFile.cd();
-    c.Write();
+    return c;
 }
 
 // ============================================
@@ -148,38 +212,74 @@ void Write1DProjection(
 
 void MakeLCMS1DProjections(TFile* input, TFile* out, FitGrid& fitRes)
 {
-    auto fit = std::unique_ptr<TF3>(CreateCF3DFit());
+    std::string dir = "all_1d_histos";
+    std::string format = "pdf";
+
+    gSystem->mkdir(dir.data());
 
     for (int chIdx = 0; chIdx < chargeSize; chIdx++)
     for (int centIdx = 0; centIdx < centralitySize; centIdx++)
-    for (int ktIdx = 0; ktIdx < ktSize; ktIdx++)
-    for (int yIdx = 0; yIdx < rapiditySize; yIdx++)
-    {
-        std::string ending = getPrefix(chIdx, centIdx, yIdx);
-        std::string name   = "bp_" + ending;
+    for (int yIdx = 0; yIdx < rapiditySize; yIdx++) {
+        auto fit = std::unique_ptr<TF3>(CreateCF3DFit(chIdx, centIdx, yIdx));
 
-        TH3D* h_A     = (TH3D*) input->Get((name + std::to_string(ktIdx)).c_str());
-        TH3D* h_A_wei = (TH3D*) input->Get((name + "wei_" + std::to_string(ktIdx)).c_str());
-        if (!h_A || !h_A_wei) {
-            std::cerr << "Warning: missing " << name << " kt=" << ktIdx << "\n";
-            continue;
-        }
+        TH3D* h_A = getNum(input, chIdx, centIdx, yIdx);
+        TH3D* h_A_wei = getNumWei(input, chIdx, centIdx, yIdx);
 
-        ending = ending + std::to_string(ktIdx);
-
-        const FitResult& r = fitRes[chIdx][centIdx][ktIdx][yIdx];
+        const FitResult& r = fitRes[chIdx][centIdx][yIdx];
 
         fit->SetParameter(0, r.R[0]);
         fit->SetParameter(1, r.R[1]);
         fit->SetParameter(2, r.R[2]);
-        fit->SetParameter(3, r.lambda);
+        fit->SetParameter(3, r.R[3]);
+        fit->SetParameter(4, r.R[4]);
+        fit->SetParameter(5, r.R[5]);
+        fit->SetParameter(6, r.lambda);
 
-        for (int p = 0; p < 4; p++)
+        for (int p = 0; p < 7; p++)
             fit->FixParameter(p, fit->GetParameter(p));
 
-        auto Fit3D = MakeFitHistogram(*fit);
+        TH3D* fit3d = MakeFitHistogram(*fit);
 
-        for (LCMSAxis ax : {LCMSAxis::Out, LCMSAxis::Side, LCMSAxis::Long})
-            Write1DProjection(*out, *h_A, *h_A_wei, *Fit3D, ax, ending);
+        std::string cf_name = getCFName(chIdx, centIdx, yIdx);
+
+        double left = rapidityValues[0] + step*yIdx;
+        double right = left + step;
+
+        TCanvas* can = new TCanvas(cf_name.data(), cf_name.data(), 2400, 800); 
+        can->SetTitle(cf_name.data());
+        can->Divide(3,1);
+
+        for (int lcms = 0; lcms < 3; lcms++) {
+            LCMSAxis axis = LCMSAxis(lcms);
+
+            auto [CF, fit] = Create1D(*h_A, *h_A_wei, fit3d, axis, defaultRange, cf_name);
+
+            std::string canvasName = cf_name + "_" + ToString(axis);
+
+            TCanvas* c = CreateCanvas(CF, fit, canvasName.c_str(), axis, r);
+
+            out->cd();
+            c->Write();
+
+            {
+                can->cd(lcms + 1);
+
+                CF->Draw("P");
+                fit->Draw("L SAME");
+                
+                if (lcms == 2) {
+                    AddFitStats(r, 0.032);
+                }
+            }
+        }
+
+        // Rewrite condition bw overview
+        if (yIdx >=4 && yIdx <=6 && centIdx <= 2) {
+            auto name = Form(
+                    "%s/cfs_%s_%s_%.2f_%.2f.%s", 
+                    dir.data(), chargeNames[chIdx], centralityNames[centIdx], left, right, format.data()
+                );
+            can->SaveAs(name);
+        }
     }
 }

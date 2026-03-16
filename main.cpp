@@ -5,8 +5,6 @@
 #include <TTree.h>
 
 #include "helpers.h"
-#include "fit/cache.h"
-#include "fit/json.h"
 #include "plots.h"
 #include "context.h"
 
@@ -27,54 +25,52 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    FitResult fitRes[chargeSize][centralitySize][ktSize][rapiditySize]{};
+    FitGrid fitRes{};
 
-    std::string reason;
-    auto cache = LoadFitCache(ctx.inputFile, ctx.outDir, fitRes, reason);
-
-    if (cache == CacheStatus::Ok) {
-        std::cout << "Using cached CF and fits\n";
-    } else {
-        std::cout << "Recomputing (" << reason << ")\n";
-
-        TFile fCF(ctx.cf3dFile.c_str(), "RECREATE");
-        if (fCF.IsZombie()) {
-            std::cerr << "ERROR: cannot create " << ctx.cf3dFile << "\n";
-            return 1;
-        }
-
-        for (int ch=0; ch<chargeSize; ch++) BuildAndFit3DCorrelationFunctions(ch, input, &fCF, fitRes);
-
-        fCF.Write();
-        WriteFitJson(ctx.inputFile, ctx.outDir, fitRes);
+    TFile fCF(ctx.cf3dFile.c_str(), "RECREATE");
+    if (fCF.IsZombie()) {
+        std::cerr << "ERROR: cannot create " << ctx.cf3dFile << "\n";
+        return 1;
     }
-    
+
+    BuildAndFit3DCorrelationFunctions(input, &fCF, fitRes);
+
+    fCF.Write();
+
+    // bad fit collect
+    std::vector<BadFitPoint> badPoints;
+    CollectBadFits(fitRes, badPoints);
     {
-        std::string name = ctx.outDir + "/kt.root";
-        TFile* f = new TFile(name.c_str(), "RECREATE");
-
-        MakeKtDependence(f, fitRes);
-
-        f->Write();
-        f->Close();
+        std::string name = ctx.outDir + "/badfit_heatmap.root";
+        TFile f(name.c_str(), "RECREATE");
+        
+        TTree* t = WriteBadFitTree(&f, badPoints);
+        t->Write();
+        f.Close();
     }
+
+    // // kt_diff
+    // {
+    //     std::string name = ctx.outDir + "/kt.root";
+    //     TFile* f = new TFile(name.c_str(), "RECREATE");
+
+    //     MakeKtDependence(f, fitRes);
+
+    //     f->Write();
+    //     f->Close();
+    // }
+
+    // rapidity_diff
     {
         std::string name = ctx.outDir + "/rapidity.root";
-        TFile* f = new TFile(name.c_str(), "RECREATE");
+        TFile f(name.c_str(), "RECREATE");
 
-        TTree* badTree = MakeRapidityDependence(f, fitRes);
+        MakeRapidityDependence(&f, fitRes);
 
-        f->Write();
-        f->Close();
-
-        std::string heatmap = ctx.outDir + "/badfit_heatmap.root";
-        TFile* fBadTree = new TFile(heatmap.c_str(), "RECREATE");
-
-        MakeBadFitMaps(f, badTree);
-
-        fBadTree->Write();
-        fBadTree->Close();
+        f.Close();
     }
+
+    // 1d_proj
     {
         std::string name = ctx.outDir + "/1d.root";
         TFile* f = new TFile(name.c_str(), "RECREATE");
@@ -84,6 +80,8 @@ int main(int argc, char** argv) {
         f->Write();
         f->Close();
     }
+    
+    // 2d_proj
     {
         std::string name = ctx.outDir + "/2d.root";
         TFile* f = new TFile(name.c_str(), "RECREATE");
@@ -93,17 +91,20 @@ int main(int argc, char** argv) {
         f->Write();
         f->Close();
     }
-    // {
-    //     TFile* f1 = new TFile("ratio_projs.root", "RECREATE");
-    //     TFile* f2 = new TFile("proj_ratios.root", "RECREATE");
-    //     TFile* fCF3D = new TFile(ctx.cf3dFile.c_str(), "READ");
-    //     do_CF_ratios(fCF3D, f1, f2);
+    {
+        std::string name1 = ctx.outDir + "/ratio_projs.root";
+        std::string name2 = ctx.outDir + "/proj_ratios.root";
 
-    //     f1->Write();
-    //     f1->Close();
-    //     f2->Write();
-    //     f2->Close();
-    // }
+        TFile* f1 = new TFile(name1.c_str(), "RECREATE");
+        TFile* f2 = new TFile(name2.c_str(), "RECREATE");
+        TFile* fCF3D = new TFile(ctx.cf3dFile.c_str(), "READ");
+        do_CF_ratios(fCF3D, f1, f2);
+
+        f1->Write();
+        f1->Close();
+        f2->Write();
+        f2->Close();
+    }
 
     std::cout << "All outputs written to " << ctx.outDir << "\n";
     return 0;

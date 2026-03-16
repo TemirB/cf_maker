@@ -1,4 +1,4 @@
-#include "fit/json.h"
+#include "fit/types.h"
 #include <cmath>
 
 bool FitResult::IsFinite() const {
@@ -12,5 +12,13 @@ double FitResult::Chi2Ndf() const {
 }
 
 bool FitResult::IsValid() const {
-    return ok && IsFinite() && ndf>0;
+    bool basic_valid = ok && IsFinite() && lambda > 0. && lambda < 1.;
+    bool r_valid = true;
+    for (int i = 0; i < 3; i++) {
+        if (R[i] > 9 || R[i] < 1.) {
+            r_valid = false;
+            break;
+        }
+    }
+    return basic_valid && r_valid;
 }

@@ -2,6 +2,8 @@
 
 #include <string>
 #include <TH3.h>
+#include <TTree.h>
+#include <TFile.h>
 #include <TDirectory.h>
 
 #include "fit/types.h"
@@ -10,18 +12,22 @@ inline constexpr int chargeSize = 2;
 inline constexpr int centralitySize = 4;
 inline constexpr int ktSize = 4;
 inline constexpr int rapiditySize = 10;
-inline constexpr int lcmsSize = 3;
+inline constexpr int lcmsSize = 6;
 
-const std::array<double, 2> rapidityValues = {-1.0, 1.0};
-const std::array<double, 5> ktValues = {0.15, 0.25, 0.35, 0.45, 0.60};
-const std::array<int, 4> colors = {kRed, kBlue, kMagenta, kGreen};
-const std::array<int, 4> markers = {20, 21, 22, 23};
+inline constexpr int defaultRange = 0.05;
 
-const std::array<std::string, 3> axises          = {"x", "y", "z"};
-const std::array<std::string, 3> LCMS            = {"out", "side", "long"};
-const std::array<std::string, 2> chargeNames     = {"neg", "pos"};
-const std::array<std::string, 4> centralityNames = {"0-10", "10-30", "30-50", "50-80"};
-const std::array<std::string, 4> ktNames         = {"0.15-0.25", "0.25-0.35", "0.35-0.45", "0.45-0.60"};
+inline constexpr std::array<double, 2> rapidityValues = {-1.0, 1.0};
+inline constexpr std::array<double, 5> ktValues = {0.15, 0.25, 0.35, 0.45, 0.60};
+inline constexpr std::array<int, 4> colors = {kRed, kBlue, kMagenta, kGreen};
+inline constexpr std::array<int, 4> markers = {20, 21, 22, 23};
+
+inline constexpr double step = (rapidityValues[1] - rapidityValues[0])/rapiditySize;
+
+inline constexpr std::array<const char*, 3> axises = {"x", "y", "z"};
+inline constexpr std::array<const char*, 6> LCMS = {"out", "side", "long", "out-side", "out-long", "side-long"};
+inline constexpr std::array<const char*, 2> chargeNames = {"pos", "neg"};
+inline constexpr std::array<const char*, 4> centralityNames = {"0-10", "10-30", "30-50", "50-80"};
+inline constexpr std::array<const char*, 4> ktNames = {"0.15-0.25", "0.25-0.35", "0.35-0.45", "0.45-0.60"};
 
 enum class LCMSAxis { Out, Side, Long };
 
@@ -34,15 +40,14 @@ inline std::string ToString(LCMSAxis a) {
     return "";
 }
 
-using FitGrid = FitResult[chargeSize][centralitySize][ktSize][rapiditySize];
+using FitGrid = FitResult[chargeSize][centralitySize][rapiditySize];
 
-int getIdx(int chIdx, int centIdx, int ktIdx, int yIdx);
-
-std::string getPrefix(int chIdx, int centIdx, int yIdx);
+// Геттеры
+TH3D* getNum(TFile* f, int charge, int cent, int ktIdx);
+TH3D* getNumWei(TFile* f, int charge, int cent, int ktIdx);
+std::string getCFName(int chIdx, int centIdx, int ktIdx);
 
 bool sameBinning(const TH3D* a, const TH3D* b);
-
-TDirectory* getOrMakeDir(TDirectory* base, const std::string& name);
 
 void EnsureDir(const std::string& dir);
 
@@ -51,3 +56,27 @@ std::string GetExeDir();
 std::string Sha256OfFile(const std::string& fname);
 int FindCentralityIndex(const std::string& name);
 int FindKtIndex(double low, double high);
+
+// Bad fit
+struct BadFitPoint {
+    int charge;
+    int cent;
+    int y;
+
+    double yVal;
+
+    double chi2ndf;
+    double pvalue;
+    double lambda, elambda;
+    double R[3], eR[3];
+};
+
+inline std::vector<BadFitPoint> badPoints;
+
+bool IsBadFit(const FitResult& r);
+void CollectBadFits(
+    FitGrid& fitRes,
+    std::vector<BadFitPoint>& badPoints
+);
+
+TTree* WriteBadFitTree(TFile* f, const std::vector<BadFitPoint>& badPoints);

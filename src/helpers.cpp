@@ -1,5 +1,6 @@
 #include "helpers.h"
 
+#include <iostream>
 #include <fstream>
 #include <sstream>
 #include <iomanip>
@@ -11,22 +12,37 @@
 #include <openssl/sha.h>
 
 #include <TH3.h>
-#include <TDirectory.h>
+#include <TTree.h>
+#include <TFile.h>
 
+#include "fit/types.h"
 
-int getIdx(int chIdx, int centIdx, int ktIdx, int yIdx) {
-    return chIdx * (centralitySize * ktSize * rapiditySize)
-         + centIdx * (ktSize * rapiditySize)
-         + ktIdx * rapiditySize
-         + yIdx;
-}
+TH3D* getNum(TFile* f, int charge, int cent, int yIdx) {
+    TString name = Form("bp_%d_%d_num_%d", charge, cent, yIdx);
+    TH3D* h = (TH3D*) f->Get(name);
 
-std::string getPrefix(int chIdx, int centIdx, int yIdx) {
-    std::ostringstream ss;
-    ss << chIdx << "_" << 0 << "_" << centIdx << "_y"
-       << std::setw(2) << std::setfill('0') << yIdx
-       << "_num_";
-    return ss.str();
+    if (!h) {
+        std::cerr << "[getNum] NOT FOUND: " << name << std::endl;
+        return nullptr;
+    }
+    return h;
+};
+
+TH3D* getNumWei(TFile* f, int charge, int cent, int yIdx) {
+    TString name = Form("bp_%d_%d_num_wei_%d", charge, cent, yIdx);
+    TH3D* h = (TH3D*) f->Get(name);
+
+    if (!h) {
+        std::cerr << "[getNumWei] NOT FOUND: " << name << std::endl;
+        return nullptr;
+    }
+    return h;
+};
+
+std::string getCFName(int chIdx, int centIdx, int yIdx) {
+    double left = rapidityValues[0] + step*yIdx;
+    double right = left + step;
+    return Form("CF at charge=%s, centrality=%s, y=[%.2f,%.2f]", chargeNames[chIdx], centralityNames[centIdx], left, right);
 }
 
 bool sameBinning(const TH3D* a, const TH3D* b) {
@@ -39,12 +55,6 @@ bool sameBinning(const TH3D* a, const TH3D* b) {
         && a->GetYaxis()->GetXmax() == b->GetYaxis()->GetXmax()
         && a->GetZaxis()->GetXmin() == b->GetZaxis()->GetXmin()
         && a->GetZaxis()->GetXmax() == b->GetZaxis()->GetXmax();
-}
-
-TDirectory* getOrMakeDir(TDirectory* base, const std::string& name) {
-    if (!base) return nullptr;
-    if (auto d = base->GetDirectory(name.c_str())) return d;
-    return base->mkdir(name.c_str());
 }
 
 std::string GetExeDir() {
@@ -94,4 +104,72 @@ int FindKtIndex(double low, double high) {
             fabs(ktValues[i+1]-high)<1e-6)
             return i;
     return -1;
+}
+
+bool IsBadFit(const FitResult& r) {
+    if (!r.ok) return true;
+    if (!r.IsFinite()) return true;
+    if (!r.IsValid()) return true;
+    // if (r.ndf <= 0) return true;
+    // if (r.Chi2Ndf() > 3.0) return true;
+    return false;
+}
+
+void CollectBadFits(
+    FitGrid& fitRes,
+    std::vector<BadFitPoint>& badPoints
+) {
+    for (int ch = 0; ch < chargeSize; ch++)
+    for (int cent = 0; cent < centralitySize; cent++)
+    for (int y = 0; y < rapiditySize; y++){
+        const FitResult& res = fitRes[ch][cent][y];
+        if (!IsBadFit(res)) continue;
+
+        BadFitPoint p{};
+        p.charge = ch;
+        p.cent   = cent;
+        p.y     = y;
+
+        p.chi2ndf = (res.ndf > 0 ? res.Chi2Ndf() : -1);
+        p.pvalue  = res.pvalue;
+        p.lambda  = res.lambda;
+        p.elambda = res.elambda;
+
+        for (int i = 0; i < 3; i++) {
+            p.R[i]  = res.R[i];
+            p.eR[i] = res.eR[i];
+        }
+
+        p.yVal = 0.5 * (rapidityValues[y] + rapidityValues[y + step]);
+
+        badPoints.push_back(p);
+    }
+}
+
+TTree* WriteBadFitTree(TFile* f, const std::vector<BadFitPoint>& badPoints) {
+    f->cd();
+
+    TTree* t = new TTree("badFits", "Bad fit points");
+    BadFitPoint p;
+
+    t->Branch("charge", &p.charge);
+    t->Branch("cent", &p.cent);
+    t->Branch("y", &p.y);
+
+    t->Branch("chi2ndf", &p.chi2ndf);
+    t->Branch("pvalue", &p.pvalue);
+    t->Branch("lambda", &p.lambda);
+    t->Branch("elambda", &p.elambda);
+
+    t->Branch("R", p.R, "R[3]/D");
+    t->Branch("eR", p.eR, "eR[3]/D");
+    t->Branch("yVal", &p.yVal);
+
+    for (const auto& b : badPoints) {
+        p = b;
+        t->Fill();
+    }
+
+    t->Write();
+    return t;
 }
