@@ -13,7 +13,7 @@ int main(int argc, char** argv) {
 
     if (argc < 3) {
         std::cerr << "Usage: " << argv[0]
-                  << " <input.root> <output_dir>\n";
+                  << " <input.root> <output_dir> <type = rapidity/kt>\n";
         return 1;
     }
 

@@ -40,7 +40,8 @@ inline std::string ToString(LCMSAxis a) {
     return "";
 }
 
-using FitGrid = FitResult[chargeSize][centralitySize][rapiditySize];
+using FitGrid = std::vector<std::vector<std::vector<FitResult>>>;
+// using FitGrid = FitResult[chargeSize][centralitySize][rapiditySize];
 
 // Геттеры
 TH3D* getNum(TFile* f, int charge, int cent, int ktIdx);
@@ -48,15 +49,6 @@ TH3D* getNumWei(TFile* f, int charge, int cent, int ktIdx);
 std::string getCFName(int chIdx, int centIdx, int ktIdx);
 
 bool sameBinning(const TH3D* a, const TH3D* b);
-
-void EnsureDir(const std::string& dir);
-
-std::string GetExeDir();
-
-std::string Sha256OfFile(const std::string& fname);
-int FindCentralityIndex(const std::string& name);
-int FindKtIndex(double low, double high);
-
 // Bad fit
 struct BadFitPoint {
     int charge;

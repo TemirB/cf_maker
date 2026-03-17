@@ -35,3 +35,25 @@ void do_CF_ratios(TFile* fCF3D, TFile* fRatioProj, TFile* fProjRatio);
 // void MakeBadFitMaps(TFile* outFile, TTree* badFits);
 
 std::pair<int, int> GetBinRange(const TAxis* axis, double w);
+
+void MakeDependency(int binSize);
+
+class Dependency {
+public:
+    virtual ~Dependency() = default;
+    virtual void MakeDependency(TFile* outFile, FitGrid& fitRes) const = 0;
+};
+
+class Rapidity : public Dependency {
+public:
+    Rapidity() = default;
+
+    void MakeDependency(TFile* outFile, FitGrid& fitRes) const override;
+};
+
+class Kt : public Dependency {
+public:
+    Kt() = default;
+
+    void MakeDependency(TFile* outFile, FitGrid& fitRes) const override;
+};
