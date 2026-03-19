@@ -4,6 +4,7 @@
 #include <TMath.h>
 
 #include <fit/initial_parameters.h>
+#include <helpers.h>
 
 const Double_t hc2 = 0.197 * 0.197;
 
@@ -24,7 +25,7 @@ Double_t CF_fit_3d(Double_t* q, Double_t* par) {
 
 InitialParameters ip = InitialParameters();
 
-TF3* CreateCF3DFit(int charge, int centrality, int y) {
+TF3* CreateCF3DFit(int ch, int centr, int b) {
     double fitLim = 0.2;
 
     TF3* fit3d = new TF3(
@@ -35,13 +36,13 @@ TF3* CreateCF3DFit(int charge, int centrality, int y) {
         7
     );
     
-    double Rout = ip.get(charge, "out", centrality, y);
-    double Rside = ip.get(charge, "side", centrality, y);
-    double Rlong = ip.get(charge, "long", centrality, y);
+    double Rout = ip.get(ch, "out", centr, b);
+    double Rside = ip.get(ch, "side", centr, b);
+    double Rlong = ip.get(ch, "long", centr, b);
     double Routside = 0;
     double Routlong = 0;
     double Rsidelong = 0;
-    double Lambda = ip.get(charge, "lambda", centrality, y);
+    double Lambda = ip.get(ch, "lambda", centr, b);
     
     fit3d->SetParameters(Rout, Rside, Rlong, Routside, Routlong, Rsidelong, Lambda);
 

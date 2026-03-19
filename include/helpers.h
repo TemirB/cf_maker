@@ -8,28 +8,52 @@
 
 #include "fit/types.h"
 
-inline constexpr int chargeSize = 2;
-inline constexpr int centralitySize = 4;
-inline constexpr int ktSize = 4;
-inline constexpr int rapiditySize = 10;
-inline constexpr int lcmsSize = 6;
+namespace Charge {
+    inline constexpr int kCount = 2;
+    inline std::vector<const char*> kNames = { "pos", "neg" };
+}
 
-inline constexpr int defaultRange = 0.05;
+namespace Centrality {
+    inline constexpr int kCount = 4;
+    inline std::vector<const char*> kNames = { "0-10", "10-30", "30-50", "50-80" };
+}
 
-inline constexpr std::array<double, 2> rapidityValues = {-1.0, 1.0};
-inline constexpr std::array<double, 5> ktValues = {0.15, 0.25, 0.35, 0.45, 0.60};
+namespace Kt {
+    inline constexpr int kCount = 4;
+    inline std::vector<double> kValue = { 0.15, 0.25, 0.35, 0.45, 0.60 };
+    inline std::vector<const char*> kNames = {"0.15-0.25", "0.25-0.35", "0.35-0.45", "0.45-0.60"};
+}
+
+namespace Rapidity {
+    inline constexpr int kCount = 10;
+    inline std::vector<double> kValues = { -1., -0.8, -0.6, -0.4, -0.2, 0, 0.2, 0.4, 0.6, 0.8, 1. };
+    inline std::vector<const char*> kNames = {
+        "[-1.0; -0.8]", "[-0.8; -0.6]", "[-0.6; -0.4]", "[-0.4; -0.2]", "[-0.2; 0.0]",
+        "[0.0; 0.2]", "[0.2; 0.4]", "[0.4; 0.6]", "[0.6; 0.8]", "[0.8; 1.0]"
+    };
+}
+
+namespace LCMS {
+    inline constexpr int kCount = 6;
+    inline std::vector<const char*> kNames = { "out", "side", "long", "out-side", "out-long", "side-long" };
+}
+
+struct Bin {
+    const char* type;
+    int count;
+    std::vector<const char*> names;
+    std::vector<double> values;
+};
+
+inline constexpr double kDefaultRange = 0.05;
+
 inline constexpr std::array<int, 4> colors = {kRed, kBlue, kMagenta, kGreen};
 inline constexpr std::array<int, 4> markers = {20, 21, 22, 23};
 
-inline constexpr double step = (rapidityValues[1] - rapidityValues[0])/rapiditySize;
-
-inline constexpr std::array<const char*, 3> axises = {"x", "y", "z"};
-inline constexpr std::array<const char*, 6> LCMS = {"out", "side", "long", "out-side", "out-long", "side-long"};
-inline constexpr std::array<const char*, 2> chargeNames = {"pos", "neg"};
-inline constexpr std::array<const char*, 4> centralityNames = {"0-10", "10-30", "30-50", "50-80"};
-inline constexpr std::array<const char*, 4> ktNames = {"0.15-0.25", "0.25-0.35", "0.35-0.45", "0.45-0.60"};
-
 enum class LCMSAxis { Out, Side, Long };
+
+enum class AnalysisType { Rapidity, Kt, Unknown };
+AnalysisType getType(const char* type);
 
 inline std::string ToString(LCMSAxis a) {
     switch(a) {
@@ -41,34 +65,10 @@ inline std::string ToString(LCMSAxis a) {
 }
 
 using FitGrid = std::vector<std::vector<std::vector<FitResult>>>;
-// using FitGrid = FitResult[chargeSize][centralitySize][rapiditySize];
 
 // Геттеры
 TH3D* getNum(TFile* f, int charge, int cent, int ktIdx);
 TH3D* getNumWei(TFile* f, int charge, int cent, int ktIdx);
-std::string getCFName(int chIdx, int centIdx, int ktIdx);
+std::string getCFName(int ch, int centr, const char* binType, const char* binName);
 
-bool sameBinning(const TH3D* a, const TH3D* b);
-// Bad fit
-struct BadFitPoint {
-    int charge;
-    int cent;
-    int y;
-
-    double yVal;
-
-    double chi2ndf;
-    double pvalue;
-    double lambda, elambda;
-    double R[3], eR[3];
-};
-
-inline std::vector<BadFitPoint> badPoints;
-
-bool IsBadFit(const FitResult& r);
-void CollectBadFits(
-    FitGrid& fitRes,
-    std::vector<BadFitPoint>& badPoints
-);
-
-TTree* WriteBadFitTree(TFile* f, const std::vector<BadFitPoint>& badPoints);
+[[nodiscard]] bool IsBadFit(const FitResult& r);

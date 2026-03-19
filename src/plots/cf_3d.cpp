@@ -8,17 +8,15 @@
 #include "helpers.h"
 
 void BuildAndFit3DCorrelationFunctions(
-    TFile* inputFile,
-    TFile* outFile,
-    FitGrid& fitRes
+    TFile* inputFile, TFile* outFile, FitGrid& fitRes, Bin bin
 ) {
-    for (int chIdx = 0; chIdx < chargeSize; chIdx++)
-    for (int centIdx = 0; centIdx < centralitySize; centIdx++)
-    for (int yIdx = 0; yIdx < rapiditySize; yIdx++) {
-        TF3* fit3d = CreateCF3DFit(chIdx, centIdx, yIdx);
+    for (int ch = 0; ch < Charge::kCount; ch++)
+    for (int centr = 0; centr < Centrality::kCount; centr++)
+    for (int b = 0; b < bin.count; b++) {
+        TF3* fit3d = CreateCF3DFit(ch, centr, b);
 
-        TH3D* h_A = getNum(inputFile, chIdx, centIdx, yIdx);
-        TH3D* h_A_wei = getNumWei(inputFile, chIdx, centIdx, yIdx);
+        TH3D* h_A = getNum(inputFile, ch, centr, b);
+        TH3D* h_A_wei = getNumWei(inputFile, ch, centr, b);
         if (!h_A || !h_A_wei) {
             delete h_A;
             delete h_A_wei;
@@ -40,9 +38,10 @@ void BuildAndFit3DCorrelationFunctions(
         delete h_A_wei;
 
         FitResult r = FitCF3D(h_CF, fit3d);
-        fitRes[chIdx][centIdx][yIdx] = r;
+        fitRes[ch][centr][b] = r;
 
-        std::string cfName = getCFName(chIdx, centIdx, yIdx); 
+        std::string cfName = getCFName(ch, centr, bin.type, bin.names[b]); 
+
         outFile->cd();
         h_CF->SetDirectory(outFile);
         h_CF->Write(cfName.c_str(), TObject::kOverwrite);

@@ -25,18 +25,16 @@ TH1D* Project1D_internal(TH3D& h, LCMSAxis axis, double w = 0.05) {
 // fmt - formatted title string (ROOT syntax)
 void Style(
     TH1D* h, const TString& fmt,
-    LCMSAxis axis, int centIdx, int yIdx
+    LCMSAxis axis, int centr, int b
 ) {
     // General
     {
         TString axisStr = ToString(axis);
-        Double_t left = rapidityValues[0] + step * yIdx;
-        char* rapidityRangeName = Form("%.2f-%.2f", left, left + step);
         TString title = TString::Format(
             "%s at centrality=[%s] %%, y=[%s] GeV/c and %s axis",
             fmt.Data(),
-            centralityNames[centIdx], 
-            rapidityRangeName, 
+            Centrality::kNames[centr], 
+            Rapidity::kNames[b], 
             axisStr.Data()
         );
 
@@ -76,12 +74,12 @@ void Style(
 
 TH1D* ProjectRatio(
     TH3D& ratio,
-    int centIdx, int yIdx,
+    int centr, int b,
     LCMSAxis axis
 ) {
     TString name = TString::Format(
         "proj_of_ratios_%d_%d_%s",
-        centIdx, yIdx, ToString(axis).data()
+        centr, b, ToString(axis).data()
     );
 
     TH1D* r = Project1D_internal(ratio, axis);
@@ -90,18 +88,18 @@ TH1D* ProjectRatio(
     TString axisStr = ToString(axis);
     TString fmt = "C^{++}/C^{--}_{" + axisStr + "}";
     
-    Style(r, fmt, axis, centIdx, yIdx);
+    Style(r, fmt, axis, centr, b);
     return r;
 }
 
 TH1D* RatioProject(
     TH3D& Neg, TH3D& Pos,
-    int centIdx, int yIdx,
+    int centr, int b,
     LCMSAxis axis
 ) {
     TString name = TString::Format(
         "ratio_proj_%d_%d_%s",
-        centIdx, yIdx, ToString(axis).data()
+        centr, b, ToString(axis).data()
     );
 
     TH1D* n = Project1D_internal(Neg, axis);
@@ -113,15 +111,15 @@ TH1D* RatioProject(
     TString axisStr = ToString(axis);
     TString fmt = "C^{++}(q_{" + axisStr + "}) / C^{--}(q_{" + axisStr + "})";
     
-    Style(ratio, fmt, axis, centIdx, yIdx);
+    Style(ratio, fmt, axis, centr, b);
     return ratio;
 }
 
-void do_CF_ratios(TFile* fCF3D, TFile* fRatioProj, TFile* fProjRatio) {
-    for (int centIdx = 0; centIdx < centralitySize; centIdx++)
-    for (int yIdx = 0; yIdx < rapiditySize; yIdx++) {
-        TString nPos = getCFName(1, centIdx, yIdx);
-        TString nNeg = getCFName(0, centIdx, yIdx);
+void do_CF_ratios(TFile* fCF3D, TFile* fRatioProj, TFile* fProjRatio, Bin bin) {
+    for (int centr = 0; centr < Centrality::kCount; centr++)
+    for (int b = 0; b < bin.count; b++) {
+        TString nPos = getCFName(1, centr, bin.type, bin.names[b]);
+        TString nNeg = getCFName(0, centr, bin.type, bin.names[b]);
 
         TH3D* hNeg = (TH3D*) fCF3D->Get(nNeg);
         TH3D* hPos = (TH3D*) fCF3D->Get(nPos);
@@ -138,14 +136,14 @@ void do_CF_ratios(TFile* fCF3D, TFile* fRatioProj, TFile* fProjRatio) {
         for (auto axis : {LCMSAxis::Out, LCMSAxis::Side, LCMSAxis::Long}) {
             // Отношение проекций
             {
-                TH1D* h = RatioProject(*neg, *pos, centIdx, yIdx, axis);
+                TH1D* h = RatioProject(*neg, *pos, centr, b, axis);
                 fRatioProj->cd();
                 h->Write();
             }
 
             // Проекция отношения
             {
-                TH1D* h = ProjectRatio(*ratio, centIdx, yIdx, axis);
+                TH1D* h = ProjectRatio(*ratio, centr, b, axis);
                 fProjRatio->cd();
                 h->Write();
             }

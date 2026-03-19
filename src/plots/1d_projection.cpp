@@ -210,22 +210,22 @@ TCanvas* CreateCanvas(
 // Full LCMS pipeline
 // ============================================
 
-void MakeLCMS1DProjections(TFile* input, TFile* out, FitGrid& fitRes)
+void MakeLCMS1DProjections(TFile* input, TFile* out, FitGrid& fitRes, Bin bin)
 {
     std::string dir = "all_1d_histos";
     std::string format = "pdf";
 
     gSystem->mkdir(dir.data());
 
-    for (int chIdx = 0; chIdx < chargeSize; chIdx++)
-    for (int centIdx = 0; centIdx < centralitySize; centIdx++)
-    for (int yIdx = 0; yIdx < rapiditySize; yIdx++) {
-        auto fit = std::unique_ptr<TF3>(CreateCF3DFit(chIdx, centIdx, yIdx));
+    for (int chIdx = 0; chIdx < Charge::kCount; chIdx++)
+    for (int centIdx = 0; centIdx < Centrality::kCount; centIdx++)
+    for (int b = 0; b < bin.count; b++) {
+        auto fit = std::unique_ptr<TF3>(CreateCF3DFit(chIdx, centIdx, b));
 
-        TH3D* h_A = getNum(input, chIdx, centIdx, yIdx);
-        TH3D* h_A_wei = getNumWei(input, chIdx, centIdx, yIdx);
+        TH3D* h_A = getNum(input, chIdx, centIdx, b);
+        TH3D* h_A_wei = getNumWei(input, chIdx, centIdx, b);
 
-        const FitResult& r = fitRes[chIdx][centIdx][yIdx];
+        const FitResult& r = fitRes[chIdx][centIdx][b];
 
         fit->SetParameter(0, r.R[0]);
         fit->SetParameter(1, r.R[1]);
@@ -240,10 +240,10 @@ void MakeLCMS1DProjections(TFile* input, TFile* out, FitGrid& fitRes)
 
         TH3D* fit3d = MakeFitHistogram(*fit);
 
-        std::string cf_name = getCFName(chIdx, centIdx, yIdx);
+        std::string cf_name = getCFName(chIdx, centIdx, bin.type, bin.names[b]);
 
-        double left = rapidityValues[0] + step*yIdx;
-        double right = left + step;
+        // double left = rapidityValues[0] + step*b;
+        // double right = left + step;
 
         TCanvas* can = new TCanvas(cf_name.data(), cf_name.data(), 2400, 800); 
         can->SetTitle(cf_name.data());
@@ -252,7 +252,7 @@ void MakeLCMS1DProjections(TFile* input, TFile* out, FitGrid& fitRes)
         for (int lcms = 0; lcms < 3; lcms++) {
             LCMSAxis axis = LCMSAxis(lcms);
 
-            auto [CF, fit] = Create1D(*h_A, *h_A_wei, fit3d, axis, defaultRange, cf_name);
+            auto [CF, fit] = Create1D(*h_A, *h_A_wei, fit3d, axis, kDefaultRange, cf_name);
 
             std::string canvasName = cf_name + "_" + ToString(axis);
 
@@ -274,10 +274,12 @@ void MakeLCMS1DProjections(TFile* input, TFile* out, FitGrid& fitRes)
         }
 
         // Rewrite condition bw overview
-        if (yIdx >=4 && yIdx <=6 && centIdx <= 2) {
+        if (b >=4 && b <=6 && centIdx <= 2) {
             auto name = Form(
-                    "%s/cfs_%s_%s_%.2f_%.2f.%s", 
-                    dir.data(), chargeNames[chIdx], centralityNames[centIdx], left, right, format.data()
+                    "%s/cfs_%s_%s_%s.%s", 
+                    dir.data(), 
+                    Charge::kNames[chIdx], Centrality::kNames[centIdx], bin.names[b], 
+                    format.data()
                 );
             can->SaveAs(name);
         }

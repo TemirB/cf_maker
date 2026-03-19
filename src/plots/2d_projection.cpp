@@ -124,46 +124,46 @@ void Write2DProjection(
 // Full LCMS 2D pipeline
 // =====================================
 
-void MakeLCMS2DProjections(TFile* input, TFile* out) {
+void MakeLCMS2DProjections(TFile* input, TFile* out, Bin bin) {
 
-    std::vector<TCanvas*> canvases(chargeSize * centralitySize, nullptr);
-    for (int ch = 0; ch < chargeSize; ch++)
-    for (int centr = 0; centr < centralitySize; centr++) {
+    std::vector<TCanvas*> canvases(Charge::kCount * Centrality::kCount, nullptr);
+    for (int ch = 0; ch < Charge::kCount; ch++)
+    for (int centr = 0; centr < Centrality::kCount; centr++) {
         auto name = Form(
             "all_out-long_2d_histos_centr_%s_%s",
-            centralityNames[centr], chargeNames[ch]
+            Centrality::kNames[centr], Charge::kNames[ch]
         );
         auto title = Form(
             "CF_{out-long} at ch=%s, centrality=%s", 
-            chargeNames[ch], centralityNames[centr]
+            Charge::kNames[ch], Centrality::kNames[centr]
         );
-        canvases[ch*centralitySize + centr] = new TCanvas(name, title, 2000, 800);
-        canvases[ch*centralitySize + centr]->Divide(5, 2);
+        canvases[ch*Centrality::kCount + centr] = new TCanvas(name, title, 2000, 800);
+        canvases[ch*Centrality::kCount + centr]->Divide(5, 2);
     }
 
-    for (int chIdx=0; chIdx < chargeSize; chIdx++)
-    for (int centIdx =0; centIdx < centralitySize; centIdx++)
-    for (int yIdx =0; yIdx < rapiditySize;yIdx++) {
-        TH3D* A = getNum(input, chIdx, centIdx, yIdx);
-        TH3D* Awei = getNumWei(input, chIdx, centIdx, yIdx);
+    for (int chIdx=0; chIdx < Charge::kCount; chIdx++)
+    for (int centIdx =0; centIdx < Centrality::kCount; centIdx++)
+    for (int b =0; b < bin.count; b++) {
+        TH3D* A = getNum(input, chIdx, centIdx, b);
+        TH3D* Awei = getNumWei(input, chIdx, centIdx, b);
 
-        std::string cf_name = getCFName(chIdx, centIdx, yIdx); 
+        std::string cf_name = getCFName(chIdx, centIdx, bin.type, bin.names[b]); 
 
         Write2DProjection(*out, *A, *Awei, LCMSAxis::Out, LCMSAxis::Side, cf_name, 
-            canvases[chIdx * centralitySize + centIdx], yIdx, false);
+            canvases[chIdx * Centrality::kCount + centIdx], b, false);
         Write2DProjection(*out, *A, *Awei, LCMSAxis::Out , LCMSAxis::Long, cf_name,
-            canvases[chIdx * centralitySize + centIdx], yIdx, true);
+            canvases[chIdx * Centrality::kCount + centIdx], b, true);
         Write2DProjection(*out, *A, *Awei, LCMSAxis::Side, LCMSAxis::Long, cf_name,
-            canvases[chIdx * centralitySize + centIdx], yIdx, false);
+            canvases[chIdx * Centrality::kCount + centIdx], b, false);
     }
 
     gSystem->mkdir("all_2d_histos"); 
-    for (int ch = 0; ch < chargeSize; ch++)
-    for (int centr = 0; centr < centralitySize; centr++) {
+    for (int ch = 0; ch < Charge::kCount; ch++)
+    for (int centr = 0; centr < Centrality::kCount; centr++) {
          auto name = Form(
             "all_2d_histos/all_out-long_2d_histos_centr_%s_%s.png", 
-            centralityNames[centr], chargeNames[ch]
+            Centrality::kNames[centr], Charge::kNames[ch]
         );
-        canvases[ch * centralitySize + centr]->SaveAs(name);
+        canvases[ch * Centrality::kCount + centr]->SaveAs(name);
     }
 }

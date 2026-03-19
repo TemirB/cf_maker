@@ -11,9 +11,15 @@
 int main(int argc, char** argv) {
     TH1::AddDirectory(kFALSE);
 
-    if (argc < 3) {
+    if (argc < 4) {
         std::cerr << "Usage: " << argv[0]
                   << " <input.root> <output_dir> <type = rapidity/kt>\n";
+        return 1;
+    }
+
+    AnalysisType aType = getType(argv[3]);
+    if (aType == AnalysisType::Unknown) {
+        std::cerr << "Unknown type: " << argv[3] << std::endl;
         return 1;
     }
 
@@ -33,22 +39,23 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    BuildAndFit3DCorrelationFunctions(input, &fCF, fitRes);
-
-    fCF.Write();
-
-    // bad fit collect
-    std::vector<BadFitPoint> badPoints;
-    CollectBadFits(fitRes, badPoints);
+    Bin bin;
     {
-        std::string name = ctx.outDir + "/badfit_heatmap.root";
-        TFile f(name.c_str(), "RECREATE");
-        
-        TTree* t = WriteBadFitTree(&f, badPoints);
-        t->Write();
-        f.Close();
+        bin.type = "kt";
+        bin.count = Kt::kCount;
+        bin.names = Kt::kNames;
+
+        if (aType == AnalysisType::Rapidity) {
+            bin.type = "rapidity";
+            bin.count = Rapidity::kCount;
+            bin.names = Rapidity::kNames;
+        }
     }
 
+    BuildAndFit3DCorrelationFunctions(input, &fCF, fitRes, bin);
+
+
+    fCF.Write();
     // // kt_diff
     // {
     //     std::string name = ctx.outDir + "/kt.root";
@@ -65,7 +72,7 @@ int main(int argc, char** argv) {
         std::string name = ctx.outDir + "/rapidity.root";
         TFile f(name.c_str(), "RECREATE");
 
-        MakeRapidityDependence(&f, fitRes);
+        MakeDependency(&f, fitRes, bin);
 
         f.Close();
     }
@@ -75,7 +82,7 @@ int main(int argc, char** argv) {
         std::string name = ctx.outDir + "/1d.root";
         TFile* f = new TFile(name.c_str(), "RECREATE");
 
-        MakeLCMS1DProjections(input, f, fitRes);
+        MakeLCMS1DProjections(input, f, fitRes, bin);
 
         f->Write();
         f->Close();
@@ -86,7 +93,7 @@ int main(int argc, char** argv) {
         std::string name = ctx.outDir + "/2d.root";
         TFile* f = new TFile(name.c_str(), "RECREATE");
 
-        MakeLCMS2DProjections(input, f);
+        MakeLCMS2DProjections(input, f, bin);
 
         f->Write();
         f->Close();
@@ -98,7 +105,7 @@ int main(int argc, char** argv) {
         TFile* f1 = new TFile(name1.c_str(), "RECREATE");
         TFile* f2 = new TFile(name2.c_str(), "RECREATE");
         TFile* fCF3D = new TFile(ctx.cf3dFile.c_str(), "READ");
-        do_CF_ratios(fCF3D, f1, f2);
+        do_CF_ratios(fCF3D, f1, f2, bin);
 
         f1->Write();
         f1->Close();
