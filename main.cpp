@@ -31,7 +31,28 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    FitGrid fitRes{};
+    Bin bin;
+    {
+        bin.type = "kt";
+        bin.count = Kt::kCount;
+        bin.names = Kt::kNames;
+        bin.values = Kt::kValues;
+
+        if (aType == AnalysisType::Rapidity) {
+            bin.type = "rapidity";
+            bin.count = Rapidity::kCount;
+            bin.names = Rapidity::kNames;
+            bin.values = Rapidity::kValues;
+        }
+    }
+
+    FitGrid fitRes(
+        Charge::kCount,
+        std::vector<std::vector<FitResult>>(
+            Centrality::kCount,
+            std::vector<FitResult>(bin.count)
+        )
+    );
 
     TFile fCF(ctx.cf3dFile.c_str(), "RECREATE");
     if (fCF.IsZombie()) {
@@ -39,35 +60,12 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    Bin bin;
-    {
-        bin.type = "kt";
-        bin.count = Kt::kCount;
-        bin.names = Kt::kNames;
-
-        if (aType == AnalysisType::Rapidity) {
-            bin.type = "rapidity";
-            bin.count = Rapidity::kCount;
-            bin.names = Rapidity::kNames;
-        }
-    }
-
     BuildAndFit3DCorrelationFunctions(input, &fCF, fitRes, bin);
 
-
     fCF.Write();
-    // // kt_diff
-    // {
-    //     std::string name = ctx.outDir + "/kt.root";
-    //     TFile* f = new TFile(name.c_str(), "RECREATE");
 
-    //     MakeKtDependence(f, fitRes);
-
-    //     f->Write();
-    //     f->Close();
-    // }
-
-    // rapidity_diff
+    // ===== Analysis =====
+    // dependency
     {
         std::string name = ctx.outDir + "/rapidity.root";
         TFile f(name.c_str(), "RECREATE");

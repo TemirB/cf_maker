@@ -24,9 +24,7 @@ void MakeDependency(
         // 1) 6 (LCMS::kCount) multigraphs, for each projection of radius
         // 2) 1, for lambda
         // 3) 1, legend buffer
-        TMultiGraph* mg_R[LCMS::kCount];
-        for (int i = 0; i < LCMS::kCount; i++) { mg_R[i] = new TMultiGraph(); }
-
+        TMultiGraph* mg_R[LCMS::kCount] = { new TMultiGraph(), new TMultiGraph(), new TMultiGraph(), new TMultiGraph(), new TMultiGraph(), new TMultiGraph() };
         TMultiGraph* mg_L = new TMultiGraph();
         std::vector<std::pair<TObject*, std::string>> legendEntries;
 
@@ -34,10 +32,8 @@ void MakeDependency(
             // Creating:
             // 1) 6 graphs, for each multigraph
             // 2) 1 graph, for lambda multigraph
-            TGraphErrors* g_R[LCMS::kCount];
-            for (int i = 0; i < LCMS::kCount; i++) { g_R[i] = new TGraphErrors(); }
-
-            TGraphErrors* g_L    = new TGraphErrors();
+            TGraphErrors* g_R[LCMS::kCount] = { new TGraphErrors(), new TGraphErrors(), new TGraphErrors(), new TGraphErrors(), new TGraphErrors(), new TGraphErrors() };
+            TGraphErrors* g_L = new TGraphErrors();
 
             for (int lcms = 0; lcms < LCMS::kCount; lcms++) {
                 g_R[lcms]->SetName(

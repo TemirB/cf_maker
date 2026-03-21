@@ -20,7 +20,7 @@ namespace Centrality {
 
 namespace Kt {
     inline constexpr int kCount = 4;
-    inline std::vector<double> kValue = { 0.15, 0.25, 0.35, 0.45, 0.60 };
+    inline std::vector<double> kValues = { 0.15, 0.25, 0.35, 0.45, 0.60 };
     inline std::vector<const char*> kNames = {"0.15-0.25", "0.25-0.35", "0.35-0.45", "0.45-0.60"};
 }
 

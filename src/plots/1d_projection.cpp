@@ -140,9 +140,9 @@ std::pair<TH1D*, TH1D*> Create1D(
     const std::string& name
 ) {
     std::string baseName = name + " " + ToString(axis);
-    const auto [xF, xL] = (axis != LCMSAxis::Out)  ? GetBinRange(A.GetXaxis(), w) : std::pair{1, A.GetNbinsX()};
-    const auto [yF, yL] = (axis != LCMSAxis::Side) ? GetBinRange(A.GetYaxis(), w) : std::pair{1, A.GetNbinsY()};
-    const auto [zF, zL] = (axis != LCMSAxis::Long) ? GetBinRange(A.GetZaxis(), w) : std::pair{1, A.GetNbinsZ()};
+    const auto [xF, xL] = std::pair{1, A.GetNbinsX()};
+    const auto [yF, yL] = std::pair{1, A.GetNbinsY()};
+    const auto [zF, zL] = std::pair{1, A.GetNbinsZ()};
 
     TH1D* hDen = nullptr;
     switch (axis) {

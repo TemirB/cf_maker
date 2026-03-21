@@ -10,7 +10,10 @@
 #include "helpers.h"
 
 TH1D* Project1D_internal(TH3D& h, LCMSAxis axis, double w = 0.05) {
-    SetSlice1D(h, axis, w);
+    ResetRanges(h);
+    if (axis != LCMSAxis::Out)  h.GetXaxis()->SetRangeUser(-w, w);
+    if (axis != LCMSAxis::Side) h.GetYaxis()->SetRangeUser(-w, w);
+    if (axis != LCMSAxis::Long) h.GetZaxis()->SetRangeUser(-w, w);
 
     const char* proj =
         axis==LCMSAxis::Out  ? "x" :

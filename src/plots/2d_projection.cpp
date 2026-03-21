@@ -38,7 +38,9 @@ inline void Crop2D(TH2D& h, double q = 0.08)
 
 inline void SetSlice2D(TH3D& h, LCMSAxis freeze, double w = 0.2) {
     ResetRanges(h);
-    FreezeAxis(h, freeze, w);
+    if (freeze == LCMSAxis::Out)  h.GetXaxis()->SetRangeUser(-w, w);
+    if (freeze == LCMSAxis::Side) h.GetYaxis()->SetRangeUser(-w, w);
+    if (freeze == LCMSAxis::Long) h.GetZaxis()->SetRangeUser(-w, w);
 }
 
 // =====================================
