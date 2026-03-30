@@ -69,7 +69,7 @@ using FitGrid = std::vector<std::vector<std::vector<FitResult>>>;
 // Геттеры
 TH3D* getNum(TFile* f, int charge, int cent, int ktIdx);
 TH3D* getNumWei(TFile* f, int charge, int cent, int ktIdx);
-std::string getCFName(int chIdx, int centIdx, int ktIdx);
+std::string getCFName(int ch, int centr, const char* binType, const char* binName);
 
 bool IsBadFit(const FitResult& r);
 

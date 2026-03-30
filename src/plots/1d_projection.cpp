@@ -15,14 +15,14 @@
 #include "fit/fit.h"
 #include "draw.h"
 
-template<class T>
-using RootPtr = std::unique_ptr<T>;
+void SetSlice(TH3D& h, LCMSAxis axis, double w) {
+    ResetRanges(h);
 
-using std::string;
+    if (axis != LCMSAxis::Out)  h.GetXaxis()->SetRangeUser(-w, w);
+    if (axis != LCMSAxis::Side) h.GetYaxis()->SetRangeUser(-w, w);
+    if (axis != LCMSAxis::Long) h.GetZaxis()->SetRangeUser(-w, w);
+}
 
-// ============================================
-// Build dense 3D histogram of the fitted CF
-// ============================================
 
 TH3D* MakeFitHistogram(const TF3& fit) {
     auto h = new TH3D(
@@ -68,9 +68,10 @@ TH1D* CreateFit(
     fit->SetDirectory(nullptr);
     return fit;
 }
-RootPtr<TH1D> BuildLCMSFitFrom3D(
+
+TH1D* BuildLCMSFitFrom3D(
     const TH3D& slicedVolume,
-    const TH3D& fit3D,
+    TH3D* fit3D,
     LCMSAxis axis,
     const std::string& tag
 ) {
@@ -79,8 +80,8 @@ RootPtr<TH1D> BuildLCMSFitFrom3D(
         axis == LCMSAxis::Side ? "y" :
                                  "z";
 
-    auto den = RootPtr<TH3D>((TH3D*)slicedVolume.Clone());
-    auto num = RootPtr<TH3D>((TH3D*)slicedVolume.Clone());
+    auto den = (TH3D*)slicedVolume.Clone();
+    auto num = (TH3D*)slicedVolume.Clone();
     den->Reset(); num->Reset();
     den->SetDirectory(nullptr);
     num->SetDirectory(nullptr);
@@ -96,14 +97,14 @@ RootPtr<TH1D> BuildLCMSFitFrom3D(
     for (int y=y1;y<=y2;y++)
     for (int z=z1;z<=z2;z++) {
         den->SetBinContent(x,y,z,1.0);
-        num->SetBinContent(x,y,z, fit3D.GetBinContent(x,y,z));
+        num->SetBinContent(x,y,z, fit3D->GetBinContent(x,y,z));
     }
 
-    auto hNum = RootPtr<TH1D>((TH1D*)num->Project3D(proj)->Clone());
-    auto hDen = RootPtr<TH1D>((TH1D*)den->Project3D(proj)->Clone());
+    auto hNum = (TH1D*)num->Project3D(proj)->Clone();
+    auto hDen = (TH1D*)den->Project3D(proj)->Clone();
 
-    auto fit = RootPtr<TH1D>((TH1D*)hDen->Clone(("fit_"+tag+"_"+ToString(axis)).c_str()));
-    fit->Divide(hNum.get(), hDen.get());
+    auto fit = (TH1D*)hDen->Clone(("fit_"+tag+"_"+ToString(axis)).c_str());
+    fit->Divide(hNum, hDen);
 
     return fit;
 }
@@ -113,7 +114,7 @@ RootPtr<TH1D> BuildLCMSFitFrom3D(
 // ============================================
 
 void AddFitStats(const FitResult& r, double textSize,
-                 double x1=0.55, double y1=0.70, double x2=0.88, double y2=0.88) {
+                 double x1=0.70, double y1=0.75, double x2=0.88, double y2=0.88) {
                     //0.60,0.75,0.88,0.88
     auto* stats = new TPaveText(x1, y1, x2, y2, "NDC");
     stats->SetBorderSize(1);
@@ -126,54 +127,70 @@ void AddFitStats(const FitResult& r, double textSize,
     stats->AddText(Form("R_{out}  = %.3f #pm %.3f fm", r.R[0], r.eR[0]));
     stats->AddText(Form("R_{side} = %.3f #pm %.3f fm", r.R[1], r.eR[1]));
     stats->AddText(Form("R_{long} = %.3f #pm %.3f fm", r.R[2], r.eR[2]));
-    stats->AddText(Form("R_{out-long}^2 = %.3f #pm %.3f fm", r.R[4], r.eR[4]));
+    stats->AddText(Form("R_{out-long} = %.3f #pm %.3f fm", r.R[4], r.eR[4]));
     stats->AddText(Form("#lambda  = %.3f #pm %.3f", r.lambda, r.elambda));
     stats->Draw();
 }
 
 std::pair<TH1D*, TH1D*> Create1D(
-    const TH3D& A,
-    const TH3D& Awei,
+    TH3D& A,
+    TH3D& Awei,
     TH3D* fit3d,
     const LCMSAxis axis,
     const std::string& name
 ) {
+
+    // auto workA = (TH3D*) A.Clone();
+    // auto workAwei = (TH3D*) Awei.Clone();
     std::string baseName = name + " " + ToString(axis);
-    const auto [xF, xL] = std::pair{1, A.GetNbinsX()};
-    const auto [yF, yL] = std::pair{1, A.GetNbinsY()};
-    const auto [zF, zL] = std::pair{1, A.GetNbinsZ()};
 
-    TH1D* hDen = nullptr;
-    switch (axis) {
-        case LCMSAxis::Out:  hDen = A.ProjectionX((baseName + "_num").c_str(), yF, yL, zF, zL); break;
-        case LCMSAxis::Side: hDen = A.ProjectionY((baseName + "_num").c_str(), xF, xL, zF, zL); break;
-        case LCMSAxis::Long: hDen = A.ProjectionZ((baseName + "_num").c_str(), xF, xL, yF, yL); break;
-    }
-    hDen->SetDirectory(nullptr);
+    SetSlice(A, axis, 0.05);
+    SetSlice(Awei, axis, 0.05);
 
-    TH1D* hNum = nullptr;
-    switch (axis) {
-        case LCMSAxis::Out:  hNum = Awei.ProjectionX((baseName + "_den").c_str(), yF, yL, zF, zL); break;
-        case LCMSAxis::Side: hNum = Awei.ProjectionY((baseName + "_den").c_str(), xF, xL, zF, zL); break;
-        case LCMSAxis::Long: hNum = Awei.ProjectionZ((baseName + "_den").c_str(), xF, xL, yF, yL); break;
-    }
-    hNum->SetDirectory(nullptr);
+    const char* proj =
+        axis == LCMSAxis::Out  ? "x" :
+        axis == LCMSAxis::Side ? "y" :
+                                 "z";
 
-    hNum->Divide(hNum, hDen, 1.0, 1.0, "B");
+
+    // const auto [xF, xL] = std::pair{1, A.GetNbinsX()};
+    // const auto [yF, yL] = std::pair{1, A.GetNbinsY()};
+    // const auto [zF, zL] = std::pair{1, A.GetNbinsZ()};
+
+    // TH1D* hDen = nullptr;
+    // switch (axis) {
+    //     case LCMSAxis::Out:  hDen = A.ProjectionX((baseName + "_num").c_str(), yF, yL, zF, zL); break;
+    //     case LCMSAxis::Side: hDen = A.ProjectionY((baseName + "_num").c_str(), xF, xL, zF, zL); break;
+    //     case LCMSAxis::Long: hDen = A.ProjectionZ((baseName + "_num").c_str(), xF, xL, yF, yL); break;
+    // }
+    // hDen->SetDirectory(nullptr);
+
+    // TH1D* hNum = nullptr;
+    // switch (axis) {
+    //     case LCMSAxis::Out:  hNum = Awei.ProjectionX((baseName + "_den").c_str(), yF, yL, zF, zL); break;
+    //     case LCMSAxis::Side: hNum = Awei.ProjectionY((baseName + "_den").c_str(), xF, xL, zF, zL); break;
+    //     case LCMSAxis::Long: hNum = Awei.ProjectionZ((baseName + "_den").c_str(), xF, xL, yF, yL); break;
+    // }
+    // hNum->SetDirectory(nullptr);
+
+    auto hA    = (TH1D*)A.Project3D(proj)->Clone();
+    auto hAwei = (TH1D*)Awei.Project3D(proj)->Clone();
+
+    auto CF = (TH1D*)hA->Clone(name.c_str());
+    CF->Divide(hAwei, hA, 1., 1., "B");
 
     std::string n = name + " " + ToString(axis);
-    hNum->SetTitle(n.c_str());
+    CF->SetTitle(n.c_str());
 
-    TH1D* fit = CreateFit(
-        fit3d, axis, n, 
-        xF, xL,
-        yF, yL,
-        zF, zL
-    );
+    auto fit = BuildLCMSFitFrom3D(A, fit3d, axis, baseName);
+    // TH1D* fit = CreateFit(
+    //     fit3d, axis, n, 
+    //     xF, xL,
+    //     yF, yL,
+    //     zF, zL
+    // );
 
-    delete hDen;
-
-    return {std::move(hNum), std::move(fit)};
+    return {CF, fit};
 }
 
 TCanvas* CreateCanvas(
@@ -198,9 +215,13 @@ TCanvas* CreateCanvas(
     fit->GetXaxis()->SetRangeUser(-0.2,0.2);
     gStyle->SetOptFit(0102);
 
+    c->cd();
     CF->Draw("P");
     fit->Draw("L SAME");
     AddFitStats(r, 0.032);
+
+    c->Modified();
+    c->Update();
 
     return c;
 }
@@ -229,7 +250,6 @@ void MakeLCMS1DProjections(Context ctx, TFile* input, TFile* out)
         TH3D* h_A_wei = getNumWei(input, chIdx, centIdx, b);
 
         const FitResult r = fitRes[chIdx][centIdx][b];
-
         fit->SetParameter(0, r.R[0]);
         fit->SetParameter(1, r.R[1]);
         fit->SetParameter(2, r.R[2]);
@@ -269,6 +289,9 @@ void MakeLCMS1DProjections(Context ctx, TFile* input, TFile* out)
                 if (lcms == 2) {
                     AddFitStats(r, 0.032);
                 }
+
+                can->Modified();
+                can->Update();
             }
         }
 

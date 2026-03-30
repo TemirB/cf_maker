@@ -12,7 +12,7 @@ void ResetRanges(TH3D& h);
 void FreezeAxis(TH3D& h, LCMSAxis freeze, double w = 0.2);
 
 // cf_3d.cpp
-void BuildAndFit3DCorrelationFunctions(Context ctx, TFile* inputFile, TFile* outFile);
+void BuildAndFit3DCorrelationFunctions(Context& ctx, TFile* inputFile, TFile* outFile);
 
 // dependency
 void MakeDependency(Context ctx, TFile* outFile);

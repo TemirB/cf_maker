@@ -8,9 +8,9 @@
 #include "helpers.h"
 
 void BuildAndFit3DCorrelationFunctions(
-    Context ctx, TFile* inputFile, TFile* outFile
+    Context& ctx, TFile* inputFile, TFile* outFile
 ) {
-    FitGrid fitRes = ctx.fitRes;
+    // FitGrid fitRes = ctx.fitRes;
     Bin bin = ctx.bining;
     
     for (int ch = 0; ch < Charge::kCount; ch++)
@@ -41,7 +41,7 @@ void BuildAndFit3DCorrelationFunctions(
         delete h_A_wei;
 
         FitResult r = FitCF3D(h_CF, fit3d);
-        fitRes[ch][centr][b] = r;
+        ctx.fitRes[ch][centr][b] = r;
 
         std::string cfName = getCFName(ch, centr, bin.type, bin.names[b]); 
 
