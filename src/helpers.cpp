@@ -4,6 +4,8 @@
 #include <fstream>
 #include <sstream>
 #include <cstring>
+#include <sys/stat.h>
+#include <sys/types.h>
 
 #include <TH3.h>
 #include <TTree.h>
@@ -51,4 +53,11 @@ AnalysisType getType(const char* type) {
     if (std::strcmp(type, "rapidity") == 0) return AnalysisType::Rapidity;
     if (std::strcmp(type, "kt") == 0) return AnalysisType::Kt;
     return AnalysisType::Unknown;
+}
+
+void EnsureDir(const std::string& dir) {
+    struct stat st;
+    if (stat(dir.c_str(), &st) != 0) {
+        mkdir(dir.c_str(), 0755);
+    }
 }

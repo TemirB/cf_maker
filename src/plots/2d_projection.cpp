@@ -1,12 +1,10 @@
 #include "plots.h"
 
 #include <iostream>
-#include <memory>
 
 #include <TH3.h>
 #include <TH2.h>
 #include <TCanvas.h>
-#include <TSystem.h>
 
 #include <helpers.h>
 
@@ -126,8 +124,11 @@ void Write2DProjection(
 // Full LCMS 2D pipeline
 // =====================================
 
-void MakeLCMS2DProjections(TFile* input, TFile* out, Bin bin) {
-
+void MakeLCMS2DProjections(Context ctx, TFile* input, TFile* out) {
+    Bin bin = ctx.bining;
+    std::string dir = ctx.outDir + "/all_2d_histos";
+    EnsureDir(dir);
+    std::string ext = "pdf";
     std::vector<TCanvas*> canvases(Charge::kCount * Centrality::kCount, nullptr);
     for (int ch = 0; ch < Charge::kCount; ch++)
     for (int centr = 0; centr < Centrality::kCount; centr++) {
@@ -159,12 +160,20 @@ void MakeLCMS2DProjections(TFile* input, TFile* out, Bin bin) {
             canvases[chIdx * Centrality::kCount + centIdx], b, false);
     }
 
+<<<<<<< Updated upstream
     gSystem->mkdir("all_2d_histos"); 
     for (int ch = 0; ch < Charge::kCount; ch++)
     for (int centr = 0; centr < Centrality::kCount; centr++) {
          auto name = Form(
             "all_2d_histos/all_out-long_2d_histos_centr_%s_%s.png", 
-            Centrality::kNames[centr], Charge::kNames[ch]
+            centralityNames[centr], chargeNames[ch]
+=======
+    for (int ch = 0; ch < Charge::kCount; ch++)
+    for (int centr = 0; centr < Centrality::kCount; centr++) {
+         auto name = Form(
+            "%s/all_out-long_2d_histos_centr_%s_%s.%s", 
+            dir.c_str(), Centrality::kNames[centr], Charge::kNames[ch], ext.c_str()
+>>>>>>> Stashed changes
         );
         canvases[ch * Centrality::kCount + centr]->SaveAs(name);
     }

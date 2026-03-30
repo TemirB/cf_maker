@@ -118,7 +118,9 @@ TH1D* RatioProject(
     return ratio;
 }
 
-void do_CF_ratios(TFile* fCF3D, TFile* fRatioProj, TFile* fProjRatio, Bin bin) {
+void do_CF_ratios(Context ctx, TFile* fCF3D, TFile* fRatioProj, TFile* fProjRatio) {
+    Bin bin = ctx.bining;
+    
     for (int centr = 0; centr < Centrality::kCount; centr++)
     for (int b = 0; b < bin.count; b++) {
         TString nPos = getCFName(1, centr, bin.type, bin.names[b]);

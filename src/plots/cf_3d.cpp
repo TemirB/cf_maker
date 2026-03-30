@@ -8,8 +8,11 @@
 #include "helpers.h"
 
 void BuildAndFit3DCorrelationFunctions(
-    TFile* inputFile, TFile* outFile, FitGrid& fitRes, Bin bin
+    Context ctx, TFile* inputFile, TFile* outFile
 ) {
+    FitGrid fitRes = ctx.fitRes;
+    Bin bin = ctx.bining;
+    
     for (int ch = 0; ch < Charge::kCount; ch++)
     for (int centr = 0; centr < Centrality::kCount; centr++)
     for (int b = 0; b < bin.count; b++) {

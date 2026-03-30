@@ -15,15 +15,9 @@ int main(int argc, char** argv) {
         std::cerr << "Usage: " << argv[0]
                   << " <input.root> <output_dir> <type = rapidity/kt>\n";
         return 1;
-    }
+    } 
 
-    AnalysisType aType = getType(argv[3]);
-    if (aType == AnalysisType::Unknown) {
-        std::cerr << "Unknown type: " << argv[3] << std::endl;
-        return 1;
-    }
-
-    auto ctx = BuildContext(argv);
+    Context ctx = BuildContext(argv);
 
     TFile* input = new TFile(ctx.inputFile.c_str(), "READ");
     if (!input || input->IsZombie()) {
@@ -31,46 +25,24 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    Bin bin;
+    
+
+    // Cf 3d
     {
-        bin.type = "kt";
-        bin.count = Kt::kCount;
-        bin.names = Kt::kNames;
-        bin.values = Kt::kValues;
+        std::string name = ctx.outDir + "/cf3d.root";
+        TFile f(name.c_str(), "RECREATE");
 
-        if (aType == AnalysisType::Rapidity) {
-            bin.type = "rapidity";
-            bin.count = Rapidity::kCount;
-            bin.names = Rapidity::kNames;
-            bin.values = Rapidity::kValues;
-        }
+        BuildAndFit3DCorrelationFunctions(ctx, input, &f);
+
+        f.Write();
     }
-
-    FitGrid fitRes(
-        Charge::kCount,
-        std::vector<std::vector<FitResult>>(
-            Centrality::kCount,
-            std::vector<FitResult>(bin.count)
-        )
-    );
-
-    TFile fCF(ctx.cf3dFile.c_str(), "RECREATE");
-    if (fCF.IsZombie()) {
-        std::cerr << "ERROR: cannot create " << ctx.cf3dFile << "\n";
-        return 1;
-    }
-
-    BuildAndFit3DCorrelationFunctions(input, &fCF, fitRes, bin);
-
-    fCF.Write();
-
     // ===== Analysis =====
     // dependency
     {
-        std::string name = ctx.outDir + "/rapidity.root";
+        std::string name = Form("%s/%s.root", ctx.outDir.data(), ctx.bining.type);
         TFile f(name.c_str(), "RECREATE");
 
-        MakeDependency(&f, fitRes, bin);
+        MakeDependency(ctx, &f);
 
         f.Close();
     }
@@ -80,7 +52,7 @@ int main(int argc, char** argv) {
         std::string name = ctx.outDir + "/1d.root";
         TFile* f = new TFile(name.c_str(), "RECREATE");
 
-        MakeLCMS1DProjections(input, f, fitRes, bin);
+        MakeLCMS1DProjections(ctx, input, f);
 
         f->Write();
         f->Close();
@@ -91,7 +63,7 @@ int main(int argc, char** argv) {
         std::string name = ctx.outDir + "/2d.root";
         TFile* f = new TFile(name.c_str(), "RECREATE");
 
-        MakeLCMS2DProjections(input, f, bin);
+        MakeLCMS2DProjections(ctx, input, f);
 
         f->Write();
         f->Close();
@@ -99,11 +71,12 @@ int main(int argc, char** argv) {
     {
         std::string name1 = ctx.outDir + "/ratio_projs.root";
         std::string name2 = ctx.outDir + "/proj_ratios.root";
+        std::string cf3d = ctx.outDir + "/cf3d.root";
 
         TFile* f1 = new TFile(name1.c_str(), "RECREATE");
         TFile* f2 = new TFile(name2.c_str(), "RECREATE");
-        TFile* fCF3D = new TFile(ctx.cf3dFile.c_str(), "READ");
-        do_CF_ratios(fCF3D, f1, f2, bin);
+        TFile* fCF3D = new TFile(cf3d.c_str(), "READ");
+        do_CF_ratios(ctx, fCF3D, f1, f2);
 
         f1->Write();
         f1->Close();

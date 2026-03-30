@@ -7,18 +7,23 @@
 #include <TMultiGraph.h>
 #include <TGraphErrors.h>
 #include <TTree.h>
+#include <TCanvas.h>
 
 #include "helpers.h"
 #include "fit/types.h"
 #include "draw.h"
-
-#include <TCanvas.h>
+#include "context.h"
 
 void MakeDependency(
-    TFile* outFile,
-    FitGrid& fitRes,
-    Bin bin
+    Context ctx,
+    TFile* outFile
 ) {
+    FitGrid fitRes = ctx.fitRes;
+    Bin bin = ctx.bining;
+
+    std::string dir = ctx.outDir + "/dependency";
+    EnsureDir(dir);
+    std::string ext = "pdf";
     for (int ch = 0; ch < Charge::kCount; ch++) {
         // Creating: 
         // 1) 6 (LCMS::kCount) multigraphs, for each projection of radius
@@ -117,7 +122,7 @@ void MakeDependency(
 
             c->cd(4);
             mg_L->Draw("APL");
-            std::string nSave = name + ".png";
+            std::string nSave = dir + "/" + name + "." + ext;
             c->SaveAs(nSave.c_str());
         }
 
@@ -134,7 +139,7 @@ void MakeDependency(
                 idx++;
             }
 
-            std::string nSave = name + ".png";
+            std::string nSave = dir + "/" + name + "." + ext;
             c->SaveAs(nSave.c_str());
         }
     }

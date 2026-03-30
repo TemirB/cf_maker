@@ -136,7 +136,6 @@ std::pair<TH1D*, TH1D*> Create1D(
     const TH3D& Awei,
     TH3D* fit3d,
     const LCMSAxis axis,
-    double w,
     const std::string& name
 ) {
     std::string baseName = name + " " + ToString(axis);
@@ -210,9 +209,13 @@ TCanvas* CreateCanvas(
 // Full LCMS pipeline
 // ============================================
 
-void MakeLCMS1DProjections(TFile* input, TFile* out, FitGrid& fitRes, Bin bin)
+void MakeLCMS1DProjections(Context ctx, TFile* input, TFile* out)
 {
-    std::string dir = "all_1d_histos";
+    FitGrid fitRes = ctx.fitRes;
+    Bin bin = ctx.bining;
+
+    std::string dir = ctx.outDir + "/all_1d_histos";
+    EnsureDir(dir);
     std::string format = "pdf";
 
     gSystem->mkdir(dir.data());
@@ -220,12 +223,12 @@ void MakeLCMS1DProjections(TFile* input, TFile* out, FitGrid& fitRes, Bin bin)
     for (int chIdx = 0; chIdx < Charge::kCount; chIdx++)
     for (int centIdx = 0; centIdx < Centrality::kCount; centIdx++)
     for (int b = 0; b < bin.count; b++) {
-        auto fit = std::unique_ptr<TF3>(CreateCF3DFit(chIdx, centIdx, b));
+        TF3* fit = CreateCF3DFit(chIdx, centIdx, b);
 
         TH3D* h_A = getNum(input, chIdx, centIdx, b);
         TH3D* h_A_wei = getNumWei(input, chIdx, centIdx, b);
 
-        const FitResult& r = fitRes[chIdx][centIdx][b];
+        const FitResult r = fitRes[chIdx][centIdx][b];
 
         fit->SetParameter(0, r.R[0]);
         fit->SetParameter(1, r.R[1]);
@@ -235,24 +238,20 @@ void MakeLCMS1DProjections(TFile* input, TFile* out, FitGrid& fitRes, Bin bin)
         fit->SetParameter(5, r.R[5]);
         fit->SetParameter(6, r.lambda);
 
-        for (int p = 0; p < 7; p++)
-            fit->FixParameter(p, fit->GetParameter(p));
+        for (int p = 0; p < 7; p++) fit->FixParameter(p, fit->GetParameter(p));
 
         TH3D* fit3d = MakeFitHistogram(*fit);
 
         std::string cf_name = getCFName(chIdx, centIdx, bin.type, bin.names[b]);
 
-        // double left = rapidityValues[0] + step*b;
-        // double right = left + step;
-
-        TCanvas* can = new TCanvas(cf_name.data(), cf_name.data(), 2400, 800); 
+        TCanvas* can = new TCanvas(cf_name.data(), cf_name.data(), 2400, 800);
         can->SetTitle(cf_name.data());
         can->Divide(3,1);
 
         for (int lcms = 0; lcms < 3; lcms++) {
             LCMSAxis axis = LCMSAxis(lcms);
 
-            auto [CF, fit] = Create1D(*h_A, *h_A_wei, fit3d, axis, kDefaultRange, cf_name);
+            auto [CF, fit] = Create1D(*h_A, *h_A_wei, fit3d, axis, cf_name);
 
             std::string canvasName = cf_name + "_" + ToString(axis);
 
