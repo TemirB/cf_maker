@@ -244,7 +244,7 @@ void MakeLCMS1DProjections(Context ctx, TFile* input, TFile* out)
     for (int chIdx = 0; chIdx < Charge::kCount; chIdx++)
     for (int centIdx = 0; centIdx < Centrality::kCount; centIdx++)
     for (int b = 0; b < bin.count; b++) {
-        TF3* fit = CreateCF3DFit(chIdx, centIdx, b);
+        TF3* fit = CreateCF3DFit(ctx, chIdx, centIdx, b);
 
         TH3D* h_A = getNum(input, chIdx, centIdx, b);
         TH3D* h_A_wei = getNumWei(input, chIdx, centIdx, b);

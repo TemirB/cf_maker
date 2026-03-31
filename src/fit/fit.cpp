@@ -1,10 +1,13 @@
 #include "fit/fit.h"
 
+#include <cstring>
+
 #include <TFitResult.h>
 #include <TMath.h>
 
 #include <fit/initial_parameters.h>
 #include <helpers.h>
+#include <context.h>
 
 const Double_t hc2 = 0.197 * 0.197;
 
@@ -23,9 +26,18 @@ Double_t CF_fit_3d(Double_t* q, Double_t* par) {
     return 1.0 + par[6] * TMath::Exp(-qRq / hc2);
 }
 
-InitialParameters ip = InitialParameters();
+static InitialParameters ktIp = [](){
+    InitialParameters tmp;
+    tmp.KtInitialParameters();
+    return tmp;
+}();
+static InitialParameters rapIp = [](){
+    InitialParameters tmp;
+    tmp.RapidityInitialParameters();
+    return tmp;
+}();
 
-TF3* CreateCF3DFit(int ch, int centr, int b) {
+TF3* CreateCF3DFit(Context ctx, int ch, int centr, int b) {
     double fitLim = 0.2;
 
     TF3* fit3d = new TF3(
@@ -35,6 +47,10 @@ TF3* CreateCF3DFit(int ch, int centr, int b) {
         -fitLim, fitLim, 
         7
     );
+
+    const InitialParameters& ip = (std::strcmp(ctx.bining.type, "kt") == 0) 
+                                ? ktIp 
+                                : rapIp;
     
     double Rout = ip.get(ch, "out", centr, b);
     double Rside = ip.get(ch, "side", centr, b);
