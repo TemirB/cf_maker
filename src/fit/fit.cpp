@@ -59,7 +59,7 @@ static InitialParameters rapIp = [](){
 }();
 
 TF3* CreateCF3DFit(Context ctx, int ch, int centr, int b) {
-    double fitLim = 0.3;
+    double fitLim = 0.20;
 
     TF3* fit3d = new TF3(
         "fit3d", CF_fit_3d, 

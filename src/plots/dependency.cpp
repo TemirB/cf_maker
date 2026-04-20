@@ -161,6 +161,7 @@ void MakeDependency(
             c->Divide(2, 1);
 
             c->cd(1);
+            gPad->SetLogy();
             mg_Chi2Ndf->Draw("APL");
             mg_Chi2Ndf->GetXaxis()->SetTitle(bin.type);
             mg_Chi2Ndf->GetYaxis()->SetTitle("#chi^{2}/ndf");
