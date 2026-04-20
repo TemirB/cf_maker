@@ -88,10 +88,10 @@ void writeMGWithLegend(
         mg->GetYaxis()->SetRangeUser(0.7, 1.1);
         break;
     case 3: // chi2/ndf
-        mg->GetYaxis()->SetRangeUser(0.5, 1.5);
+        // mg->GetYaxis()->SetRangeUser(0.5, 1.5);
         break;
     case 4: // fit/CF
-        mg->GetYaxis()->SetRangeUser(0.5, 1.5);
+        // mg->GetYaxis()->SetRangeUser(0.5, 1.5);
         break;
     }
 
