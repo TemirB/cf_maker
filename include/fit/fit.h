@@ -9,6 +9,9 @@
 // 3D Gaussian CF model
 Double_t CF_fit_3d(Double_t* q, Double_t* par);
 
+// Evaluate 3D CF model from fit result parameters
+double EvalCF3D(const FitResult& r, double qOut, double qSide, double qLong);
+
 // Factory for ROOT TF3
 TF3* CreateCF3DFit(Context ctx, int charge, int centrality,int y);
 

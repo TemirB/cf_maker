@@ -9,21 +9,28 @@
 #include <helpers.h>
 #include <context.h>
 
-const Double_t hc2 = 0.197 * 0.197;
+namespace {
+constexpr double kHc2 = 0.197 * 0.197;
+}
+
+double EvalCF3D(const FitResult& r, double qOut, double qSide, double qLong) {
+    const double qRq = r.R[0] * qOut * qOut +
+                       r.R[1] * qSide * qSide +
+                       r.R[2] * qLong * qLong +
+                       2.0 * r.R[3] * qOut * qSide +
+                       2.0 * r.R[4] * qOut * qLong +
+                       2.0 * r.R[5] * qSide * qLong;
+
+    return 1.0 + r.lambda * TMath::Exp(-qRq / kHc2);
+}
 
 Double_t CF_fit_3d(Double_t* q, Double_t* par) {
-    Double_t q_out = q[0];
-    Double_t q_side = q[1];
-    Double_t q_long = q[2];
-
-    Double_t qRq = par[0] * q_out*q_out +
-                   par[1] * q_side*q_side +
-                   par[2] * q_long*q_long +
-                 2.*par[3] * q_out*q_side +
-                 2.*par[4] * q_out*q_long +
-                 2.*par[5] * q_side*q_long;
-
-    return 1.0 + par[6] * TMath::Exp(-qRq / hc2);
+    FitResult r{};
+    for (int i = 0; i < 6; ++i) {
+        r.R[i] = par[i];
+    }
+    r.lambda = par[6];
+    return EvalCF3D(r, q[0], q[1], q[2]);
 }
 
 static InitialParameters ktIp = [](){

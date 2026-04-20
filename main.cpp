@@ -40,9 +40,11 @@ int main(int argc, char** argv) {
     // dependency
     {
         std::string name = Form("%s/%s.root", ctx.outDir.data(), ctx.bining.type);
+        std::string cf3dName = ctx.outDir + "/cf3d.root";
         TFile f(name.c_str(), "RECREATE");
+        TFile cf3d(cf3dName.c_str(), "READ");
 
-        MakeDependency(ctx, &f);
+        MakeDependency(ctx, &cf3d, &f);
 
         f.Close();
     }
