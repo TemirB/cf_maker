@@ -10,6 +10,8 @@
 #include <TH3.h>
 #include <TTree.h>
 #include <TFile.h>
+#include <TCanvas.h>
+#include <TError.h>
 
 #include "fit/types.h"
 
@@ -60,4 +62,15 @@ void EnsureDir(const std::string& dir) {
     if (stat(dir.c_str(), &st) != 0) {
         mkdir(dir.c_str(), 0755);
     }
+}
+
+void SaveCanvasQuiet(TCanvas* canvas, const char* filename) {
+    if (!canvas || !filename) {
+        return;
+    }
+
+    const Int_t prevLevel = gErrorIgnoreLevel;
+    gErrorIgnoreLevel = kWarning;
+    canvas->SaveAs(filename);
+    gErrorIgnoreLevel = prevLevel;
 }

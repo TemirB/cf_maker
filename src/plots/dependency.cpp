@@ -150,7 +150,7 @@ void MakeDependency(
             c->cd(4);
             mg_L->Draw("APL");
             std::string nSave = dir + "/" + name + "." + ext;
-            c->SaveAs(nSave.c_str());
+            SaveCanvasQuiet(c, nSave.c_str());
         }
 
         // Saved for article
@@ -171,7 +171,7 @@ void MakeDependency(
             mg_FitOverCF->GetYaxis()->SetTitle("<fit/CF>");
 
             std::string nSave = dir + "/" + name + "." + ext;
-            c->SaveAs(nSave.c_str());
+            SaveCanvasQuiet(c, nSave.c_str());
         }
 
         // Saved for article
@@ -188,7 +188,7 @@ void MakeDependency(
             }
 
             std::string nSave = dir + "/" + name + "." + ext;
-            c->SaveAs(nSave.c_str());
+            SaveCanvasQuiet(c, nSave.c_str());
         }
     }
 }

@@ -166,6 +166,6 @@ void MakeLCMS2DProjections(Context ctx, TFile* input, TFile* out) {
             "%s/all_out-long_2d_histos_centr_%s_%s.%s", 
             dir.c_str(), Centrality::kNames[centr], Charge::kNames[ch], ext.c_str()
         );
-        canvases[ch * Centrality::kCount + centr]->SaveAs(name);
+        SaveCanvasQuiet(canvases[ch * Centrality::kCount + centr], name);
     }
 }

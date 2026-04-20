@@ -250,9 +250,9 @@ void MakeLCMS1DProjections(Context ctx, TFile* input, TFile* out)
         TH3D* h_A_wei = getNumWei(input, chIdx, centIdx, b);
 
         const FitResult r = fitRes[chIdx][centIdx][b];
-        fit->SetParameter(0, r.R[0]);
-        fit->SetParameter(1, r.R[1]);
-        fit->SetParameter(2, r.R[2]);
+        fit->SetParameter(0, r.R[0] * r.R[0]);
+        fit->SetParameter(1, r.R[1] * r.R[1]);
+        fit->SetParameter(2, r.R[2] * r.R[2]);
         fit->SetParameter(3, r.R[3]);
         fit->SetParameter(4, r.R[4]);
         fit->SetParameter(5, r.R[5]);
@@ -304,7 +304,7 @@ void MakeLCMS1DProjections(Context ctx, TFile* input, TFile* out)
                     Charge::kNames[chIdx], Centrality::kNames[centIdx], bin.names[b], 
                     format.data()
                 );
-            can->SaveAs(name);
+            SaveCanvasQuiet(can, name);
         }
     }
 }

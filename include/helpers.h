@@ -5,6 +5,7 @@
 #include <TTree.h>
 #include <TFile.h>
 #include <TDirectory.h>
+#include <TCanvas.h>
 
 #include "fit/types.h"
 
@@ -74,3 +75,4 @@ std::string getCFName(int ch, int centr, const char* binType, const char* binNam
 bool IsBadFit(const FitResult& r);
 
 void EnsureDir(const std::string& dir);
+void SaveCanvasQuiet(TCanvas* canvas, const char* filename);
