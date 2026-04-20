@@ -23,7 +23,7 @@ void MakeDependency(
 
     std::string dir = ctx.outDir + "/dependency";
     EnsureDir(dir);
-    std::string ext = "pdf";
+    std::string ext = "png";
     for (int ch = 0; ch < Charge::kCount; ch++) {
         // Creating: 
         // 1) 6 (LCMS::kCount) multigraphs, for each projection of radius
@@ -62,10 +62,10 @@ void MakeDependency(
             int shift = 0;
             for (int b = 0; b < bin.count; b++) {
                 FitResult res = fitRes[ch][centr][b];
-                if (IsBadFit(res)) {
-                    shift++;
-                    continue;
-                }
+                // if (IsBadFit(res)) {
+                //     shift++;
+                //     continue;
+                // }
 
                 double xVal = (bin.values[b] + bin.values[b+1])/2.;
 

@@ -16,9 +16,9 @@ Double_t CF_fit_3d(Double_t* q, Double_t* par) {
     Double_t q_side = q[1];
     Double_t q_long = q[2];
 
-    Double_t qRq = par[0]*par[0] * q_out*q_out +
-                   par[1]*par[1] * q_side*q_side +
-                   par[2]*par[2] * q_long*q_long +
+    Double_t qRq = par[0] * q_out*q_out +
+                   par[1] * q_side*q_side +
+                   par[2] * q_long*q_long +
                  2.*par[3] * q_out*q_side +
                  2.*par[4] * q_out*q_long +
                  2.*par[5] * q_side*q_long;
@@ -38,7 +38,7 @@ static InitialParameters rapIp = [](){
 }();
 
 TF3* CreateCF3DFit(Context ctx, int ch, int centr, int b) {
-    double fitLim = 0.2;
+    double fitLim = 0.3;
 
     TF3* fit3d = new TF3(
         "fit3d", CF_fit_3d, 
@@ -60,11 +60,11 @@ TF3* CreateCF3DFit(Context ctx, int ch, int centr, int b) {
     double Rsidelong = 0;
     double Lambda = ip.get(ch, "lambda", centr, b);
     
-    fit3d->SetParameters(Rout, Rside, Rlong, Routside, Routlong, Rsidelong, Lambda);
+    fit3d->SetParameters(Rout*Rout, Rside*Rside, Rlong*Rlong, Routside, Routlong, Rsidelong, Lambda);
 
-    fit3d->SetParLimits(0, 0.0, 10.);
-    fit3d->SetParLimits(1, 0.0, 10.);
-    fit3d->SetParLimits(2, 0.0, 10.);
+    fit3d->SetParLimits(0, 0.0, 50.);
+    fit3d->SetParLimits(1, 0.0, 50.);
+    fit3d->SetParLimits(2, 0.0, 50.);
     fit3d->SetParLimits(3, -30., 30.);
     fit3d->SetParLimits(4, -30., 30.);
     fit3d->SetParLimits(5, -30., 30.);

@@ -128,7 +128,7 @@ void MakeLCMS2DProjections(Context ctx, TFile* input, TFile* out) {
     Bin bin = ctx.bining;
     std::string dir = ctx.outDir + "/all_2d_histos";
     EnsureDir(dir);
-    std::string ext = "pdf";
+    std::string ext = "png";
     std::vector<TCanvas*> canvases(Charge::kCount * Centrality::kCount, nullptr);
     for (int ch = 0; ch < Charge::kCount; ch++)
     for (int centr = 0; centr < Centrality::kCount; centr++) {

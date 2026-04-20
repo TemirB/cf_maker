@@ -114,7 +114,7 @@ TH1D* BuildLCMSFitFrom3D(
 // ============================================
 
 void AddFitStats(const FitResult& r, double textSize,
-                 double x1=0.70, double y1=0.75, double x2=0.88, double y2=0.88) {
+                 double x1=0.55, double y1=0.70, double x2=0.88, double y2=0.88) {
                     //0.60,0.75,0.88,0.88
     auto* stats = new TPaveText(x1, y1, x2, y2, "NDC");
     stats->SetBorderSize(1);
@@ -237,7 +237,7 @@ void MakeLCMS1DProjections(Context ctx, TFile* input, TFile* out)
 
     std::string dir = ctx.outDir + "/all_1d_histos";
     EnsureDir(dir);
-    std::string format = "pdf";
+    std::string format = "png";
 
     gSystem->mkdir(dir.data());
 
@@ -296,7 +296,8 @@ void MakeLCMS1DProjections(Context ctx, TFile* input, TFile* out)
         }
 
         // Rewrite condition bw overview
-        if (b >=4 && b <=6 && centIdx <= 2) {
+        // if (b >=4 && b <=6 && centIdx <= 2) 
+        {
             auto name = Form(
                     "%s/cfs_%s_%s_%s.%s", 
                     dir.data(), 

@@ -79,7 +79,7 @@ void writeMGWithLegend(
 
     switch (type) {
     case 0: // Radii
-        mg->GetYaxis()->SetRangeUser(3, 7.5);
+        mg->GetYaxis()->SetRangeUser(1.5, 50.);
         break;
     case 1: // cross
         mg->GetYaxis()->SetRangeUser(-30, 30);
