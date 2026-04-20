@@ -79,7 +79,7 @@ void writeMGWithLegend(
 
     switch (type) {
     case 0: // Radii
-        mg->GetYaxis()->SetRangeUser(1.5, 50.);
+        mg->GetYaxis()->SetRangeUser(0., 10.);
         break;
     case 1: // cross
         mg->GetYaxis()->SetRangeUser(-30, 30);
@@ -88,10 +88,11 @@ void writeMGWithLegend(
         mg->GetYaxis()->SetRangeUser(0.7, 1.1);
         break;
     case 3: // chi2/ndf
-        // mg->GetYaxis()->SetRangeUser(0.5, 1.5);
+        // mg->GetYaxis()->SetRangeUser(0.5, 10.);
+        c.SetLogy();
         break;
     case 4: // fit/CF
-        // mg->GetYaxis()->SetRangeUser(0.5, 1.5);
+        mg->GetYaxis()->SetRangeUser(0.5, 2);
         break;
     }
 

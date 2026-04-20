@@ -99,7 +99,7 @@ void MakeDependency(
             if (lcms >= 3) type = 1;
             writeMGWithLegend(outFile, mg_R[lcms],
                 mg_R[lcms]->GetName(),
-                "rapidity",
+                ctx.bining.type,
                 Form("R_{%s} (fm)", LCMS::kNames[lcms]),
                 legendEntries,
                 type
@@ -110,7 +110,7 @@ void MakeDependency(
         mg_L->SetName(Form("mg_L_%s", Charge::kNames[ch]));
         writeMGWithLegend(outFile, mg_L,
             mg_L->GetName(),
-            "rapidity",
+            ctx.bining.type,
             "lambda",
             legendEntries,
             2
@@ -120,7 +120,7 @@ void MakeDependency(
         mg_Chi2Ndf->SetName(Form("mg_Chi2Ndf_%s", Charge::kNames[ch]));
         writeMGWithLegend(outFile, mg_Chi2Ndf,
             mg_Chi2Ndf->GetName(),
-            "rapidity",
+            ctx.bining.type,
             "#chi^{2}/ndf",
             legendEntries,
             3
@@ -130,7 +130,7 @@ void MakeDependency(
         mg_FitOverCF->SetName(Form("mg_FitOverCF_%s", Charge::kNames[ch]));
         writeMGWithLegend(outFile, mg_FitOverCF,
             mg_FitOverCF->GetName(),
-            "rapidity",
+            ctx.bining.type,
             "<fit/CF>",
             legendEntries,
             4
