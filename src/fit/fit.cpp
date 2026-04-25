@@ -58,8 +58,22 @@ static InitialParameters rapIp = [](){
     return tmp;
 }();
 
+static InitialParameters defaultKtIp = [](){
+    InitialParameters tmp;
+    tmp.GetDefaultParamsKt();
+    return tmp;
+}();
+
+static InitialParameters defaultRapIp = [](){
+    InitialParameters tmp;
+    tmp.GetDefaultParamsKt();
+    return tmp;
+}();
+
 TF3* CreateCF3DFit(Context ctx, int ch, int centr, int b) {
-    double fitLim = 0.20;
+    double fitLim = 0.25;
+
+    bool useDefaultIp = true;
 
     TF3* fit3d = new TF3(
         "fit3d", CF_fit_3d, 
@@ -69,9 +83,19 @@ TF3* CreateCF3DFit(Context ctx, int ch, int centr, int b) {
         7
     );
 
-    const InitialParameters& ip = (std::strcmp(ctx.bining.type, "kt") == 0) 
+    InitialParameters& ip = defaultKtIp;
+    if (useDefaultIp) {
+        if (std::strcmp(ctx.bining.type, "kt")) {
+            ip = defaultKtIp;
+        } else {
+            ip = defaultRapIp;
+        }
+    } else {
+        ip = (std::strcmp(ctx.bining.type, "kt") == 0) 
                                 ? ktIp 
                                 : rapIp;
+    }
+    
     
     double Rout = ip.get(ch, "out", centr, b);
     double Rside = ip.get(ch, "side", centr, b);

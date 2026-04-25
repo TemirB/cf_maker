@@ -35,7 +35,7 @@ void BuildAndFit3DCorrelationFunctions(
         // E	Errors — обнулить ошибки (Sumw2)
         // S	Statistics — сбросить статистику (mean, RMS, entries и т.д.)
 
-        h_CF->Divide(h_A_wei, h_A);
+        h_CF->Divide(h_A_wei, h_A, 1., 1., "B");
 
         delete h_A;
         delete h_A_wei;

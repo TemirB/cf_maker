@@ -10,7 +10,7 @@
 #include "fit/types.h"
 
 namespace {
-constexpr double kFitRange = 0.3;
+constexpr double kFitRange = 0.08;
 
 struct MeanWithError {
     double mean{};
