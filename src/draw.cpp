@@ -13,6 +13,7 @@
 #include <cmath>
 #include <algorithm>
 
+
 void setRangeWithErrors(TMultiGraph* mg, double padFrac) {
     if (!mg) return;
 
@@ -131,31 +132,40 @@ void writeHist(
     hist->Write(hist->GetName(), TObject::kOverwrite);
 }
 
-void Style1DCF(TH1* h, std::string name, const char* axis) {
-    h->SetMarkerStyle(20);
-    h->SetMarkerSize(0.5);
-    h->SetMarkerColor(kBlack);
-    h->SetLineColor(kBlack);
-    h->SetLineWidth(1);
+void Style1DCF(
+    TH1* h, std::string name, const char* axis,
+    Draw::Style style
+) {
+    h->SetMarkerStyle(style.marker.size);
+    h->SetMarkerSize(style.marker.size);
+    h->SetMarkerColor(style.marker.color);
+    h->SetLineColor(style.marker.color);
+    h->SetLineWidth(style.line.width);
 
     h->SetTitle(name.c_str());
-    h->GetXaxis()->SetTitle(Form("q_{%s} (GeV/c)", axis));
-    h->GetYaxis()->SetTitle("C(q)");
+    
+    auto xAxis = h->GetXaxis();
+    auto yAxis = h->GetYaxis();
 
-    h->GetXaxis()->CenterTitle();
-    h->GetYaxis()->CenterTitle();
-
-    h->GetXaxis()->SetTitleSize(0.05);
-    h->GetYaxis()->SetTitleSize(0.05);
-
-    h->GetXaxis()->SetLabelSize(0.045);
-    h->GetYaxis()->SetLabelSize(0.045);
-
-    h->GetYaxis()->SetTitleOffset(1.2);
+    {
+        xAxis->CenterTitle();
+        xAxis->SetTitle(Form("q_{%s} (GeV/c)", axis));
+        xAxis->SetLabelSize(style.label.size);
+        xAxis->SetTitleSize(style.title.size);
+    }
+    {
+        yAxis->CenterTitle();
+        yAxis->SetTitle(Form("CF(q_{%s})", axis));
+        yAxis->SetLabelSize(style.label.size);
+        yAxis->SetTitleSize(style.title.size);
+        yAxis->SetTitleOffset(style.title.offset);
+    }
 }
 
-void StyleFit(TH1* h) {
-    h->SetLineColor(kRed+1);
-    h->SetLineWidth(3);
-    h->SetLineStyle(1);
+void StyleFit(
+    TH1* h, Draw::Style style
+) {
+    h->SetLineColor(style.line.color);
+    h->SetLineWidth(style.line.width + 2); // linewidth = 3
+    h->SetLineStyle(style.line.style);
 }

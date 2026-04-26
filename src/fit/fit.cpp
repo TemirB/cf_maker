@@ -71,7 +71,7 @@ static InitialParameters defaultRapIp = [](){
 }();
 
 TF3* CreateCF3DFit(Context ctx, int ch, int centr, int b) {
-    double fitLim = 0.25;
+    double fitLim = 0.20;
 
     bool useDefaultIp = true;
 
