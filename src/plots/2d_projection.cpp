@@ -54,7 +54,7 @@ void Write2DProjection(
     const int y,
     bool draw
 ) {
-    // --- clone input (ROOT global state!)
+    // --- clone in (ROOT global state!)
     auto A    = RootPtr<TH3D>((TH3D*)A0.Clone());
     auto Awei = RootPtr<TH3D>((TH3D*)Awei0.Clone());
     A->SetDirectory(nullptr);
@@ -124,7 +124,7 @@ void Write2DProjection(
 // Full LCMS 2D pipeline
 // =====================================
 
-void MakeLCMS2DProjections(Context ctx, TFile* input, TFile* out) {
+void MakeLCMS2DProjections(Context ctx, TFile* in, TFile* out) {
     Bin bin = ctx.bining;
     std::string dir = ctx.outDir + "/all_2d_histos";
     EnsureDir(dir);
@@ -147,8 +147,7 @@ void MakeLCMS2DProjections(Context ctx, TFile* input, TFile* out) {
     for (int chIdx=0; chIdx < Charge::kCount; chIdx++)
     for (int centIdx =0; centIdx < Centrality::kCount; centIdx++)
     for (int b =0; b < bin.count; b++) {
-        TH3D* A = getNum(input, chIdx, centIdx, b);
-        TH3D* Awei = getNumWei(input, chIdx, centIdx, b);
+        auto [A, Awei] = getHists(in, chIdx, centIdx, b);
 
         std::string cf_name = getCFName(chIdx, centIdx, bin.type, bin.names[b]); 
 

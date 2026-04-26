@@ -68,8 +68,7 @@ inline std::string ToString(LCMSAxis a) {
 using FitGrid = std::vector<std::vector<std::vector<FitResult>>>;
 
 // Геттеры
-TH3D* getNum(TFile* f, int charge, int cent, int ktIdx);
-TH3D* getNumWei(TFile* f, int charge, int cent, int ktIdx);
+std::pair<TH3D*, TH3D*> getHists(TFile* f, int ch, int centr, int bin);
 std::string getCFName(int ch, int centr, const char* binType, const char* binName);
 
 bool IsBadFit(const FitResult& r);

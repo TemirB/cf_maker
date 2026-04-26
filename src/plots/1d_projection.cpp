@@ -261,8 +261,7 @@ void MakeLCMS1DProjections(
     for (int b = 0; b < bin.count; b++) {
         const FitResult r = fitRes[chIdx][centIdx][b];
         TH3D* fit3d = Create3DFitHist(r);
-        TH3D* h_A = getNum(in, chIdx, centIdx, b);
-        TH3D* h_A_wei = getNumWei(in, chIdx, centIdx, b);
+        auto [hA, hAwei] = getHists(in, chIdx, centIdx, b);
         TPaveText* stats = GetFitStats(r, 0.032);
 
         // Save cf + fit in 1 canvas (3 pad for 3 axis)
@@ -286,10 +285,11 @@ void MakeLCMS1DProjections(
             c_fit_over_cf->Divide(3, 1);
         }
 
+        // Main logic. Creating, and draw CF and Fit
         for (int lcms = 0; lcms < 3; lcms++) {
             LCMSAxis axis = LCMSAxis(lcms);
 
-            auto [CF, fit] = Create1D(*h_A, *h_A_wei, fit3d, axis, cf_name);
+            auto [CF, fit] = Create1D(*hA, *hAwei, fit3d, axis, cf_name);
 
             DrawCFOverFit(c_fit_over_cf, CF, fit, stats, n_fit_over_cf, lcms, style);
             SaveCanvasToFile(out, CF, fit, stats, style, cf_name, axis);

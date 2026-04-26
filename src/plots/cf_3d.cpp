@@ -18,27 +18,26 @@ void BuildAndFit3DCorrelationFunctions(
     for (int b = 0; b < bin.count; b++) {
         TF3* fit3d = CreateCF3DFit(ctx, ch, centr, b);
 
-        TH3D* h_A = getNum(inputFile, ch, centr, b);
-        TH3D* h_A_wei = getNumWei(inputFile, ch, centr, b);
-        if (!h_A || !h_A_wei) {
-            delete h_A;
-            delete h_A_wei;
+        auto [A, Awei] = getHists(inputFile, ch, centr, b);
+        if (!A || !Awei) {
+            delete A;
+            delete Awei;
             continue;
         }
-        h_A->SetDirectory(nullptr);
-        h_A_wei->SetDirectory(nullptr);
+        A->SetDirectory(nullptr);
+        Awei->SetDirectory(nullptr);
 
-        TH3D* h_CF = (TH3D*)h_A_wei->Clone("h_CF");
+        TH3D* h_CF = (TH3D*)Awei->Clone("h_CF");
         h_CF->Reset("ICES");        
         // I	Integral — сбросить интеграл (общее число заполнений)
         // C	Contents — обнулить содержимое бинов (counts)
         // E	Errors — обнулить ошибки (Sumw2)
         // S	Statistics — сбросить статистику (mean, RMS, entries и т.д.)
 
-        h_CF->Divide(h_A_wei, h_A, 1., 1., "B");
+        h_CF->Divide(Awei, A, 1., 1., "B");
 
-        delete h_A;
-        delete h_A_wei;
+        delete A;
+        delete Awei;
 
         FitResult r = FitCF3D(h_CF, fit3d);
         ctx.fitRes[ch][centr][b] = r;
