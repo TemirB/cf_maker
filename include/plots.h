@@ -30,3 +30,4 @@ void do_CF_ratios(Context ctx, TFile* fCF3D, TFile* fRatioProj, TFile* fProjRati
 // result graphs
 TGraphErrors* BuildFitOverCFGraph(const Context& ctx, TFile* cf3dFile, int ch, int centr);
 TGraphErrors* BuildChi2NdfGraph(const Context& ctx, int ch, int centr);
+TGraphErrors* BuildPvalue(const Context& ctx, int ch, int centr);

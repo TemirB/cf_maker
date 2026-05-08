@@ -33,6 +33,7 @@ void MakeDependency(
         TMultiGraph* mg_R[LCMS::kCount] = { new TMultiGraph(), new TMultiGraph(), new TMultiGraph(), new TMultiGraph(), new TMultiGraph(), new TMultiGraph() };
         TMultiGraph* mg_L = new TMultiGraph();
         TMultiGraph* mg_Chi2Ndf = new TMultiGraph();
+        TMultiGraph* mg_Pvalue = new TMultiGraph();
         TMultiGraph* mg_FitOverCF = new TMultiGraph();
         std::vector<std::pair<TObject*, std::string>> legendEntries;
 
@@ -43,6 +44,7 @@ void MakeDependency(
             TGraphErrors* g_R[LCMS::kCount] = { new TGraphErrors(), new TGraphErrors(), new TGraphErrors(), new TGraphErrors(), new TGraphErrors(), new TGraphErrors() };
             TGraphErrors* g_L = new TGraphErrors();
             TGraphErrors* g_Chi2Ndf = BuildChi2NdfGraph(ctx, ch, centr);
+            TGraphErrors* g_Pvalue = BuildPvalue(ctx, ch, centr);
             TGraphErrors* g_FitOverCF = BuildFitOverCFGraph(ctx, cf3dFile, ch, centr);
 
             for (int lcms = 0; lcms < LCMS::kCount; lcms++) {
@@ -90,6 +92,7 @@ void MakeDependency(
             mg_L->Add(g_L, "lp");
             mg_Chi2Ndf->Add(g_Chi2Ndf, "lp");
             mg_FitOverCF->Add(g_FitOverCF, "lp");
+            mg_Pvalue->Add(g_Pvalue, "lp");
         }
 
         for (int lcms = 0; lcms < LCMS::kCount; lcms++) {
@@ -134,6 +137,15 @@ void MakeDependency(
             "<fit/CF>",
             legendEntries,
             4
+        );
+
+        mg_Pvalue->SetName(Form("mg_Pvalue_%s", Charge::kNames[ch]));
+        writeMGWithLegend(outFile, mg_Pvalue,
+            mg_Pvalue->GetName(),
+            ctx.bining.type,
+            "p_{value}",
+            legendEntries,
+            5
         );
 
         // Saved for article
@@ -190,6 +202,22 @@ void MakeDependency(
 
             std::string nSave = dir + "/" + name + "." + ext;
             SaveCanvasQuiet(c, nSave.c_str());
+        }
+
+        // P-value
+        {
+            std::string name = Form("c_pvalues_%s", Charge::kNames[ch]);
+            std::string title = Form("P-value %s", Charge::kNames[ch]);
+
+            TCanvas* c = new TCanvas(name.data(), title.data(), 1600, 1600);
+            mg_Pvalue->Draw("APL");
+
+            {
+                outFile->cd();
+                mg_Pvalue->Write();
+            }
+            std::string nSave = Form("%s/%s.%s", dir.data(), name.data(), ext.data());
+            SaveCanvasQuiet(c, nSave.data());
         }
     }
 }

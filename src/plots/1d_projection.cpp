@@ -77,7 +77,7 @@ TPaveText* GetFitStats(
     stats->SetTextFont(42);
     stats->SetTextSize(textSize);
     
-    stats->AddText(Form("#chi^{2}/ndf = %.1f / %d = %.3f", r.chi2, r.ndf, r.chi2/r.ndf));
+    stats->AddText(Form("#chi^{2}/ndf = %.3f", r.chi2/r.ndf));
     stats->AddText(Form("R_{out}  = %.3f #pm %.3f fm", r.R[0], r.eR[0]));
     stats->AddText(Form("R_{side} = %.3f #pm %.3f fm", r.R[1], r.eR[1]));
     stats->AddText(Form("R_{long} = %.3f #pm %.3f fm", r.R[2], r.eR[2]));
@@ -162,7 +162,7 @@ void DrawCFAndFit(
 
 
 TH3D* Create3DFitHist(const FitResult r) {
-    double fitLim = 0.2;
+    double fitLim = 0.20;
     TF3* fit = new TF3(
         "fit3d", CF_fit_3d, 
         -fitLim, fitLim, 

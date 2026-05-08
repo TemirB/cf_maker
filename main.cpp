@@ -70,7 +70,10 @@ int main(int argc, char** argv) {
         f->Write();
         f->Close();
     }
+
+    // ratios
     {
+        // need to check fake data in proj_ratio
         std::string name1 = ctx.outDir + "/ratio_projs.root";
         std::string name2 = ctx.outDir + "/proj_ratios.root";
         std::string cf3d = ctx.outDir + "/cf3d.root";

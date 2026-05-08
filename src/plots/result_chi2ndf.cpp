@@ -29,3 +29,23 @@ TGraphErrors* BuildChi2NdfGraph(const Context& ctx, int ch, int centr) {
 
     return g;
 }
+
+TGraphErrors* BuildPvalue(const Context& ctx, int ch, int centr) {
+    Bin bin = ctx.bining;
+
+    TGraphErrors* g = new TGraphErrors();
+    g->SetName(Form("g_pvalue_%s_centr_%s", Charge::kNames[ch], Centrality::kNames[centr]));
+    g->SetLineColor(colors[centr]);
+    g->SetMarkerColor(colors[centr]);
+    g->SetMarkerStyle(markers[centr]);
+
+    for (int b = 0; b < bin.count; b++) {
+        const FitResult& res = ctx.fitRes[ch][centr][b];
+
+        const double xVal = (bin.values[b] + bin.values[b + 1]) / 2.0;
+        g->SetPoint(b, xVal, res.pvalue);
+        g->SetPointError(b, 0, 0);
+    }
+
+    return g;
+}

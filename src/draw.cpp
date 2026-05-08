@@ -93,7 +93,10 @@ void writeMGWithLegend(
         c.SetLogy();
         break;
     case 4: // fit/CF
-        mg->GetYaxis()->SetRangeUser(0.5, 2);
+        mg->GetYaxis()->SetRangeUser(0.8, 1.2);
+        break;
+    case 5:
+        mg->GetYaxis()->SetRangeUser(0, 0.1);
         break;
     }
 
