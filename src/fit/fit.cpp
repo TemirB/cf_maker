@@ -73,7 +73,7 @@ static InitialParameters defaultRapIp = [](){
 TF3* CreateCF3DFit(Context ctx, int ch, int centr, int b) {
     double fitLim = 0.20;
 
-    bool useDefaultIp = false;
+    bool useDefaultIp = true;
 
     TF3* fit3d = new TF3(
         "fit3d", CF_fit_3d, 
@@ -144,7 +144,7 @@ FitResult FitCF3D(TH3D* hCF, TF3* fit3d) {
     if (fitPtr.Get()) {
         res.chi2   = fitPtr->Chi2();
         res.ndf    = fitPtr->Ndf();
-        res.pvalue = TMath::Prob(res.chi2, res.ndf);
+        res.pvalue = TMath::Prob(res.chi2, 5);
         res.ok     = (res.chi2 >= 0 && res.ndf > 0);
     }
 

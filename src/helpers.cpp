@@ -71,3 +71,13 @@ void SaveCanvasQuiet(TCanvas* canvas, const char* filename) {
     canvas->SaveAs(filename);
     gErrorIgnoreLevel = prevLevel;
 }
+
+void FixMargin(TCanvas* c, int pads) {
+    for (int i = 1; i <= pads; i++) {
+        TPad* pad = (TPad*)c->GetPad(i);
+        pad->SetLeftMargin(0.15);
+        pad->SetBottomMargin(0.04);
+        pad->SetRightMargin(0.01);
+        pad->SetTopMargin(0.05);
+    }
+}

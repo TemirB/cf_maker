@@ -270,6 +270,7 @@ void MakeLCMS1DProjections(
         {
             can->SetTitle(cf_name.data());
             can->Divide(3,1);
+            FixMargin(can, 3);
         }
 
         // Save fit over cf in 1 canvas (3 pad for 3 axis)

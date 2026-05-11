@@ -75,3 +75,5 @@ bool IsBadFit(const FitResult& r);
 
 void EnsureDir(const std::string& dir);
 void SaveCanvasQuiet(TCanvas* canvas, const char* filename);
+
+void FixMargin(TCanvas* c, int pads);

@@ -96,7 +96,7 @@ void writeMGWithLegend(
         mg->GetYaxis()->SetRangeUser(0.8, 1.2);
         break;
     case 5:
-        mg->GetYaxis()->SetRangeUser(0, 0.1);
+        mg->GetYaxis()->SetRangeUser(0, 1);
         break;
     }
 
