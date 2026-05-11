@@ -1,0 +1,1 @@
+This directory used only for images which I (TemirB), wanna use in my report or smth.
