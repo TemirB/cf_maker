@@ -156,7 +156,7 @@ FitResult FitCF3D(TH3D* hCF, TF3* fit3d) {
             const double radius = ClampSqrt(val);
             res.R[i] = radius;
             // sigma(sqrt(x)) = sigma(x) / (2*sqrt(x))
-            res.eR[i] = (radius > 0.0) ? (std::abs(err) / (2.0 * radius)) : 0.0;
+            res.eR[i] = std::abs(err) / (2.0 * radius);
         } else if (i < 6) {
             res.R[i] = val;
             res.eR[i] = err;
