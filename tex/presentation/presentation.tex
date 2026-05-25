@@ -1,0 +1,280 @@
+\begin{frame}\titlepage\end{frame}
+
+\begin{frame}{Введение. Корреляционная функция.}
+    \textbf{Корреляционная функция} (КФ) --- отношение измеренных двухчастичного инклюзивного и одночастичного инклюзивного спектров.
+    \[C = \frac{A}{B} = \frac{A_{wei}}{A}\]
+    \[A_{wei} = femtoweight \cdot A\]
+    \[femtoweight = 1 + \cos\frac{(\Delta P\cdot\Delta r)}{hc}\]
+    \centering, где $\Delta$ P --- разница 4-импульсов, а $\Delta$ r --- разница 4-векторов
+\end{frame}
+
+\begin{frame}{Введение. 1-мерная КФ.}
+    В случае 1-мерной КФ используется инвариантный импульс пары:
+    \[q_{inv} = \sqrt{{(P_{a} - P_{b})}^{2} - {(E_{a} - E_{b})}^{2}}\]
+    Тогда КФ имеет следующий вид:
+    \[C(q_{inv}) = \frac{A(q_{inv})}{B(q_{inv})} = \frac{A_{wei}(q_{inv})}{A(q_{inv})}\]
+    А аппроксимирующая её кривая:
+    \[C(q_{inv}) = 1 + \lambda\exp{(-\frac{R_{inv}^{2} q_{inv}^{2}}{hc})}\]
+\end{frame}
+
+\begin{frame}{Введение. 3-мерная КФ.}
+    В случае 3-мерной КФ используется:
+    \[q = p_{a} - p_{b}\]
+    \[P = p_{a} + p_{b}\]
+    И система координат LCMS в которой любой 4-вектор $V$ из СЦМ представим в виде:
+    
+    \[V_{out } = (P_x V_x+P_y V_y) / P_T\]
+    \[V_{side } = (P_x V_y-P_y V_x) / P_T\]
+    \[V_{long} = (P_0 V_z-P_z V_0) / M_T\]
+    \[\text{где } M_T^2=P_0^2-P_z^2 \text{ \;,a } P_T^2=P_x^2+P_y^2\]
+    
+\end{frame}
+
+\begin{frame}{Введение. 3-мерная КФ.}
+    Тогда 3-мерная КФ имеет вид:
+    \[
+        C = 
+        \frac{
+            A(q_{out}, q_{side}, q_{long})
+        }{
+            B(q_{out}, q_{side}, q_{long})
+        } = 
+        \frac{
+            A_{wei}(q_{out}, q_{side}, q_{long})
+        }{
+            A_(q_{out}, q_{side}, q_{long})
+        }
+    \]
+    А аппроксимирующая её кривая:
+    \[
+        C(q) = 1 + \lambda \exp{(
+            -\sum_{o, s, l}
+            \frac{
+                R_{ij}q_{i}q_{j}
+            }{hc}
+        )}
+    \]
+    В самом простом случае (без учета недиагональных элементов)
+    \[
+        C(q_{out}, q_{side}, q_{long}) = 
+        1 + \lambda \exp{(
+            -\frac{
+                R_{out}^{2} q_{out}^{2} - 
+                R_{side}^{2} q_{side}^{2} - 
+                R_{long}^{2} q_{long}^{2}
+            }{hc}
+        )}
+    \]
+\end{frame}
+
+
+\begin{frame}{Настройка модели и отбор частиц.}
+	Для генерации была использованна транспортная модель \"SMASH\" со следующими настройками:
+    \begin{itemize}
+        \item Столкновение: 
+            $^{197}_{79}\!Au + ^{197}_{79}\!Au$
+        \item При энергии центра масс: 
+            $\sqrt{s_{NN}} = 3$ GeV
+    \end{itemize}
+    А для построения КФ смешивались частицы, удовлетворяющие следующим требованиям:
+    \begin{itemize}
+        \item Пионы (+) и (-). 
+        \item Произошло кинетическое вымораживание.
+        \item $P_{total}$ $\in$ [0.15, 1.5] GeV/c
+        \item $P_{T}$ $\in$ [0.15, 1.5] GeV/c
+        \item $\eta$ $\in$ [-1.5, 1.5]
+    \end{itemize}
+    Также мы не учитываем события с упругим взаимодействием.
+\end{frame}
+
+\begin{frame}{Гистограммы событий.Прицельный параметр}
+    \begin{figure}[H]
+        \includegraphics[width=0.7\textwidth]{fig/impact_parameter.png}
+        \caption{Распределене событий по прицельному параметру}\label{fig:sample}
+    \end{figure}
+\end{frame}
+
+\setcounter{figure}{3}
+\begin{frame}{Гистограммы частиц. 1.Координаты}
+    \begin{figure}[H]
+        \centering
+        \begin{minipage}[b]{0.4\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{fig/x.png}
+        \end{minipage}
+        \begin{minipage}[b]{0.4\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{fig/y.png}
+        \end{minipage}
+        \begin{minipage}[b]{0.4\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{fig/z.png}
+        \end{minipage}\label{fig:coordinates}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Гистограммы частиц. 2.Время кинетического вымораживания}
+    \begin{figure}[H]
+        \includegraphics[width=0.7\textwidth]{fig/t.png}\label{fig:kineticfreezouttime}
+        \caption{Распределение по времени наступления кинетического вымораживания}
+    \end{figure}
+\end{frame}
+
+\setcounter{figure}{6}
+\begin{frame}{Гистограммы частиц. 3.Импульсы}
+    \begin{figure}[H]
+        \centering
+        \begin{minipage}[b]{0.4\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{fig/px.png}
+        \end{minipage}
+        \hfill
+        \begin{minipage}[b]{0.4\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{fig/py.png}
+        \end{minipage}
+        \hfill
+        \begin{minipage}[b]{0.4\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{fig/pz.png}
+        \end{minipage}\label{fig:momentums}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Гистограммы частиц. 4.Полный и поперечный импульсы}
+    \begin{figure}[H]
+        \centering
+        \begin{minipage}[b]{0.47\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{fig/p_total.png}
+        \end{minipage}
+        \begin{minipage}[b]{0.47\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{fig/pt.png}
+        \end{minipage}\label{fig:total_and_transvmomentums}
+        \caption{Распределение по полному и поперечному импульсу для пионов}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Гистограммы частиц. 5. Быстрота и псевдобыстрота}
+    \begin{figure}[H]
+        \centering
+        \begin{minipage}[b]{0.47\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{fig/rapidity.png}
+        \end{minipage}
+        \begin{minipage}[b]{0.47\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{fig/pseudorapidity.png}
+        \end{minipage}\label{fig:pseudo_and_rapidity}
+        \caption{Распределение по быстроте и псевдобыстроте для пионов}
+    \end{figure}
+\end{frame}
+
+
+
+\begin{frame}{Сравнение вычисленных параметров при разных центральностях}
+    \begin{figure}[H]
+        \centering
+        \begin{minipage}[b]{0.47\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{fig/c_Rinv_vs_kt.png}
+        \end{minipage}
+        \begin{minipage}[b]{0.47\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{fig/c_lambda_vs_kt.png}
+        \end{minipage}\label{fig:Rinv_lambda_4}
+    \end{figure}
+
+    $R_{inv}$ и $\lambda$ уменьшается с $k_{t}$ и от центральных к периферическим столкновениям
+\end{frame}
+
+\begin{frame}{1-мерная проекция 3-мерной КФ}
+    \begin{figure}[H]
+        \includegraphics[width=0.7\textwidth]{fig/c_1DCF_min.png}\label{fig:1DCF}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{2-мерная проекция 3-мерной КФ}
+    \begin{figure}[H]
+        \includegraphics[width=0.7\textwidth]{fig/c_2DCF_min.png}\label{fig:1DCF}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Сравнение вычисленных параметров из 3-мерной КФ при разны центральностях}
+    \begin{figure}[H]
+        \includegraphics[width=0.65\textwidth]{fig/c_out_side_long_lambda.png}\label{fig:1DCF}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Заключение}
+    \begin{itemize}
+	\item Был сгенерирован набор частиц в транспортной модели “SMASH”.
+        \item Были построены и изучены гистограммы для базового анализа столкновения.
+        \item На базе сгенерированных модельных данных был освоен метод фемтоскопических корреляций.
+        \item Были построены корреляционные функции для одномерного и трехмерного анализа.
+        \item Были получены зависимости радиусов и силы корреляции от поперечного импульса и центральности.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Цели}
+    \begin{itemize}
+	\item  Набрать более полную статистику для высокой центральности и для разных значений $\sqrt{S_{NN}}$.
+        \item Изучить асимметрию. В частности для направления out. 
+        \item Проверить соответствие модельных и экспериментальных данных.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+	\Large \textbf{Спасибо за внимание!}
+\end{frame}
+
+\begin{frame}{Дополнительные слайды. КФ для всех центральностей и $k_{t}$ классов}
+    \begin{figure}[H]
+        \includegraphics[width=0.65\textwidth]{fig/c_all_1d_CF.png}\label{fig:1DCF}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Дополнительные слайды. 3-мерные КФ для всех центральностей и $k_{t}$ классов}
+    \begin{figure}[H]
+        \includegraphics[width=0.65\textwidth]{fig/c_all_3d_CF.png}\label{fig:1DCF}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Дополнительные слайды. 1-мерные проекции 3-мерных КФ для всех центральностей и $k_{t}$ классов, на ось out}
+    \begin{figure}[H]
+        \includegraphics[width=0.65\textwidth]{fig/c_all_3d_CF_proj_out.png}\label{fig:1DCF}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Дополнительные слайды. 1-мерные проекции 3-мерных КФ для всех центральностей и $k_{t}$ классов, на ось side}
+    \begin{figure}[H]
+        \includegraphics[width=0.65\textwidth]{fig/c_all_3d_CF_proj_side.png}\label{fig:1DCF}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Дополнительные слайды. 1-мерные проекции 3-мерных КФ для всех центральностей и $k_{t}$ классов, на ось long}
+    \begin{figure}[H]
+        \includegraphics[width=0.65\textwidth]{fig/c_all_3d_CF_proj_long.png}\label{fig:1DCF}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Дополнительные слайды. 2-мерные проекции 3-мерных КФ для всех центральностей и $k_{t}$ классов, в осях out-side}
+    \begin{figure}[H]
+        \includegraphics[width=0.65\textwidth]{fig/c_2DCF_out_vs_side.png}\label{fig:1DCF}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Дополнительные слайды. 2-мерные проекции 3-мерных КФ для всех центральностей и $k_{t}$ классов, в осях out-long}
+    \begin{figure}[H]
+        \includegraphics[width=0.65\textwidth]{fig/c_2DCF_out_vs_long.png}\label{fig:1DCF}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Дополнительные слайды. 2-мерные проекции  3-мерных КФ для всех центральностей и $k_{t}$ классов, в осях side-long}
+    \begin{figure}[H]
+        \includegraphics[width=0.65\textwidth]{fig/c_2DCF_side_vs_long.png}\label{fig:1DCF}
+    \end{figure}
+\end{frame}
+
+

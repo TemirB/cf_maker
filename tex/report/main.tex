@@ -1,4 +1,4 @@
-\documentclass[a4paper]{extarticle}
+\documentclass{extarticle}
 
 \usepackage{lineno}
 \usepackage[T2A]{fontenc}
@@ -22,70 +22,68 @@
 \addbibresource{references.bib}
 
 \begin{document}
-\begin{titlepage}
-    \newpage
-    \begin{center}
-    
-        \bfseries ФЕДЕРАЛЬНОЕ ГОСУДАРСТВЕННОЕ БЮДЖЕТНОЕ ОБРАЗОВАТЕЛЬНОЕ УЧРЕЖДЕНИЕ ВЫСШЕГО ОБРАЗОВАНИЯ <<МОСКОВСКИЙ ГОСУДАРСТВЕННЫЙ УНИВЕРСИТЕТ имени М.В. ЛОМОНОСОВА>>
+    \begin{titlepage}
+        \newpage
+        \begin{center}
         
-        \vspace{1cm}
-        ФИЗИЧЕСКИЙ ФАКУЛЬТЕТ
-        \vspace{1cm}
-    
-        КАФЕДРА ФИЗИКИ ЭЛЕМЕНТАРНЫХ ЧАСТИЦ
-    
-        \vspace{6cm}
-        ОТЧЕТ ПО НАУЧНО-ИССЛЕДОВАТЕЛЬСКОЙ РАБОТЕ 
+            \bfseries ФЕДЕРАЛЬНОЕ ГОСУДАРСТВЕННОЕ БЮДЖЕТНОЕ ОБРАЗОВАТЕЛЬНОЕ УЧРЕЖДЕНИЕ ВЫСШЕГО ОБРАЗОВАНИЯ <<МОСКОВСКИЙ ГОСУДАРСТВЕННЫЙ УНИВЕРСИТЕТ имени М.\@В.\@ ЛОМОНОСОВА>>
+            
+            \vspace{1cm}
+            ФИЗИЧЕСКИЙ ФАКУЛЬТЕТ
+            \vspace{1cm}
         
-        НАПРАВЛЕНИЕ 03.04.02 "ФИЗИКА"
+            КАФЕДРА ФИЗИКИ ЭЛЕМЕНТАРНЫХ ЧАСТИЦ
         
-        СЕМЕСТР 09
-    \end{center}
+            \vspace{6cm}
+            ОТЧЕТ ПО НАУЧНО-ИССЛЕДОВАТЕЛЬСКОЙ РАБОТЕ 
+            
+            НАПРАВЛЕНИЕ 03.04.02 \"ФИЗИКА\"
+            
+            СЕМЕСТР 09
+        \end{center}
 
-    \vspace{4cm}
+        \vspace{4cm}
 
-    \begin{flushright}
-        Выполнил:
+        \begin{flushright}
+            Выполнил:
+            
+            студент 5 курса 509 группы
+            
+            Балинов Темир Максимович
+        \end{flushright}
         
-        студент 5 курса 509 группы
-        
-        Балинов Темир Максимович
-    \end{flushright}
-    
-    \vspace{0.5cm}
-
-    \begin{flushright}
-        Научный руководитель:
-        
-        к.ф.-м.н.
-        
-        Апарин Алексей Андреевич
-
-        Научный консультант:
-        
-        Б.В. Лыонг
-    \end{flushright}
-
-    \vspace{\fill}
-
-    \begin{flushleft}
-        Отчет принят: 
-
         \vspace{0.5cm}
 
-        Руководитель НИР:
-    \end{flushleft}
-    
-    \begin{center}
-        Дубна 2026
-    \end{center}
+        \begin{flushright}
+            Научный руководитель:
+            
+            к.ф.-м.н.
+            
+            Апарин Алексей Андреевич
 
-\end{titlepage}
-    
+            Научный консультант:
+            
+            Б.В. Лыонг
+        \end{flushright}
+
+        \vspace{\fill}
+
+        \begin{flushleft}
+            Отчет принят: 
+
+            \vspace{0.5cm}
+
+            Руководитель НИР:
+        \end{flushleft}
+        
+        \begin{center}
+            Дубна 2026
+        \end{center}
+
+    \end{titlepage}
 \tableofcontents
 \newpage
-\linenumbers
-
+\linenumbers{}
 \section{Введение}
     Изучение свойств сильно взаимодействующей материи в условиях экстремальных плотностей и температур 
     является одной из центральных задач современной физики высоких энергий. 
@@ -129,7 +127,7 @@
 
     \begin{equation}
         \langle x|\psi_{A}\rangle =
-            (2\pi)^{-4} 
+            {(2\pi)}^{-4}
             \int 
                 d^4\kappa u_{A}(\kappa) 
                 \exp(i\kappa(\mathbf{x} - \mathbf{x_{A}})) 
@@ -220,8 +218,7 @@
         &\Delta x = x_{A} 
             - x_{B} - \text{разность координат источника}
     \end{align*}
-
-    А также усредним по всем парам источников A и B:
+    Также усредним по всем парам источников $A$ и $B$:
 
     \begin{equation}
         C (p_1, p_2) = 1 + \frac{
@@ -250,7 +247,7 @@
     А корреляционная функция упростится:
 
     \begin{equation}
-        C(p_1, p_2) \approx 1 + \langle cos(q\Delta x)\rangle
+        C(p_1, p_2) \approx 1 + \langle \cos(q\Delta x)\rangle
     \end{equation}
 
     Где усреднение проводится по всем парам источника.
@@ -336,8 +333,7 @@
                 \caption{
                     Параметры конфигурации SMASH 
                     для расчётов Au+Au при $\sqrt{s_{NN}} = 3$~ГэВ
-                }
-                \label{tab:smash_params}
+                }\label{tab:smash_params}
                 \begin{tabular}{|l|l|}
                     \hline
                     \textbf{Параметр} & \textbf{Значение} \\ \hline
@@ -410,8 +406,8 @@
                     При повторении \texttt{ID} перезаписывается информация 
                     о последней встреченной частице.
 
-                \item \textbf{Фильтрация событий:} 
-                    при чтении заголовка \texttt{\# event ... out} 
+                \item \textbf{Фильтрация событий:}
+                    при чтении заголовка \texttt{\# event \ldots out} 
                     анализируется количество частиц \texttt{nPart}. 
                     Если \texttt{nPart = 394} (сумма нуклонов в двух ядрах $^{197}\text{Au}$), 
                     событие классифицируется как упругое и исключается из дальнейшего анализа.
@@ -423,12 +419,12 @@
                             если чтение происходит после \texttt{interaction} 
                             --- частица записывается в буфер \texttt{interactions};
                         \item 
-                            если чтение происходит после \texttt{event ... out} 
+                            если чтение происходит после \texttt{event \ldots out} 
                             --- частица записывается в буфер \texttt{out}.
                     \end{itemize}
 
                 \item \textbf{Финализация события:} 
-                    при чтении заголовка \texttt{\# event ... end} 
+                    при чтении заголовка \texttt{\# event \ldots end} 
                     производится окончательная обработка частиц из буфера \texttt{out}:
                     \begin{itemize}
                         \item \textbf{Спектаторы:} 
@@ -448,8 +444,7 @@
 
             \begin{algorithm}[H]
                 \small
-                \caption{Идея алгоритма конвертации OSCAR $\to$ McDst}
-                \label{alg:pseudocode}
+                \caption{Идея алгоритма конвертации OSCAR $\to$ McDst}\label{alg:pseudocode}
 
                 \KwIn{Файл SMASH (OSCAR format)}
                 \KwOut{ROOT-файл с деревом McDst}
@@ -460,23 +455,22 @@
                     $\text{interactions} \leftarrow \emptyset$, 
                     $\text{out} \leftarrow \emptyset$, 
                     $\text{isElastic} \leftarrow \text{false}$\;
-                \BlankLine
-
+                    \BlankLine
                 \ForEach{строка $L$ во входном файле}{
                     \If{$L$ начинается с \texttt{'\#'}}{
-                        \If{$L$ содержит \texttt{"interaction"}}{
+                        \If{$L$ содержит \texttt{\"interaction\"}}{
                             \While{чтение строк с частицами}{
                                 извлечь частицу $p$\;
                                 $\text{interactions}[p.\text{ID}] \leftarrow p$\;
                             }
                         }
-                        \ElseIf{$L$ содержит \texttt{"event ... out"}}{
+                        \ElseIf{$L$ содержит \texttt{\"event \ldots out\"}}{
                             распарсить $nPart$\;
                             \If{$nPart == N_{\text{init}}$}{
                                 $\text{isElastic} \leftarrow \text{true}$\;
                             }
                         }
-                        \ElseIf{$L$ содержит \texttt{"event ... end"}}{
+                        \ElseIf{$L$ содержит \texttt{\"event \ldots end\"}}{
                             распарсить $\text{impactParameter}$\;
                             \If{$\text{isElastic} == \text{true}$}{
                                 $\text{impactParameter} \leftarrow -1$\;
@@ -538,8 +532,7 @@
                 \caption{
                     Распределения $p_{x}$, $p_{y}$, $p_{z}$ и $E$, 
                     полученные после обработки файла \texttt{Oscar2013} конвертером (формат \texttt{McDst}).
-                }
-                \label{fig:mcdst_distributions}
+                }\label{fig:mcdst_distributions}
             \end{figure}
 
             \begin{figure}[H]
@@ -548,8 +541,8 @@
                 \caption{
                     Эталонные распределения 
                     $p_{x}$, $p_{y}$, $p_{z}$ и $E$, 
-                    полученные непосредственно из генератора SMASH (формат \texttt{Root})}.
-                \label{fig:smash_distributions}
+                    полученные непосредственно из генератора SMASH (формат \texttt{Root}).
+                    }\label{fig:smash_distributions}
             \end{figure}
 
             \begin{figure}[H]
@@ -558,8 +551,7 @@
                 \caption{
                     Отношение распределений \texttt{McDst}/\texttt{SMASH}.
                     Значения, равные  единице, свидетельствуют о корректности конвертации.
-                }
-                \label{fig:ratio_distributions}
+                }\label{fig:ratio_distributions}
             \end{figure}
 
             Визуальный анализ гистограмм 
@@ -580,8 +572,8 @@
                 $0\%$--$10\%$, $10\%$--$30\%$;
             \item Данные разделяются на классы по быстроте на диапозоне 
                 $y \in [-1;1]$ с шагом 0.2;
-            \item Ограничения на пары частиц kt: 
-                $\in$ [0.15 - 0.6];
+            \item Ограничения на пары частиц kt:
+                $\in$ [0.15 \- 0.6];
             \item Ограничения на одночастичные треки: 
                 $p_T \in [0.15, 0.6]$ а также 
                 $p \in [0.15, 0.6]$;
@@ -590,7 +582,7 @@
         А также в качестве аппроксимирующей выбирается следующая функция: 
         \begin{equation*}
             CF(q_{out}, q_{side}, q_{long}) = 
-                1 + \lambda exp(
+                1 + \lambda \exp(
                     \frac{
                         -(
                             R_{out}^2q_{out}^2 +
@@ -598,7 +590,7 @@
                             R_{long}^2q_{long}^2 +
                             2R_{out-long}q_{out}q_{long}
                         )
-                    }{(hc)^2}
+                    }{{(hc)}^{2}}
                 )
         \end{equation*}
 
@@ -663,7 +655,7 @@
             Можно заметить, что похожее поведение имеет и график для $\lambda$.
 
             Также, анализ показывает, рост недиагонального радиуса $R_{out-long}$. 
-            Это объясняется "поворотом" 2-х мерной проекции 
+            Это объясняется \"поворотом\" 2-х мерной проекции
             кореляционной функции в проекции \texttt{out-long}
 
             \begin{figure}[H]
@@ -685,9 +677,7 @@
             \begin{figure}[H]
                 \centering
                 \includegraphics[width=\linewidth]{images/all_out-long_2d_histos_centr_10-30_neg.pdf}
-                \caption{
-                    "Поворот" проекций кореляционной функции для различных классов центральности $\pi^{-}$
-                }
+                \caption{\"Поворот\" проекций кореляционной функции для различных классов центральности $\pi^{-}$}
             \end{figure}
 
         \subsubsection{Отношение проекций кореляционных функций}
@@ -699,8 +689,7 @@
                 \includegraphics[width=\linewidth]{images/mr.png}
                 \caption{
                     Отношение проекций для кореляционных функций пионов.
-                }
-                \label{fig:placeholder}
+                }\label{fig:placeholder}
             \end{figure}
 
 \section{Заключение}
