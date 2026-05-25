@@ -254,7 +254,7 @@ void MakeLCMS1DProjections(
     std::string dep_dir = ctx.outDir + "/dependency/fit_over_cf";
     std::string dir = ctx.outDir + "/all_1d_histos";
     EnsureDir(dir); EnsureDir(dep_dir);
-    std::string format = "png";
+    std::string format = "pdf";
 
     for (int chIdx = 0; chIdx < Charge::kCount; chIdx++)
     for (int centIdx = 0; centIdx < Centrality::kCount; centIdx++)
