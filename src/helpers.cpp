@@ -10,30 +10,29 @@
 #include <TH3.h>
 #include <TTree.h>
 #include <TFile.h>
+#include <TCanvas.h>
+#include <TError.h>
 
 #include "fit/types.h"
 
-TH3D* getNum(TFile* f, int ch, int centr, int bin) {
-    TString name = Form("bp_%d_%d_num_%d", ch, centr, bin);
-    TH3D* h = (TH3D*) f->Get(name);
+std::pair<TH3D*, TH3D*> getHists(TFile* f, int ch, int centr, int bin) {
+    TString numName = Form("bp_%d_%d_num_%d", ch, centr, bin);
+    TH3D* num = (TH3D*) f->Get(numName);
 
-    if (!h) {
-        std::cerr << "[getNum] NOT FOUND: " << name << std::endl;
-        return nullptr;
+    if (!num) {
+        std::cerr << "[Num] NOT FOUND: " << numName << std::endl;
+        return {nullptr, nullptr};
     }
-    return h;
-};
 
-TH3D* getNumWei(TFile* f, int ch, int centr, int bin) {
-    TString name = Form("bp_%d_%d_num_wei_%d", ch, centr, bin);
-    TH3D* h = (TH3D*) f->Get(name);
+    TString weiName = Form("bp_%d_%d_num_wei_%d", ch, centr, bin);
+    TH3D* wei = (TH3D*) f->Get(weiName);
 
-    if (!h) {
-        std::cerr << "[getNumWei] NOT FOUND: " << name << std::endl;
-        return nullptr;
+    if (!wei) {
+        std::cerr << "[NumWei] NOT FOUND: " << weiName << std::endl;
+        return {nullptr, nullptr};
     }
-    return h;
-};
+    return {num, wei};
+}
 
 std::string getCFName(int ch, int centr, const char* binType, const char* binName) {
     return Form(
@@ -59,5 +58,26 @@ void EnsureDir(const std::string& dir) {
     struct stat st;
     if (stat(dir.c_str(), &st) != 0) {
         mkdir(dir.c_str(), 0755);
+    }
+}
+
+void SaveCanvasQuiet(TCanvas* canvas, const char* filename) {
+    if (!canvas || !filename) {
+        return;
+    }
+
+    const Int_t prevLevel = gErrorIgnoreLevel;
+    gErrorIgnoreLevel = kWarning;
+    canvas->SaveAs(filename);
+    gErrorIgnoreLevel = prevLevel;
+}
+
+void FixMargin(TCanvas* c, int pads) {
+    for (int i = 1; i <= pads; i++) {
+        TPad* pad = (TPad*)c->GetPad(i);
+        pad->SetLeftMargin(0.15);
+        pad->SetBottomMargin(0.04);
+        pad->SetRightMargin(0.01);
+        pad->SetTopMargin(0.05);
     }
 }

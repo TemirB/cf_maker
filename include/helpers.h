@@ -5,6 +5,7 @@
 #include <TTree.h>
 #include <TFile.h>
 #include <TDirectory.h>
+#include <TCanvas.h>
 
 #include "fit/types.h"
 
@@ -28,8 +29,8 @@ namespace Rapidity {
     inline constexpr int kCount = 10;
     inline std::vector<double> kValues = { -1., -0.8, -0.6, -0.4, -0.2, 0, 0.2, 0.4, 0.6, 0.8, 1. };
     inline std::vector<const char*> kNames = {
-        "[-1.0; -0.8]", "[-0.8; -0.6]", "[-0.6; -0.4]", "[-0.4; -0.2]", "[-0.2; 0.0]",
-        "[0.0; 0.2]", "[0.2; 0.4]", "[0.4; 0.6]", "[0.6; 0.8]", "[0.8; 1.0]"
+        "[-1.0, -0.8]", "[-0.8, -0.6]", "[-0.6, -0.4]", "[-0.4, -0.2]", "[-0.2, 0.0]",
+        "[0.0, 0.2]", "[0.2, 0.4]", "[0.4, 0.6]", "[0.6, 0.8]", "[0.8, 1.0]"
     };
 }
 
@@ -67,10 +68,12 @@ inline std::string ToString(LCMSAxis a) {
 using FitGrid = std::vector<std::vector<std::vector<FitResult>>>;
 
 // Геттеры
-TH3D* getNum(TFile* f, int charge, int cent, int ktIdx);
-TH3D* getNumWei(TFile* f, int charge, int cent, int ktIdx);
+std::pair<TH3D*, TH3D*> getHists(TFile* f, int ch, int centr, int bin);
 std::string getCFName(int ch, int centr, const char* binType, const char* binName);
 
 bool IsBadFit(const FitResult& r);
 
 void EnsureDir(const std::string& dir);
+void SaveCanvasQuiet(TCanvas* canvas, const char* filename);
+
+void FixMargin(TCanvas* c, int pads);

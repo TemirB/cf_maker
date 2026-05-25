@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include <string>
-#include <algorithm>
 
 #include <TMultiGraph.h>
 #include <TGraphErrors.h>
@@ -11,11 +10,13 @@
 
 #include "helpers.h"
 #include "fit/types.h"
+#include "fit/fit.h"
 #include "draw.h"
 #include "context.h"
 
 void MakeDependency(
     Context ctx,
+    TFile* cf3dFile,
     TFile* outFile
 ) {
     FitGrid fitRes = ctx.fitRes;
@@ -31,6 +32,9 @@ void MakeDependency(
         // 3) 1, legend buffer
         TMultiGraph* mg_R[LCMS::kCount] = { new TMultiGraph(), new TMultiGraph(), new TMultiGraph(), new TMultiGraph(), new TMultiGraph(), new TMultiGraph() };
         TMultiGraph* mg_L = new TMultiGraph();
+        TMultiGraph* mg_Chi2Ndf = new TMultiGraph();
+        TMultiGraph* mg_Pvalue = new TMultiGraph();
+        TMultiGraph* mg_FitOverCF = new TMultiGraph();
         std::vector<std::pair<TObject*, std::string>> legendEntries;
 
         for (int centr = 0; centr < Centrality::kCount; centr++) {
@@ -39,6 +43,9 @@ void MakeDependency(
             // 2) 1 graph, for lambda multigraph
             TGraphErrors* g_R[LCMS::kCount] = { new TGraphErrors(), new TGraphErrors(), new TGraphErrors(), new TGraphErrors(), new TGraphErrors(), new TGraphErrors() };
             TGraphErrors* g_L = new TGraphErrors();
+            TGraphErrors* g_Chi2Ndf = BuildChi2NdfGraph(ctx, ch, centr);
+            TGraphErrors* g_Pvalue = BuildPvalue(ctx, ch, centr);
+            TGraphErrors* g_FitOverCF = BuildFitOverCFGraph(ctx, cf3dFile, ch, centr);
 
             for (int lcms = 0; lcms < LCMS::kCount; lcms++) {
                 g_R[lcms]->SetName(
@@ -83,6 +90,9 @@ void MakeDependency(
             }
 
             mg_L->Add(g_L, "lp");
+            mg_Chi2Ndf->Add(g_Chi2Ndf, "lp");
+            mg_FitOverCF->Add(g_FitOverCF, "lp");
+            mg_Pvalue->Add(g_Pvalue, "lp");
         }
 
         for (int lcms = 0; lcms < LCMS::kCount; lcms++) {
@@ -92,7 +102,7 @@ void MakeDependency(
             if (lcms >= 3) type = 1;
             writeMGWithLegend(outFile, mg_R[lcms],
                 mg_R[lcms]->GetName(),
-                "rapidity",
+                ctx.bining.type,
                 Form("R_{%s} (fm)", LCMS::kNames[lcms]),
                 legendEntries,
                 type
@@ -103,10 +113,39 @@ void MakeDependency(
         mg_L->SetName(Form("mg_L_%s", Charge::kNames[ch]));
         writeMGWithLegend(outFile, mg_L,
             mg_L->GetName(),
-            "rapidity",
+            ctx.bining.type,
             "lambda",
             legendEntries,
             2
+        );
+
+        setRangeWithErrors(mg_Chi2Ndf, 0.1);
+        mg_Chi2Ndf->SetName(Form("mg_Chi2Ndf_%s", Charge::kNames[ch]));
+        writeMGWithLegend(outFile, mg_Chi2Ndf,
+            mg_Chi2Ndf->GetName(),
+            ctx.bining.type,
+            "#chi^{2}/ndf",
+            legendEntries,
+            3
+        );
+
+        setRangeWithErrors(mg_FitOverCF, 0.1);
+        mg_FitOverCF->SetName(Form("mg_FitOverCF_%s", Charge::kNames[ch]));
+        writeMGWithLegend(outFile, mg_FitOverCF,
+            mg_FitOverCF->GetName(),
+            ctx.bining.type,
+            "<fit/CF>",
+            legendEntries,
+            4
+        );
+
+        mg_Pvalue->SetName(Form("mg_Pvalue_%s", Charge::kNames[ch]));
+        writeMGWithLegend(outFile, mg_Pvalue,
+            mg_Pvalue->GetName(),
+            ctx.bining.type,
+            "p_{value}",
+            legendEntries,
+            5
         );
 
         // Saved for article
@@ -123,7 +162,29 @@ void MakeDependency(
             c->cd(4);
             mg_L->Draw("APL");
             std::string nSave = dir + "/" + name + "." + ext;
-            c->SaveAs(nSave.c_str());
+            SaveCanvasQuiet(c, nSave.c_str());
+        }
+
+        // Saved for article
+        {
+            std::string name = Form("c_fit_quality_%s", Charge::kNames[ch]);
+            std::string title = Form("Fit quality(%s)", Charge::kNames[ch]);
+            TCanvas* c = new TCanvas(name.c_str(), title.c_str(), 2400, 1000);
+            c->Divide(2, 1);
+
+            c->cd(1);
+            gPad->SetLogy();
+            mg_Chi2Ndf->Draw("APL");
+            mg_Chi2Ndf->GetXaxis()->SetTitle(bin.type);
+            mg_Chi2Ndf->GetYaxis()->SetTitle("#chi^{2}/ndf");
+
+            c->cd(2);
+            mg_FitOverCF->Draw("APL");
+            mg_FitOverCF->GetXaxis()->SetTitle(bin.type);
+            mg_FitOverCF->GetYaxis()->SetTitle("<fit/CF>");
+
+            std::string nSave = dir + "/" + name + "." + ext;
+            SaveCanvasQuiet(c, nSave.c_str());
         }
 
         // Saved for article
@@ -140,7 +201,23 @@ void MakeDependency(
             }
 
             std::string nSave = dir + "/" + name + "." + ext;
-            c->SaveAs(nSave.c_str());
+            SaveCanvasQuiet(c, nSave.c_str());
+        }
+
+        // P-value
+        {
+            std::string name = Form("c_pvalues_%s", Charge::kNames[ch]);
+            std::string title = Form("P-value %s", Charge::kNames[ch]);
+
+            TCanvas* c = new TCanvas(name.data(), title.data(), 1600, 1600);
+            mg_Pvalue->Draw("APL");
+
+            {
+                outFile->cd();
+                mg_Pvalue->Write();
+            }
+            std::string nSave = Form("%s/%s.%s", dir.data(), name.data(), ext.data());
+            SaveCanvasQuiet(c, nSave.data());
         }
     }
 }

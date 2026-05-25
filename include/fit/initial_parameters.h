@@ -9,6 +9,8 @@ private:
 public:
     void RapidityInitialParameters();
     void KtInitialParameters();
+    void GetDefaultParamsKt();
+    void GetDefaultParamsRapidity();
     
     // void SetDatas(p std::map<std::string, std::map<int, std::vector<double>>>, n std::map<std::string, std::map<int, std::vector<double>>>);
     
