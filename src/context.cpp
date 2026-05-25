@@ -31,10 +31,12 @@ Context BuildContext(char** argv) {
         ctx.bining.count = Kt::kCount;
         ctx.bining.names = Kt::kNames;
         ctx.bining.values = Kt::kValues;
+        ctx.bining.fileNames = Kt::kFileNames;
     } else if (std::strcmp(ctx.bining.type, "rapidity") == 0) {
         ctx.bining.count = Rapidity::kCount;
         ctx.bining.names = Rapidity::kNames;
         ctx.bining.values = Rapidity::kValues;
+        ctx.bining.fileNames = Rapidity::kFileNames;
     }
 
 

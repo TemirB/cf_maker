@@ -301,7 +301,7 @@ void MakeLCMS1DProjections(
             auto name = Form(
                     "%s/cfs_%s_%s_%s.%s", 
                     dir.data(), 
-                    Charge::kNames[chIdx], Centrality::kNames[centIdx], bin.names[b], 
+                    Charge::kNames[chIdx], Centrality::kNames[centIdx], bin.fileNames[b], 
                     format.data()
                 );
             SaveCanvasQuiet(can, name);
@@ -311,7 +311,7 @@ void MakeLCMS1DProjections(
             auto name = Form(
                 "%s/fit_over_cf_%s_%s_%s.%s",
                 dep_dir.data(),
-                Charge::kNames[chIdx], Centrality::kNames[centIdx], bin.names[b],
+                Charge::kNames[chIdx], Centrality::kNames[centIdx], bin.fileNames[b],
                 format.data()
             );
             SaveCanvasQuiet(c_fit_over_cf, name);
