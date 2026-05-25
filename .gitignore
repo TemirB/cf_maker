@@ -2,14 +2,3 @@ results
 input
 build
 .vscode
-
-tex/*/*.aux
-tex/*/*.bbl
-tex/*/*.bcf
-tex/*/*.fdb_latexmk
-tex/*/*.fls
-tex/*/*.log
-tex/*/*.out
-tex/*/*.run.xml
-tex/*/*.synctex.gz
-tex/*/*.toc
