@@ -36,6 +36,6 @@ make
 # Данные для анализа в лабе:
 При запуске из build:
 y-bining = 3609 файлов на ядро всего 10 ядер
-`../..sthbtmaker-repo/py_output/y_bining_3609_fpc/merged_y_bining_3609_fpc.root`
+`../../sthbtmaker-repo/py_output/y_run_3609_fpc/merged_y_run_3609_fpc.root`
 kt-bining = 2707 файлов на ядро всего 16 ядер
-`../..sthbtmaker-repo/py_output/kt_bining_2707_fpc/merged_kt_bining_2707_fpc.root`
+`../../sthbtmaker-repo/py_output/kt_run_2707_fpc/merged_kt_run_2707_fpc.root`
