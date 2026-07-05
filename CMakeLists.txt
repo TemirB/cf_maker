@@ -47,6 +47,8 @@ add_executable(main
     ${PROJECT_SOURCES}
 )
 
+target_compile_features(main PRIVATE cxx_std_17)
+
 # ----------------------------
 # Include paths
 # ----------------------------

@@ -24,7 +24,7 @@ void MakeDependency(
 
     std::string dir = ctx.outDir + "/dependency";
     EnsureDir(dir);
-    std::string ext = "png";
+    std::string ext = "pdf";
     for (int ch = 0; ch < Charge::kCount; ch++) {
         // Creating: 
         // 1) 6 (LCMS::kCount) multigraphs, for each projection of radius

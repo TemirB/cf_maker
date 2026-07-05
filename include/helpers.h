@@ -23,6 +23,7 @@ namespace Kt {
     inline constexpr int kCount = 4;
     inline std::vector<double> kValues = { 0.15, 0.25, 0.35, 0.45, 0.60 };
     inline std::vector<const char*> kNames = {"0.15-0.25", "0.25-0.35", "0.35-0.45", "0.45-0.60"};
+    inline std::vector<const char*> kFileNames = {"0.15-0.25", "0.25-0.35", "0.35-0.45", "0.45-0.60"};
 }
 
 namespace Rapidity {
@@ -31,6 +32,10 @@ namespace Rapidity {
     inline std::vector<const char*> kNames = {
         "[-1.0, -0.8]", "[-0.8, -0.6]", "[-0.6, -0.4]", "[-0.4, -0.2]", "[-0.2, 0.0]",
         "[0.0, 0.2]", "[0.2, 0.4]", "[0.4, 0.6]", "[0.6, 0.8]", "[0.8, 1.0]"
+    };
+    inline std::vector<const char*> kFileNames = {
+        "-1.0_-0.8", "-0.8_-0.6", "-0.6_-0.4", "-0.4_-0.2", "-0.2_0.0",
+        "0.0_0.2", "0.2_0.4", "0.4_0.6", "0.6_0.8", "0.8_1.0"
     };
 }
 
@@ -43,6 +48,7 @@ struct Bin {
     const char* type;
     int count;
     std::vector<const char*> names;
+    std::vector<const char*> fileNames;
     std::vector<double> values;
 };
 
