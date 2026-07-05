@@ -3,6 +3,7 @@
 #include <limits.h>
 #include <libgen.h>
 #include <filesystem>
+#include <string>
 
 #include "helpers.h"
 
@@ -45,7 +46,14 @@ std::filesystem::path GetExecutablePath() {
 }
 
 std::string GetExeDir() {
-    return GetExecutablePath();
+    std::string path =  GetExecutablePath();
+
+    auto pos = path.find_last_of('/');
+    if (pos == std::string::npos) {
+        return ".";
+    }
+
+    return path.substr(0, pos);
 }
 
 Context BuildContext(char** argv) {
