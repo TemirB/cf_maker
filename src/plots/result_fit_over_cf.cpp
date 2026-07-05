@@ -1,3 +1,4 @@
+#include "config.h"
 #include "plots.h"
 
 #include <algorithm>
@@ -65,8 +66,8 @@ MeanWithError ComputeFitOverCFMean(const TH3D& cf, const FitResult& r) {
 }
 } // namespace
 
-TGraphErrors* BuildFitOverCFGraph(const Context& ctx, TFile* cf3dFile, int ch, int centr) {
-    Bin bin = ctx.bining;
+TGraphErrors* BuildFitOverCFGraph(const Config& cfg, TFile* cf3dFile, int ch, int centr) {
+    Bin bin = cfg.bining;
 
     TGraphErrors* g = new TGraphErrors();
     g->SetName(Form("g_FitOverCF_%s_centr_%s", Charge::kNames[ch], Centrality::kNames[centr]));
@@ -80,8 +81,8 @@ TGraphErrors* BuildFitOverCFGraph(const Context& ctx, TFile* cf3dFile, int ch, i
 
     int point = 0;
     for (int b = 0; b < bin.count; ++b) {
-        const FitResult& res = ctx.fitRes[ch][centr][b];
-        const std::string cfName = getCFName(ch, centr, bin.type, bin.names[b]);
+        const FitResult& res = cfg.fitRes[ch][centr][b];
+        const std::string cfName = getCFName(ch, centr, cfg.input.type, bin.names[b]);
         TH3D* hCF = (TH3D*)cf3dFile->Get(cfName.c_str());
         if (!hCF) {
             continue;

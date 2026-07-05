@@ -1,0 +1,17 @@
+{
+    "machine": {
+        "base_input": "/home/ubuntu/Temir/smash/build/data/sthbtmaker-repo/py_output",
+        "base_output": "/home/ubuntu/Temir/smash/build/data/cf_maker_new/results"
+    },
+
+    "vars": {
+        "input": {
+            "file": "kt_run_2707_fpc/merged_kt_run_2707_fpc.root",
+            "type": "kt"
+        },
+
+        "output": {
+            "dir": "kt_run_2707_fpc"
+        }
+    }
+}

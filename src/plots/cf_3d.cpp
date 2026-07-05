@@ -6,17 +6,15 @@
 #include "fit/types.h"
 #include "fit/fit.h"
 #include "helpers.h"
+#include "config.h"
 
 void BuildAndFit3DCorrelationFunctions(
-    Context& ctx, TFile* inputFile, TFile* outFile
-) {
-    // FitGrid fitRes = ctx.fitRes;
-    Bin bin = ctx.bining;
-    
+    Config& cfg, TFile* inputFile, TFile* outFile
+) { 
     for (int ch = 0; ch < Charge::kCount; ch++)
     for (int centr = 0; centr < Centrality::kCount; centr++)
-    for (int b = 0; b < bin.count; b++) {
-        TF3* fit3d = CreateCF3DFit(ctx, ch, centr, b);
+    for (int b = 0; b < cfg.bining.count; b++) {
+        TF3* fit3d = CreateCF3DFit(cfg, ch, centr, b);
 
         auto [A, Awei] = getHists(inputFile, ch, centr, b);
         if (!A || !Awei) {
@@ -40,9 +38,9 @@ void BuildAndFit3DCorrelationFunctions(
         delete Awei;
 
         FitResult r = FitCF3D(h_CF, fit3d);
-        ctx.fitRes[ch][centr][b] = r;
+        cfg.fitRes[ch][centr][b] = r;
 
-        std::string cfName = getCFName(ch, centr, bin.type, bin.names[b]); 
+        std::string cfName = getCFName(ch, centr, cfg.input.type, cfg.bining.names[b]); 
 
         outFile->cd();
         h_CF->SetDirectory(outFile);

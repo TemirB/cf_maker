@@ -45,7 +45,6 @@ namespace LCMS {
 }
 
 struct Bin {
-    const char* type;
     int count;
     std::vector<const char*> names;
     std::vector<const char*> fileNames;
@@ -75,7 +74,7 @@ using FitGrid = std::vector<std::vector<std::vector<FitResult>>>;
 
 // Геттеры
 std::pair<TH3D*, TH3D*> getHists(TFile* f, int ch, int centr, int bin);
-std::string getCFName(int ch, int centr, const char* binType, const char* binName);
+std::string getCFName(int ch, int centr, std::string binType, std::string binName);
 
 bool IsBadFit(const FitResult& r);
 

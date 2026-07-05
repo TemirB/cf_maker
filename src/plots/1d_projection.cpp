@@ -276,17 +276,18 @@ void DrawCFOverFit(
 }
 
 void MakeLCMS1DProjections(
-    Context ctx, TFile* in, TFile* out
+    Config& cfg, TFile* in, TFile* out
 ) {
     Draw::Style style;
     SetStyle(&style);
     
-    FitGrid fitRes = ctx.fitRes;
-    Bin bin = ctx.bining;
+    FitGrid fitRes = cfg.fitRes;
+    Bin bin = cfg.bining;
 
-    std::string dep_dir = ctx.outDir + "/dependency/fit_over_cf";
-    std::string dir = ctx.outDir + "/all_1d_histos";
-    EnsureDir(dir); EnsureDir(dep_dir);
+    std::string dep_dir = cfg.output.dir + "/dependency/fit_over_cf";
+    std::string dir = cfg.output.dir + "/all_1d_histos";
+    EnsureDir(dir); 
+    EnsureDir(dep_dir);
     std::string format = "pdf";
 
     for (int chIdx = 0; chIdx < Charge::kCount; chIdx++)
@@ -297,7 +298,7 @@ void MakeLCMS1DProjections(
         TPaveText* stats = GetFitStats(r, 0.032);
 
         // Save cf + fit in 1 canvas (3 pad for 3 axis)
-        std::string cf_name = getCFName(chIdx, centIdx, bin.type, bin.names[b]);
+        std::string cf_name = getCFName(chIdx, centIdx, cfg.input.type, bin.names[b]);
         TCanvas* can = new TCanvas(cf_name.data(), cf_name.data(), 2400, 800);
         {
             can->SetTitle(cf_name.data());
@@ -310,7 +311,7 @@ void MakeLCMS1DProjections(
             "fit/cf at charge=%s, centrality=%s, %s=%s",
             Charge::kNames[chIdx], 
             Centrality::kNames[centIdx],
-            bin.type, bin.names[b]
+            cfg.input.type.c_str(), bin.names[b]
         );
         TCanvas* c_fit_over_cf = new TCanvas(n_fit_over_cf.data(), n_fit_over_cf.data(), 2400, 800);
         {

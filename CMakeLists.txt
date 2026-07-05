@@ -11,6 +11,13 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # ----------------------------
+# Paths
+# ----------------------------
+set(INCLUDE_DIR    ${CMAKE_SOURCE_DIR}/include)
+set(SRC_DIR        ${CMAKE_SOURCE_DIR}/src)
+set(EXTERNAL_DIR   ${CMAKE_SOURCE_DIR}/external)
+
+# ----------------------------
 # ROOT
 # ----------------------------
 find_package(ROOT REQUIRED COMPONENTS
@@ -24,11 +31,16 @@ include(${ROOT_USE_FILE})
 find_package(OpenSSL REQUIRED)
 
 # ----------------------------
-# Paths
+# nlohmann/json
 # ----------------------------
-set(INCLUDE_DIR ${CMAKE_SOURCE_DIR}/include)
-set(SRC_DIR     ${CMAKE_SOURCE_DIR}/src)
-set(EXTERNAL_DIR ${CMAKE_SOURCE_DIR}/external)
+set(JSON_BuildTests OFF CACHE INTERNAL "")
+set(JSON_Install OFF CACHE INTERNAL "")
+
+add_subdirectory(
+    ${EXTERNAL_DIR}/nlohmann_json
+    ${CMAKE_BINARY_DIR}/external/nlohmann_json
+    EXCLUDE_FROM_ALL
+)
 
 # ----------------------------
 # Sources
@@ -54,7 +66,6 @@ target_compile_features(main PRIVATE cxx_std_17)
 # ----------------------------
 target_include_directories(main PRIVATE
     ${INCLUDE_DIR}
-    ${EXTERNAL_DIR}
 )
 
 # ----------------------------
@@ -64,7 +75,10 @@ target_compile_options(main PRIVATE
     -Wall
     -Wextra
     -O2
-    -DROOT_STRICT_OWNERSHIP
+)
+
+target_compile_definitions(main PRIVATE
+    ROOT_STRICT_OWNERSHIP
 )
 
 # ----------------------------
@@ -82,6 +96,7 @@ target_link_libraries(main PRIVATE
     ROOT::Physics
     ROOT::MathCore
     OpenSSL::Crypto
+    nlohmann_json::nlohmann_json
 )
 
 # ----------------------------

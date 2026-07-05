@@ -1,6 +1,5 @@
 #include "plots.h"
 
-#include <iostream>
 #include <string>
 
 #include <TMultiGraph.h>
@@ -10,20 +9,21 @@
 
 #include "helpers.h"
 #include "fit/types.h"
-#include "fit/fit.h"
 #include "draw.h"
-#include "context.h"
 
 void MakeDependency(
-    Context ctx,
+    Config& cfg,
     TFile* cf3dFile,
     TFile* outFile
 ) {
-    FitGrid fitRes = ctx.fitRes;
-    Bin bin = ctx.bining;
+    const char* mode = cfg.input.type.c_str();
+    
+    FitGrid fitRes = cfg.fitRes;
+    Bin bin = cfg.bining;
 
-    std::string dir = ctx.outDir + "/dependency";
+    std::string dir = cfg.output.dir + "/dependency";
     EnsureDir(dir);
+
     std::string ext = "pdf";
     for (int ch = 0; ch < Charge::kCount; ch++) {
         // Creating: 
@@ -43,9 +43,9 @@ void MakeDependency(
             // 2) 1 graph, for lambda multigraph
             TGraphErrors* g_R[LCMS::kCount] = { new TGraphErrors(), new TGraphErrors(), new TGraphErrors(), new TGraphErrors(), new TGraphErrors(), new TGraphErrors() };
             TGraphErrors* g_L = new TGraphErrors();
-            TGraphErrors* g_Chi2Ndf = BuildChi2NdfGraph(ctx, ch, centr);
-            TGraphErrors* g_Pvalue = BuildPvalue(ctx, ch, centr);
-            TGraphErrors* g_FitOverCF = BuildFitOverCFGraph(ctx, cf3dFile, ch, centr);
+            TGraphErrors* g_Chi2Ndf = BuildChi2NdfGraph(cfg, ch, centr);
+            TGraphErrors* g_Pvalue = BuildPvalue(cfg, ch, centr);
+            TGraphErrors* g_FitOverCF = BuildFitOverCFGraph(cfg, cf3dFile, ch, centr);
 
             for (int lcms = 0; lcms < LCMS::kCount; lcms++) {
                 g_R[lcms]->SetName(
@@ -102,7 +102,7 @@ void MakeDependency(
             if (lcms >= 3) type = 1;
             writeMGWithLegend(outFile, mg_R[lcms],
                 mg_R[lcms]->GetName(),
-                ctx.bining.type,
+                mode,
                 Form("R_{%s} (fm)", LCMS::kNames[lcms]),
                 legendEntries,
                 type
@@ -113,7 +113,7 @@ void MakeDependency(
         mg_L->SetName(Form("mg_L_%s", Charge::kNames[ch]));
         writeMGWithLegend(outFile, mg_L,
             mg_L->GetName(),
-            ctx.bining.type,
+            mode,
             "lambda",
             legendEntries,
             2
@@ -123,7 +123,7 @@ void MakeDependency(
         mg_Chi2Ndf->SetName(Form("mg_Chi2Ndf_%s", Charge::kNames[ch]));
         writeMGWithLegend(outFile, mg_Chi2Ndf,
             mg_Chi2Ndf->GetName(),
-            ctx.bining.type,
+            mode,
             "#chi^{2}/ndf",
             legendEntries,
             3
@@ -133,7 +133,7 @@ void MakeDependency(
         mg_FitOverCF->SetName(Form("mg_FitOverCF_%s", Charge::kNames[ch]));
         writeMGWithLegend(outFile, mg_FitOverCF,
             mg_FitOverCF->GetName(),
-            ctx.bining.type,
+            mode,
             "<fit/CF>",
             legendEntries,
             4
@@ -142,7 +142,7 @@ void MakeDependency(
         mg_Pvalue->SetName(Form("mg_Pvalue_%s", Charge::kNames[ch]));
         writeMGWithLegend(outFile, mg_Pvalue,
             mg_Pvalue->GetName(),
-            ctx.bining.type,
+            mode,
             "p_{value}",
             legendEntries,
             5
@@ -175,12 +175,12 @@ void MakeDependency(
             c->cd(1);
             gPad->SetLogy();
             mg_Chi2Ndf->Draw("APL");
-            mg_Chi2Ndf->GetXaxis()->SetTitle(bin.type);
+            mg_Chi2Ndf->GetXaxis()->SetTitle(mode);
             mg_Chi2Ndf->GetYaxis()->SetTitle("#chi^{2}/ndf");
 
             c->cd(2);
             mg_FitOverCF->Draw("APL");
-            mg_FitOverCF->GetXaxis()->SetTitle(bin.type);
+            mg_FitOverCF->GetXaxis()->SetTitle(mode);
             mg_FitOverCF->GetYaxis()->SetTitle("<fit/CF>");
 
             std::string nSave = dir + "/" + name + "." + ext;

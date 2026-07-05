@@ -6,7 +6,6 @@
 #include <TH1D.h>
 #include <TCanvas.h>
 
-#include "fit/types.h"
 #include "helpers.h"
 
 TH1D* Project1D_internal(TH3D& h, LCMSAxis axis, double w = 0.05) {
@@ -118,13 +117,13 @@ TH1D* RatioProject(
     return ratio;
 }
 
-void do_CF_ratios(Context ctx, TFile* fCF3D, TFile* fRatioProj, TFile* fProjRatio) {
-    Bin bin = ctx.bining;
+void do_CF_ratios(Config& cfg, TFile* fCF3D, TFile* fRatioProj, TFile* fProjRatio) {
+    Bin bin = cfg.bining;
     
     for (int centr = 0; centr < Centrality::kCount; centr++)
     for (int b = 0; b < bin.count; b++) {
-        TString nPos = getCFName(1, centr, bin.type, bin.names[b]);
-        TString nNeg = getCFName(0, centr, bin.type, bin.names[b]);
+        TString nPos = getCFName(1, centr, cfg.input.type, bin.names[b]);
+        TString nNeg = getCFName(0, centr, cfg.input.type, bin.names[b]);
 
         TH3D* hNeg = (TH3D*) fCF3D->Get(nNeg);
         TH3D* hPos = (TH3D*) fCF3D->Get(nPos);

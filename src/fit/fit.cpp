@@ -7,9 +7,8 @@
 #include <TFitResult.h>
 #include <TMath.h>
 
-#include <fit/initial_parameters.h>
-#include <helpers.h>
-#include <context.h>
+#include "fit/initial_parameters.h"
+#include "config.h"
 
 namespace {
 constexpr double kHc2 = 0.197 * 0.197;
@@ -66,11 +65,11 @@ static InitialParameters defaultKtIp = [](){
 
 static InitialParameters defaultRapIp = [](){
     InitialParameters tmp;
-    tmp.GetDefaultParamsKt();
+    tmp.GetDefaultParamsRapidity();
     return tmp;
 }();
 
-TF3* CreateCF3DFit(Context ctx, int ch, int centr, int b) {
+TF3* CreateCF3DFit(Config& cfg, int ch, int centr, int b) {
     double fitLim = 0.20;
 
     bool useDefaultIp = false;
@@ -82,38 +81,34 @@ TF3* CreateCF3DFit(Context ctx, int ch, int centr, int b) {
         -fitLim, fitLim, 
         7
     );
+    const bool isKt = (cfg.input.type == "kt");
 
-    InitialParameters& ip = defaultKtIp;
+    const InitialParameters* ip = nullptr;
+
     if (useDefaultIp) {
-        if (std::strcmp(ctx.bining.type, "kt")) {
-            ip = defaultKtIp;
-        } else {
-            ip = defaultRapIp;
-        }
+        ip = isKt ? &defaultKtIp : &defaultRapIp;
     } else {
-        ip = (std::strcmp(ctx.bining.type, "kt") == 0) 
-                                ? ktIp 
-                                : rapIp;
+        ip = isKt ? &ktIp : &rapIp;
     }
     
     
-    double Rout = ip.get(ch, "out", centr, b);
-    double Rside = ip.get(ch, "side", centr, b);
-    double Rlong = ip.get(ch, "long", centr, b);
+    double Rout = ip->get(ch, "out", centr, b);
+    double Rside = ip->get(ch, "side", centr, b);
+    double Rlong = ip->get(ch, "long", centr, b);
     double Routside = 0;
     double Routlong = 0;
     double Rsidelong = 0;
-    double Lambda = ip.get(ch, "lambda", centr, b);
+    double Lambda = ip->get(ch, "lambda", centr, b);
     
     fit3d->SetParameters(Rout * Rout, Rside * Rside, Rlong * Rlong, Routside, Routlong, Rsidelong, Lambda);
 
-    fit3d->SetParLimits(0, 0.0, 50.);
-    fit3d->SetParLimits(1, 0.0, 50.);
-    fit3d->SetParLimits(2, 0.0, 50.);
+    fit3d->SetParLimits(0, 0.0, 100.);
+    fit3d->SetParLimits(1, 0.0, 100.);
+    fit3d->SetParLimits(2, 0.0, 100.);
     fit3d->SetParLimits(3, -30., 30.);
     fit3d->SetParLimits(4, -30., 30.);
     fit3d->SetParLimits(5, -30., 30.);
-    fit3d->SetParLimits(6, 0.7, 1.0);
+    fit3d->SetParLimits(6, 0.3, 1.0);
     
     // Имена параметров
     fit3d->SetParName(0, "R_out");
@@ -137,7 +132,7 @@ FitResult FitCF3D(TH3D* hCF, TF3* fit3d) {
     if (!hCF || hCF->GetEntries() == 0 || !fit3d) return res;
 
     fit3d->FixParameter(3, 0);
-    // fit3d->FixParameter(4, 0);
+    fit3d->FixParameter(4, 0);
     fit3d->FixParameter(5, 0);
     auto fitPtr = hCF->Fit(fit3d, "RMQS0");
 

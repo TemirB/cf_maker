@@ -34,10 +34,10 @@ std::pair<TH3D*, TH3D*> getHists(TFile* f, int ch, int centr, int bin) {
     return {num, wei};
 }
 
-std::string getCFName(int ch, int centr, const char* binType, const char* binName) {
+std::string getCFName(int ch, int centr, std::string binType, std::string binName) {
     return Form(
-        "CF at charge=%s, centrality=%s, %s=%s", 
-        Charge::kNames[ch], Centrality::kNames[centr], binType, binName
+        "CF (%s; centrality=%s; %s=%s)", 
+        Charge::kNames[ch], Centrality::kNames[centr], binType.c_str(), binName.c_str()
     );
 }
 

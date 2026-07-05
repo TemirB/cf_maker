@@ -39,3 +39,14 @@ y-bining = 3609 файлов на ядро всего 10 ядер
 `../../sthbtmaker-repo/py_output/y_run_3609_fpc/merged_y_run_3609_fpc.root`
 kt-bining = 2707 файлов на ядро всего 16 ядер
 `../../sthbtmaker-repo/py_output/kt_run_2707_fpc/merged_kt_run_2707_fpc.root`
+
+
+## Dependencies
+
+Проект использует `nlohmann/json` как Git сабмодуль.
+
+После клонирования иннициализируйте сабмодули:
+
+```bash
+git submodule update --init --recursive
+```

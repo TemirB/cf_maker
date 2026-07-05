@@ -1,3 +1,4 @@
+#include "config.h"
 #include "plots.h"
 
 #include <TGraphErrors.h>
@@ -5,8 +6,8 @@
 #include "helpers.h"
 #include "fit/types.h"
 
-TGraphErrors* BuildChi2NdfGraph(const Context& ctx, int ch, int centr) {
-    Bin bin = ctx.bining;
+TGraphErrors* BuildChi2NdfGraph(const Config& cfg, int ch, int centr) {
+    Bin bin = cfg.bining;
 
     TGraphErrors* g = new TGraphErrors();
     g->SetName(Form("g_Chi2Ndf_%s_centr_%s", Charge::kNames[ch], Centrality::kNames[centr]));
@@ -16,7 +17,7 @@ TGraphErrors* BuildChi2NdfGraph(const Context& ctx, int ch, int centr) {
 
     int point = 0;
     for (int b = 0; b < bin.count; ++b) {
-        const FitResult& res = ctx.fitRes[ch][centr][b];
+        const FitResult& res = cfg.fitRes[ch][centr][b];
         if (res.ndf <= 0) {
             continue;
         }
@@ -30,8 +31,8 @@ TGraphErrors* BuildChi2NdfGraph(const Context& ctx, int ch, int centr) {
     return g;
 }
 
-TGraphErrors* BuildPvalue(const Context& ctx, int ch, int centr) {
-    Bin bin = ctx.bining;
+TGraphErrors* BuildPvalue(const Config& cfg, int ch, int centr) {
+    Bin bin = cfg.bining;
 
     TGraphErrors* g = new TGraphErrors();
     g->SetName(Form("g_pvalue_%s_centr_%s", Charge::kNames[ch], Centrality::kNames[centr]));
@@ -40,7 +41,7 @@ TGraphErrors* BuildPvalue(const Context& ctx, int ch, int centr) {
     g->SetMarkerStyle(markers[centr]);
 
     for (int b = 0; b < bin.count; b++) {
-        const FitResult& res = ctx.fitRes[ch][centr][b];
+        const FitResult& res = cfg.fitRes[ch][centr][b];
 
         const double xVal = (bin.values[b] + bin.values[b + 1]) / 2.0;
         g->SetPoint(b, xVal, res.pvalue);

@@ -124,10 +124,11 @@ void Write2DProjection(
 // Full LCMS 2D pipeline
 // =====================================
 
-void MakeLCMS2DProjections(Context ctx, TFile* in, TFile* out) {
-    Bin bin = ctx.bining;
-    std::string dir = ctx.outDir + "/all_2d_histos";
+void MakeLCMS2DProjections(Config cfg, TFile* in, TFile* out) {
+    Bin bin = cfg.bining;
+    std::string dir = cfg.output.dir + "/all_2d_histos";
     EnsureDir(dir);
+
     std::string ext = "pdf";
     std::vector<TCanvas*> canvases(Charge::kCount * Centrality::kCount, nullptr);
     for (int ch = 0; ch < Charge::kCount; ch++)
@@ -149,7 +150,7 @@ void MakeLCMS2DProjections(Context ctx, TFile* in, TFile* out) {
     for (int b =0; b < bin.count; b++) {
         auto [A, Awei] = getHists(in, chIdx, centIdx, b);
 
-        std::string cf_name = getCFName(chIdx, centIdx, bin.type, bin.names[b]); 
+        std::string cf_name = getCFName(chIdx, centIdx, cfg.input.type, bin.names[b]); 
 
         Write2DProjection(*out, *A, *Awei, LCMSAxis::Out, LCMSAxis::Side, cf_name, 
             canvases[chIdx * Centrality::kCount + centIdx], b, false);
