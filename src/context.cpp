@@ -1,17 +1,51 @@
 #include "context.h"
 
-#include <iostream>
 #include <limits.h>
 #include <libgen.h>
-
+#include <filesystem>
 
 #include "helpers.h"
 
-std::string GetExeDir() {
-    char buf[PATH_MAX];
-    ssize_t len = readlink("/proc/self/exe", buf, sizeof(buf)-1);
+#if defined(__APPLE__)
+#include <mach-o/dyld.h>
+#elif defined(__linux__)
+#include <unistd.h>
+#endif
+
+std::filesystem::path GetExecutablePath() {
+#if defined(__APPLE__)
+    uint32_t size = 0;
+    _NSGetExecutablePath(nullptr, &size);
+
+    std::string buffer(size, '\0');
+
+    if (_NSGetExecutablePath(buffer.data(), &size) != 0) {
+        throw std::runtime_error("Failed to get executable path on macOS");
+    }
+
+    // buffer may contain trailing '\0'
+    buffer.resize(std::char_traits<char>::length(buffer.c_str()));
+
+    return std::filesystem::canonical(buffer);
+
+#elif defined(__linux__)
+    char buf[4096];
+
+    ssize_t len = readlink("/proc/self/exe", buf, sizeof(buf) - 1);
+    if (len == -1) {
+        throw std::runtime_error("Failed to read /proc/self/exe");
+    }
+
     buf[len] = '\0';
-    return std::string(dirname(buf));
+    return std::filesystem::canonical(buf);
+
+#else
+    throw std::runtime_error("Unsupported platform");
+#endif
+}
+
+std::string GetExeDir() {
+    return GetExecutablePath();
 }
 
 Context BuildContext(char** argv) {

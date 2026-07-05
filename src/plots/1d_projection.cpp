@@ -1,3 +1,4 @@
+#include "fit/types.h"
 #include "plots.h"
 
 #include <memory>
@@ -25,7 +26,8 @@ void SetSlice(TH3D& h, LCMSAxis axis, double w) {
 
 TH1D* BuildLCMSFitFrom3D(
     const TH3D& slicedVolume,
-    TH3D* fit3D,
+    TH3D& A,
+    FitResult& r,
     LCMSAxis axis,
     const std::string& tag
 ) {
@@ -50,8 +52,11 @@ TH1D* BuildLCMSFitFrom3D(
     for (int x=x1;x<=x2;x++)
     for (int y=y1;y<=y2;y++)
     for (int z=z1;z<=z2;z++) {
-        den->SetBinContent(x,y,z,1.0);
-        num->SetBinContent(x,y,z, fit3D->GetBinContent(x,y,z));
+        double w = A.GetBinContent(x, y, z);
+        double c = EvalCF3D(r, x, y, z);
+
+        den->SetBinContent(x, y, z, w);
+        num->SetBinContent(x, y, z, w * c);
     }
 
     auto hNum = (TH1D*)num->Project3D(proj)->Clone();
@@ -87,10 +92,76 @@ TPaveText* GetFitStats(
     return stats;
 }
 
+TH1D* BuildLCMSFitFrom3DWeighted(
+    const TH3D& slicedDen,
+    const FitResult& r,
+    LCMSAxis axis,
+    const std::string& tag
+) {
+    const char* proj =
+        axis == LCMSAxis::Out  ? "x" :
+        axis == LCMSAxis::Side ? "y" :
+                                 "z";
+
+    auto den = (TH3D*)slicedDen.Clone(("fit_den_3d_" + tag).c_str());
+    auto num = (TH3D*)slicedDen.Clone(("fit_num_3d_" + tag).c_str());
+
+    den->Reset("ICES");
+    num->Reset("ICES");
+
+    den->SetDirectory(nullptr);
+    num->SetDirectory(nullptr);
+
+    int x1 = slicedDen.GetXaxis()->GetFirst();
+    int x2 = slicedDen.GetXaxis()->GetLast();
+    int y1 = slicedDen.GetYaxis()->GetFirst();
+    int y2 = slicedDen.GetYaxis()->GetLast();
+    int z1 = slicedDen.GetZaxis()->GetFirst();
+    int z2 = slicedDen.GetZaxis()->GetLast();
+
+    for (int ix = x1; ix <= x2; ++ix) {
+        double qOut = slicedDen.GetXaxis()->GetBinCenter(ix);
+
+        for (int iy = y1; iy <= y2; ++iy) {
+            double qSide = slicedDen.GetYaxis()->GetBinCenter(iy);
+
+            for (int iz = z1; iz <= z2; ++iz) {
+                double qLong = slicedDen.GetZaxis()->GetBinCenter(iz);
+
+                double w = slicedDen.GetBinContent(ix, iy, iz);
+                if (w <= 0.0 || !std::isfinite(w)) continue;
+
+                double cFit = EvalCF3D(r, qOut, qSide, qLong);
+                if (!std::isfinite(cFit)) continue;
+
+                den->SetBinContent(ix, iy, iz, w);
+                num->SetBinContent(ix, iy, iz, w * cFit);
+            }
+        }
+    }
+
+    auto hNum = (TH1D*)num->Project3D(proj)->Clone();
+    auto hDen = (TH1D*)den->Project3D(proj)->Clone();
+
+    hNum->SetDirectory(nullptr);
+    hDen->SetDirectory(nullptr);
+
+    auto fit = (TH1D*)hNum->Clone(("fit_" + tag + "_" + ToString(axis)).c_str());
+    fit->SetDirectory(nullptr);
+    fit->Divide(hNum, hDen);
+
+    delete den;
+    delete num;
+    delete hNum;
+    delete hDen;
+
+    return fit;
+}
+
 std::pair<TH1D*, TH1D*> Create1D(
     TH3D& A,
     TH3D& Awei,
-    TH3D* fit3d,
+    const FitResult& r,
     const LCMSAxis axis,
     const std::string& name
 ) {
@@ -113,7 +184,7 @@ std::pair<TH1D*, TH1D*> Create1D(
     std::string n = name + " " + ToString(axis);
     CF->SetTitle(n.c_str());
 
-    auto fit = BuildLCMSFitFrom3D(A, fit3d, axis, baseName);
+    auto fit = BuildLCMSFitFrom3DWeighted(A, r, axis, baseName);
 
     return {CF, fit};
 }
@@ -160,44 +231,6 @@ void DrawCFAndFit(
 // Full LCMS pipeline
 // ============================================
 
-
-TH3D* Create3DFitHist(const FitResult r) {
-    double fitLim = 0.20;
-    TF3* fit = new TF3(
-        "fit3d", CF_fit_3d, 
-        -fitLim, fitLim, 
-        -fitLim, fitLim, 
-        -fitLim, fitLim, 
-        7
-    );
-    fit->SetParameter(0, r.R[0] * r.R[0]);
-    fit->SetParameter(1, r.R[1] * r.R[1]);
-    fit->SetParameter(2, r.R[2] * r.R[2]);
-    fit->SetParameter(3, r.R[3]);
-    fit->SetParameter(4, r.R[4]);
-    fit->SetParameter(5, r.R[5]);
-    fit->SetParameter(6, r.lambda);
-
-    for (int p = 0; p < 7; p++) fit->FixParameter(p, fit->GetParameter(p));
-
-    auto fit3d = new TH3D(
-        "fit3d","fit3d",
-        80,-0.4,0.4,
-        80,-0.4,0.4,
-        80,-0.4,0.4
-    );
-    fit3d->SetDirectory(nullptr);
-
-    for (int i=1;i<=80;i++)
-    for (int j=1;j<=80;j++)
-    for (int k=1;k<=80;k++) {
-        double x = fit3d->GetXaxis()->GetBinCenter(i);
-        double y = fit3d->GetYaxis()->GetBinCenter(j);
-        double z = fit3d->GetZaxis()->GetBinCenter(k);
-        fit3d->SetBinContent(i,j,k, fit->Eval(x,y,z));
-    }
-    return fit3d;
-}
 
 void SetStyle(Draw::Style* style) {
     // marker config
@@ -260,7 +293,6 @@ void MakeLCMS1DProjections(
     for (int centIdx = 0; centIdx < Centrality::kCount; centIdx++)
     for (int b = 0; b < bin.count; b++) {
         const FitResult r = fitRes[chIdx][centIdx][b];
-        TH3D* fit3d = Create3DFitHist(r);
         auto [hA, hAwei] = getHists(in, chIdx, centIdx, b);
         TPaveText* stats = GetFitStats(r, 0.032);
 
@@ -290,7 +322,7 @@ void MakeLCMS1DProjections(
         for (int lcms = 0; lcms < 3; lcms++) {
             LCMSAxis axis = LCMSAxis(lcms);
 
-            auto [CF, fit] = Create1D(*hA, *hAwei, fit3d, axis, cf_name);
+            auto [CF, fit] = Create1D(*hA, *hAwei, r, axis, cf_name);
 
             DrawCFOverFit(c_fit_over_cf, CF, fit, stats, n_fit_over_cf, lcms, style);
             SaveCanvasToFile(out, CF, fit, stats, style, cf_name, axis);
