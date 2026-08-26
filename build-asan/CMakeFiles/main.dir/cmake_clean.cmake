@@ -1,0 +1,43 @@
+file(REMOVE_RECURSE
+  "CMakeFiles/main.dir/src/analysis/cf3d.cpp.o"
+  "CMakeFiles/main.dir/src/analysis/cf3d.cpp.o.d"
+  "CMakeFiles/main.dir/src/analysis/dependency.cpp.o"
+  "CMakeFiles/main.dir/src/analysis/dependency.cpp.o.d"
+  "CMakeFiles/main.dir/src/analysis/graphs.cpp.o"
+  "CMakeFiles/main.dir/src/analysis/graphs.cpp.o.d"
+  "CMakeFiles/main.dir/src/analysis/pipeline.cpp.o"
+  "CMakeFiles/main.dir/src/analysis/pipeline.cpp.o.d"
+  "CMakeFiles/main.dir/src/analysis/projections1d.cpp.o"
+  "CMakeFiles/main.dir/src/analysis/projections1d.cpp.o.d"
+  "CMakeFiles/main.dir/src/analysis/projections2d.cpp.o"
+  "CMakeFiles/main.dir/src/analysis/projections2d.cpp.o.d"
+  "CMakeFiles/main.dir/src/analysis/ratio.cpp.o"
+  "CMakeFiles/main.dir/src/analysis/ratio.cpp.o.d"
+  "CMakeFiles/main.dir/src/config/config.cpp.o"
+  "CMakeFiles/main.dir/src/config/config.cpp.o.d"
+  "CMakeFiles/main.dir/src/core/fs.cpp.o"
+  "CMakeFiles/main.dir/src/core/fs.cpp.o.d"
+  "CMakeFiles/main.dir/src/core/lcms.cpp.o"
+  "CMakeFiles/main.dir/src/core/lcms.cpp.o.d"
+  "CMakeFiles/main.dir/src/core/log.cpp.o"
+  "CMakeFiles/main.dir/src/core/log.cpp.o.d"
+  "CMakeFiles/main.dir/src/draw/draw.cpp.o"
+  "CMakeFiles/main.dir/src/draw/draw.cpp.o.d"
+  "CMakeFiles/main.dir/src/fit/initial_parameters.cpp.o"
+  "CMakeFiles/main.dir/src/fit/initial_parameters.cpp.o.d"
+  "CMakeFiles/main.dir/src/fit/model.cpp.o"
+  "CMakeFiles/main.dir/src/fit/model.cpp.o.d"
+  "CMakeFiles/main.dir/src/fit/result.cpp.o"
+  "CMakeFiles/main.dir/src/fit/result.cpp.o.d"
+  "CMakeFiles/main.dir/src/io/input.cpp.o"
+  "CMakeFiles/main.dir/src/io/input.cpp.o.d"
+  "CMakeFiles/main.dir/src/main.cpp.o"
+  "CMakeFiles/main.dir/src/main.cpp.o.d"
+  "main"
+  "main.pdb"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang CXX)
+  include(CMakeFiles/main.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()
