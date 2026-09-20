@@ -1,0 +1,77 @@
+{
+    "machine": {
+        "base_input": "/home/ubuntu/Temir/smash/build/data/sthbtmaker-repo/py_output",
+        "base_output": "/home/ubuntu/Temir/smash/build/data/cf_maker_new/results"
+    },
+
+    "vars": {
+        "input": {
+            "file": "kt_run_2707_fpc/merged_kt_run_2707_fpc.root",
+            "type": "kt"
+        },
+        "output": {
+            "dir": "kt_run_2707_fpc"
+        }
+    },
+
+    "fit": {
+        "q_max": 0.20,
+        "use_default_ip": false,
+        "options": "RQS0",
+        "minimizer": "Minuit2",
+        "retry_with_defaults": true,
+        "use_integral": false,
+        "minos_errors": false,
+        "limits": {
+            "radius_sq": [0.0, 100.0],
+            "cross": [-30.0, 30.0],
+            "lambda": [0.3, 1.0]
+        },
+        "freeze": {
+            "r_os": 0.0,
+            "r_ol": 0.0,
+            "r_sl": 0.0
+        }
+    },
+
+    "projections": {
+        "slice_1d": 0.05,
+        "slice_2d": 0.2,
+        "crop_2d": 0.1,
+        "slice_ratio": 0.05,
+        "fit_over_cf_range": 0.08,
+        "axis_range_1d": 0.2,
+        "cf_y_range_1d": [0.9, 1.7],
+        "fit_over_cf_y_range_1d": [0.9, 1.1]
+    },
+
+    "binning": {
+        "values": [0.15, 0.25, 0.35, 0.45, 0.60],
+        "names": ["0.15-0.25", "0.25-0.35", "0.35-0.45", "0.45-0.60"]
+    },
+
+    "images": {
+        "need": true,
+        "format": "pdf"
+    },
+
+    "stages": {
+        "cf3d": true,
+        "dependency": true,
+        "projections_1d": true,
+        "projections_2d": true,
+        "ratios": true
+    },
+
+    "selection": {
+        "charges": [0, 1],
+        "centralities": [0, 1, 2, 3]
+    },
+
+    "logging": {
+        "level": "info",
+        "file": "run.log"
+    },
+
+    "threads": 0
+}

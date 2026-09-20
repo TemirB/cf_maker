@@ -1,0 +1,8 @@
+{
+	"InstallScripts" : 
+	[
+		"/Users/temir-balinov/diploma/programs/cf_maker/build-asan/cmake_install.cmake",
+		"/Users/temir-balinov/diploma/programs/cf_maker/build-asan/external/nlohmann_json/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
