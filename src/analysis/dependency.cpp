@@ -28,11 +28,11 @@ void make_dependency(Config& cfg, TFile* cf3dFile, TFile* outFile)
 
     std::string dir = cfg.output.dir + "/dependency";
     ensure_dir(dir);
-    log::Info("dependency: output dir = " + dir);
+    logging::info("dependency: output dir = " + dir);
 
     const std::string ext = cfg.general.images.format;
     for (const int ch : cfg.selection.charges) {
-        log::Debug("dependency: charge = " + std::string(charge::kNames[ch]));
+        logging::debug("dependency: charge = " + std::string(charge::kNames[ch]));
         std::array<std::unique_ptr<TMultiGraph>, lcms::kCount> mg_radii;
         for (auto& mg : mg_radii) {
             mg = std::make_unique<TMultiGraph>();
@@ -46,9 +46,10 @@ void make_dependency(Config& cfg, TFile* cf3dFile, TFile* outFile)
         for (const int centr : cfg.selection.centralities) {
             std::array<TGraphErrors*, lcms::kCount> g_radii{};
             for (int lcms = 0; lcms < lcms::kCount; lcms++) {
-                g_radii[lcms] = make_styled_graph(Form("g_R_%s_%s_centr_%s", lcms::kNames[lcms],
-                                                 charge::kNames[ch], centrality::kNames[centr]),
-                                            centr);
+                g_radii[lcms] =
+                    make_styled_graph(Form("g_R_%s_%s_centr_%s", lcms::kNames[lcms],
+                                           charge::kNames[ch], centrality::kNames[centr]),
+                                      centr);
             }
             TGraphErrors* g_lambda = make_styled_graph(
                 Form("g_L_%s_centr_%s", charge::kNames[ch], centrality::kNames[centr]), centr);
@@ -90,27 +91,27 @@ void make_dependency(Config& cfg, TFile* cf3dFile, TFile* outFile)
                 kind = draw::GraphKind::Cross;
             }
             write_mg_with_legend(outFile, mg_radii[lcms].get(), mg_radii[lcms]->GetName(), mode,
-                              Form("R_{%s} (fm)", lcms::kNames[lcms]), legend_entries, kind);
+                                 Form("R_{%s} (fm)", lcms::kNames[lcms]), legend_entries, kind);
         }
 
         set_range_with_errors(mg_lambda.get(), 0.1);
         mg_lambda->SetName(Form("mg_L_%s", charge::kNames[ch]));
-        write_mg_with_legend(outFile, mg_lambda.get(), mg_lambda->GetName(), mode, "lambda", legend_entries,
-                          draw::GraphKind::Lambda);
+        write_mg_with_legend(outFile, mg_lambda.get(), mg_lambda->GetName(), mode, "lambda",
+                             legend_entries, draw::GraphKind::Lambda);
 
         set_range_with_errors(mg_chi2_ndf.get(), 0.1);
         mg_chi2_ndf->SetName(Form("mg_chi2_ndf_%s", charge::kNames[ch]));
-        write_mg_with_legend(outFile, mg_chi2_ndf.get(), mg_chi2_ndf->GetName(), mode, "#chi^{2}/ndf",
-                          legend_entries, draw::GraphKind::chi2_ndf);
+        write_mg_with_legend(outFile, mg_chi2_ndf.get(), mg_chi2_ndf->GetName(), mode,
+                             "#chi^{2}/ndf", legend_entries, draw::GraphKind::chi2_ndf);
 
         set_range_with_errors(mg_fit_over_cf.get(), 0.1);
         mg_fit_over_cf->SetName(Form("mg_FitOverCF_%s", charge::kNames[ch]));
-        write_mg_with_legend(outFile, mg_fit_over_cf.get(), mg_fit_over_cf->GetName(), mode, "<fit/CF>",
-                          legend_entries, draw::GraphKind::FitOverCF);
+        write_mg_with_legend(outFile, mg_fit_over_cf.get(), mg_fit_over_cf->GetName(), mode,
+                             "<fit/CF>", legend_entries, draw::GraphKind::FitOverCF);
 
         mg_pvalue->SetName(Form("mg_Pvalue_%s", charge::kNames[ch]));
         write_mg_with_legend(outFile, mg_pvalue.get(), mg_pvalue->GetName(), mode, "p_{value}",
-                          legend_entries, draw::GraphKind::PValue);
+                             legend_entries, draw::GraphKind::PValue);
 
         {
             std::string name = Form("c_all_graphs_%s", charge::kNames[ch]);

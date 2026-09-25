@@ -70,9 +70,9 @@ MeanWithError compute_fit_over_cf_mean(const TH3D& cf, const FitResult& r, doubl
     for (int ix = 1; ix <= cf.GetNbinsX(); ++ix) {
         for (int iy = 1; iy <= cf.GetNbinsY(); ++iy) {
             for (int iz = 1; iz <= cf.GetNbinsZ(); ++iz) {
-                const double qOut = cf.GetXaxis()->Getbin_center(ix);
-                const double qSide = cf.GetYaxis()->Getbin_center(iy);
-                const double qLong = cf.GetZaxis()->Getbin_center(iz);
+                const double qOut = cf.GetXaxis()->GetBinCenter(ix);
+                const double qSide = cf.GetYaxis()->GetBinCenter(iy);
+                const double qLong = cf.GetZaxis()->GetBinCenter(iz);
 
                 if (std::abs(qOut) > fitRange || std::abs(qSide) > fitRange ||
                     std::abs(qLong) > fitRange) {

@@ -21,6 +21,7 @@ int main(int argc, char** argv) noexcept
     }
 
     try {
+        gROOT->SetBatch(kTRUE);
         TH1::AddDirectory(kFALSE);
         ROOT::EnableThreadSafety();
 
@@ -28,21 +29,21 @@ int main(int argc, char** argv) noexcept
 
         const std::string logFile =
             cfg.logging.file.empty() ? "" : cfg.output.dir + "/" + cfg.logging.file;
-        log::Init(log::parse_level(cfg.logging.level), logFile);
+        logging::init(logging::parse_level(cfg.logging.level), logFile);
 
         ROOT::Math::MinimizerOptions::SetDefaultMinimizer(cfg.fit.minimizer.c_str());
 
-        log::Info("cf_maker: config = " + std::string(argv[1]));
-        log::Info("cf_maker: output dir = " + cfg.output.dir);
-        log::Info("cf_maker: minimizer = " + cfg.fit.minimizer +
+        logging::info("cf_maker: config = " + std::string(argv[1]));
+        logging::info("cf_maker: output dir = " + cfg.output.dir);
+        logging::info("cf_maker: minimizer = " + cfg.fit.minimizer +
                   ", threads = " + std::to_string(cfg.threads) + " (0 = auto)");
 
         auto input = std::make_unique<TFile>(cfg.input.file.c_str(), "READ");
         if (!input || input->IsZombie()) {
-            log::Error("cannot open input file: " + cfg.input.file);
+            logging::error("cannot open input file: " + cfg.input.file);
             return 1;
         }
-        log::Info("cf_maker: input file = " + cfg.input.file);
+        logging::info("cf_maker: input file = " + cfg.input.file);
 
         if (cfg.stages.cf3d) {
             stage_cf3d(cfg);
@@ -61,17 +62,17 @@ int main(int argc, char** argv) noexcept
         }
 
         std::cout << "All outputs written to " << cfg.output.dir << "\n";
-        log::Info("cf_maker: all outputs written to " + cfg.output.dir);
+        logging::info("cf_maker: all outputs written to " + cfg.output.dir);
         return 0;
     } catch (const std::exception& e) {
         try {
-            log::Error(std::string("cf_maker: fatal error: ") + e.what());
+            logging::error(std::string("cf_maker: fatal error: ") + e.what());
         } catch (...) {
             std::cerr << "cf_maker: fatal error: " << e.what() << "\n";
         }
         return 1;
     } catch (...) {
-        log::Error("cf_maker: unknown fatal error");
+        logging::error("cf_maker: unknown fatal error");
         return 1;
     }
 }

@@ -14,7 +14,7 @@ void ensure_dir(const std::string& dir)
     std::error_code ec;
     std::filesystem::create_directories(dir, ec);
     if (ec) {
-        log::Error("cannot create directory " + dir + ": " + ec.message());
+        logging::error("cannot create directory " + dir + ": " + ec.message());
     }
 }
 

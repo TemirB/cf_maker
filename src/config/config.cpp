@@ -416,7 +416,7 @@ void Validate(const Config& cfg)
         throw std::runtime_error("threads must be >= 0 (0 = auto)");
     }
 
-    static_cast<void>(log::parse_level(cfg.logging.level));
+    static_cast<void>(logging::parse_level(cfg.logging.level));
 }
 
 } // namespace
@@ -551,8 +551,10 @@ Config load(const std::string& path)
         cfg.fit.minimizer = OptionalString(fit, "minimizer", cfg.fit.minimizer, "config.fit");
         cfg.fit.retry_with_defaults =
             OptionalBool(fit, "retry_with_defaults", cfg.fit.retry_with_defaults, "config.fit");
-        cfg.fit.use_integral = OptionalBool(fit, "use_integral", cfg.fit.use_integral, "config.fit");
-        cfg.fit.minos_errors = OptionalBool(fit, "minos_errors", cfg.fit.minos_errors, "config.fit");
+        cfg.fit.use_integral =
+            OptionalBool(fit, "use_integral", cfg.fit.use_integral, "config.fit");
+        cfg.fit.minos_errors =
+            OptionalBool(fit, "minos_errors", cfg.fit.minos_errors, "config.fit");
         ParseLimits(fit, cfg.fit);
         ParseFreeze(fit, cfg.fit);
     }

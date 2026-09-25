@@ -83,9 +83,9 @@ void set_range_with_errors(TMultiGraph* mg, double padFrac)
 }
 
 void write_mg_with_legend(TFile* file, TMultiGraph* mg, const char* canvasName, const char* xTitle,
-                       const char* yTitle,
-                       const std::vector<std::pair<TObject*, std::string>>& legendEntries,
-                       draw::GraphKind kind)
+                          const char* yTitle,
+                          const std::vector<std::pair<TObject*, std::string>>& legendEntries,
+                          draw::GraphKind kind)
 {
     file->cd();
 
@@ -130,7 +130,7 @@ void write_mg_with_legend(TFile* file, TMultiGraph* mg, const char* canvasName, 
 }
 
 void write_hist(TFile* file, TH1D* hist, const char* canvasName, const char* xTitle,
-               const char* yTitle)
+                const char* yTitle)
 {
     file->cd();
 

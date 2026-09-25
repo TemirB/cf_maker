@@ -32,11 +32,11 @@ int main()
 
     TH3D hCF("hCF", "hCF", 40, -0.4, 0.4, 40, -0.4, 0.4, 40, -0.4, 0.4);
     for (int ix = 1; ix <= hCF.GetNbinsX(); ++ix) {
-        const double qx = hCF.GetXaxis()->Getbin_center(ix);
+        const double qx = hCF.GetXaxis()->GetBinCenter(ix);
         for (int iy = 1; iy <= hCF.GetNbinsY(); ++iy) {
-            const double qy = hCF.GetYaxis()->Getbin_center(iy);
+            const double qy = hCF.GetYaxis()->GetBinCenter(iy);
             for (int iz = 1; iz <= hCF.GetNbinsZ(); ++iz) {
-                const double qz = hCF.GetZaxis()->Getbin_center(iz);
+                const double qz = hCF.GetZaxis()->GetBinCenter(iz);
                 const double v =
                     1.0 + lambda * TMath::Exp(-(R * R * (qx * qx + qy * qy + qz * qz)) / hc2);
                 hCF.SetBinContent(ix, iy, iz, v);
@@ -59,8 +59,8 @@ int main()
     CHECK(std::abs(r.r[1] - R) < 0.2);
     CHECK(std::abs(r.r[2] - R) < 0.2);
     CHECK(std::abs(r.lambda - lambda) < 0.05);
-    CHECK(std::abs(r.corr(0, 0) - 1.0) < 1e-4);
-    CHECK(std::abs(r.corr(0, 1)) <= 1.0);
+    CHECK(std::abs(r.correlation(0, 0) - 1.0) < 1e-4);
+    CHECK(std::abs(r.correlation(0, 1)) <= 1.0);
 
     std::cout << "All tests passed\n";
     return 0;

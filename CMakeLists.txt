@@ -135,6 +135,13 @@ target_link_libraries(main PRIVATE
     nlohmann_json::nlohmann_json
 )
 
+add_executable(generate_gaussian tools/generate_gaussian.cpp)
+target_include_directories(generate_gaussian PRIVATE ${SRC_DIR})
+target_include_directories(generate_gaussian SYSTEM PRIVATE ${ROOT_INCLUDE_DIRS})
+target_link_libraries(generate_gaussian PRIVATE
+    project_warnings ROOT::Core ROOT::RIO ROOT::Hist nlohmann_json::nlohmann_json
+)
+
 # ----------------------------
 # Tests
 # ----------------------------
@@ -200,6 +207,51 @@ target_link_libraries(test_fit PRIVATE
 )
 
 add_test(NAME fit COMMAND test_fit)
+
+add_executable(test_projections
+    tests/test_projections.cpp
+    src/analysis/projections1d.cpp
+    src/analysis/projections2d.cpp
+    src/core/lcms.cpp
+    src/core/fs.cpp
+    src/core/log.cpp
+    src/draw/draw.cpp
+    src/io/input.cpp
+    src/fit/model.cpp
+    src/fit/initial_parameters.cpp
+    src/fit/result.cpp
+)
+target_include_directories(test_projections PRIVATE ${SRC_DIR})
+target_include_directories(test_projections SYSTEM PRIVATE ${ROOT_INCLUDE_DIRS})
+target_link_libraries(test_projections PRIVATE
+    project_warnings
+    ROOT::Core ROOT::RIO ROOT::Hist ROOT::Graf ROOT::Gpad ROOT::MathCore
+)
+add_test(NAME projections COMMAND test_projections)
+
+add_executable(test_generated
+    tests/test_generated.cpp
+    src/io/input.cpp
+    src/fit/model.cpp
+    src/fit/initial_parameters.cpp
+    src/fit/result.cpp
+    src/core/log.cpp
+)
+target_include_directories(test_generated PRIVATE ${SRC_DIR})
+target_include_directories(test_generated SYSTEM PRIVATE ${ROOT_INCLUDE_DIRS})
+target_link_libraries(test_generated PRIVATE
+    project_warnings ROOT::Core ROOT::RIO ROOT::Hist ROOT::Graf ROOT::Gpad ROOT::MathCore
+    nlohmann_json::nlohmann_json
+)
+add_test(NAME generate_fixture COMMAND ${CMAKE_COMMAND}
+    -DGENERATOR=$<TARGET_FILE:generate_gaussian>
+    -DOUTPUT_DIR=${CMAKE_BINARY_DIR}/gaussian_test_data
+    -P ${CMAKE_SOURCE_DIR}/tests/generate_fixture.cmake
+)
+set_tests_properties(generate_fixture PROPERTIES FIXTURES_SETUP gaussian_data)
+add_test(NAME generated_fit COMMAND test_generated ${CMAKE_BINARY_DIR}/gaussian_test_data/input.root)
+add_test(NAME generated_pipeline COMMAND main ${CMAKE_BINARY_DIR}/gaussian_test_data/config.json)
+set_tests_properties(generated_fit generated_pipeline PROPERTIES FIXTURES_REQUIRED gaussian_data)
 
 # ----------------------------
 # Install

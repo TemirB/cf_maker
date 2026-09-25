@@ -34,18 +34,18 @@ std::size_t canvas_index(int ch, int centr)
     return static_cast<std::size_t>(ch) * centrality::kCount + static_cast<std::size_t>(centr);
 }
 
-void write_2d_projection(TFile& outFile, const TH3D& den_source, const TH3D& num_source, LCMSAxis ax1,
-                       LCMSAxis ax2, const std::string& tag, TCanvas* canvas, const int y,
-                       bool draw, double freezeWidth, double cropWidth,
-                       std::vector<std::unique_ptr<TH2D>>& keep_alive)
+void write_2d_projection(TFile& outFile, const TH3D& den_source, const TH3D& num_source,
+                         LCMSAxis ax1, LCMSAxis ax2, const std::string& tag, TCanvas* canvas,
+                         const int y, bool draw, double freezeWidth, double cropWidth,
+                         std::vector<std::unique_ptr<TH2D>>& keep_alive)
 {
-    auto den = RootPtr<TH3D>(static_cast<TH3D*>(den_source.Clone()));
-    auto num = RootPtr<TH3D>(static_cast<TH3D*>(num_source.Clone()));
-    den->SetDirectory(nullptr);
-    num->SetDirectory(nullptr);
+    auto den_3d = RootPtr<TH3D>(static_cast<TH3D*>(den_source.Clone()));
+    auto num_3d = RootPtr<TH3D>(static_cast<TH3D*>(num_source.Clone()));
+    den_3d->SetDirectory(nullptr);
+    num_3d->SetDirectory(nullptr);
 
-    auto num = RootPtr<TH2D>(project_2d(*num, ax1, ax2, freezeWidth));
-    auto den = RootPtr<TH2D>(project_2d(*den, ax1, ax2, freezeWidth));
+    auto num = RootPtr<TH2D>(project_2d(*num_3d, ax1, ax2, freezeWidth));
+    auto den = RootPtr<TH2D>(project_2d(*den_3d, ax1, ax2, freezeWidth));
     if (!num || !den) {
         std::cerr << "Project3D failed for " << tag << "\n";
         return;
@@ -75,8 +75,8 @@ void write_2d_projection(TFile& outFile, const TH3D& den_source, const TH3D& num
         gPad->SetLeftMargin(0.12f);
         gPad->SetBottomMargin(0.12f);
 
-        auto cf_clone =
-            std::unique_ptr<TH2D>(static_cast<TH2D*>(cf_hist->Clone(Form("%s_clone", cf_hist->GetName()))));
+        auto cf_clone = std::unique_ptr<TH2D>(
+            static_cast<TH2D*>(cf_hist->Clone(Form("%s_clone", cf_hist->GetName()))));
         cf_clone->Draw("COLZ");
 
         gPad->Modified();
@@ -92,9 +92,9 @@ void make_lcms_2d_projections(const Config& cfg, TFile* in, TFile* out)
     const Bin& bin = cfg.binning;
     std::string dir = cfg.output.dir + "/all_2d_histos";
     ensure_dir(dir);
-    log::Info("projections_2d: " + std::to_string(cfg.selection.charges.size()) + " charges x " +
-              std::to_string(cfg.selection.centralities.size()) + " centralities x " +
-              std::to_string(bin.count) + " bins");
+    logging::info("projections_2d: " + std::to_string(cfg.selection.charges.size()) +
+                  " charges x " + std::to_string(cfg.selection.centralities.size()) +
+                  " centralities x " + std::to_string(bin.count) + " bins");
 
     const std::string ext = cfg.general.images.format;
     std::vector<std::unique_ptr<TCanvas>> canvases(static_cast<std::size_t>(charge::kCount) *
@@ -122,14 +122,14 @@ void make_lcms_2d_projections(const Config& cfg, TFile* in, TFile* out)
                 std::string cf_name = get_cf_name(ch_idx, cent_idx, cfg.input.type, bin.names[b]);
 
                 write_2d_projection(*out, *den, *num, LCMSAxis::Out, LCMSAxis::Side, cf_name,
-                                  canvases[canvas_index(ch_idx, cent_idx)].get(), b, false,
-                                  cfg.projections.slice_2d, cfg.projections.crop_2d, keep_alive);
+                                    canvases[canvas_index(ch_idx, cent_idx)].get(), b, false,
+                                    cfg.projections.slice_2d, cfg.projections.crop_2d, keep_alive);
                 write_2d_projection(*out, *den, *num, LCMSAxis::Out, LCMSAxis::Long, cf_name,
-                                  canvases[canvas_index(ch_idx, cent_idx)].get(), b, true,
-                                  cfg.projections.slice_2d, cfg.projections.crop_2d, keep_alive);
+                                    canvases[canvas_index(ch_idx, cent_idx)].get(), b, true,
+                                    cfg.projections.slice_2d, cfg.projections.crop_2d, keep_alive);
                 write_2d_projection(*out, *den, *num, LCMSAxis::Side, LCMSAxis::Long, cf_name,
-                                  canvases[canvas_index(ch_idx, cent_idx)].get(), b, false,
-                                  cfg.projections.slice_2d, cfg.projections.crop_2d, keep_alive);
+                                    canvases[canvas_index(ch_idx, cent_idx)].get(), b, false,
+                                    cfg.projections.slice_2d, cfg.projections.crop_2d, keep_alive);
             }
         }
     }

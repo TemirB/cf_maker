@@ -51,11 +51,12 @@ TF3* make_cf_3d_fit(const Config& cfg, int ch, int centr, int b, bool use_defaul
 {
     const double fit_limit = cfg.fit.q_max;
 
-    TF3* fit3d = new TF3("fit3d", cf_fit_3d, -fit_limit, fit_limit, -fit_limit, fit_limit, -fit_limit, fit_limit, 7);
+    TF3* fit3d = new TF3("fit3d", cf_fit_3d, -fit_limit, fit_limit, -fit_limit, fit_limit,
+                         -fit_limit, fit_limit, 7);
     const bool is_kt = (cfg.input.type == "kt");
 
-    const InitialParameters& ip =
-        use_defaults ? (is_kt ? default_kt_ip() : default_rapidity_ip()) : (is_kt ? kt_ip() : rapidity_ip());
+    const InitialParameters& ip = use_defaults ? (is_kt ? default_kt_ip() : default_rapidity_ip())
+                                               : (is_kt ? kt_ip() : rapidity_ip());
 
     const double r_out = ip.get(ch, "out", centr, b);
     const double r_side = ip.get(ch, "side", centr, b);
@@ -65,8 +66,8 @@ TF3* make_cf_3d_fit(const Config& cfg, int ch, int centr, int b, bool use_defaul
     const double r_side_long = 0;
     const double lambda = ip.get(ch, "lambda", centr, b);
 
-    fit3d->SetParameters(r_out * r_out, r_side * r_side, r_long * r_long, r_out_side, r_out_long, r_side_long,
-                         lambda);
+    fit3d->SetParameters(r_out * r_out, r_side * r_side, r_long * r_long, r_out_side, r_out_long,
+                         r_side_long, lambda);
 
     fit3d->SetParLimits(0, cfg.fit.radius_sq_min, cfg.fit.radius_sq_max);
     fit3d->SetParLimits(1, cfg.fit.radius_sq_min, cfg.fit.radius_sq_max);
@@ -177,7 +178,7 @@ FitResult fit_cf_3d(TH3D* cf_hist, TF3* fit3d, const FitConfig& fitCfg)
         res.p_value = fit_ptr->Prob();
         res.status = fit_ptr->Status();
         res.cov_status = fit_ptr->CovMatrixStatus();
-        res.ok = (res.chi2 >= 0 && res.ndf > 0) && (res.status == 0) && fit_ptr->is_valid() &&
+        res.ok = (res.chi2 >= 0 && res.ndf > 0) && (res.status == 0) && fit_ptr->IsValid() &&
                  (res.cov_status == 1 || res.cov_status == 3);
     }
     res.attempts = 1;
@@ -243,7 +244,7 @@ FitResult fit_cf_3d_with_retry(TH3D* cf_hist, const Config& cfg, int ch, int cen
 
     auto fit3d = std::unique_ptr<TF3>(create_cf_3d_fit(cfg, ch, centr, b));
     FitResult best = fit_cf_3d(cf_hist, fit3d.get(), cfg.fit);
-    log::Debug(task + ": chi2=" + std::to_string(best.chi2) + ", ndf=" + std::to_string(best.ndf) +
+    logging::debug(task + ": chi2=" + std::to_string(best.chi2) + ", ndf=" + std::to_string(best.ndf) +
                ", status=" + std::to_string(best.status) + ", covStatus=" +
                std::to_string(best.cov_status) + ", atLimit=" + (best.at_limit ? "true" : "false"));
 
@@ -251,7 +252,7 @@ FitResult fit_cf_3d_with_retry(TH3D* cf_hist, const Config& cfg, int ch, int cen
         return best;
     }
 
-    log::Info(
+    logging::info(
         task + ": first attempt " +
         (best.ok ? "hit parameter limits" : "failed (status=" + std::to_string(best.status) + ")") +
         " — retrying with default initial parameters");
@@ -261,9 +262,9 @@ FitResult fit_cf_3d_with_retry(TH3D* cf_hist, const Config& cfg, int ch, int cen
 
     if (alt.ok && (!best.ok || alt.chi2 < best.chi2)) {
         alt.attempts = 2;
-        log::Info(task + ": retry improved the fit");
+        logging::info(task + ": retry improved the fit");
         return alt;
     }
-    log::Info(task + ": retry did not improve — keeping first attempt");
+    logging::info(task + ": retry did not improve — keeping first attempt");
     return best;
 }

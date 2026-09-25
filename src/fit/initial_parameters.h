@@ -15,7 +15,7 @@ class InitialParameters
   public:
     explicit InitialParameters(Binning binning, bool useDefaults = false);
 
-    [[nodiscard]] double Get(int charge, const std::string& parameter, int centrality, int y) const;
+    [[nodiscard]] double get(int charge, const std::string& parameter, int centrality, int y) const;
 
   private:
     void fill_rapidity();

@@ -5,8 +5,8 @@
 
 struct FitResult
 {
-    std::array<double, 6> R{};
-    std::array<double, 6> eR{};
+    std::array<double, 6> r{};
+    std::array<double, 6> e_r{};
     double lambda{};
     double e_lambda{};
     double chi2{};
@@ -22,7 +22,7 @@ struct FitResult
     [[nodiscard]] bool is_finite() const;
     [[nodiscard]] double chi2_ndf() const;
     [[nodiscard]] bool is_valid() const;
-    [[nodiscard]] double corr(int i, int j) const
+    [[nodiscard]] double correlation(int i, int j) const
     {
         return corr[static_cast<std::size_t>(i) * 7 + static_cast<std::size_t>(j)];
     }

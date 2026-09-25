@@ -5,11 +5,11 @@
 bool FitResult::is_finite() const
 {
     for (int i = 0; i < 3; i++) {
-        if (!std::isfinite(R[i]) || !std::isfinite(eR[i])) {
+        if (!std::isfinite(r[i]) || !std::isfinite(e_r[i])) {
             return false;
         }
     }
-    return std::isfinite(lambda) && std::isfinite(elambda);
+    return std::isfinite(lambda) && std::isfinite(e_lambda);
 }
 
 double FitResult::chi2_ndf() const
@@ -22,7 +22,7 @@ bool FitResult::is_valid() const
     const bool basicValid = ok && is_finite() && lambda > 0. && lambda < 1.;
     bool rValid = true;
     for (int i = 0; i < 3; i++) {
-        if (R[i] > 9 || R[i] < 1.) {
+        if (r[i] > 9 || r[i] < 1.) {
             rValid = false;
             break;
         }

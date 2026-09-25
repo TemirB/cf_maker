@@ -45,7 +45,7 @@ void build_and_fit_3d_correlation_functions(Config& cfg, TFile* outFile)
     std::vector<Cf3dResult> results(tasks.size());
     const std::string inputPath = cfg.input.file;
 
-    log::Info("cf3d: " + std::to_string(tasks.size()) +
+    logging::info("cf3d: " + std::to_string(tasks.size()) +
               " fit tasks, threads = " + (cfg.threads == 0 ? "auto" : std::to_string(cfg.threads)));
 
     ParallelFor(tasks.size(), static_cast<std::size_t>(cfg.threads), [&](std::size_t idx) {
@@ -59,9 +59,9 @@ void build_and_fit_3d_correlation_functions(Config& cfg, TFile* outFile)
                 tFile.reset();
                 throw std::runtime_error("cannot open input file: " + inputPath);
             }
-            log::Debug("cf3d worker: opened input file (thread-local)");
+            logging::debug("cf3d worker: opened input file (thread-local)");
         }
-        log::Debug("cf3d: fitting ch=" + std::to_string(task.ch) +
+        logging::debug("cf3d: fitting ch=" + std::to_string(task.ch) +
                    " centr=" + std::to_string(task.centr) + " b=" + std::to_string(task.b));
         auto [den, num] = get_hists(tFile.get(), task.ch, task.centr, task.b);
         if (!den || !num) {
@@ -111,11 +111,11 @@ void build_and_fit_3d_correlation_functions(Config& cfg, TFile* outFile)
         static_cast<void>(result.cf->Write(cfName.c_str(), TObject::kOverwrite));
     }
 
-    log::Info("cf3d: fits ok=" + std::to_string(nOk) + "/" + std::to_string(tasks.size()) +
+    logging::info("cf3d: fits ok=" + std::to_string(nOk) + "/" + std::to_string(tasks.size()) +
               ", retried=" + std::to_string(nRetried) + ", atLimit=" + std::to_string(nAtLimit) +
               ", missing=" + std::to_string(nMissing));
     if (nAtLimit > 0) {
-        log::Warn("cf3d: " + std::to_string(nAtLimit) +
+        logging::warn("cf3d: " + std::to_string(nAtLimit) +
                   " fits have parameters at limits — check fit quality");
     }
 }

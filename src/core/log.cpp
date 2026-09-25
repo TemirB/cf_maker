@@ -15,25 +15,25 @@ namespace
 {
 
 std::mutex gMutex;
-log::Level gLevel = log::Level::Info;
+logging::Level gLevel = logging::Level::Info;
 std::unique_ptr<std::ofstream> gFile;
 
-const char* LevelName(log::Level level)
+const char* level_name(logging::Level level)
 {
     switch (level) {
-    case log::Level::Debug:
+    case logging::Level::Debug:
         return "DEBUG";
-    case log::Level::Info:
+    case logging::Level::Info:
         return "INFO";
-    case log::Level::Warn:
+    case logging::Level::Warn:
         return "WARN";
-    case log::Level::Error:
+    case logging::Level::Error:
         return "ERROR";
     }
     return "?";
 }
 
-std::string Timestamp()
+std::string timestamp()
 {
     using namespace std::chrono;
 
@@ -51,7 +51,7 @@ std::string Timestamp()
     return buf;
 }
 
-void Write(log::Level level, const std::string& msg) noexcept
+void write(logging::Level level, const std::string& msg) noexcept
 {
     try {
         std::lock_guard<std::mutex> lock(gMutex);
@@ -60,7 +60,7 @@ void Write(log::Level level, const std::string& msg) noexcept
         }
 
         std::ostringstream line;
-        line << Timestamp() << " [" << LevelName(level) << "] [t=" << std::this_thread::get_id()
+        line << timestamp() << " [" << level_name(level) << "] [t=" << std::this_thread::get_id()
              << "] " << msg << "\n";
         std::cerr << line.str();
         if (gFile && gFile->is_open()) {
@@ -74,10 +74,10 @@ void Write(log::Level level, const std::string& msg) noexcept
 
 } // namespace
 
-namespace log
+namespace logging
 {
 
-void Init(Level level, const std::string& file)
+void init(Level level, const std::string& file)
 {
     std::lock_guard<std::mutex> lock(gMutex);
     gLevel = level;
@@ -87,30 +87,30 @@ void Init(Level level, const std::string& file)
     }
 }
 
-void SetLevel(Level level)
+void set_level(Level level)
 {
     std::lock_guard<std::mutex> lock(gMutex);
     gLevel = level;
 }
 
-void Debug(const std::string& msg) noexcept
+void debug(const std::string& msg) noexcept
 {
-    Write(Level::Debug, msg);
+    write(Level::Debug, msg);
 }
 
-void Info(const std::string& msg) noexcept
+void info(const std::string& msg) noexcept
 {
-    Write(Level::Info, msg);
+    write(Level::Info, msg);
 }
 
-void Warn(const std::string& msg) noexcept
+void warn(const std::string& msg) noexcept
 {
-    Write(Level::Warn, msg);
+    write(Level::Warn, msg);
 }
 
-void Error(const std::string& msg) noexcept
+void error(const std::string& msg) noexcept
 {
-    Write(Level::Error, msg);
+    write(Level::Error, msg);
 }
 
 Level parse_level(const std::string& name)
@@ -140,7 +140,7 @@ ScopedTimer::~ScopedTimer()
     try {
         const double seconds =
             std::chrono::duration<double>(std::chrono::steady_clock::now() - start_).count();
-        Info(name_ + ": done in " + std::to_string(seconds) + " s");
+        info(name_ + ": done in " + std::to_string(seconds) + " s");
     } catch (const std::exception& e) {
         std::cerr << "ScopedTimer: " << e.what() << "\n";
     } catch (...) {
@@ -148,4 +148,4 @@ ScopedTimer::~ScopedTimer()
     }
 }
 
-} // namespace log
+} // namespace logging

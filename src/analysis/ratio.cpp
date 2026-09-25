@@ -57,7 +57,7 @@ void Style(TH1D* h, const TString& fmt, LCMSAxis axis, int centr, const std::str
 }
 
 TH1D* project_ratio(TH3D& ratio, int centr, int b, LCMSAxis axis, double sliceWidth,
-                   const std::string& binName)
+                    const std::string& binName)
 {
     TString name = TString::Format("proj_of_ratios_%d_%d_%s", centr, b, axis_name(axis).data());
 
@@ -72,7 +72,7 @@ TH1D* project_ratio(TH3D& ratio, int centr, int b, LCMSAxis axis, double sliceWi
 }
 
 TH1D* ratio_project(TH3D& neg, TH3D& pos, int centr, int b, LCMSAxis axis, double sliceWidth,
-                   const std::string& binName)
+                    const std::string& binName)
 {
     TString name = TString::Format("ratio_proj_%d_%d_%s", centr, b, axis_name(axis).data());
 
@@ -94,7 +94,7 @@ TH1D* ratio_project(TH3D& neg, TH3D& pos, int centr, int b, LCMSAxis axis, doubl
 void do_cf_ratios(Config& cfg, TFile* fCF3D, TFile* fRatioProj, TFile* fProjRatio)
 {
     const Bin& bin = cfg.binning;
-    log::Info("ratios: " + std::to_string(cfg.selection.centralities.size()) + " centralities x " +
+    logging::info("ratios: " + std::to_string(cfg.selection.centralities.size()) + " centralities x " +
               std::to_string(bin.count) + " bins");
 
     for (const int centr : cfg.selection.centralities) {
@@ -121,15 +121,15 @@ void do_cf_ratios(Config& cfg, TFile* fCF3D, TFile* fRatioProj, TFile* fProjRati
 
             for (auto axis : {LCMSAxis::Out, LCMSAxis::Side, LCMSAxis::Long}) {
                 {
-                    std::unique_ptr<TH1D> h(ratio_project(*neg, *pos, centr, b, axis,
-                                                         cfg.projections.slice_ratio, bin.names[b]));
+                    std::unique_ptr<TH1D> h(ratio_project(
+                        *neg, *pos, centr, b, axis, cfg.projections.slice_ratio, bin.names[b]));
                     fRatioProj->cd();
                     h->Write();
                 }
 
                 {
-                    std::unique_ptr<TH1D> h(project_ratio(*ratio, centr, b, axis,
-                                                         cfg.projections.slice_ratio, bin.names[b]));
+                    std::unique_ptr<TH1D> h(project_ratio(
+                        *ratio, centr, b, axis, cfg.projections.slice_ratio, bin.names[b]));
                     fProjRatio->cd();
                     h->Write();
                 }

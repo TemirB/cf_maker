@@ -14,7 +14,7 @@ std::pair<TH3D*, TH3D*> get_hists(TFile* f, int ch, int centr, int bin)
     TH3D* num = dynamic_cast<TH3D*>(f->Get(numName));
 
     if (!num) {
-        log::Warn(std::string("[Num] NOT FOUND: ") + numName.Data());
+        logging::warn(std::string("[Num] NOT FOUND: ") + numName.Data());
         return {nullptr, nullptr};
     }
 
@@ -22,7 +22,7 @@ std::pair<TH3D*, TH3D*> get_hists(TFile* f, int ch, int centr, int bin)
     TH3D* wei = dynamic_cast<TH3D*>(f->Get(weiName));
 
     if (!wei) {
-        log::Warn(std::string("[NumWei] NOT FOUND: ") + weiName.Data());
+        logging::warn(std::string("[NumWei] NOT FOUND: ") + weiName.Data());
         return {nullptr, nullptr};
     }
     return {num, wei};

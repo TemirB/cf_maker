@@ -3,7 +3,7 @@
 #include <chrono>
 #include <string>
 
-namespace log
+namespace logging
 {
 
 enum class Level : char
@@ -14,12 +14,12 @@ enum class Level : char
     Error
 };
 
-void Init(Level level, const std::string& file);
-void SetLevel(Level level);
-void Debug(const std::string& msg) noexcept;
-void Info(const std::string& msg) noexcept;
-void Warn(const std::string& msg) noexcept;
-void Error(const std::string& msg) noexcept;
+void init(Level level, const std::string& file);
+void set_level(Level level);
+void debug(const std::string& msg) noexcept;
+void info(const std::string& msg) noexcept;
+void warn(const std::string& msg) noexcept;
+void error(const std::string& msg) noexcept;
 
 [[nodiscard]] Level parse_level(const std::string& name);
 
@@ -39,4 +39,4 @@ class ScopedTimer
     std::chrono::steady_clock::time_point start_;
 };
 
-} // namespace log
+} // namespace logging
