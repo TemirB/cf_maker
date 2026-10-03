@@ -22,6 +22,112 @@
 
 namespace
 {
+void check_slice_boundaries(TH3D& source)
+{
+    source.Sumw2();
+    // Populate flow cells as well, so slices extending outside the axis have
+    // a measurable contribution from underflow and overflow.
+    for (int x = 0; x <= 9; ++x) {
+        for (int y = 0; y <= 9; ++y) {
+            for (int z = 0; z <= 9; ++z) {
+                source.SetBinContent(x, y, z, 1);
+                source.SetBinError(x, y, z, .5);
+            }
+        }
+    }
+
+    struct SliceCase
+    {
+        double width;
+        int sliced_bins;
+    };
+    // Aligned cuts exclude bins touching only the boundary. Interior cuts
+    // include every intersecting bin, even for a slice narrower than one bin.
+    const std::array<SliceCase, 4> cases = {{{.05, 2}, {.075, 4}, {1e-20, 2}, {.25, 10}}};
+    for (const auto& slice : cases) {
+        for (const auto axis : {LCMSAxis::Out, LCMSAxis::Side, LCMSAxis::Long}) {
+            std::unique_ptr<TH1D> projection(project_1d(source, axis, slice.width));
+            const double cells = slice.sliced_bins * slice.sliced_bins;
+            for (int bin = 1; bin <= 8; ++bin) {
+                if (std::abs(projection->GetBinContent(bin) - cells) > 1e-12 ||
+                    std::abs(projection->GetBinError(bin) - .5 * std::sqrt(cells)) > 1e-12) {
+                    throw std::runtime_error("Wrong 1D projection boundary selection for " +
+                                             std::string(source.GetName()) + " " + axis_name(axis));
+                }
+            }
+        }
+        std::unique_ptr<TH2D> projection(
+            project_2d(source, LCMSAxis::Out, LCMSAxis::Long, slice.width));
+        for (int x = 1; x <= 8; ++x) {
+            for (int y = 1; y <= 8; ++y) {
+                if (std::abs(projection->GetBinContent(x, y) - slice.sliced_bins) > 1e-12 ||
+                    std::abs(projection->GetBinError(x, y) - .5 * std::sqrt(slice.sliced_bins)) >
+                        1e-12) {
+                    throw std::runtime_error("Wrong 2D projection boundary selection for " +
+                                             std::string(source.GetName()));
+                }
+            }
+        }
+    }
+}
+
+void check_invalid_slice_width(TH3D& source)
+{
+    for (const double invalid : {0., -.05, std::numeric_limits<double>::quiet_NaN(),
+                                 std::numeric_limits<double>::infinity()}) {
+        bool rejected_1d = false;
+        bool rejected_2d = false;
+        try {
+            std::unique_ptr<TH1D> projection(project_1d(source, LCMSAxis::Out, invalid));
+        } catch (const std::invalid_argument&) {
+            rejected_1d = true;
+        }
+        try {
+            std::unique_ptr<TH2D> projection(
+                project_2d(source, LCMSAxis::Out, LCMSAxis::Long, invalid));
+        } catch (const std::invalid_argument&) {
+            rejected_2d = true;
+        }
+        if (!rejected_1d || !rejected_2d) {
+            throw std::runtime_error("Invalid projection slice width was accepted");
+        }
+    }
+}
+
+void check_slice_boundary_roundoff()
+{
+    TH3D uniform("uniform_slice_boundaries", "", 8, -.2, .2, 8, -.2, .2, 8, -.2, .2);
+    check_slice_boundaries(uniform);
+
+    // Force the same one-ULP mismatch that can occur for uniform bin edges
+    // when ROOT is built without fused multiply-add on another platform.
+    const std::array<double, 9> edges = {
+        -.2, -.15, -.1, std::nextafter(-.05, 0.), 0., std::nextafter(.05, 0.), .1, .15, .2};
+    TH3D variable("variable_slice_boundaries", "", 8, edges.data(), 8, edges.data(), 8,
+                  edges.data());
+    check_slice_boundaries(variable);
+    check_invalid_slice_width(uniform);
+    check_invalid_slice_width(variable);
+
+    // ROOT Project3D misinterprets an underflow-only range as all regular bins.
+    TH3D shifted("underflow_only_slice", "", 8, -.2, .2, 8, .3, .8, 8, -.2, .2);
+    bool rejected_1d = false;
+    bool rejected_2d = false;
+    try {
+        std::unique_ptr<TH1D> projection(project_1d(shifted, LCMSAxis::Out, .1));
+    } catch (const std::invalid_argument&) {
+        rejected_1d = true;
+    }
+    try {
+        std::unique_ptr<TH2D> projection(project_2d(shifted, LCMSAxis::Out, LCMSAxis::Long, .1));
+    } catch (const std::invalid_argument&) {
+        rejected_2d = true;
+    }
+    if (!rejected_1d || !rejected_2d) {
+        throw std::runtime_error("Unsupported underflow-only slice was accepted");
+    }
+}
+
 void check_2d_axis_orientation()
 {
     struct AxisSpec
@@ -185,6 +291,7 @@ int main()
 {
     gROOT->SetBatch(true);
     TH1::AddDirectory(false);
+    check_slice_boundary_roundoff();
     check_2d_axis_orientation();
     Config cfg;
     cfg.input.type = "kt";

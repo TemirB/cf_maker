@@ -1,7 +1,9 @@
 #include <chrono>
 #include <cmath>
 #include <filesystem>
+#include <iomanip>
 #include <iostream>
+#include <sstream>
 #include <stdexcept>
 #include <string>
 
@@ -51,10 +53,13 @@ Config ratio_config(const std::string& input, double slice = .05)
     return cfg;
 }
 
-void require_close(double actual, double expected)
+void require_close(double actual, double expected, const std::string& quantity = "bin value")
 {
     if (!std::isfinite(actual) || std::abs(actual - expected) > 1e-12) {
-        throw std::runtime_error("Unexpected charge-ratio projection");
+        std::ostringstream message;
+        message << std::setprecision(17) << "Unexpected charge-ratio projection (" << quantity
+                << "): actual=" << actual << ", expected=" << expected;
+        throw std::runtime_error(message.str());
     }
 }
 
@@ -117,13 +122,14 @@ void check_ratio(double slice, bool sparse)
     do_cf_ratios(cfg, &input, &ratio_project, &project_ratio);
     auto& mean = result(project_ratio, "proj_of_ratios_0_0_out");
     auto& weighted = result(ratio_project, "ratio_proj_0_0_out");
-    require_close(mean.GetBinContent(4), 1);
-    require_close(weighted.GetBinContent(4), 1);
+    require_close(mean.GetBinContent(4), 1, "cell-mean content");
+    require_close(weighted.GetBinContent(4), 1, "pair-weighted content");
     // For width .05 the slice has four cells; empty cells carry no weight.
     if (slice == .05) {
         const double cells = sparse ? 1 : 4;
-        require_close(mean.GetBinError(4), std::sqrt(.05 / cells));
-        require_close(weighted.GetBinError(4), std::sqrt(5 / (101 * cells - 1)));
+        require_close(mean.GetBinError(4), std::sqrt(.05 / cells), "cell-mean uncertainty");
+        require_close(weighted.GetBinError(4), std::sqrt(5 / (101 * cells - 1)),
+                      "pair-weighted uncertainty");
     }
     if (std::string(mean.GetYaxis()->GetTitle()).find("valid cells") == std::string::npos ||
         std::string(weighted.GetYaxis()->GetTitle()).find("pairs") == std::string::npos) {
