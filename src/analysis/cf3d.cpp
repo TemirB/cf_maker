@@ -1,10 +1,13 @@
 #include "analysis/cf3d.h"
 
+#include <algorithm>
+#include <cctype>
 #include <memory>
 #include <stdexcept>
 #include <string>
 #include <vector>
 
+#include <Math/MinimizerOptions.h>
 #include <TFile.h>
 
 #include "core/binning.h"
@@ -30,6 +33,38 @@ struct Cf3dResult
     std::unique_ptr<TH3D> cf;
 };
 
+std::size_t effective_fit_threads(const Config& cfg)
+{
+    const auto is_legacy_minuit = [](std::string minimizer) {
+        std::transform(
+            minimizer.begin(), minimizer.end(), minimizer.begin(),
+            [](unsigned char character) { return static_cast<char>(std::tolower(character)); });
+        return minimizer == "minuit";
+    };
+    const bool configured_legacy = is_legacy_minuit(cfg.fit.minimizer);
+    // Direct callers may have selected a ROOT default different from cfg.
+    const bool root_legacy = is_legacy_minuit(ROOT::Math::MinimizerOptions::DefaultMinimizerType());
+    // ROOT's M (IMPROVE) option selects the legacy TMinuit implementation even
+    // when the configured default minimizer is Minuit2.
+    const bool improve =
+        std::any_of(cfg.fit.options.begin(), cfg.fit.options.end(),
+                    [](unsigned char character) { return std::toupper(character) == 'M'; });
+    if (configured_legacy || root_legacy || improve) {
+        if (cfg.threads == 0 || cfg.threads > 1) {
+            logging::warn("cf3d: legacy Minuit uses shared state; forcing threads=1 "
+                          "(requested " +
+                          (cfg.threads == 0 ? std::string("auto") : std::to_string(cfg.threads)) +
+                          ", " +
+                          (improve ? std::string("fit option M")
+                                   : (configured_legacy ? cfg.fit.minimizer
+                                                        : std::string("ROOT default Minuit"))) +
+                          ")");
+        }
+        return 1;
+    }
+    return static_cast<std::size_t>(cfg.threads);
+}
+
 } // namespace
 
 void build_and_fit_3d_correlation_functions(Config& cfg, TFile* outFile)
@@ -45,11 +80,12 @@ void build_and_fit_3d_correlation_functions(Config& cfg, TFile* outFile)
 
     std::vector<Cf3dResult> results(tasks.size());
     const std::string inputPath = cfg.input.file;
+    const std::size_t fit_threads = effective_fit_threads(cfg);
 
     logging::info("cf3d: " + std::to_string(tasks.size()) +
-              " fit tasks, threads = " + (cfg.threads == 0 ? "auto" : std::to_string(cfg.threads)));
+              " fit tasks, threads = " + (fit_threads == 0 ? "auto" : std::to_string(fit_threads)));
 
-    ParallelFor(tasks.size(), static_cast<std::size_t>(cfg.threads), [&](std::size_t idx) {
+    ParallelFor(tasks.size(), fit_threads, [&](std::size_t idx) {
         const Cf3dTask& task = tasks[idx];
         Cf3dResult& result = results[idx];
 

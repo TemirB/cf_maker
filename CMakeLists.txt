@@ -282,6 +282,23 @@ target_link_libraries(test_graphs PRIVATE project_warnings
 )
 add_test(NAME graphs COMMAND test_graphs)
 
+add_executable(test_minuit_threads
+    tests/test_minuit_threads.cpp
+    src/analysis/cf3d.cpp
+    src/core/correlation.cpp
+    src/core/log.cpp
+    src/io/input.cpp
+    src/fit/model.cpp
+    src/fit/initial_parameters.cpp
+    src/fit/result.cpp
+)
+target_include_directories(test_minuit_threads PRIVATE ${SRC_DIR})
+target_include_directories(test_minuit_threads SYSTEM PRIVATE ${ROOT_INCLUDE_DIRS})
+target_link_libraries(test_minuit_threads PRIVATE project_warnings
+    ROOT::Core ROOT::RIO ROOT::Hist ROOT::Graf ROOT::Gpad ROOT::MathCore
+)
+add_test(NAME minuit_threads COMMAND test_minuit_threads)
+
 add_executable(test_generated
     tests/test_generated.cpp
     src/io/input.cpp
