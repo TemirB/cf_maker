@@ -20,6 +20,7 @@
 
 #include "core/correlation.h"
 #include "io/input.h"
+#include "io/output.h"
 
 namespace
 {
@@ -225,10 +226,7 @@ void write_fit_results(TFile& file, const Config& cfg)
                                      {"identity", fit_identity(cfg)},
                                      {"fit_grid", std::move(grid)}};
     TObjString object(metadata.dump().c_str());
-    TDirectory::TContext context(&file);
-    if (object.Write(kMetadataName, TObject::kOverwrite) <= 0) {
-        throw std::runtime_error("cannot write fit results to " + std::string(file.GetName()));
-    }
+    write_output_object(file, object, kMetadataName, TObject::kOverwrite);
 }
 
 void read_fit_results(TFile& file, Config& cfg)

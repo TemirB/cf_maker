@@ -16,6 +16,7 @@
 #include "core/lcms.h"
 #include "core/log.h"
 #include "io/input.h"
+#include "io/output.h"
 
 namespace
 {
@@ -219,16 +220,14 @@ void do_cf_ratios(Config& cfg, TFile* fCF3D, TFile* fRatioProj, TFile* fProjRati
                     std::unique_ptr<TH1D> h(ratio_project(raw_neg, raw_pos, statistics, centr, b,
                                                           axis, cfg.projections.slice_ratio,
                                                           bin.names[b]));
-                    fRatioProj->cd();
-                    h->Write();
+                    write_output_object(*fRatioProj, *h);
                 }
 
                 {
                     std::unique_ptr<TH1D> h(project_ratio(*ratio, *support, centr, b, axis,
                                                           cfg.projections.slice_ratio,
                                                           bin.names[b]));
-                    fProjRatio->cd();
-                    h->Write();
+                    write_output_object(*fProjRatio, *h);
                 }
             }
         }

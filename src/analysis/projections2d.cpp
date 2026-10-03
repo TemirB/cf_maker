@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <memory>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -18,6 +19,7 @@
 #include "core/lcms.h"
 #include "core/log.h"
 #include "io/input.h"
+#include "io/output.h"
 
 template <class T> using RootPtr = std::unique_ptr<T>;
 
@@ -49,8 +51,7 @@ void write_2d_projection(TFile& outFile, const TH3D& den_source, const TH3D& num
     auto num = RootPtr<TH2D>(project_2d(*num_3d, ax1, ax2, freezeWidth));
     auto den = RootPtr<TH2D>(project_2d(*den_3d, ax1, ax2, freezeWidth));
     if (!num || !den) {
-        std::cerr << "Project3D failed for " << tag << "\n";
-        return;
+        throw std::runtime_error("Project3D failed for " + tag);
     }
 
     auto name = tag + " " + axis_name(ax1) + "-" + axis_name(ax2);
@@ -68,8 +69,7 @@ void write_2d_projection(TFile& outFile, const TH3D& den_source, const TH3D& num
     TCanvas c((name).c_str(), "", 650, 600);
     cf_hist->Draw("COLZ");
 
-    outFile.cd();
-    c.Write();
+    write_output_object(outFile, c);
 
     if (draw) {
         canvas->cd(y + 1);
@@ -120,7 +120,10 @@ void make_lcms_2d_projections(const Config& cfg, TFile* in, TFile* out)
                 auto [den_raw, num_raw] = get_hists(in, ch_idx, cent_idx, b);
                 std::unique_ptr<TH3D> den(den_raw), num(num_raw);
                 if (!den || !num) {
-                    continue;
+                    throw std::runtime_error(
+                        "projections_2d: missing input histograms for charge=" +
+                        std::to_string(ch_idx) + ", centrality=" + std::to_string(cent_idx) +
+                        ", bin=" + std::to_string(b));
                 }
                 validate_correlation_inputs(*num, *den, statistics);
 

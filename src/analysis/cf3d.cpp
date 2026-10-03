@@ -16,6 +16,7 @@
 #include "core/parallel.h"
 #include "fit/model.h"
 #include "io/input.h"
+#include "io/output.h"
 
 namespace
 {
@@ -82,8 +83,8 @@ void build_and_fit_3d_correlation_functions(Config& cfg, TFile* outFile)
     const std::string inputPath = cfg.input.file;
     const std::size_t fit_threads = effective_fit_threads(cfg);
 
-    logging::info("cf3d: " + std::to_string(tasks.size()) +
-              " fit tasks, threads = " + (fit_threads == 0 ? "auto" : std::to_string(fit_threads)));
+    logging::info("cf3d: " + std::to_string(tasks.size()) + " fit tasks, threads = " +
+                  (fit_threads == 0 ? "auto" : std::to_string(fit_threads)));
 
     ParallelFor(tasks.size(), fit_threads, [&](std::size_t idx) {
         const Cf3dTask& task = tasks[idx];
@@ -99,7 +100,7 @@ void build_and_fit_3d_correlation_functions(Config& cfg, TFile* outFile)
             logging::debug("cf3d worker: opened input file (thread-local)");
         }
         logging::debug("cf3d: fitting ch=" + std::to_string(task.ch) +
-                   " centr=" + std::to_string(task.centr) + " b=" + std::to_string(task.b));
+                       " centr=" + std::to_string(task.centr) + " b=" + std::to_string(task.b));
         auto [den_raw, num_raw] = get_hists(tFile.get(), task.ch, task.centr, task.b);
         std::unique_ptr<TH3D> den(den_raw), num(num_raw);
         if (!den || !num) {
@@ -141,15 +142,14 @@ void build_and_fit_3d_correlation_functions(Config& cfg, TFile* outFile)
         const std::string cfName =
             get_cf_name(task.ch, task.centr, cfg.input.type, cfg.binning.names[task.b]);
 
-        outFile->cd();
-        static_cast<void>(result.cf->Write(cfName.c_str(), TObject::kOverwrite));
+        write_output_object(*outFile, *result.cf, cfName.c_str(), TObject::kOverwrite);
     }
 
     logging::info("cf3d: fits ok=" + std::to_string(nOk) + "/" + std::to_string(tasks.size()) +
-              ", retried=" + std::to_string(nRetried) + ", atLimit=" + std::to_string(nAtLimit) +
-              ", missing=" + std::to_string(nMissing));
+                  ", retried=" + std::to_string(nRetried) + ", atLimit=" +
+                  std::to_string(nAtLimit) + ", missing=" + std::to_string(nMissing));
     if (nAtLimit > 0) {
         logging::warn("cf3d: " + std::to_string(nAtLimit) +
-                  " fits have parameters at limits — check fit quality");
+                      " fits have parameters at limits — check fit quality");
     }
 }

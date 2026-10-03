@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include <memory>
+#include <stdexcept>
 #include <string>
 #include <utility>
 #include <vector>
@@ -22,6 +23,7 @@
 #include "draw/draw.h"
 #include "fit/model.h"
 #include "io/input.h"
+#include "io/output.h"
 
 namespace
 {
@@ -177,8 +179,7 @@ void save_canvas_to_file(TFile* out, TH1D* cf, TH1D* fit, TPaveText* stats, draw
     }
     stats->Draw();
 
-    out->cd();
-    c->Write();
+    write_output_object(*out, *c);
 }
 
 void draw_cf_and_fit(TCanvas* c, TH1D* cf, TH1D* fit, TPaveText* stats, int lcms)
@@ -245,7 +246,10 @@ void make_lcms_1d_projections(Config& cfg, TFile* in, TFile* out)
                 auto [den_raw, num_raw] = get_hists(in, ch_idx, cent_idx, b);
                 std::unique_ptr<TH3D> den(den_raw), num(num_raw);
                 if (!den || !num) {
-                    continue;
+                    throw std::runtime_error(
+                        "projections_1d: missing input histograms for charge=" +
+                        std::to_string(ch_idx) + ", centrality=" + std::to_string(cent_idx) +
+                        ", bin=" + std::to_string(b));
                 }
                 validate_correlation_inputs(*num, *den, statistics);
                 auto stats = get_fit_stats(r, 0.032f);

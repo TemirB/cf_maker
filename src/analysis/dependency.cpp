@@ -18,6 +18,7 @@
 #include "core/log.h"
 #include "draw/draw.h"
 #include "fit/types.h"
+#include "io/output.h"
 
 void make_dependency(Config& cfg, TFile* cf3dFile, TFile* outFile)
 {
@@ -203,8 +204,7 @@ void make_dependency(Config& cfg, TFile* cf3dFile, TFile* outFile)
             draw_mg_or_report(mg_pvalue.get());
 
             {
-                outFile->cd();
-                mg_pvalue->Write();
+                write_output_object(*outFile, *mg_pvalue);
             }
             std::string save_name = Form("%s/%s.%s", dir.data(), name.data(), ext.data());
             if (cfg.general.images.need) {

@@ -219,6 +219,7 @@ add_executable(test_projections
     src/core/log.cpp
     src/draw/draw.cpp
     src/io/input.cpp
+    src/io/output.cpp
     src/fit/model.cpp
     src/fit/initial_parameters.cpp
     src/fit/result.cpp
@@ -258,6 +259,7 @@ add_executable(test_ratios
     src/core/lcms.cpp
     src/core/log.cpp
     src/io/input.cpp
+    src/io/output.cpp
 )
 target_include_directories(test_ratios PRIVATE ${SRC_DIR})
 target_include_directories(test_ratios SYSTEM PRIVATE ${ROOT_INCLUDE_DIRS})
@@ -272,6 +274,7 @@ add_executable(test_graphs
     src/core/log.cpp
     src/draw/draw.cpp
     src/io/input.cpp
+    src/io/output.cpp
     src/fit/model.cpp
     src/fit/initial_parameters.cpp
     src/fit/result.cpp
@@ -289,6 +292,7 @@ add_executable(test_minuit_threads
     src/core/correlation.cpp
     src/core/log.cpp
     src/io/input.cpp
+    src/io/output.cpp
     src/fit/model.cpp
     src/fit/initial_parameters.cpp
     src/fit/result.cpp
@@ -303,6 +307,7 @@ add_test(NAME minuit_threads COMMAND test_minuit_threads)
 add_executable(test_resume
     tests/test_resume.cpp
     src/io/fit_results.cpp
+    src/io/output.cpp
     src/io/input.cpp
     src/config/config.cpp
     src/core/correlation.cpp
@@ -316,6 +321,17 @@ target_link_libraries(test_resume PRIVATE project_warnings
     OpenSSL::Crypto nlohmann_json::nlohmann_json
 )
 add_test(NAME resume COMMAND test_resume $<TARGET_FILE:main>)
+
+add_executable(test_failures
+    tests/test_failures.cpp
+    src/io/output.cpp
+)
+target_include_directories(test_failures PRIVATE ${SRC_DIR})
+target_include_directories(test_failures SYSTEM PRIVATE ${ROOT_INCLUDE_DIRS})
+target_link_libraries(test_failures PRIVATE project_warnings
+    ROOT::Core ROOT::RIO ROOT::Hist nlohmann_json::nlohmann_json
+)
+add_test(NAME failures COMMAND test_failures $<TARGET_FILE:main>)
 
 add_executable(test_generated
     tests/test_generated.cpp

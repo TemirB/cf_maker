@@ -10,6 +10,7 @@
 #include <TROOT.h>
 
 #include "analysis/pipeline.h"
+#include "analysis/graphs.h"
 #include "config/config.h"
 #include "core/log.h"
 
@@ -64,6 +65,32 @@ int main(int argc, char** argv) noexcept
             stage_ratios(cfg);
         }
 
+        if (cfg.stages.cf3d || cfg.stages.dependency || cfg.stages.projections_1d) {
+            std::size_t unusable = 0;
+            std::size_t requested = 0;
+            for (const int ch : cfg.selection.charges) {
+                for (const int centr : cfg.selection.centralities) {
+                    for (int b = 0; b < cfg.binning.count; ++b) {
+                        ++requested;
+                        if (!is_usable_fit(cfg.fit_results[ch][centr][b])) {
+                            ++unusable;
+                        }
+                    }
+                }
+            }
+            if (unusable > 0) {
+                logging::error("cf_maker: " + std::to_string(unusable) + "/" +
+                               std::to_string(requested) +
+                               " requested fits are missing, failed or "
+                               "unusable; diagnostic outputs written to " +
+                               cfg.output.dir);
+                logging::finish();
+                return 2;
+            }
+        }
+
+        logging::info("cf_maker: requested stages completed");
+        logging::finish();
         std::cout << "All outputs written to " << cfg.output.dir << "\n";
         logging::info("cf_maker: all outputs written to " + cfg.output.dir);
         return 0;

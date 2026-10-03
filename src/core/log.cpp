@@ -17,6 +17,7 @@ namespace
 std::mutex gMutex;
 logging::Level gLevel = logging::Level::Info;
 std::unique_ptr<std::ofstream> gFile;
+std::string gFilePath;
 
 const char* level_name(logging::Level level)
 {
@@ -82,9 +83,31 @@ void init(Level level, const std::string& file)
     std::lock_guard<std::mutex> lock(gMutex);
     gLevel = level;
     gFile.reset();
+    gFilePath = file;
     if (!file.empty()) {
-        gFile = std::make_unique<std::ofstream>(file, std::ios::out | std::ios::app);
+        auto opened = std::make_unique<std::ofstream>(file, std::ios::out | std::ios::app);
+        if (!*opened) {
+            throw std::runtime_error("cannot open log file: " + file);
+        }
+        gFile = std::move(opened);
     }
+}
+
+void finish()
+{
+    std::lock_guard<std::mutex> lock(gMutex);
+    if (!gFile) {
+        return;
+    }
+    gFile->flush();
+    if (!*gFile) {
+        throw std::runtime_error("cannot flush log file: " + gFilePath);
+    }
+    gFile->close();
+    if (!*gFile) {
+        throw std::runtime_error("cannot close log file: " + gFilePath);
+    }
+    gFile.reset();
 }
 
 void set_level(Level level)

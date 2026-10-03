@@ -1,4 +1,5 @@
 #include "draw/draw.h"
+#include "io/output.h"
 
 #include <algorithm>
 #include <array>
@@ -111,7 +112,7 @@ void write_mg_with_legend(TFile* file, TMultiGraph* mg, const char* canvasName, 
 
     TCanvas c(canvasName, canvasName, 1000, 800);
     if (!draw_mg_or_report(mg, "A")) {
-        c.Write(canvasName);
+        write_output_object(*file, c, canvasName);
         return;
     }
     mg->GetXaxis()->SetTitle(xTitle);
@@ -149,7 +150,7 @@ void write_mg_with_legend(TFile* file, TMultiGraph* mg, const char* canvasName, 
     }
     leg.Draw();
 
-    c.Write(canvasName);
+    write_output_object(*file, c, canvasName);
 }
 
 void write_hist(TFile* file, TH1D* hist, const char* canvasName, const char* xTitle,
@@ -162,8 +163,8 @@ void write_hist(TFile* file, TH1D* hist, const char* canvasName, const char* xTi
     hist->GetXaxis()->SetTitle(xTitle);
     hist->GetYaxis()->SetTitle(yTitle);
 
-    c.Write(canvasName);
-    hist->Write(hist->GetName(), TObject::kOverwrite);
+    write_output_object(*file, c, canvasName);
+    write_output_object(*file, *hist, hist->GetName(), TObject::kOverwrite);
 }
 
 void style_1d_cf(TH1* h, const std::string& name, const char* axis, draw::Style style)

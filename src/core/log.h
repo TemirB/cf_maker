@@ -15,6 +15,8 @@ enum class Level : char
 };
 
 void init(Level level, const std::string& file);
+// Surface stream/flush/close errors before the CLI reports success.
+void finish();
 void set_level(Level level);
 void debug(const std::string& msg) noexcept;
 void info(const std::string& msg) noexcept;
