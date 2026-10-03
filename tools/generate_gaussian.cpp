@@ -167,6 +167,10 @@ void generate(const std::filesystem::path& directory, const Options& options)
     if (metadata.Write() <= 0) {
         throw std::runtime_error("Cannot write generator metadata");
     }
+    TNamed statistics("correlation_statistics", "fixed_reference");
+    if (statistics.Write() <= 0) {
+        throw std::runtime_error("Cannot write correlation statistics metadata");
+    }
     output.Close();
     const json config = {
         {"machine", {{"base_input", directory.string()}, {"base_output", directory.string()}}},

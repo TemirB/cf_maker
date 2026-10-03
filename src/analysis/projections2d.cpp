@@ -13,6 +13,7 @@
 #include <TString.h>
 
 #include "core/binning.h"
+#include "core/correlation.h"
 #include "core/fs.h"
 #include "core/lcms.h"
 #include "core/log.h"
@@ -37,7 +38,8 @@ std::size_t canvas_index(int ch, int centr)
 void write_2d_projection(TFile& outFile, const TH3D& den_source, const TH3D& num_source,
                          LCMSAxis ax1, LCMSAxis ax2, const std::string& tag, TCanvas* canvas,
                          const int y, bool draw, double freezeWidth, double cropWidth,
-                         std::vector<std::unique_ptr<TH2D>>& keep_alive)
+                         std::vector<std::unique_ptr<TH2D>>& keep_alive,
+                         CorrelationStatistics statistics)
 {
     auto den_3d = RootPtr<TH3D>(static_cast<TH3D*>(den_source.Clone()));
     auto num_3d = RootPtr<TH3D>(static_cast<TH3D*>(num_source.Clone()));
@@ -53,7 +55,7 @@ void write_2d_projection(TFile& outFile, const TH3D& den_source, const TH3D& num
 
     auto name = tag + " " + axis_name(ax1) + "-" + axis_name(ax2);
     auto cf_hist = RootPtr<TH2D>(static_cast<TH2D*>(num->Clone(name.c_str())));
-    cf_hist->Divide(num.get(), den.get());
+    fill_correlation(*cf_hist, *num, *den, statistics);
 
     crop_2d(*cf_hist, cropWidth);
 
@@ -89,6 +91,7 @@ void write_2d_projection(TFile& outFile, const TH3D& den_source, const TH3D& num
 
 void make_lcms_2d_projections(const Config& cfg, TFile* in, TFile* out)
 {
+    const auto statistics = correlation_statistics(*in);
     const Bin& bin = cfg.binning;
     std::string dir = cfg.output.dir + "/all_2d_histos";
     ensure_dir(dir);
@@ -119,18 +122,22 @@ void make_lcms_2d_projections(const Config& cfg, TFile* in, TFile* out)
                 if (!den || !num) {
                     continue;
                 }
+                validate_correlation_inputs(*num, *den, statistics);
 
                 std::string cf_name = get_cf_name(ch_idx, cent_idx, cfg.input.type, bin.names[b]);
 
                 write_2d_projection(*out, *den, *num, LCMSAxis::Out, LCMSAxis::Side, cf_name,
                                     canvases[canvas_index(ch_idx, cent_idx)].get(), b, false,
-                                    cfg.projections.slice_2d, cfg.projections.crop_2d, keep_alive);
+                                    cfg.projections.slice_2d, cfg.projections.crop_2d, keep_alive,
+                                    statistics);
                 write_2d_projection(*out, *den, *num, LCMSAxis::Out, LCMSAxis::Long, cf_name,
                                     canvases[canvas_index(ch_idx, cent_idx)].get(), b, true,
-                                    cfg.projections.slice_2d, cfg.projections.crop_2d, keep_alive);
+                                    cfg.projections.slice_2d, cfg.projections.crop_2d, keep_alive,
+                                    statistics);
                 write_2d_projection(*out, *den, *num, LCMSAxis::Side, LCMSAxis::Long, cf_name,
                                     canvases[canvas_index(ch_idx, cent_idx)].get(), b, false,
-                                    cfg.projections.slice_2d, cfg.projections.crop_2d, keep_alive);
+                                    cfg.projections.slice_2d, cfg.projections.crop_2d, keep_alive,
+                                    statistics);
             }
         }
     }

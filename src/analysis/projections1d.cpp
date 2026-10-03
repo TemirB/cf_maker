@@ -14,6 +14,7 @@
 #include <TString.h>
 
 #include "core/binning.h"
+#include "core/correlation.h"
 #include "core/fs.h"
 #include "core/lcms.h"
 #include "core/log.h"
@@ -116,7 +117,7 @@ std::unique_ptr<TH1D> build_lcms_fit_from_3d_weighted(const TH3D& denSource, con
 
 std::pair<std::unique_ptr<TH1D>, std::unique_ptr<TH1D>>
 create_1d(TH3D& den, TH3D& num, const FitResult& r, const LCMSAxis axis, const std::string& name,
-          double sliceWidth)
+          double sliceWidth, CorrelationStatistics statistics)
 {
     std::string baseName = name + " " + axis_name(axis);
 
@@ -124,7 +125,7 @@ create_1d(TH3D& den, TH3D& num, const FitResult& r, const LCMSAxis axis, const s
     std::unique_ptr<TH1D> hist_num(project_1d(num, axis, sliceWidth));
     auto cf = std::unique_ptr<TH1D>(static_cast<TH1D*>(hist_den->Clone(name.c_str())));
     cf->SetDirectory(nullptr);
-    cf->Divide(hist_num.get(), hist_den.get(), 1., 1., "B");
+    fill_correlation(*cf, *hist_num, *hist_den, statistics);
 
     std::string n = name + " " + axis_name(axis);
     cf->SetTitle(n.c_str());
@@ -197,6 +198,7 @@ void draw_cf_over_fit(TCanvas* c, TH1D* cf, TH1D* fit, TPaveText* stats, std::st
 
 void make_lcms_1d_projections(Config& cfg, TFile* in, TFile* out)
 {
+    const auto statistics = correlation_statistics(*in);
     draw::Style style = draw::default_style();
 
     const FitGrid& fitRes = cfg.fit_results;
@@ -221,6 +223,7 @@ void make_lcms_1d_projections(Config& cfg, TFile* in, TFile* out)
                 if (!den || !num) {
                     continue;
                 }
+                validate_correlation_inputs(*num, *den, statistics);
                 auto stats = get_fit_stats(r, 0.032f);
 
                 std::string cf_name = get_cf_name(ch_idx, cent_idx, cfg.input.type, bin.names[b]);
@@ -243,7 +246,7 @@ void make_lcms_1d_projections(Config& cfg, TFile* in, TFile* out)
                     auto axis = LCMSAxis(lcms);
 
                     auto [cf, fit] =
-                        create_1d(*den, *num, r, axis, cf_name, cfg.projections.slice_1d);
+                        create_1d(*den, *num, r, axis, cf_name, cfg.projections.slice_1d, statistics);
 
                     draw_cf_over_fit(c_fit_over_cf.get(), cf.get(), fit.get(), stats.get(),
                                      name_fit_over_cf, lcms, style, cfg.projections, keep_alive);

@@ -8,6 +8,7 @@
 #include <TFile.h>
 
 #include "core/binning.h"
+#include "core/correlation.h"
 #include "core/log.h"
 #include "core/parallel.h"
 #include "fit/model.h"
@@ -63,7 +64,8 @@ void build_and_fit_3d_correlation_functions(Config& cfg, TFile* outFile)
         }
         logging::debug("cf3d: fitting ch=" + std::to_string(task.ch) +
                    " centr=" + std::to_string(task.centr) + " b=" + std::to_string(task.b));
-        auto [den, num] = get_hists(tFile.get(), task.ch, task.centr, task.b);
+        auto [den_raw, num_raw] = get_hists(tFile.get(), task.ch, task.centr, task.b);
+        std::unique_ptr<TH3D> den(den_raw), num(num_raw);
         if (!den || !num) {
             return;
         }
@@ -71,11 +73,7 @@ void build_and_fit_3d_correlation_functions(Config& cfg, TFile* outFile)
         num->SetDirectory(nullptr);
 
         auto cf_hist = std::unique_ptr<TH3D>(static_cast<TH3D*>(num->Clone("cf_hist")));
-        cf_hist->Reset("ICES");
-        cf_hist->Divide(num, den, 1., 1., "B");
-
-        delete den;
-        delete num;
+        fill_correlation(*cf_hist, *num, *den, correlation_statistics(*tFile));
 
         result.fit = fit_cf_3d_with_retry(cf_hist.get(), cfg, task.ch, task.centr, task.b);
         result.cf = std::move(cf_hist);

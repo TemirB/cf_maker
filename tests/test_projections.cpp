@@ -138,12 +138,16 @@ int main()
     TMemFile input("input.root", "RECREATE");
     TH3D den("bp_0_0_num_0", "", 8, -0.2, 0.2, 8, -0.2, 0.2, 8, -0.2, 0.2);
     TH3D num("bp_0_0_num_wei_0", "", 8, -0.2, 0.2, 8, -0.2, 0.2, 8, -0.2, 0.2);
+    den.Sumw2();
+    num.Sumw2();
     for (int x = 1; x <= 8; ++x) {
         for (int y = 1; y <= 8; ++y) {
             for (int z = 1; z <= 8; ++z) {
                 double weight = x + 2.0 * y + 3.0 * z;
                 den.SetBinContent(x, y, z, weight);
+                den.SetBinError(x, y, z, std::sqrt(weight));
                 num.SetBinContent(x, y, z, 1.5 * weight);
+                num.SetBinError(x, y, z, std::sqrt(2.45 * weight));
             }
         }
     }

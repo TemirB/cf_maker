@@ -10,6 +10,7 @@
 #include <nlohmann/json.hpp>
 
 #include "fit/model.h"
+#include "core/correlation.h"
 #include "io/input.h"
 
 int main(int argc, char** argv)
@@ -20,7 +21,7 @@ int main(int argc, char** argv)
     TH1::AddDirectory(false);
     TFile input(argv[1], "READ");
     auto* metadata = dynamic_cast<TNamed*>(input.Get("generator_truth"));
-    if (input.IsZombie() || !metadata || input.GetListOfKeys()->GetSize() != 65) {
+    if (input.IsZombie() || !metadata || input.GetListOfKeys()->GetSize() != 66) {
         throw std::runtime_error("Missing generated histograms or metadata");
     }
     const auto truth = nlohmann::json::parse(metadata->GetTitle());
@@ -36,7 +37,7 @@ int main(int argc, char** argv)
                     throw std::runtime_error("Missing histogram pair");
                 }
                 TH3D cf(*num);
-                cf.Divide(num.get(), den.get(), 1., 1., "B");
+                fill_correlation(cf, *num, *den, correlation_statistics(input));
                 for (int x = 1; x <= cf.GetNbinsX(); ++x) {
                     const int y = cf.GetNbinsY() / 2;
                     const int z = cf.GetNbinsZ() / 2;

@@ -213,6 +213,7 @@ add_executable(test_projections
     src/analysis/projections1d.cpp
     src/analysis/projections2d.cpp
     src/core/lcms.cpp
+    src/core/correlation.cpp
     src/core/fs.cpp
     src/core/log.cpp
     src/draw/draw.cpp
@@ -239,9 +240,20 @@ target_include_directories(test_input SYSTEM PRIVATE ${ROOT_INCLUDE_DIRS})
 target_link_libraries(test_input PRIVATE project_warnings ROOT::Core ROOT::RIO ROOT::Hist)
 add_test(NAME input COMMAND test_input)
 
+add_executable(test_correlation
+    tests/test_correlation.cpp
+    src/core/correlation.cpp
+    src/core/lcms.cpp
+)
+target_include_directories(test_correlation PRIVATE ${SRC_DIR})
+target_include_directories(test_correlation SYSTEM PRIVATE ${ROOT_INCLUDE_DIRS})
+target_link_libraries(test_correlation PRIVATE project_warnings ROOT::Core ROOT::RIO ROOT::Hist)
+add_test(NAME correlation COMMAND test_correlation)
+
 add_executable(test_generated
     tests/test_generated.cpp
     src/io/input.cpp
+    src/core/correlation.cpp
     src/fit/model.cpp
     src/fit/initial_parameters.cpp
     src/fit/result.cpp
