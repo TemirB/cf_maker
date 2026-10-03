@@ -1,6 +1,8 @@
+#include <array>
 #include <cmath>
 #include <filesystem>
 #include <iostream>
+#include <memory>
 #include <stdexcept>
 
 #include <TCanvas.h>
@@ -12,10 +14,79 @@
 
 #include "analysis/projections1d.h"
 #include "analysis/projections2d.h"
+#include "core/lcms.h"
 #include "io/input.h"
 
 namespace
 {
+void check_2d_axis_orientation()
+{
+    struct AxisSpec
+    {
+        LCMSAxis axis;
+        int bins;
+        double minimum;
+        double maximum;
+        int slice_first;
+        int slice_last;
+    };
+    const std::array<AxisSpec, 3> axes = {{{LCMSAxis::Out, 6, -0.3, 0.3, 2, 5},
+                                           {LCMSAxis::Side, 8, -0.8, 0.8, 4, 5},
+                                           {LCMSAxis::Long, 10, -1.5, 1.5, 5, 6}}};
+    TH3D source("axis_orientation", "", 6, -0.3, 0.3, 8, -0.8, 0.8, 10, -1.5, 1.5);
+    source.Sumw2();
+    for (int out = 1; out <= 6; ++out) {
+        for (int side = 1; side <= 8; ++side) {
+            for (int longitudinal = 1; longitudinal <= 10; ++longitudinal) {
+                source.SetBinContent(out, side, longitudinal,
+                                     10000.0 * out + 100.0 * side + longitudinal);
+                source.SetBinError(out, side, longitudinal, out + 0.1 * side + 0.01 * longitudinal);
+            }
+        }
+    }
+
+    // Check both orders for every pair: X is always the first requested axis.
+    for (std::size_t first = 0; first < axes.size(); ++first) {
+        for (std::size_t second = 0; second < axes.size(); ++second) {
+            if (first == second) {
+                continue;
+            }
+            const std::size_t frozen = 3 - first - second;
+            std::unique_ptr<TH2D> projection(
+                project_2d(source, axes[first].axis, axes[second].axis, 0.16));
+            const auto check_axis = [](const TAxis& actual, const AxisSpec& expected) {
+                if (actual.GetNbins() != expected.bins ||
+                    std::abs(actual.GetXmin() - expected.minimum) > 1e-12 ||
+                    std::abs(actual.GetXmax() - expected.maximum) > 1e-12) {
+                    throw std::runtime_error("Wrong 2D projection axis geometry");
+                }
+            };
+            check_axis(*projection->GetXaxis(), axes[first]);
+            check_axis(*projection->GetYaxis(), axes[second]);
+            for (int x = 1; x <= axes[first].bins; ++x) {
+                for (int y = 1; y <= axes[second].bins; ++y) {
+                    std::array<int, 3> bins = {};
+                    bins[first] = x;
+                    bins[second] = y;
+                    double content = 0.0;
+                    double variance = 0.0;
+                    for (int sliced = axes[frozen].slice_first; sliced <= axes[frozen].slice_last;
+                         ++sliced) {
+                        bins[frozen] = sliced;
+                        content += source.GetBinContent(bins[0], bins[1], bins[2]);
+                        const double error = source.GetBinError(bins[0], bins[1], bins[2]);
+                        variance += error * error;
+                    }
+                    if (std::abs(projection->GetBinContent(x, y) - content) > 1e-10 ||
+                        std::abs(projection->GetBinError(x, y) - std::sqrt(variance)) > 1e-10) {
+                        throw std::runtime_error("Wrong 2D projection contents or slice");
+                    }
+                }
+            }
+        }
+    }
+}
+
 void check_canvas(TMemFile& output, const std::string& name, int dimension, int count)
 {
     auto* canvas = dynamic_cast<TCanvas*>(output.Get(name.c_str()));
@@ -50,6 +121,7 @@ int main()
 {
     gROOT->SetBatch(true);
     TH1::AddDirectory(false);
+    check_2d_axis_orientation();
     Config cfg;
     cfg.input.type = "kt";
     cfg.output.dir = "projection_test_output";

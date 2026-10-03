@@ -85,8 +85,9 @@ TH2D* project_2d(TH3D& h, LCMSAxis ax1, LCMSAxis ax2, double w)
 {
     slice_freeze(h, third_axis(ax1, ax2), w);
     std::string proj;
-    proj += projection_char(ax1);
+    // ROOT lists the vertical axis first and the horizontal axis second.
     proj += projection_char(ax2);
+    proj += projection_char(ax1);
     proj += 'e';
     TH2D* out = static_cast<TH2D*>(h.Project3D(proj.c_str()));
     out->SetDirectory(nullptr);
