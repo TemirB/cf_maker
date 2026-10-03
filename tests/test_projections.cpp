@@ -2,6 +2,7 @@
 #include <cmath>
 #include <filesystem>
 #include <iostream>
+#include <limits>
 #include <memory>
 #include <stdexcept>
 
@@ -11,6 +12,8 @@
 #include <TList.h>
 #include <TMemFile.h>
 #include <TROOT.h>
+#include <TPaveText.h>
+#include <TText.h>
 
 #include "analysis/projections1d.h"
 #include "analysis/projections2d.h"
@@ -115,6 +118,67 @@ void check_canvas(TMemFile& output, const std::string& name, int dimension, int 
         throw std::runtime_error("Wrong number of plotted histograms");
     }
 }
+
+void check_unavailable_fit(TCanvas& canvas, const std::string& reason)
+{
+    bool unavailable = false;
+    bool has_reason = false;
+    bool has_status = false;
+    for (auto* object : *canvas.GetListOfPrimitives()) {
+        const auto* stats = dynamic_cast<TPaveText*>(object);
+        if (!stats) {
+            continue;
+        }
+        for (auto* line : *stats->GetListOfLines()) {
+            const auto* text = dynamic_cast<TText*>(line);
+            if (!text) {
+                continue;
+            }
+            const std::string title = text->GetTitle();
+            unavailable |= title == "Fit unavailable";
+            has_reason |= title == reason;
+            has_status |= title.find("status = ") != std::string::npos;
+            if (title.find("#chi^{2}/ndf") != std::string::npos) {
+                throw std::runtime_error("Unavailable fit still has chi2/ndf statistics");
+            }
+        }
+    }
+    if (!unavailable || !has_reason || !has_status) {
+        throw std::runtime_error("Data-only projection lacks unavailable-fit diagnostics");
+    }
+}
+
+void check_data_only_projections(Config cfg, TMemFile& input)
+{
+    const FitResult successful = cfg.fit_results[0][0][0];
+    std::array<FitResult, 5> unavailable;
+    unavailable[0] = FitResult{};
+    unavailable[1] = successful;
+    unavailable[1].ok = false;
+    unavailable[1].status = 4;
+    unavailable[1].attempts = 1;
+    unavailable[2] = successful;
+    unavailable[2].r[4] = std::numeric_limits<double>::quiet_NaN();
+    unavailable[3] = successful;
+    unavailable[3].at_limit = true;
+    unavailable[4] = successful;
+    unavailable[4].ndf = 0;
+    const std::array<const char*, 5> reasons = {"Missing fit result", "Fit failed",
+                                                "Non-finite fit result", "Parameter at limit",
+                                                "Nonpositive ndf"};
+    const std::string name = get_cf_name(0, 0, "kt", "test");
+    for (std::size_t state = 0; state < unavailable.size(); ++state) {
+        cfg.fit_results[0][0][0] = unavailable[state];
+        TMemFile output(("data_only_" + std::to_string(state) + ".root").c_str(), "RECREATE");
+        make_lcms_1d_projections(cfg, &input, &output);
+        for (const char* axis : {"out", "side", "long"}) {
+            const std::string canvas_name = name + "_" + axis;
+            check_canvas(output, canvas_name, 1, 1);
+            auto* canvas = dynamic_cast<TCanvas*>(output.Get(canvas_name.c_str()));
+            check_unavailable_fit(*canvas, reasons[state]);
+        }
+    }
+}
 } // namespace
 
 int main()
@@ -134,6 +198,10 @@ int main()
     cfg.fit_results = FitGrid(1, std::vector<std::vector<FitResult>>(1, std::vector<FitResult>(1)));
     cfg.fit_results[0][0][0].lambda = 0.5;
     cfg.fit_results[0][0][0].ndf = 1;
+    cfg.fit_results[0][0][0].ok = true;
+    cfg.fit_results[0][0][0].status = 0;
+    cfg.fit_results[0][0][0].cov_status = 3;
+    cfg.fit_results[0][0][0].attempts = 1;
 
     TMemFile input("input.root", "RECREATE");
     TH3D den("bp_0_0_num_0", "", 8, -0.2, 0.2, 8, -0.2, 0.2, 8, -0.2, 0.2);
@@ -164,6 +232,7 @@ int main()
     for (const auto* axes : {"out-side", "out-long", "side-long"}) {
         check_canvas(output, name + " " + axes, 2, 1);
     }
+    check_data_only_projections(cfg, input);
     std::filesystem::remove_all(cfg.output.dir);
     std::cout << "All projection tests passed\n";
 }

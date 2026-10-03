@@ -13,6 +13,7 @@
 #include <TList.h>
 #include <TMultiGraph.h>
 #include <TPad.h>
+#include <TPaveText.h>
 
 namespace
 {
@@ -82,6 +83,25 @@ void set_range_with_errors(TMultiGraph* mg, double padFrac)
     mg->SetMaximum(ymax);
 }
 
+bool draw_mg_or_report(TMultiGraph* mg, const char* option)
+{
+    if (mg && mg->GetListOfGraphs()) {
+        for (TObject* object : *mg->GetListOfGraphs()) {
+            const auto* graph = dynamic_cast<TGraph*>(object);
+            if (graph && graph->GetN() > 0) {
+                mg->Draw(option);
+                return true;
+            }
+        }
+    }
+    TPaveText message(0.15, 0.42, 0.85, 0.6, "NDC");
+    message.SetBorderSize(0);
+    message.SetFillStyle(0);
+    message.AddText("No usable fits");
+    message.DrawClone();
+    return false;
+}
+
 void write_mg_with_legend(TFile* file, TMultiGraph* mg, const char* canvasName, const char* xTitle,
                           const char* yTitle,
                           const std::vector<std::pair<TObject*, std::string>>& legendEntries,
@@ -90,7 +110,10 @@ void write_mg_with_legend(TFile* file, TMultiGraph* mg, const char* canvasName, 
     file->cd();
 
     TCanvas c(canvasName, canvasName, 1000, 800);
-    mg->Draw("A");
+    if (!draw_mg_or_report(mg, "A")) {
+        c.Write(canvasName);
+        return;
+    }
     mg->GetXaxis()->SetTitle(xTitle);
     mg->GetYaxis()->SetTitle(yTitle);
 

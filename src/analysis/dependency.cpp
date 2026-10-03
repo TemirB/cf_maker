@@ -57,20 +57,29 @@ void make_dependency(Config& cfg, TFile* cf3dFile, TFile* outFile)
             TGraphErrors* g_pvalue = build_pvalue_graph(cfg, ch, centr);
             TGraphErrors* g_fit_over_cf = build_fit_over_cf_graph(cfg, cf3dFile, ch, centr);
 
-            legend_entries.emplace_back(g_radii[0], centrality::kNames[centr]);
-
+            int point = 0;
             for (int b = 0; b < bin.count; b++) {
                 const FitResult& res = fit_results[ch][centr][b];
+                if (!is_usable_fit(res)) {
+                    logging::debug(
+                        "dependency: excluding unavailable fit ch=" + std::to_string(ch) +
+                        " centr=" + std::to_string(centr) + " bin=" + std::to_string(b));
+                    continue;
+                }
 
                 double x_val = bin_center(bin, b);
 
                 for (int lcms = 0; lcms < lcms::kCount; lcms++) {
-                    g_radii[lcms]->SetPoint(b, x_val, res.r[lcms]);
-                    g_radii[lcms]->SetPointError(b, 0, res.e_r[lcms]);
+                    g_radii[lcms]->SetPoint(point, x_val, res.r[lcms]);
+                    g_radii[lcms]->SetPointError(point, 0, res.e_r[lcms]);
                 }
 
-                g_lambda->SetPoint(b, x_val, res.lambda);
-                g_lambda->SetPointError(b, 0, res.e_lambda);
+                g_lambda->SetPoint(point, x_val, res.lambda);
+                g_lambda->SetPointError(point, 0, res.e_lambda);
+                ++point;
+            }
+            if (point > 0) {
+                legend_entries.emplace_back(g_radii[0], centrality::kNames[centr]);
             }
 
             for (int lcms = 0; lcms < lcms::kCount; lcms++) {
@@ -120,11 +129,11 @@ void make_dependency(Config& cfg, TFile* cf3dFile, TFile* outFile)
             c->Divide(2, 2);
             for (int lcms = 0; lcms < 3; lcms++) {
                 c->cd(lcms + 1);
-                mg_radii[lcms]->Draw("APL");
+                draw_mg_or_report(mg_radii[lcms].get());
             }
 
             c->cd(4);
-            mg_lambda->Draw("APL");
+            draw_mg_or_report(mg_lambda.get());
             std::string save_name = dir;
             save_name += "/";
             save_name += name;
@@ -143,14 +152,16 @@ void make_dependency(Config& cfg, TFile* cf3dFile, TFile* outFile)
 
             c->cd(1);
             gPad->SetLogy();
-            mg_chi2_ndf->Draw("APL");
-            mg_chi2_ndf->GetXaxis()->SetTitle(mode);
-            mg_chi2_ndf->GetYaxis()->SetTitle("#chi^{2}/ndf");
+            if (draw_mg_or_report(mg_chi2_ndf.get())) {
+                mg_chi2_ndf->GetXaxis()->SetTitle(mode);
+                mg_chi2_ndf->GetYaxis()->SetTitle("#chi^{2}/ndf");
+            }
 
             c->cd(2);
-            mg_fit_over_cf->Draw("APL");
-            mg_fit_over_cf->GetXaxis()->SetTitle(mode);
-            mg_fit_over_cf->GetYaxis()->SetTitle("<fit/CF>");
+            if (draw_mg_or_report(mg_fit_over_cf.get())) {
+                mg_fit_over_cf->GetXaxis()->SetTitle(mode);
+                mg_fit_over_cf->GetYaxis()->SetTitle("<fit/CF>");
+            }
 
             std::string save_name = dir;
             save_name += "/";
@@ -170,7 +181,7 @@ void make_dependency(Config& cfg, TFile* cf3dFile, TFile* outFile)
             int idx = 1;
             for (int lcms = 0; lcms < 3; lcms++) {
                 c->cd(idx);
-                mg_radii[lcms + 3]->Draw("APL");
+                draw_mg_or_report(mg_radii[lcms + 3].get());
                 idx++;
             }
 
@@ -189,7 +200,7 @@ void make_dependency(Config& cfg, TFile* cf3dFile, TFile* outFile)
             std::string title = Form("P-value %s", charge::kNames[ch]);
 
             auto c = std::make_unique<TCanvas>(name.data(), title.data(), 1600, 1600);
-            mg_pvalue->Draw("APL");
+            draw_mg_or_report(mg_pvalue.get());
 
             {
                 outFile->cd();

@@ -212,6 +212,7 @@ add_executable(test_projections
     tests/test_projections.cpp
     src/analysis/projections1d.cpp
     src/analysis/projections2d.cpp
+    src/analysis/graphs.cpp
     src/core/lcms.cpp
     src/core/correlation.cpp
     src/core/fs.cpp
@@ -261,6 +262,25 @@ target_include_directories(test_ratios PRIVATE ${SRC_DIR})
 target_include_directories(test_ratios SYSTEM PRIVATE ${ROOT_INCLUDE_DIRS})
 target_link_libraries(test_ratios PRIVATE project_warnings ROOT::Core ROOT::RIO ROOT::Hist)
 add_test(NAME ratios COMMAND test_ratios)
+
+add_executable(test_graphs
+    tests/test_graphs.cpp
+    src/analysis/graphs.cpp
+    src/analysis/dependency.cpp
+    src/core/fs.cpp
+    src/core/log.cpp
+    src/draw/draw.cpp
+    src/io/input.cpp
+    src/fit/model.cpp
+    src/fit/initial_parameters.cpp
+    src/fit/result.cpp
+)
+target_include_directories(test_graphs PRIVATE ${SRC_DIR})
+target_include_directories(test_graphs SYSTEM PRIVATE ${ROOT_INCLUDE_DIRS})
+target_link_libraries(test_graphs PRIVATE project_warnings
+    ROOT::Core ROOT::RIO ROOT::Hist ROOT::Graf ROOT::Gpad ROOT::MathCore
+)
+add_test(NAME graphs COMMAND test_graphs)
 
 add_executable(test_generated
     tests/test_generated.cpp

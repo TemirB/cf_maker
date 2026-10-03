@@ -13,6 +13,7 @@
 #include <TStyle.h>
 #include <TString.h>
 
+#include "analysis/graphs.h"
 #include "core/binning.h"
 #include "core/correlation.h"
 #include "core/fs.h"
@@ -35,7 +36,21 @@ std::unique_ptr<TPaveText> get_fit_stats(const FitResult& r, Float_t textSize, d
     stats->SetTextFont(42);
     stats->SetTextSize(textSize);
 
-    stats->AddText(Form("#chi^{2}/ndf = %.3f", r.chi2 / r.ndf));
+    if (!is_usable_fit(r)) {
+        stats->AddText("Fit unavailable");
+        if (!r.is_finite()) {
+            stats->AddText("Non-finite fit result");
+        } else if (!r.ok) {
+            stats->AddText(r.attempts == 0 ? "Missing fit result" : "Fit failed");
+        } else if (r.at_limit) {
+            stats->AddText("Parameter at limit");
+        } else {
+            stats->AddText("Nonpositive ndf");
+        }
+        stats->AddText(Form("status = %d, covariance = %d", r.status, r.cov_status));
+        return stats;
+    }
+    stats->AddText(Form("#chi^{2}/ndf = %.3f", r.chi2_ndf()));
     stats->AddText(Form("R_{out}  = %.3f #pm %.3f fm", r.r[0], r.e_r[0]));
     stats->AddText(Form("R_{side} = %.3f #pm %.3f fm", r.r[1], r.e_r[1]));
     stats->AddText(Form("R_{long} = %.3f #pm %.3f fm", r.r[2], r.e_r[2]));
@@ -130,7 +145,10 @@ create_1d(TH3D& den, TH3D& num, const FitResult& r, const LCMSAxis axis, const s
     std::string n = name + " " + axis_name(axis);
     cf->SetTitle(n.c_str());
 
-    auto fit = build_lcms_fit_from_3d_weighted(den, r, axis, sliceWidth, baseName);
+    std::unique_ptr<TH1D> fit;
+    if (is_usable_fit(r)) {
+        fit = build_lcms_fit_from_3d_weighted(den, r, axis, sliceWidth, baseName);
+    }
 
     return {std::move(cf), std::move(fit)};
 }
@@ -141,18 +159,22 @@ void save_canvas_to_file(TFile* out, TH1D* cf, TH1D* fit, TPaveText* stats, draw
     std::string name = cf_name + "_" + axis_name(axis);
     auto c = std::make_unique<TCanvas>(name.data(), name.data(), 800, 600);
     style_1d_cf(cf, name, axis_name(axis).data(), style);
-    style_fit(fit, style);
+    if (fit) {
+        style_fit(fit, style);
+        fit->GetXaxis()->SetRangeUser(-projCfg.axis_range_1d, projCfg.axis_range_1d);
+    }
 
     cf->GetYaxis()->SetRangeUser(projCfg.cf_y_min_1d, projCfg.cf_y_max_1d);
     cf->GetXaxis()->SetRangeUser(-projCfg.axis_range_1d, projCfg.axis_range_1d);
     cf->SetStats(kFALSE);
 
-    fit->GetXaxis()->SetRangeUser(-projCfg.axis_range_1d, projCfg.axis_range_1d);
     gStyle->SetOptFit(0102);
 
     c->cd();
     cf->Draw("P");
-    fit->Draw("L SAME");
+    if (fit) {
+        fit->Draw("L SAME");
+    }
     stats->Draw();
 
     out->cd();
@@ -163,7 +185,9 @@ void draw_cf_and_fit(TCanvas* c, TH1D* cf, TH1D* fit, TPaveText* stats, int lcms
 {
     c->cd(lcms + 1);
     cf->Draw("P");
-    fit->Draw("L SAME");
+    if (fit) {
+        fit->Draw("L SAME");
+    }
 
     if (lcms == 2) {
         stats->Draw();
@@ -235,21 +259,27 @@ void make_lcms_1d_projections(Config& cfg, TFile* in, TFile* out)
                 std::string name_fit_over_cf = Form(
                     "fit/cf at charge=%s, centrality=%s, %s=%s", charge::kNames[ch_idx],
                     centrality::kNames[cent_idx], cfg.input.type.c_str(), bin.names[b].c_str());
-                auto c_fit_over_cf = std::make_unique<TCanvas>(name_fit_over_cf.data(),
-                                                               name_fit_over_cf.data(), 2400, 800);
-                c_fit_over_cf->SetTitle(name_fit_over_cf.data());
-                c_fit_over_cf->Divide(3, 1);
+                std::unique_ptr<TCanvas> c_fit_over_cf;
+                if (is_usable_fit(r)) {
+                    c_fit_over_cf = std::make_unique<TCanvas>(name_fit_over_cf.data(),
+                                                              name_fit_over_cf.data(), 2400, 800);
+                    c_fit_over_cf->SetTitle(name_fit_over_cf.data());
+                    c_fit_over_cf->Divide(3, 1);
+                }
 
                 std::vector<std::unique_ptr<TH1D>> keep_alive;
 
                 for (int lcms = 0; lcms < 3; lcms++) {
                     auto axis = LCMSAxis(lcms);
 
-                    auto [cf, fit] =
-                        create_1d(*den, *num, r, axis, cf_name, cfg.projections.slice_1d, statistics);
+                    auto [cf, fit] = create_1d(*den, *num, r, axis, cf_name,
+                                               cfg.projections.slice_1d, statistics);
 
-                    draw_cf_over_fit(c_fit_over_cf.get(), cf.get(), fit.get(), stats.get(),
-                                     name_fit_over_cf, lcms, style, cfg.projections, keep_alive);
+                    if (fit) {
+                        draw_cf_over_fit(c_fit_over_cf.get(), cf.get(), fit.get(), stats.get(),
+                                         name_fit_over_cf, lcms, style, cfg.projections,
+                                         keep_alive);
+                    }
                     save_canvas_to_file(out, cf.get(), fit.get(), stats.get(), style, cf_name, axis,
                                         cfg.projections);
                     draw_cf_and_fit(canvas.get(), cf.get(), fit.get(), stats.get(), lcms);
@@ -267,7 +297,7 @@ void make_lcms_1d_projections(Config& cfg, TFile* in, TFile* out)
                     auto cf_over_fit_name = Form(
                         "%s/fit_over_cf_%s_%s_%s.%s", dep_dir.data(), charge::kNames[ch_idx],
                         centrality::kNames[cent_idx], bin.file_names[b].c_str(), format.data());
-                    if (cfg.general.images.need) {
+                    if (c_fit_over_cf) {
                         save_canvas_quiet(c_fit_over_cf.get(), cf_over_fit_name);
                     }
                 }
