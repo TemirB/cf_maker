@@ -4,12 +4,18 @@
 
 bool FitResult::is_finite() const
 {
-    for (int i = 0; i < 3; i++) {
+    for (std::size_t i = 0; i < r.size(); ++i) {
         if (!std::isfinite(r[i]) || !std::isfinite(e_r[i])) {
             return false;
         }
     }
-    return std::isfinite(lambda) && std::isfinite(e_lambda);
+    for (const double value : corr) {
+        if (!std::isfinite(value)) {
+            return false;
+        }
+    }
+    return std::isfinite(lambda) && std::isfinite(e_lambda) && std::isfinite(chi2) &&
+           std::isfinite(p_value);
 }
 
 double FitResult::chi2_ndf() const

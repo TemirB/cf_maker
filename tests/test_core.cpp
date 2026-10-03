@@ -93,6 +93,52 @@ void TestFitResult()
     CHECK(is_bad_fit(r));
 }
 
+void check_non_finite_field(FitResult& result, double& field)
+{
+    const double original = field;
+    for (const double bad_value :
+         {std::numeric_limits<double>::quiet_NaN(), std::numeric_limits<double>::infinity(),
+          -std::numeric_limits<double>::infinity()}) {
+        field = bad_value;
+        CHECK(!result.is_finite());
+        CHECK(!result.is_valid());
+        CHECK(is_bad_fit(result));
+    }
+    field = original;
+    CHECK(result.is_finite());
+    CHECK(result.is_valid());
+}
+
+void test_fit_result_finiteness()
+{
+    FitResult result;
+    result.ok = true;
+    result.r = {4.0, 5.0, 6.0, -0.5, 1.5, 0.5};
+    result.e_r = {0.1, 0.2, 0.3, 0.4, 0.5, 0.6};
+    result.lambda = 0.7;
+    result.e_lambda = 0.01;
+    result.chi2 = 12.0;
+    result.ndf = 10;
+    result.p_value = 0.28;
+    result.corr.fill(0.1);
+    CHECK(result.is_finite());
+    CHECK(result.is_valid());
+
+    for (double& value : result.r) {
+        check_non_finite_field(result, value);
+    }
+    for (double& value : result.e_r) {
+        check_non_finite_field(result, value);
+    }
+    check_non_finite_field(result, result.lambda);
+    check_non_finite_field(result, result.e_lambda);
+    check_non_finite_field(result, result.chi2);
+    check_non_finite_field(result, result.p_value);
+    for (double& value : result.corr) {
+        check_non_finite_field(result, value);
+    }
+}
+
 } // namespace
 
 int main()
@@ -100,6 +146,7 @@ int main()
     TestBinning();
     Testbin_center();
     TestFitResult();
+    test_fit_result_finiteness();
     std::cout << "All tests passed\n";
     return 0;
 }
