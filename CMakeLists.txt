@@ -229,6 +229,16 @@ target_link_libraries(test_projections PRIVATE
 )
 add_test(NAME projections COMMAND test_projections)
 
+add_executable(test_input
+    tests/test_input.cpp
+    src/io/input.cpp
+    src/core/log.cpp
+)
+target_include_directories(test_input PRIVATE ${SRC_DIR})
+target_include_directories(test_input SYSTEM PRIVATE ${ROOT_INCLUDE_DIRS})
+target_link_libraries(test_input PRIVATE project_warnings ROOT::Core ROOT::RIO ROOT::Hist)
+add_test(NAME input COMMAND test_input)
+
 add_executable(test_generated
     tests/test_generated.cpp
     src/io/input.cpp

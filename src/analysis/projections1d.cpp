@@ -216,7 +216,8 @@ void make_lcms_1d_projections(Config& cfg, TFile* in, TFile* out)
         for (const int cent_idx : cfg.selection.centralities)
             for (int b = 0; b < bin.count; b++) {
                 const FitResult r = fitRes[ch_idx][cent_idx][b];
-                auto [den, num] = get_hists(in, ch_idx, cent_idx, b);
+                auto [den_raw, num_raw] = get_hists(in, ch_idx, cent_idx, b);
+                std::unique_ptr<TH3D> den(den_raw), num(num_raw);
                 if (!den || !num) {
                     continue;
                 }
