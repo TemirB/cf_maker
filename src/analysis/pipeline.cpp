@@ -1,5 +1,6 @@
 #include "analysis/pipeline.h"
 
+#include <algorithm>
 #include <memory>
 #include <stdexcept>
 #include <string>
@@ -17,6 +18,12 @@
 
 void prepare_stage_dependencies(Config& cfg)
 {
+    if (cfg.stages.ratios && (std::find(cfg.selection.charges.begin(), cfg.selection.charges.end(),
+                                        0) == cfg.selection.charges.end() ||
+                              std::find(cfg.selection.charges.begin(), cfg.selection.charges.end(),
+                                        1) == cfg.selection.charges.end())) {
+        throw std::runtime_error("ratios require both selected charges");
+    }
     if (cfg.stages.cf3d ||
         !(cfg.stages.dependency || cfg.stages.projections_1d || cfg.stages.ratios)) {
         return;

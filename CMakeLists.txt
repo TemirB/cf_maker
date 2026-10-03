@@ -254,6 +254,7 @@ add_test(NAME correlation COMMAND test_correlation)
 add_executable(test_ratios
     tests/test_ratios.cpp
     src/analysis/ratio.cpp
+    src/core/correlation.cpp
     src/core/lcms.cpp
     src/core/log.cpp
     src/io/input.cpp
