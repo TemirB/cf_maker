@@ -299,6 +299,23 @@ target_link_libraries(test_minuit_threads PRIVATE project_warnings
 )
 add_test(NAME minuit_threads COMMAND test_minuit_threads)
 
+add_executable(test_resume
+    tests/test_resume.cpp
+    src/io/fit_results.cpp
+    src/io/input.cpp
+    src/config/config.cpp
+    src/core/correlation.cpp
+    src/core/fs.cpp
+    src/core/log.cpp
+)
+target_include_directories(test_resume PRIVATE ${SRC_DIR})
+target_include_directories(test_resume SYSTEM PRIVATE ${ROOT_INCLUDE_DIRS})
+target_link_libraries(test_resume PRIVATE project_warnings
+    ROOT::Core ROOT::RIO ROOT::Hist ROOT::Graf ROOT::Gpad
+    OpenSSL::Crypto nlohmann_json::nlohmann_json
+)
+add_test(NAME resume COMMAND test_resume $<TARGET_FILE:main>)
+
 add_executable(test_generated
     tests/test_generated.cpp
     src/io/input.cpp

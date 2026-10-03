@@ -624,13 +624,20 @@ Config load(const std::string& path)
     Validate(cfg);
     build(cfg);
 
-    ensure_dir(cfg.output.dir);
+    return cfg;
+}
 
+void write_run_config(const Config& cfg)
+{
+    ensure_dir(cfg.output.dir);
     const std::string snapshotPath = cfg.output.dir + "/run_config.json";
     std::ofstream snapshot(snapshotPath);
-    if (snapshot) {
-        snapshot << ToJson(cfg).dump(2);
+    if (!snapshot) {
+        throw std::runtime_error("cannot create config snapshot: " + snapshotPath);
     }
-
-    return cfg;
+    snapshot << ToJson(cfg).dump(2);
+    snapshot.close();
+    if (!snapshot) {
+        throw std::runtime_error("cannot write config snapshot: " + snapshotPath);
+    }
 }

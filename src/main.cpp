@@ -1,6 +1,7 @@
 #include <exception>
 #include <iostream>
 #include <memory>
+#include <stdexcept>
 #include <string>
 
 #include <Math/MinimizerOptions.h>
@@ -27,6 +28,13 @@ int main(int argc, char** argv) noexcept
 
         Config cfg = load(argv[1]);
 
+        auto input = std::make_unique<TFile>(cfg.input.file.c_str(), "READ");
+        if (!input || input->IsZombie()) {
+            throw std::runtime_error("cannot open input file: " + cfg.input.file);
+        }
+        prepare_stage_dependencies(cfg);
+        write_run_config(cfg);
+
         const std::string logFile =
             cfg.logging.file.empty() ? "" : cfg.output.dir + "/" + cfg.logging.file;
         logging::init(logging::parse_level(cfg.logging.level), logFile);
@@ -36,13 +44,8 @@ int main(int argc, char** argv) noexcept
         logging::info("cf_maker: config = " + std::string(argv[1]));
         logging::info("cf_maker: output dir = " + cfg.output.dir);
         logging::info("cf_maker: minimizer = " + cfg.fit.minimizer +
-                  ", threads = " + std::to_string(cfg.threads) + " (0 = auto)");
+                      ", threads = " + std::to_string(cfg.threads) + " (0 = auto)");
 
-        auto input = std::make_unique<TFile>(cfg.input.file.c_str(), "READ");
-        if (!input || input->IsZombie()) {
-            logging::error("cannot open input file: " + cfg.input.file);
-            return 1;
-        }
         logging::info("cf_maker: input file = " + cfg.input.file);
 
         if (cfg.stages.cf3d) {

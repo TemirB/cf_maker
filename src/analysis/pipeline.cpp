@@ -1,6 +1,7 @@
 #include "analysis/pipeline.h"
 
 #include <memory>
+#include <stdexcept>
 #include <string>
 
 #include <TFile.h>
@@ -12,6 +13,23 @@
 #include "analysis/projections2d.h"
 #include "analysis/ratio.h"
 #include "core/log.h"
+#include "io/fit_results.h"
+
+void prepare_stage_dependencies(Config& cfg)
+{
+    if (cfg.stages.cf3d ||
+        !(cfg.stages.dependency || cfg.stages.projections_1d || cfg.stages.ratios)) {
+        return;
+    }
+    const std::string name = cfg.output.dir + "/cf3d.root";
+    TFile previous(name.c_str(), "READ");
+    if (previous.IsZombie()) {
+        throw std::runtime_error("cannot resume: missing or unreadable " + name +
+                                 "; rerun with stages.cf3d=true");
+    }
+    read_fit_results(previous, cfg);
+    logging::info("Restored complete fit results from " + name);
+}
 
 void stage_cf3d(Config& cfg)
 {
@@ -21,7 +39,7 @@ void stage_cf3d(Config& cfg)
     TFile f(name.c_str(), "RECREATE");
 
     build_and_fit_3d_correlation_functions(cfg, &f);
-
+    write_fit_results(f, cfg);
     f.Write();
 }
 
@@ -32,8 +50,11 @@ void stage_dependency(Config& cfg)
     logging::info("Stage dependency: output = " + name);
 
     const std::string cf3dName = cfg.output.dir + "/cf3d.root";
-    TFile f(name.c_str(), "RECREATE");
     TFile cf3d(cf3dName.c_str(), "READ");
+    if (cf3d.IsZombie()) {
+        throw std::runtime_error("cannot open saved 3D CF: " + cf3dName);
+    }
+    TFile f(name.c_str(), "RECREATE");
 
     make_dependency(cfg, &cf3d, &f);
 }
@@ -70,9 +91,12 @@ void stage_ratios(Config& cfg)
     const std::string cf3d = cfg.output.dir + "/cf3d.root";
     logging::info("Stage ratios: outputs = " + name1 + ", " + name2);
 
+    auto fCF3D = std::make_unique<TFile>(cf3d.c_str(), "READ");
+    if (fCF3D->IsZombie()) {
+        throw std::runtime_error("cannot open saved 3D CF: " + cf3d);
+    }
     auto f1 = std::make_unique<TFile>(name1.c_str(), "RECREATE");
     auto f2 = std::make_unique<TFile>(name2.c_str(), "RECREATE");
-    auto fCF3D = std::make_unique<TFile>(cf3d.c_str(), "READ");
     do_cf_ratios(cfg, fCF3D.get(), f1.get(), f2.get());
 
     f1->Write();
