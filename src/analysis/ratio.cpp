@@ -1,6 +1,8 @@
 #include "analysis/ratio.h"
 
+#include <cmath>
 #include <memory>
+#include <stdexcept>
 
 #include <TDirectory.h>
 #include <TFile.h>
@@ -56,16 +58,24 @@ void Style(TH1D* h, const TString& fmt, LCMSAxis axis, int centr, const std::str
     }
 }
 
-TH1D* project_ratio(TH3D& ratio, int centr, int b, LCMSAxis axis, double sliceWidth,
+TH1D* project_ratio(TH3D& ratio, TH3D& support, int centr, int b, LCMSAxis axis, double sliceWidth,
                     const std::string& binName)
 {
     TString name = TString::Format("proj_of_ratios_%d_%d_%s", centr, b, axis_name(axis).data());
 
     std::unique_ptr<TH1D> r(project_1d(ratio, axis, sliceWidth));
+    std::unique_ptr<TH1D> counts(project_1d(support, axis, sliceWidth));
+    for (int bin = 0; bin < r->GetNcells(); ++bin) {
+        const double count = counts->GetBinContent(bin);
+        const double mean = count > 0 ? r->GetBinContent(bin) / count : 0;
+        const double error = count > 0 ? r->GetBinError(bin) / count : 0;
+        r->SetBinContent(bin, mean);
+        r->SetBinError(bin, error);
+    }
     r->SetName(name);
 
     TString axisStr = axis_name(axis);
-    TString fmt = "C^{++}/C^{--}_{" + axisStr + "}";
+    TString fmt = "#LT C^{++}/C^{--} #GT_{cells," + axisStr + "}";
 
     Style(r.get(), fmt, axis, centr, binName);
     return r.release();
@@ -94,8 +104,8 @@ TH1D* ratio_project(TH3D& neg, TH3D& pos, int centr, int b, LCMSAxis axis, doubl
 void do_cf_ratios(Config& cfg, TFile* fCF3D, TFile* fRatioProj, TFile* fProjRatio)
 {
     const Bin& bin = cfg.binning;
-    logging::info("ratios: " + std::to_string(cfg.selection.centralities.size()) + " centralities x " +
-              std::to_string(bin.count) + " bins");
+    logging::info("ratios: " + std::to_string(cfg.selection.centralities.size()) +
+                  " centralities x " + std::to_string(bin.count) + " bins");
 
     for (const int centr : cfg.selection.centralities) {
         for (int b = 0; b < bin.count; b++) {
@@ -117,7 +127,23 @@ void do_cf_ratios(Config& cfg, TFile* fCF3D, TFile* fRatioProj, TFile* fProjRati
             auto ratio = std::unique_ptr<TH3D>(static_cast<TH3D*>(neg->Clone()));
             ratio->SetDirectory(nullptr);
             ratio->Reset();
-            ratio->Divide(pos.get(), neg.get());
+            if (!ratio->Divide(pos.get(), neg.get())) {
+                throw std::runtime_error("Cannot divide charge correlation histograms");
+            }
+            auto support = std::unique_ptr<TH3D>(static_cast<TH3D*>(neg->Clone()));
+            support->SetDirectory(nullptr);
+            support->Reset("ICES");
+            for (int cell = 0; cell < ratio->GetNcells(); ++cell) {
+                const double positive = pos->GetBinContent(cell);
+                const double negative = neg->GetBinContent(cell);
+                if (positive > 0 && negative > 0 && std::isfinite(positive) &&
+                    std::isfinite(negative) && std::isfinite(ratio->GetBinError(cell))) {
+                    support->SetBinContent(cell, 1);
+                } else {
+                    ratio->SetBinContent(cell, 0);
+                    ratio->SetBinError(cell, 0);
+                }
+            }
 
             for (auto axis : {LCMSAxis::Out, LCMSAxis::Side, LCMSAxis::Long}) {
                 {
@@ -128,8 +154,9 @@ void do_cf_ratios(Config& cfg, TFile* fCF3D, TFile* fRatioProj, TFile* fProjRati
                 }
 
                 {
-                    std::unique_ptr<TH1D> h(project_ratio(
-                        *ratio, centr, b, axis, cfg.projections.slice_ratio, bin.names[b]));
+                    std::unique_ptr<TH1D> h(project_ratio(*ratio, *support, centr, b, axis,
+                                                          cfg.projections.slice_ratio,
+                                                          bin.names[b]));
                     fProjRatio->cd();
                     h->Write();
                 }

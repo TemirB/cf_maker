@@ -250,6 +250,18 @@ target_include_directories(test_correlation SYSTEM PRIVATE ${ROOT_INCLUDE_DIRS})
 target_link_libraries(test_correlation PRIVATE project_warnings ROOT::Core ROOT::RIO ROOT::Hist)
 add_test(NAME correlation COMMAND test_correlation)
 
+add_executable(test_ratios
+    tests/test_ratios.cpp
+    src/analysis/ratio.cpp
+    src/core/lcms.cpp
+    src/core/log.cpp
+    src/io/input.cpp
+)
+target_include_directories(test_ratios PRIVATE ${SRC_DIR})
+target_include_directories(test_ratios SYSTEM PRIVATE ${ROOT_INCLUDE_DIRS})
+target_link_libraries(test_ratios PRIVATE project_warnings ROOT::Core ROOT::RIO ROOT::Hist)
+add_test(NAME ratios COMMAND test_ratios)
+
 add_executable(test_generated
     tests/test_generated.cpp
     src/io/input.cpp
