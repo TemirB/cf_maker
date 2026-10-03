@@ -8,6 +8,7 @@
 #include <string>
 
 #include <TFitResult.h>
+#include <TList.h>
 #include <TMath.h>
 #include <TMatrixDSym.h>
 
