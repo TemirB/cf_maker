@@ -71,7 +71,7 @@ nlohmann::json fit_identity(const Config& cfg)
     }
     const auto statistics = correlation_statistics(input);
     const char* statistics_version = statistics == CorrelationStatistics::PairWeights
-                                         ? "pair_weights_unbiased_v1"
+                                         ? "weighted-mean-source-roundoff-v2"
                                          : "fixed_reference_v1";
     nlohmann::json freeze = nlohmann::json::array();
     for (const auto& value : cfg.fit.freeze) {

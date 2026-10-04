@@ -2,17 +2,55 @@
 
 #include <algorithm>
 #include <cmath>
+#include <iomanip>
 #include <limits>
+#include <sstream>
 #include <stdexcept>
 #include <string>
 
 #include <TAxis.h>
 #include <TFile.h>
 #include <TH1.h>
+#include <TH2.h>
+#include <TH3.h>
+#include <TList.h>
 #include <TNamed.h>
+
+#include "core/log.h"
 
 namespace
 {
+
+constexpr const char* kMomentStorage = "cf_maker_moment_storage";
+
+long double moment_roundoff_bound(double count, double sum, long double sum_squares,
+                                  MomentStorage storage)
+{
+    // Pure weighted Fill/Add histories: account for rounding each input weight,
+    // bin accumulation, shard merging and subsequent projection. Sumw2 always
+    // accumulates in double. The operation budget bounds each nonzero term's
+    // path through these sums; no event history is reconstructed here.
+    const long double operations = 4.L * count + 64;
+    const long double double_roundoff = std::numeric_limits<double>::epsilon() / 2.L;
+    const long double sum_roundoff = storage == MomentStorage::Float
+                                         ? std::numeric_limits<float>::epsilon() / 2.L
+                                         : double_roundoff;
+    const auto gamma = [operations](long double roundoff) {
+        const long double product = operations * roundoff;
+        return product < 1 ? product / (1 - product) : std::numeric_limits<long double>::infinity();
+    };
+    const long double q_gamma = gamma(double_roundoff);
+    const long double s_gamma = gamma(sum_roundoff);
+    if (q_gamma >= 1 || !std::isfinite(s_gamma)) {
+        return std::numeric_limits<long double>::infinity();
+    }
+    const long double q_upper = sum_squares / (1 - q_gamma);
+    // Cauchy bounds sum(abs(w)) by sqrt(N * sum(w*w)), including signed weights.
+    const long double sum_error = s_gamma * std::sqrt(count * q_upper);
+    return (q_upper - sum_squares) +
+           (2 * std::abs(static_cast<long double>(sum)) * sum_error + sum_error * sum_error) /
+               count;
+}
 
 bool same_axis(const TAxis& left, const TAxis& right)
 {
@@ -42,6 +80,39 @@ bool same_binning(const TH1& left, const TH1& right)
 }
 
 } // namespace
+
+void set_moment_storage(TH1& histogram, MomentStorage storage)
+{
+    auto* functions = histogram.GetListOfFunctions();
+    if (auto* previous = functions->FindObject(kMomentStorage)) {
+        functions->Remove(previous);
+        delete previous;
+    }
+    functions->Add(
+        new TNamed(kMomentStorage, storage == MomentStorage::Float ? "float" : "double"));
+}
+
+MomentStorage moment_storage(const TH1& histogram)
+{
+    if (const auto* object = histogram.GetListOfFunctions()->FindObject(kMomentStorage)) {
+        const auto* marker = dynamic_cast<const TNamed*>(object);
+        if (!marker) {
+            throw std::runtime_error("invalid histogram moment-storage marker");
+        }
+        const std::string value = marker->GetTitle();
+        if (value == "float") {
+            return MomentStorage::Float;
+        }
+        if (value == "double") {
+            return MomentStorage::Double;
+        }
+        throw std::runtime_error("unknown histogram moment storage: " + value);
+    }
+    return histogram.IsA() == TH1F::Class() || histogram.IsA() == TH2F::Class() ||
+                   histogram.IsA() == TH3F::Class()
+               ? MomentStorage::Float
+               : MomentStorage::Double;
+}
 
 CorrelationStatistics correlation_statistics(TFile& input)
 {
@@ -78,6 +149,8 @@ void fill_correlation(TH1& cf, const TH1& numerator, const TH1& denominator,
     if (cf.GetSumw2N() == 0) {
         cf.Sumw2();
     }
+    const auto storage = moment_storage(numerator);
+    int unresolved_bins = 0;
     for (int bin = 0; bin < cf.GetNcells(); ++bin) {
         const double count = denominator.GetBinContent(bin);
         const double sum = numerator.GetBinContent(bin);
@@ -120,12 +193,21 @@ void fill_correlation(TH1& cf, const TH1& numerator, const TH1& denominator,
             long double residual = sum_squares - square_of_sum;
             const long double cancellation_tolerance =
                 64 * std::numeric_limits<double>::epsilon() * std::max(sum_squares, square_of_sum);
-            if (residual < -cancellation_tolerance) {
-                invalid_bin(numerator, bin,
-                            "Sumw2 is smaller than sum(w)^2/N; check the input moments and "
-                            "TH3F accumulation precision (use TH3D in the producer)");
+            const long double rounding_bound = std::max(
+                cancellation_tolerance, moment_roundoff_bound(count, sum, sum_squares, storage));
+            if (residual < -rounding_bound) {
+                std::ostringstream details;
+                details << std::setprecision(17) << "Sumw2 is smaller than sum(w)^2/N: N=" << count
+                        << ", S=" << sum << ", Q=" << sum_squares << ", Q-S^2/N=" << residual
+                        << ", roundoff_bound=" << rounding_bound
+                        << "; check the input moments and TH3F accumulation precision "
+                           "(use TH3D in the producer)";
+                invalid_bin(numerator, bin, details.str());
             }
-            if (std::abs(residual) <= cancellation_tolerance) {
+            if (std::abs(residual) <= rounding_bound) {
+                if (count > 1 && storage == MomentStorage::Float) {
+                    ++unresolved_bins;
+                }
                 residual = 0;
             }
             if (count > 1) {
@@ -139,6 +221,12 @@ void fill_correlation(TH1& cf, const TH1& numerator, const TH1& denominator,
         cf.SetBinError(bin, error);
     }
     cf.SetEntries(denominator.GetEntries());
+    if (unresolved_bins > 0) {
+        logging::warn("correlation: " + std::string(numerator.GetName()) + ": " +
+                      std::to_string(unresolved_bins) +
+                      " bins have variance unresolved at TH3F accumulation precision; "
+                      "retaining S/N with zero error, excluded from chi-square fits");
+    }
 }
 
 void validate_correlation_inputs(const TH1& numerator, const TH1& denominator,

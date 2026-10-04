@@ -6,8 +6,12 @@
 #include <string>
 
 #include <TH1D.h>
+#include <TH1F.h>
 #include <TH2D.h>
+#include <TH2F.h>
 #include <TH3D.h>
+#include <TH3F.h>
+#include <TKey.h>
 #include <TMemFile.h>
 #include <TNamed.h>
 
@@ -66,6 +70,134 @@ void check_weighted_mean()
     check_close(cf.GetBinError(4), 0., "constant-weight sample variance");
     check_close(cf.GetBinContent(5), 0., "empty-bin content");
     check_close(cf.GetBinError(5), 0., "empty-bin error");
+}
+
+void check_float_weighted_mean()
+{
+    TH3F denominator("float_den", "", 7, 0, 7, 1, 0, 1, 1, 0, 1);
+    TH3F numerator("float_num", "", 7, 0, 7, 1, 0, 1, 1, 0, 1);
+    TH3D cf("float_cf", "", 7, 0, 7, 1, 0, 1, 1, 0, 1);
+    denominator.Sumw2();
+    numerator.Sumw2();
+    const auto fill = [&](double x, double weight) {
+        denominator.Fill(x, .5, .5, 1.);
+        numerator.Fill(x, .5, .5, weight);
+    };
+    fill(.5, 1.2);
+    for (const double weight : {1.2, 1.2}) {
+        fill(1.5, weight);
+    }
+    for (const double weight : {1.3, 1.3}) {
+        fill(2.5, weight);
+    }
+    for (const double weight : {1.1, 1.10001}) {
+        fill(3.5, weight);
+    }
+    for (const double weight : {1.3, 1.30001}) {
+        fill(4.5, weight);
+    }
+    for (const double weight : {0., 2.}) {
+        fill(5.5, weight);
+    }
+    for (const double weight : {1., 1.2}) {
+        fill(6.5, weight);
+    }
+    const auto residual = [&](int x) {
+        const int bin = numerator.GetBin(x, 1, 1);
+        const long double sum = numerator.GetBinContent(bin);
+        return numerator.GetSumw2()->At(bin) - sum * sum / denominator.GetBinContent(bin);
+    };
+    if (residual(4) >= 0 || residual(5) <= 0) {
+        throw std::runtime_error("Float fixture does not exercise both rounding directions");
+    }
+    fill_correlation(cf, numerator, denominator);
+    for (int x = 1; x <= 5; ++x) {
+        check_close(cf.GetBinContent(x, 1, 1),
+                    numerator.GetBinContent(x, 1, 1) / denominator.GetBinContent(x, 1, 1),
+                    "float-resolution masking must retain the measured mean");
+        check_close(cf.GetBinError(x, 1, 1), 0., "unresolved float variance must be masked");
+    }
+    check_close(cf.GetBinContent(6, 1, 1), 1., "resolved float weighted mean");
+    check_close(cf.GetBinError(6, 1, 1), 1., "resolved float finite-N variance");
+    if (std::abs(cf.GetBinError(7, 1, 1) - .1) > 1e-6) {
+        throw std::runtime_error("Unequal float weights lost their usable variance");
+    }
+
+    // Promoting storage does not recover the lost precision: the source tag
+    // must accompany the converted moments before their variance is computed.
+    TH3D converted_denominator;
+    TH3D converted_numerator;
+    denominator.Copy(converted_denominator);
+    numerator.Copy(converted_numerator);
+    set_moment_storage(converted_numerator, MomentStorage::Float);
+    fill_correlation(cf, converted_numerator, converted_denominator);
+    check_close(cf.GetBinError(5, 1, 1), 0., "converted float variance must remain masked");
+    check_close(cf.GetBinError(6, 1, 1), 1., "converted resolved float variance");
+
+    converted_numerator.SetBinError(2, 1, 1, 1);
+    check_throws([&] { fill_correlation(cf, converted_numerator, converted_denominator); },
+                 "grossly invalid float second moment was masked");
+    converted_numerator.SetBinError(2, 1, 1, numerator.GetBinError(2, 1, 1));
+    converted_numerator.SetBinError(1, 1, 1, 0);
+    check_throws([&] { fill_correlation(cf, converted_numerator, converted_denominator); },
+                 "grossly invalid single-pair second moment was masked");
+    converted_numerator.SetBinError(1, 1, 1, numerator.GetBinError(1, 1, 1));
+    converted_denominator.SetBinError(2, 1, 1, 0);
+    check_throws([&] { fill_correlation(cf, converted_numerator, converted_denominator); },
+                 "float provenance relaxed the unweighted-count variance check");
+}
+
+void check_moment_storage()
+{
+    TH1F one("float_1d_storage", "", 1, 0, 1);
+    TH2F two("float_2d_storage", "", 1, 0, 1, 1, 0, 1);
+    TH3F three("float_3d_storage", "", 1, 0, 1, 1, 0, 1, 1, 0, 1);
+    for (const TH1* histogram :
+         {static_cast<TH1*>(&one), static_cast<TH1*>(&two), static_cast<TH1*>(&three)}) {
+        if (moment_storage(*histogram) != MomentStorage::Float) {
+            throw std::runtime_error("Native float histogram storage was not recognized");
+        }
+    }
+    TH3D converted("converted_storage", "", 1, 0, 1, 1, 0, 1, 1, 0, 1);
+    if (moment_storage(converted) != MomentStorage::Double) {
+        throw std::runtime_error("Native double histogram received float provenance");
+    }
+    set_moment_storage(converted, MomentStorage::Float);
+    TH3D copy(converted);
+    // ROOT deliberately omits attached functions when copying histograms;
+    // conversion and projection callers must transfer provenance explicitly.
+    set_moment_storage(copy, moment_storage(converted));
+    if (moment_storage(copy) != MomentStorage::Float) {
+        throw std::runtime_error("Explicit histogram copy lost source storage provenance");
+    }
+    TMemFile input("storage_roundtrip.root", "RECREATE");
+    converted.Write();
+    std::unique_ptr<TObject> readback(input.GetKey(converted.GetName())->ReadObj());
+    auto* histogram = dynamic_cast<TH1*>(readback.get());
+    if (!histogram || moment_storage(*histogram) != MomentStorage::Float) {
+        throw std::runtime_error("ROOT serialization lost source storage provenance");
+    }
+    histogram->SetDirectory(nullptr);
+    set_moment_storage(copy, MomentStorage::Double);
+    if (moment_storage(copy) != MomentStorage::Double ||
+        moment_storage(converted) != MomentStorage::Float) {
+        throw std::runtime_error("Changing provenance affected an independently owned copy");
+    }
+}
+
+void check_double_accumulation()
+{
+    TH1D denominator("long_double_den", "", 1, 0, 1);
+    TH1D numerator("long_double_num", "", 1, 0, 1);
+    TH1D cf("long_double_cf", "", 1, 0, 1);
+    numerator.Sumw2();
+    for (int pair = 0; pair < 10000; ++pair) {
+        denominator.Fill(.5);
+        numerator.Fill(.5, 1.1);
+    }
+    fill_correlation(cf, numerator, denominator);
+    check_close(cf.GetBinContent(1), 1.1, "mean after long double-storage accumulation");
+    check_close(cf.GetBinError(1), 0., "constant double weights acquired a numerical variance");
 }
 
 void check_moment_validation()
@@ -195,6 +327,9 @@ int main()
 {
     TH1::AddDirectory(false);
     check_weighted_mean();
+    check_float_weighted_mean();
+    check_moment_storage();
+    check_double_accumulation();
     check_moment_validation();
     check_fixed_reference();
     check_projected_moments();

@@ -10,6 +10,7 @@
 #include <TString.h>
 
 #include "core/binning.h"
+#include "core/correlation.h"
 #include "core/log.h"
 
 namespace
@@ -48,6 +49,7 @@ std::unique_ptr<TH3D> read_histogram(TFile& file, const TString& name, const cha
     source.Copy(*histogram);
     histogram->SetStatOverflows(source.GetStatOverflows());
     histogram->SetDirectory(nullptr);
+    set_moment_storage(*histogram, moment_storage(source));
     return histogram;
 }
 } // namespace

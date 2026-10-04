@@ -235,6 +235,8 @@ add_test(NAME projections COMMAND test_projections)
 add_executable(test_input
     tests/test_input.cpp
     src/io/input.cpp
+    src/core/correlation.cpp
+    src/core/lcms.cpp
     src/core/log.cpp
 )
 target_include_directories(test_input PRIVATE ${SRC_DIR})
@@ -246,6 +248,7 @@ add_executable(test_correlation
     tests/test_correlation.cpp
     src/core/correlation.cpp
     src/core/lcms.cpp
+    src/core/log.cpp
 )
 target_include_directories(test_correlation PRIVATE ${SRC_DIR})
 target_include_directories(test_correlation SYSTEM PRIVATE ${ROOT_INCLUDE_DIRS})
@@ -271,6 +274,7 @@ add_executable(test_graphs
     src/analysis/graphs.cpp
     src/analysis/dependency.cpp
     src/core/fs.cpp
+    src/core/correlation.cpp
     src/core/log.cpp
     src/draw/draw.cpp
     src/io/input.cpp
@@ -329,7 +333,7 @@ add_executable(test_failures
 target_include_directories(test_failures PRIVATE ${SRC_DIR})
 target_include_directories(test_failures SYSTEM PRIVATE ${ROOT_INCLUDE_DIRS})
 target_link_libraries(test_failures PRIVATE project_warnings
-    ROOT::Core ROOT::RIO ROOT::Hist nlohmann_json::nlohmann_json
+    ROOT::Core ROOT::RIO ROOT::Hist ROOT::Graf ROOT::Gpad nlohmann_json::nlohmann_json
 )
 add_test(NAME failures COMMAND test_failures $<TARGET_FILE:main>)
 

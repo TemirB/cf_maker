@@ -9,6 +9,8 @@
 #include <TNamed.h>
 #include <TROOT.h>
 
+#include "core/correlation.h"
+#include "core/lcms.h"
 #include "io/input.h"
 
 namespace
@@ -45,6 +47,7 @@ void compare_histogram(const TH3& source, const TH3D& copy)
     compare_axis(*source.GetYaxis(), *copy.GetYaxis());
     compare_axis(*source.GetZaxis(), *copy.GetZaxis());
     require(source.GetNcells() == copy.GetNcells(), "Cell count changed");
+    require(moment_storage(source) == moment_storage(copy), "Source moment precision changed");
     require(source.GetSumw2N() == copy.GetSumw2N(), "Sumw2 storage changed");
     for (int bin = 0; bin < source.GetNcells(); ++bin) {
         require(source.GetBinContent(bin) == copy.GetBinContent(bin),
@@ -164,6 +167,77 @@ void check_double_input(bool sumw2)
     compare_histogram(num, *num_copy);
 }
 
+void check_float_pair_moments()
+{
+    TMemFile input("float_pair_moments.root", "RECREATE");
+    TH3F denominator("bp_0_0_num_0", "", 3, 0, 3, 2, -1, 1, 2, -1, 1);
+    TH3F numerator("bp_0_0_num_wei_0", "", 3, 0, 3, 2, -1, 1, 2, -1, 1);
+    denominator.SetDirectory(nullptr);
+    numerator.SetDirectory(nullptr);
+    denominator.Sumw2();
+    numerator.Sumw2();
+    const auto fill = [&](double x, double weight) {
+        denominator.Fill(x, -.5, -.5, 1.);
+        numerator.Fill(x, -.5, -.5, weight);
+    };
+    fill(.5, 1.2);
+    for (const double weight : {1.3, 1.30001}) {
+        fill(1.5, weight);
+    }
+    for (const double weight : {0., 2.}) {
+        fill(2.5, weight);
+    }
+    denominator.Write();
+    numerator.Write();
+    const auto [den_ptr, num_ptr] = get_hists(&input, 0, 0, 0);
+    std::unique_ptr<TH3D> count(den_ptr), sum(num_ptr);
+    require(count && sum, "Float pair moments were not read");
+    compare_histogram(denominator, *count);
+    compare_histogram(numerator, *sum);
+    TH3D cf(*sum);
+    cf.SetDirectory(nullptr);
+    fill_correlation(cf, *sum, *count);
+    require(cf.GetBinContent(1, 1, 1) == numerator.GetBinContent(1, 1, 1) &&
+                cf.GetBinError(1, 1, 1) == 0 && cf.GetBinError(2, 1, 1) == 0 &&
+                std::abs(cf.GetBinError(3, 1, 1) - 1.) < 1e-12,
+            "Converted float pair moments have incorrect mean or variance");
+
+    std::unique_ptr<TH1D> count_1d(project_1d(*count, LCMSAxis::Out, 1));
+    std::unique_ptr<TH1D> sum_1d(project_1d(*sum, LCMSAxis::Out, 1));
+    require(moment_storage(*sum_1d) == MomentStorage::Float,
+            "1D projection lost float moment provenance");
+    TH1D cf_1d(*sum_1d);
+    cf_1d.SetDirectory(nullptr);
+    fill_correlation(cf_1d, *sum_1d, *count_1d);
+    require(cf_1d.GetBinError(1) == 0 && cf_1d.GetBinError(2) == 0 &&
+                std::abs(cf_1d.GetBinError(3) - 1.) < 1e-12,
+            "1D projection did not respect source moment precision");
+
+    std::unique_ptr<TH2D> count_2d(project_2d(*count, LCMSAxis::Out, LCMSAxis::Side, 1));
+    std::unique_ptr<TH2D> sum_2d(project_2d(*sum, LCMSAxis::Out, LCMSAxis::Side, 1));
+    require(moment_storage(*sum_2d) == MomentStorage::Float,
+            "2D projection lost float moment provenance");
+    TH2D cf_2d(*sum_2d);
+    cf_2d.SetDirectory(nullptr);
+    fill_correlation(cf_2d, *sum_2d, *count_2d);
+    require(cf_2d.GetBinError(1, 1) == 0 && cf_2d.GetBinError(2, 1) == 0 &&
+                std::abs(cf_2d.GetBinError(3, 1) - 1.) < 1e-12,
+            "2D projection did not respect source moment precision");
+
+    // A converted histogram remains float-origin data after being written
+    // with TH3D storage and read in a later run.
+    TMemFile converted("converted_pair_moments.root", "RECREATE");
+    count->Write();
+    sum->Write();
+    const auto [reread_den_ptr, reread_num_ptr] = get_hists(&converted, 0, 0, 0);
+    std::unique_ptr<TH3D> reread_count(reread_den_ptr), reread_sum(reread_num_ptr);
+    require(reread_count && reread_sum && moment_storage(*reread_sum) == MomentStorage::Float,
+            "Rereading converted raw data lost float moment provenance");
+    fill_correlation(cf, *reread_sum, *reread_count);
+    require(cf.GetBinError(2, 1, 1) == 0,
+            "Rereading converted raw data fabricated a resolved variance");
+}
+
 void check_invalid_input()
 {
     require(get_hists(nullptr, 0, 0, 0) == std::pair<TH3D*, TH3D*>{nullptr, nullptr},
@@ -192,6 +266,7 @@ int main()
         check_float_input();
         check_double_input(true);
         check_double_input(false);
+        check_float_pair_moments();
         check_invalid_input();
     }
     TH1::AddDirectory(false);

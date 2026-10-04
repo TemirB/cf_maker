@@ -170,7 +170,7 @@ void test_metadata(const std::filesystem::path& dir, const Config& cfg)
     auto* pair_metadata = dynamic_cast<TObjString*>(file.Get("cf_maker_fit_results"));
     check(pair_metadata &&
               nlohmann::json::parse(pair_metadata->GetString().Data())["identity"]["statistics"] ==
-                  "pair_weights_unbiased_v1",
+                  "weighted-mean-source-roundoff-v2",
           "pair-weight statistics version was not recorded");
     Config loaded = cfg;
     build(loaded);
@@ -272,7 +272,7 @@ void test_metadata(const std::filesystem::path& dir, const Config& cfg)
     build(loaded);
     read_fit_results(fixed_output, loaded);
     check_grid(fixed.fit_results, loaded.fit_results);
-    fixed_metadata["identity"]["statistics"] = "pair_weights_unbiased_v1";
+    fixed_metadata["identity"]["statistics"] = "weighted-mean-source-roundoff-v2";
     TObjString wrong_mode(fixed_metadata.dump().c_str());
     fixed_output.cd();
     wrong_mode.Write("cf_maker_fit_results", TObject::kOverwrite);

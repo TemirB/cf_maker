@@ -13,6 +13,17 @@ enum class CorrelationStatistics
     FixedReference
 };
 
+// Copying TH3F into TH3D preserves values, but cannot restore the precision
+// of their accumulation. Keep that provenance through subsequent projections.
+enum class MomentStorage
+{
+    Double,
+    Float
+};
+
+void set_moment_storage(TH1& histogram, MomentStorage storage);
+[[nodiscard]] MomentStorage moment_storage(const TH1& histogram);
+
 // An absent marker means PairWeights, the input contract of sthbtmaker.
 // Other producers must write TNamed("correlation_statistics", "fixed_reference")
 // to request the fixed-reference model; zero denominator errors do not select it.
@@ -28,8 +39,9 @@ void validate_correlation_inputs(const TH1& numerator, const TH1& denominator,
 //     (sum(w*w) - sum(w)*sum(w)/N) / (N*(N-1)).
 // Empty bins have C = error = 0. Single-pair bins retain their mean but have
 // error = 0: a variance cannot be estimated, and ROOT chi-square fits exclude
-// them. Zero-variance bins likewise have error = 0. Malformed moments or
-// incompatible axes raise an exception instead of silently choosing a model.
+// them. Variances unresolved at the source's accumulation precision likewise
+// have error = 0; for float sources this is reported in the log. Malformed
+// moments or incompatible axes raise an exception instead of choosing a model.
 // These are diagonal, independent-pair errors; event/track correlations need
 // a separate event-level resampling analysis.
 void fill_correlation(TH1& cf, const TH1& numerator, const TH1& denominator,

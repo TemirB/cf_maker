@@ -1,4 +1,5 @@
 #include "core/lcms.h"
+#include "core/correlation.h"
 
 #include <algorithm>
 #include <cmath>
@@ -144,6 +145,7 @@ TH1D* project_1d(TH3D& h, LCMSAxis axis, double w)
     char proj[3] = {projection_char(axis), 'e', '\0'};
     TH1D* out = static_cast<TH1D*>(h.Project3D(proj));
     out->SetDirectory(nullptr);
+    set_moment_storage(*out, moment_storage(h));
     return out;
 }
 
@@ -157,5 +159,6 @@ TH2D* project_2d(TH3D& h, LCMSAxis ax1, LCMSAxis ax2, double w)
     proj += 'e';
     TH2D* out = static_cast<TH2D*>(h.Project3D(proj.c_str()));
     out->SetDirectory(nullptr);
+    set_moment_storage(*out, moment_storage(h));
     return out;
 }
