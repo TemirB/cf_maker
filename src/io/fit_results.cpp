@@ -80,6 +80,7 @@ nlohmann::json fit_identity(const Config& cfg)
     // Increment the model version when the formula, units or parameter conventions change.
     return {{"model", "lcms_gaussian_v1"},
             {"statistics", statistics_version},
+            {"retry_selection", "usable-first-v1"},
             {"input_type", cfg.input.type},
             {"binning", {{"values", cfg.binning.values}, {"names", cfg.binning.names}}},
             {"selection",

@@ -3,6 +3,8 @@
 #include <array>
 #include <vector>
 
+constexpr double kFitLimitTolerance = 1e-4;
+
 struct FitResult
 {
     std::array<double, 6> r{};
@@ -29,5 +31,13 @@ struct FitResult
 };
 
 [[nodiscard]] bool is_bad_fit(const FitResult& r);
+
+// Boundary and failed fits remain in the saved fit metadata, but are excluded
+// from ordinary physical graphs and model overlays.
+[[nodiscard]] bool is_usable_fit(const FitResult& result);
+
+// Prefer a usable result to a boundary result before comparing chi-square.
+// Failed, nonfinite and underdetermined candidates never replace each other.
+[[nodiscard]] bool is_better_fit(const FitResult& candidate, const FitResult& current);
 
 using FitGrid = std::vector<std::vector<std::vector<FitResult>>>;

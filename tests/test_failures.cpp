@@ -325,6 +325,30 @@ void test_cli_failures(const std::filesystem::path& dir, const std::string& exec
     create_input(dir / "zero_variance.root", true, false);
 
     run_case(dir, executable, "valid", config_for(dir, "input.root", "valid"), 0);
+    auto boundary = config_for(dir, "input.root", "boundary_fit");
+    boundary["fit"] = {
+        {"limits", {{"radius_sq", {0.0, 100.0}}, {"lambda", {0.3, 0.5}}, {"cross", {0.0, 1.0}}}},
+        {"freeze",
+         {{"r_out", 4.0},
+          {"r_side", 5.0},
+          {"r_long", 6.0},
+          {"r_os", 0.0},
+          {"r_ol", 0.0},
+          {"r_sl", 0.0}}}};
+    run_case(dir, executable, "boundary_fit", boundary, 2);
+    const auto boundary_log = read_bytes(dir / "boundary_fit.log");
+    check(boundary_log.find("parameter at limit;") != std::string::npos &&
+              boundary_log.find("reached_limits={lambda=") != std::string::npos &&
+              boundary_log.find("in [0.3, 0.5]") != std::string::npos,
+          "boundary diagnostics did not identify lambda or excluded frozen parameters incorrectly");
+    {
+        TFile diagnostics((dir / "boundary_fit/cf3d.root").c_str(), "READ");
+        auto* text = dynamic_cast<TObjString*>(diagnostics.Get("cf_maker_fit_results"));
+        check(!diagnostics.IsZombie() && text, "boundary-fit diagnostics were discarded");
+        const auto result = nlohmann::json::parse(text->GetString().Data())["fit_grid"][0][0][0];
+        check(result["at_limit"] == true && result["attempts"] == 2,
+              "boundary-fit status or performed retry count was not retained");
+    }
     auto valid_2d = config_for(dir, "input.root", "valid_2d");
     valid_2d["stages"]["cf3d"] = false;
     valid_2d["stages"]["projections_2d"] = true;
@@ -362,9 +386,16 @@ void test_cli_failures(const std::filesystem::path& dir, const std::string& exec
         auto* text = dynamic_cast<TObjString*>(diagnostics.Get("cf_maker_fit_results"));
         check(!diagnostics.IsZombie() && text, "failed-fit diagnostics were discarded");
         const auto result = nlohmann::json::parse(text->GetString().Data())["fit_grid"][0][0][0];
-        check(result["ok"] == false && result["attempts"].get<int>() > 0,
-              "failed-fit status was not retained");
+        check(result["ok"] == false && result["attempts"] == 2,
+              "failed-fit status or performed retry count was not retained");
     }
+    const auto failed_log = read_bytes(dir / "failed_fits.log");
+    check(failed_log.find("usable=0/1, retried=1") != std::string::npos,
+          "fit summary did not count an unsuccessful retry");
+    check(failed_log.find("fit (ch=0, centr=0, b=0): unusable:") != std::string::npos &&
+              failed_log.find("minimizer result rejected;") != std::string::npos &&
+              failed_log.find("attempts=2") != std::string::npos,
+          "unusable fit diagnostics did not identify the failed task and attempts");
 
     auto projections = config_for(dir, "no_histograms.root", "missing_2d");
     projections["stages"]["cf3d"] = false;

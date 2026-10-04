@@ -13,11 +13,6 @@
 #include "fit/model.h"
 #include "io/input.h"
 
-bool is_usable_fit(const FitResult& result)
-{
-    return result.ok && result.is_finite() && !result.at_limit && result.ndf > 0;
-}
-
 TGraphErrors* build_chi2_ndf_graph(const Config& cfg, int ch, int centr)
 {
     const Bin& bin = cfg.binning;

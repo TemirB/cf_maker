@@ -208,8 +208,7 @@ FitResult fit_cf_3d(TH3D* cf_hist, TF3* fit3d, const FitConfig& fitCfg)
         double max = 0.0;
         param_limits(fitCfg, i, min, max);
         const double val = fit3d->GetParameter(i);
-        constexpr double kEps = 1e-4;
-        if (val <= min + kEps || val >= max - kEps) {
+        if (val <= min + kFitLimitTolerance || val >= max - kFitLimitTolerance) {
             res.at_limit = true;
         }
     }
@@ -245,24 +244,27 @@ FitResult fit_cf_3d_with_retry(TH3D* cf_hist, const Config& cfg, int ch, int cen
 
     auto fit3d = std::unique_ptr<TF3>(create_cf_3d_fit(cfg, ch, centr, b));
     FitResult best = fit_cf_3d(cf_hist, fit3d.get(), cfg.fit);
-    logging::debug(task + ": chi2=" + std::to_string(best.chi2) + ", ndf=" + std::to_string(best.ndf) +
-               ", status=" + std::to_string(best.status) + ", covStatus=" +
-               std::to_string(best.cov_status) + ", atLimit=" + (best.at_limit ? "true" : "false"));
+    logging::debug(task + ": chi2=" + std::to_string(best.chi2) +
+                   ", ndf=" + std::to_string(best.ndf) + ", status=" + std::to_string(best.status) +
+                   ", covStatus=" + std::to_string(best.cov_status) +
+                   ", atLimit=" + (best.at_limit ? "true" : "false"));
 
-    if ((best.ok && !best.at_limit) || !cfg.fit.retry_with_defaults) {
+    if (is_usable_fit(best) || best.attempts == 0 || !cfg.fit.retry_with_defaults) {
         return best;
     }
 
-    logging::info(
-        task + ": first attempt " +
-        (best.ok ? "hit parameter limits" : "failed (status=" + std::to_string(best.status) + ")") +
-        " — retrying with default initial parameters");
+    logging::info(task + ": first attempt " +
+                  (best.at_limit ? "hit parameter limits"
+                                 : "is unusable (status=" + std::to_string(best.status) + ")") +
+                  " — retrying with default initial parameters");
 
     auto altFit = std::unique_ptr<TF3>(make_cf_3d_fit(cfg, ch, centr, b, true));
     FitResult alt = fit_cf_3d(cf_hist, altFit.get(), cfg.fit);
+    const int attempts = best.attempts + alt.attempts;
+    best.attempts = attempts;
+    alt.attempts = attempts;
 
-    if (alt.ok && (!best.ok || alt.chi2 < best.chi2)) {
-        alt.attempts = 2;
+    if (is_better_fit(alt, best)) {
         logging::info(task + ": retry improved the fit");
         return alt;
     }

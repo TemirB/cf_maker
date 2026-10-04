@@ -55,12 +55,18 @@ int main()
     CHECK(r.status == 0);
     CHECK(r.cov_status == 1 || r.cov_status == 3);
     CHECK(!r.at_limit);
+    CHECK(r.attempts == 1);
     CHECK(std::abs(r.r[0] - R) < 0.2);
     CHECK(std::abs(r.r[1] - R) < 0.2);
     CHECK(std::abs(r.r[2] - R) < 0.2);
     CHECK(std::abs(r.lambda - lambda) < 0.05);
     CHECK(std::abs(r.correlation(0, 0) - 1.0) < 1e-4);
     CHECK(std::abs(r.correlation(0, 1)) <= 1.0);
+
+    TH3D empty("empty", "", 4, -0.2, 0.2, 4, -0.2, 0.2, 4, -0.2, 0.2);
+    const FitResult missing = fit_cf_3d_with_retry(&empty, cfg, 0, 0, 0);
+    CHECK(!missing.ok);
+    CHECK(missing.attempts == 0);
 
     std::cout << "All tests passed\n";
     return 0;

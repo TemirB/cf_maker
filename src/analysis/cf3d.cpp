@@ -117,6 +117,7 @@ void build_and_fit_3d_correlation_functions(Config& cfg, TFile* outFile)
     });
 
     int nOk = 0;
+    int n_usable = 0;
     int nRetried = 0;
     int nAtLimit = 0;
     int nMissing = 0;
@@ -132,6 +133,9 @@ void build_and_fit_3d_correlation_functions(Config& cfg, TFile* outFile)
         if (result.fit.ok) {
             nOk++;
         }
+        if (is_usable_fit(result.fit)) {
+            n_usable++;
+        }
         if (result.fit.attempts > 1) {
             nRetried++;
         }
@@ -146,6 +150,7 @@ void build_and_fit_3d_correlation_functions(Config& cfg, TFile* outFile)
     }
 
     logging::info("cf3d: fits ok=" + std::to_string(nOk) + "/" + std::to_string(tasks.size()) +
+                  ", usable=" + std::to_string(n_usable) + "/" + std::to_string(tasks.size()) +
                   ", retried=" + std::to_string(nRetried) + ", atLimit=" +
                   std::to_string(nAtLimit) + ", missing=" + std::to_string(nMissing));
     if (nAtLimit > 0) {

@@ -230,6 +230,19 @@ void test_metadata(const std::filesystem::path& dir, const Config& cfg)
     auto* stored = dynamic_cast<TObjString*>(bad_file.Get("cf_maker_fit_results"));
     check(stored != nullptr, "missing test metadata");
     auto metadata = nlohmann::json::parse(stored->GetString().Data());
+    check(metadata["identity"]["retry_selection"] == "usable-first-v1",
+          "retry selection policy was not recorded");
+    auto stale_selection = metadata;
+    stale_selection["identity"].erase("retry_selection");
+    bad_file.cd();
+    TObjString stale(stale_selection.dump().c_str());
+    stale.Write("cf_maker_fit_results", TObject::kOverwrite);
+    loaded = cfg;
+    build(loaded);
+    check_throws([&] { read_fit_results(bad_file, loaded); },
+                 "fits selected with an old retry policy were accepted");
+    check(loaded.fit_results[0][0][0].attempts == 0, "stale retry selection modified the fit grid");
+
     metadata["fit_grid"][0][0][0].erase("status");
     bad_file.cd();
     TObjString incomplete(metadata.dump().c_str());

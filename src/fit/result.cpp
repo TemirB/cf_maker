@@ -49,3 +49,21 @@ bool is_bad_fit(const FitResult& r)
     }
     return false;
 }
+
+bool is_usable_fit(const FitResult& result)
+{
+    return result.ok && result.is_finite() && !result.at_limit && result.ndf > 0;
+}
+
+bool is_better_fit(const FitResult& candidate, const FitResult& current)
+{
+    const bool candidate_usable = is_usable_fit(candidate);
+    const bool current_usable = is_usable_fit(current);
+    if (candidate_usable != current_usable) {
+        return candidate_usable;
+    }
+
+    const bool candidate_converged = candidate.ok && candidate.is_finite() && candidate.ndf > 0;
+    const bool current_converged = current.ok && current.is_finite() && current.ndf > 0;
+    return candidate_converged && (!current_converged || candidate.chi2 < current.chi2);
+}

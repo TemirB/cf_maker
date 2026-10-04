@@ -139,6 +139,114 @@ void test_fit_result_finiteness()
     }
 }
 
+FitResult usable_fit(double chi2)
+{
+    FitResult result;
+    result.ok = true;
+    result.r = {4.0, 5.0, 6.0, -0.5, 1.5, 0.5};
+    result.e_r = {0.1, 0.2, 0.3, 0.4, 0.5, 0.6};
+    result.lambda = 0.7;
+    result.e_lambda = 0.01;
+    result.chi2 = chi2;
+    result.ndf = 10;
+    result.p_value = 0.28;
+    result.status = 0;
+    result.cov_status = 3;
+    result.attempts = 1;
+    result.corr.fill(0.1);
+    return result;
+}
+
+void test_fit_candidate_ranking()
+{
+    const FitResult usable = usable_fit(120.0);
+    FitResult boundary = usable_fit(80.0);
+    boundary.at_limit = true;
+    FitResult failed = usable_fit(1.0);
+    failed.ok = false;
+    failed.status = 3;
+
+    CHECK(is_usable_fit(usable));
+    CHECK(!is_usable_fit(boundary));
+    CHECK(!is_usable_fit(failed));
+
+    // A usable retry must win even if the fit on a parameter limit has lower chi-square.
+    CHECK(is_better_fit(usable, boundary));
+    CHECK(!is_better_fit(boundary, usable));
+    CHECK(is_better_fit(boundary, failed));
+    CHECK(!is_better_fit(failed, boundary));
+    CHECK(!is_better_fit(failed, usable));
+
+    FitResult lower_chi2 = usable_fit(100.0);
+    CHECK(is_better_fit(lower_chi2, usable));
+    CHECK(!is_better_fit(usable, lower_chi2));
+    CHECK(!is_better_fit(usable, usable));
+
+    lower_chi2.at_limit = true;
+    FitResult higher_boundary = boundary;
+    higher_boundary.chi2 = 110.0;
+    CHECK(is_better_fit(lower_chi2, higher_boundary));
+    CHECK(!is_better_fit(higher_boundary, lower_chi2));
+    CHECK(!is_better_fit(boundary, boundary));
+
+    FitResult failed_retry = failed;
+    failed_retry.chi2 = 0.0;
+    CHECK(!is_better_fit(failed_retry, failed));
+    CHECK(!is_better_fit(failed, failed_retry));
+
+    for (const int ndf : {0, -1}) {
+        FitResult no_ndf = usable_fit(0.0);
+        no_ndf.ndf = ndf;
+        CHECK(!is_usable_fit(no_ndf));
+        CHECK(!is_better_fit(no_ndf, usable));
+        CHECK(!is_better_fit(no_ndf, boundary));
+        CHECK(!is_better_fit(no_ndf, failed));
+        CHECK(is_better_fit(usable, no_ndf));
+        CHECK(is_better_fit(boundary, no_ndf));
+    }
+}
+
+void check_non_finite_candidate(FitResult& candidate, double& field)
+{
+    const FitResult usable = usable_fit(120.0);
+    FitResult boundary = usable;
+    boundary.at_limit = true;
+    FitResult failed = usable;
+    failed.ok = false;
+    const double original = field;
+    for (const double bad_value :
+         {std::numeric_limits<double>::quiet_NaN(), std::numeric_limits<double>::infinity(),
+          -std::numeric_limits<double>::infinity()}) {
+        field = bad_value;
+        CHECK(!is_usable_fit(candidate));
+        CHECK(!is_better_fit(candidate, usable));
+        CHECK(!is_better_fit(candidate, boundary));
+        CHECK(!is_better_fit(candidate, failed));
+        CHECK(is_better_fit(usable, candidate));
+        CHECK(is_better_fit(boundary, candidate));
+    }
+    field = original;
+    CHECK(is_usable_fit(candidate));
+}
+
+void test_fit_candidate_finiteness()
+{
+    FitResult candidate = usable_fit(1.0);
+    for (double& value : candidate.r) {
+        check_non_finite_candidate(candidate, value);
+    }
+    for (double& value : candidate.e_r) {
+        check_non_finite_candidate(candidate, value);
+    }
+    check_non_finite_candidate(candidate, candidate.lambda);
+    check_non_finite_candidate(candidate, candidate.e_lambda);
+    check_non_finite_candidate(candidate, candidate.chi2);
+    check_non_finite_candidate(candidate, candidate.p_value);
+    for (double& value : candidate.corr) {
+        check_non_finite_candidate(candidate, value);
+    }
+}
+
 } // namespace
 
 int main()
@@ -147,6 +255,8 @@ int main()
     Testbin_center();
     TestFitResult();
     test_fit_result_finiteness();
+    test_fit_candidate_ranking();
+    test_fit_candidate_finiteness();
     std::cout << "All tests passed\n";
     return 0;
 }
