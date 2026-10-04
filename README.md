@@ -84,6 +84,38 @@ brew install cmake root openssl clang-format ccache
 Из корня проекта:
 
 ```bash
+make
+make test
+make run CONFIG=config/kt.json
+```
+
+`Makefile` по умолчанию выбирает `g++`, Release и два процесса компиляции.
+Перед сборкой он повторяет конфигурацию CMake, восстанавливая отсутствующие
+сгенерированные файлы. Компилятор задаётся явно через `make CXX=clang++`;
+переменная `CXX` из окружения не подменяет Linux-компилятор на `clang-cl`.
+
+Полезные команды и настройки:
+
+```bash
+make help
+make check CONFIG=config/kt.json        # сборка → тесты → анализ
+make rebuild JOBS=4                     # пересобрать с очисткой объектов
+make doctor                            # версии компилятора, CMake, ROOT
+make demo                              # полный запуск на Gaussian-входе
+make test CTEST_ARGS="-R ratios"        # один тест
+make format-check                      # проверить форматирование
+make lint                              # clang-tidy
+make sanitize-test                     # ASan/UBSan приложения и всех тестов
+```
+
+Дополнительно: `BUILD_DIR`, `BUILD_TYPE`, `ROOT_DIR`, `CMAKE_ARGS`,
+`SANITIZE_BUILD_DIR`, `FIXTURE_DIR`, `CLANG_FORMAT`, `CLANG_TIDY` и
+`CLANG_TIDY_ARGS`. Sanitizer-сборка использует игнорируемый `build-sanitize/`.
+ROOT должен быть установлен и доступен в текущем окружении.
+
+Для прямой сборки через CMake:
+
+```bash
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build -j$(nproc)
 ```

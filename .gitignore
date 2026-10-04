@@ -1,6 +1,7 @@
 results
 input
 build
+/build-sanitize/
 .vscode
 .cache
 compile_commands.json
