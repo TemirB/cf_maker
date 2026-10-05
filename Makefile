@@ -18,7 +18,8 @@ CLANG_FORMAT ?= clang-format
 CLANG_TIDY ?= clang-tidy
 CLANG_TIDY_ARGS ?=
 LATEXMK ?= latexmk
-PYTHON ?= python3
+GO ?= go
+PRESENTATION_BUILDER ?= $(BUILD_DIR)/presentation-builder
 RESULTS ?=
 PRESENTATION_PLOTS ?= 12
 DOCS_BUILD_DIR ?= docs/thesis/build
@@ -60,7 +61,7 @@ help:
 	  'Настройки: JOBS=4 CXX=clang++ CONFIG=config/rapidity.json BUILD_DIR=build-linux' \
 	  'ROOT_DIR=/path/to/root/cmake CMAKE_ARGS="..." CTEST_ARGS="-R ratios"' \
 	  'make run-presentation CONFIG=config/y.json' \
-	  'make presentation RESULTS=/path/to/results PYTHON=python3' \
+	  'make presentation RESULTS=/path/to/results' \
 	  'PRESENTATION_PLOTS=12     Максимум графиков в PDF; 0 — все' \
 	  'Перед сборкой активируйте установленный ROOT: source /path/to/root/bin/thisroot.sh'
 
@@ -132,7 +133,8 @@ demo: build
 docs:
 	$(MAKE) -C docs/thesis all LATEXMK="$(LATEXMK)" \
 	  BUILD_DIR="$(DOCS_OUTPUT_DIR)" STRICT_ASSETS="$(STRICT_ASSETS)" \
-	  PYTHON="$(PYTHON)" CONFIG="$(CONFIG)" RESULTS="$(RESULTS)" \
+	  GO="$(GO)" PRESENTATION_BUILDER="$(abspath $(PRESENTATION_BUILDER))" \
+	  CONFIG="$(CONFIG)" RESULTS="$(RESULTS)" \
 	  PRESENTATION_PLOTS="$(PRESENTATION_PLOTS)"
 
 thesis:
@@ -140,20 +142,28 @@ thesis:
 	  BUILD_DIR="$(DOCS_OUTPUT_DIR)" STRICT_ASSETS="$(STRICT_ASSETS)"
 
 presentation:
-	$(MAKE) -C docs/thesis presentation LATEXMK="$(LATEXMK)" \
+	$(MAKE) -C docs/thesis presentation LATEXMK="$(LATEXMK)" GO="$(GO)" \
 	  BUILD_DIR="$(DOCS_OUTPUT_DIR)" STRICT_ASSETS="$(STRICT_ASSETS)" \
-	  PYTHON="$(PYTHON)" CONFIG="$(CONFIG)" RESULTS="$(RESULTS)" \
+	  PRESENTATION_BUILDER="$(abspath $(PRESENTATION_BUILDER))" \
+	  CONFIG="$(CONFIG)" RESULTS="$(RESULTS)" \
 	  PRESENTATION_PLOTS="$(PRESENTATION_PLOTS)"
 
 check-presentation-tools:
-	$(MAKE) -C docs/thesis check-presentation-tools LATEXMK="$(LATEXMK)" PYTHON="$(PYTHON)"
+	$(MAKE) -C docs/thesis check-presentation-tools LATEXMK="$(LATEXMK)" GO="$(GO)"
 
 # Diagnose missing document tools before starting the analysis. Exit code 2
 # still permits a diagnostic presentation; ordinary run/check keep their status.
-run-presentation: check-presentation-tools build
-	"$(PYTHON)" tools/prepare_presentation.py run \
-	  --executable "$(BUILD_DIR)/main" --config "$(CONFIG)"
-	$(MAKE) presentation CONFIG="$(CONFIG)" RESULTS=""
+run-presentation: check-presentation-tools build $(PRESENTATION_BUILDER)
+	"$(abspath $(PRESENTATION_BUILDER))" -config "$(CONFIG)" \
+	  -repo-root "$(CURDIR)" -source-dir "$(CURDIR)/docs/thesis" \
+	  -build-dir "$(DOCS_OUTPUT_DIR)/presentation" -latexmk "$(LATEXMK)" \
+	  -plots "$(PRESENTATION_PLOTS)" \
+	  -strict-assets="$(if $(filter 1,$(STRICT_ASSETS)),true,false)" \
+	  -executable "$(abspath $(BUILD_DIR)/main)"
+
+$(PRESENTATION_BUILDER): tools/presentation_builder/main.go
+	mkdir -p "$(dir $@)"
+	"$(GO)" build -o "$@" "$<"
 
 docs-clean:
 	$(MAKE) -C docs/thesis clean LATEXMK="$(LATEXMK)" \

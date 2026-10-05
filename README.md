@@ -134,7 +134,7 @@ make run-presentation CONFIG=config/kt.json
 make run-presentation CONFIG=config/y.json
 ```
 
-Команда проверяет Python и инструменты LaTeX, собирает программу, выполняет анализ,
+Команда проверяет Go и инструменты LaTeX, собирает программу, выполняет анализ,
 добавляет в презентацию главу с параметрами запуска и созданными графиками,
 затем записывает **`presentation.pdf` в директорию результатов расчёта**.
 Копия также находится в `docs/thesis/build/presentation/presentation.pdf`.
@@ -169,7 +169,7 @@ make presentation  # презентация и результаты выбран
 
 Результаты: `docs/thesis/build/report/thesis.pdf` и
 `docs/thesis/build/presentation/presentation.pdf`. Зависимости LaTeX,
-Python 3, недостающие исходные рисунки и строгая сборка описаны в README документов.
+Go, недостающие исходные рисунки и строгая сборка описаны в README документов.
 Если выбранного расчёта ещё нет, `make presentation` собирает исходные слайды
 и сообщает, что глава с результатами не добавлена.
 Результаты старой версии без `run_manifest.json` нужно получить повторным

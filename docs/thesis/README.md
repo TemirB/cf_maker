@@ -84,9 +84,9 @@ make presentation CONFIG=config/y.json PRESENTATION_PLOTS=0  # все графи
 презентация с сообщением о необходимости повторить анализ обновлённой программой.
 При явном `RESULTS` отсутствие manifest считается ошибкой.
 
-Подготовка создаёт в каталоге сборки `presentation-results.json` с выбранным
-расчётом и снимок используемых изображений в `current-results/`. После успешной
-сборки LaTeX PDF копируется в директорию именно этого расчёта.
+Сборщик Go читает конфиг и `run_manifest.json`, затем копирует перечисленные там
+графики в `current-results/`, создаёт главу результатов, запускает latexmk и
+публикует PDF в каталоге сборки и рядом с результатами анализа.
 
 Остальные цели документов:
 
@@ -105,10 +105,10 @@ make docs-clean    # очистить результаты сборки доку
 Цели `docs`, `thesis` и `presentation` не требуют ROOT, CMake или компиляции
 программы. `run-presentation` требует также зависимости приложения.
 Для другого каталога сборки документов задайте `DOCS_BUILD_DIR`, для другого
-latexmk — `LATEXMK`, для другого Python — `PYTHON`:
+latexmk — `LATEXMK`, для Go-компилятора — `GO`:
 
 ```bash
-make docs DOCS_BUILD_DIR=/tmp/cf-maker-docs LATEXMK=/path/to/latexmk PYTHON=python3
+make docs DOCS_BUILD_DIR=/tmp/cf-maker-docs LATEXMK=/path/to/latexmk GO=/path/to/go
 ```
 
 Можно также собирать внутри директории материалов:
@@ -130,12 +130,12 @@ make -C docs/thesis clean
 
 ## Зависимости
 
-Нужны XeLaTeX, latexmk и Biber; для автоматической главы результатов — Python 3
-без дополнительных библиотек. Набор пакетов для Ubuntu:
+Нужны Go, XeLaTeX, latexmk и Biber. Для Go-утилиты используются только стандартные
+библиотеки. Набор пакетов для Ubuntu:
 
 ```bash
 sudo apt-get update
-sudo apt-get install python3 latexmk biber texlive-xetex texlive-latex-extra \
+sudo apt-get install golang-go latexmk biber texlive-xetex texlive-latex-extra \
   texlive-bibtex-extra texlive-lang-cyrillic texlive-science \
   fonts-freefont-otf texlive-fonts-extra-links
 ```
@@ -143,7 +143,7 @@ sudo apt-get install python3 latexmk biber texlive-xetex texlive-latex-extra \
 Альтернатива — полный набор TeX Live:
 
 ```bash
-sudo apt install python3 texlive-full latexmk biber fonts-freefont-otf
+sudo apt install golang-go texlive-full latexmk biber fonts-freefont-otf
 ```
 
 Документы используют кириллицу, `polyglossia`, `fontspec`, `biblatex-gost`,
@@ -172,11 +172,9 @@ latexmk 4.88 и Biber 2.22: текст работы собран на 15 стр�
 Это число страниц исходной презентации; автоматическая глава расчёта добавляет
 страницы в зависимости от набора выбранных графиков.
 
-Автоматическая цепочка проверена на синтетическом Gaussian-примере: анализ,
-экспорт графиков и сборка PDF выполняются одной командой. Проверены повторная
-сборка без анализа, пути с пробелами, диагностический PDF при коде `2` и
-исключение старых изображений отключённой стадии. Все 16 проверок CTest прошли,
-включая тесты manifest и 16 проверок Python-инструмента.
+Сборщик — самостоятельный Go-бинарь без сторонних зависимостей. Он читает путь
+результатов из выбранного конфига, поэтому `make presentation CONFIG=config/y.json`
+и `make run-presentation CONFIG=config/y.json` используют один и тот же набор.
 
 ## Недостающие рисунки
 

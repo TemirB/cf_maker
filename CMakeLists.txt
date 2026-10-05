@@ -198,13 +198,6 @@ target_link_libraries(test_run_manifest PRIVATE project_warnings
 )
 add_test(NAME run_manifest COMMAND test_run_manifest)
 
-find_package(Python3 QUIET COMPONENTS Interpreter)
-if(Python3_Interpreter_FOUND)
-    add_test(NAME presentation_tools
-        COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tests/test_presentation.py
-    )
-endif()
-
 add_executable(test_fit
     tests/test_fit.cpp
     src/fit/model.cpp
