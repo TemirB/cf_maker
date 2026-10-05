@@ -1,0 +1,52 @@
+% XeLaTeX document
+\documentclass[aspectratio=169, 11pt]{beamer}
+
+% Редактируем: конфигурация, личные настройки: 
+% имя, название предмета и пр. для титульной страницы 
+% и метаданных документа здесь
+\input{config}
+
+% Не редактируем: используемые пакеты
+\input{settings/packages}
+
+% Не редактируем: параметры используемых пакетов и не только
+\input{settings/preferences}
+
+% водяной знак для обозначения статуса документа
+% \newwatermark[allpages,color=red!5,angle=45,scale=3,xpos=0,ypos=0]{DRAFT}
+
+% настройка метаданных документа
+\institute[\university]{
+    \university \\ 
+    \faculty \\ 
+    \department
+}
+\title[\docname]{
+    \docname
+}
+\author[\studentname]{
+    \small Выполнил: ст. гр. \group \ \studentname \\[1mm] 
+    \small Руководитель: \tutorname \\ 
+    \small Консультант: \consul
+}
+
+\date{\the\year} 
+
+\input{templates/titlepage}
+
+\begin{document}
+
+% Редактируем: всё остальное: 
+% вступление, 
+% др. этапы, 
+% заключение, 
+% приложение
+\input{content}
+
+% Не редактируем: 
+% Страница библиографии (формируется автоматически 
+%   из книжек, указанных в refs.bib и пометок 
+%   \cite{имя_источника} в тексте)
+\include{templates/bib-page}
+
+\end{document}

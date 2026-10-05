@@ -122,6 +122,21 @@ cmake --build build -j$(nproc)
 
 После сборки исполняемый файл `main` будет находиться в директории `build/`.
 
+# Текст диплома и презентация
+
+Текст диплома и презентация находятся в [docs/thesis](docs/thesis/README.md).
+Их можно собрать из корня репозитория отдельно от приложения:
+
+```bash
+make docs          # оба PDF
+make thesis        # только текст
+make presentation  # только презентация
+```
+
+Результаты: `docs/thesis/build/report/thesis.pdf` и
+`docs/thesis/build/presentation/presentation.pdf`. Зависимости LaTeX,
+недостающие исходные рисунки и строгая сборка описаны в README документов.
+
 # Запуск
 
 Программа принимает один аргумент — путь к JSON-конфигурации:

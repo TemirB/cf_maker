@@ -1,0 +1,30 @@
+% настройка кодировки, шрифтов и русского языка
+\usepackage{fontspec}
+\usepackage{polyglossia}
+
+% графика
+\usepackage{graphicx}
+\input{../common/missing-images.tex}
+
+% качественные листинги кода
+% \usepackage{minted}
+\usepackage{listings}
+
+% отключение копирования номеров строк из листинга, работает не во всех просмотрщиках (в Adobe Reader работает)
+\usepackage{accsupp}
+\newcommand\emptyaccsupp[1]{\BeginAccSupp{ActualText={}}#1\EndAccSupp{}}
+\let\theHFancyVerbLine\theFancyVerbLine
+\def\theFancyVerbLine{\rmfamily\tiny\emptyaccsupp{\arabic{FancyVerbLine}}}
+
+% библиография
+\usepackage{csquotes}
+\usepackage[backend=biber,style=gost-numeric,language=auto,autolang=other,sorting=ntvy]{biblatex}
+
+% разное для математики
+\usepackage{amsmath, amsfonts, amssymb, amsthm, mathtools}
+
+% водяной знак на документе, см. main.tex
+
+% для презентаций
+\usepackage{float}
+\usepackage{bm}
