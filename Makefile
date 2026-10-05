@@ -19,7 +19,16 @@ CLANG_TIDY ?= clang-tidy
 CLANG_TIDY_ARGS ?=
 LATEXMK ?= latexmk
 GO ?= go
-PRESENTATION_BUILDER ?= $(BUILD_DIR)/presentation-builder
+HOST_OS := $(shell uname -s)
+HOST_ARCH := $(shell uname -m)
+ifeq ($(HOST_OS),Linux)
+  ifeq ($(HOST_ARCH),x86_64)
+    DEFAULT_PRESENTATION_BUILDER := tools/bin/presentation-builder-linux-amd64
+  else ifneq ($(filter aarch64 arm64,$(HOST_ARCH)),)
+    DEFAULT_PRESENTATION_BUILDER := tools/bin/presentation-builder-linux-arm64
+  endif
+endif
+PRESENTATION_BUILDER ?= $(if $(DEFAULT_PRESENTATION_BUILDER),$(DEFAULT_PRESENTATION_BUILDER),$(BUILD_DIR)/presentation-builder)
 RESULTS ?=
 PRESENTATION_PLOTS ?= 12
 DOCS_BUILD_DIR ?= docs/thesis/build
@@ -149,7 +158,8 @@ presentation:
 	  PRESENTATION_PLOTS="$(PRESENTATION_PLOTS)"
 
 check-presentation-tools:
-	$(MAKE) -C docs/thesis check-presentation-tools LATEXMK="$(LATEXMK)" GO="$(GO)"
+	$(MAKE) -C docs/thesis check-presentation-tools LATEXMK="$(LATEXMK)" GO="$(GO)" \
+	  PRESENTATION_BUILDER="$(abspath $(PRESENTATION_BUILDER))"
 
 # Diagnose missing document tools before starting the analysis. Exit code 2
 # still permits a diagnostic presentation; ordinary run/check keep their status.
@@ -161,9 +171,11 @@ run-presentation: check-presentation-tools build $(PRESENTATION_BUILDER)
 	  -strict-assets="$(if $(filter 1,$(STRICT_ASSETS)),true,false)" \
 	  -executable "$(abspath $(BUILD_DIR)/main)"
 
+ifeq ($(wildcard $(PRESENTATION_BUILDER)),)
 $(PRESENTATION_BUILDER): tools/presentation_builder/main.go
 	mkdir -p "$(dir $@)"
 	"$(GO)" build -o "$@" "$<"
+endif
 
 docs-clean:
 	$(MAKE) -C docs/thesis clean LATEXMK="$(LATEXMK)" \

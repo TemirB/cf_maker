@@ -84,7 +84,7 @@ make presentation CONFIG=config/y.json PRESENTATION_PLOTS=0  # все графи
 презентация с сообщением о необходимости повторить анализ обновлённой программой.
 При явном `RESULTS` отсутствие manifest считается ошибкой.
 
-Сборщик Go читает конфиг и `run_manifest.json`, затем копирует перечисленные там
+Сборщик презентации читает конфиг и `run_manifest.json`, затем копирует перечисленные там
 графики в `current-results/`, создаёт главу результатов, запускает latexmk и
 публикует PDF в каталоге сборки и рядом с результатами анализа.
 
@@ -105,10 +105,11 @@ make docs-clean    # очистить результаты сборки доку
 Цели `docs`, `thesis` и `presentation` не требуют ROOT, CMake или компиляции
 программы. `run-presentation` требует также зависимости приложения.
 Для другого каталога сборки документов задайте `DOCS_BUILD_DIR`, для другого
-latexmk — `LATEXMK`, для Go-компилятора — `GO`:
+latexmk — `LATEXMK`. Go нужен только для пересборки сборщика на неподдерживаемой
+платформе или после изменения его исходников:
 
 ```bash
-make docs DOCS_BUILD_DIR=/tmp/cf-maker-docs LATEXMK=/path/to/latexmk GO=/path/to/go
+make docs DOCS_BUILD_DIR=/tmp/cf-maker-docs LATEXMK=/path/to/latexmk
 ```
 
 Можно также собирать внутри директории материалов:
@@ -130,12 +131,12 @@ make -C docs/thesis clean
 
 ## Зависимости
 
-Нужны Go, XeLaTeX, latexmk и Biber. Для Go-утилиты используются только стандартные
-библиотеки. Набор пакетов для Ubuntu:
+Для обычной работы на Linux x86_64 и ARM64 нужны XeLaTeX, latexmk и Biber.
+Сборщик презентации уже включён в репозиторий и не требует Go. Набор пакетов для Ubuntu:
 
 ```bash
 sudo apt-get update
-sudo apt-get install golang-go latexmk biber texlive-xetex texlive-latex-extra \
+sudo apt-get install latexmk biber texlive-xetex texlive-latex-extra \
   texlive-bibtex-extra texlive-lang-cyrillic texlive-science \
   fonts-freefont-otf texlive-fonts-extra-links
 ```
@@ -143,7 +144,7 @@ sudo apt-get install golang-go latexmk biber texlive-xetex texlive-latex-extra \
 Альтернатива — полный набор TeX Live:
 
 ```bash
-sudo apt install golang-go texlive-full latexmk biber fonts-freefont-otf
+sudo apt install texlive-full latexmk biber fonts-freefont-otf
 ```
 
 Документы используют кириллицу, `polyglossia`, `fontspec`, `biblatex-gost`,
@@ -172,8 +173,10 @@ latexmk 4.88 и Biber 2.22: текст работы собран на 15 стр�
 Это число страниц исходной презентации; автоматическая глава расчёта добавляет
 страницы в зависимости от набора выбранных графиков.
 
-Сборщик — самостоятельный Go-бинарь без сторонних зависимостей. Он читает путь
-результатов из выбранного конфига, поэтому `make presentation CONFIG=config/y.json`
+Сборщик — самостоятельный бинарь без сторонних runtime-зависимостей. Для Linux
+x86_64 и ARM64 готовые варианты лежат в `tools/bin/` и выбираются Makefile.
+На macOS или другой архитектуре Go используется для локальной сборки. Сборщик
+читает путь результатов из выбранного конфига, поэтому `make presentation CONFIG=config/y.json`
 и `make run-presentation CONFIG=config/y.json` используют один и тот же набор.
 
 ## Недостающие рисунки
