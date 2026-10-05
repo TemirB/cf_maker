@@ -18,6 +18,9 @@ CLANG_FORMAT ?= clang-format
 CLANG_TIDY ?= clang-tidy
 CLANG_TIDY_ARGS ?=
 LATEXMK ?= latexmk
+PYTHON ?= python3
+RESULTS ?=
+PRESENTATION_PLOTS ?= 12
 DOCS_BUILD_DIR ?= docs/thesis/build
 STRICT_ASSETS ?= 0
 DOCS_OUTPUT_DIR := $(if $(filter /%,$(firstword $(DOCS_BUILD_DIR))),$(DOCS_BUILD_DIR),$(CURDIR)/$(DOCS_BUILD_DIR))
@@ -28,7 +31,8 @@ ROOT_ARGS = $(if $(ROOT_DIR),-DROOT_DIR="$(ROOT_DIR)")
 # Serialize wrapper targets even with make -j; CMake builds still use JOBS.
 .NOTPARALLEL:
 .PHONY: help configure build test run check rebuild clean doctor format format-check \
-        lint sanitize-configure sanitize sanitize-test fixture demo docs thesis presentation docs-clean
+        lint sanitize-configure sanitize sanitize-test fixture demo docs thesis presentation \
+        run-presentation check-presentation-tools docs-clean
 
 help:
 	@printf '%s\n' \
@@ -49,11 +53,15 @@ help:
 	  'make demo                Создать/использовать Gaussian-вход и запустить анализ' \
 	  'make docs                Собрать PDF текста диплома и презентации' \
 	  'make thesis              Собрать PDF текста диплома' \
-	  'make presentation        Собрать PDF презентации' \
+	  'make presentation        Обновить PDF из результатов CONFIG=config/kt.json' \
+	  'make run-presentation    Собрать программу, выполнить CONFIG и получить PDF' \
 	  'make docs-clean          Очистить артефакты сборки LaTeX' \
 	  '' \
 	  'Настройки: JOBS=4 CXX=clang++ CONFIG=config/rapidity.json BUILD_DIR=build-linux' \
 	  'ROOT_DIR=/path/to/root/cmake CMAKE_ARGS="..." CTEST_ARGS="-R ratios"' \
+	  'make run-presentation CONFIG=config/y.json' \
+	  'make presentation RESULTS=/path/to/results PYTHON=python3' \
+	  'PRESENTATION_PLOTS=12     Максимум графиков в PDF; 0 — все' \
 	  'Перед сборкой активируйте установленный ROOT: source /path/to/root/bin/thisroot.sh'
 
 # Always configure first: a stale build tree may have lost VerifyGlobs.cmake.
@@ -123,7 +131,9 @@ demo: build
 # Documents have their own dependencies and do not need a C++/ROOT build.
 docs:
 	$(MAKE) -C docs/thesis all LATEXMK="$(LATEXMK)" \
-	  BUILD_DIR="$(DOCS_OUTPUT_DIR)" STRICT_ASSETS="$(STRICT_ASSETS)"
+	  BUILD_DIR="$(DOCS_OUTPUT_DIR)" STRICT_ASSETS="$(STRICT_ASSETS)" \
+	  PYTHON="$(PYTHON)" CONFIG="$(CONFIG)" RESULTS="$(RESULTS)" \
+	  PRESENTATION_PLOTS="$(PRESENTATION_PLOTS)"
 
 thesis:
 	$(MAKE) -C docs/thesis report LATEXMK="$(LATEXMK)" \
@@ -131,7 +141,19 @@ thesis:
 
 presentation:
 	$(MAKE) -C docs/thesis presentation LATEXMK="$(LATEXMK)" \
-	  BUILD_DIR="$(DOCS_OUTPUT_DIR)" STRICT_ASSETS="$(STRICT_ASSETS)"
+	  BUILD_DIR="$(DOCS_OUTPUT_DIR)" STRICT_ASSETS="$(STRICT_ASSETS)" \
+	  PYTHON="$(PYTHON)" CONFIG="$(CONFIG)" RESULTS="$(RESULTS)" \
+	  PRESENTATION_PLOTS="$(PRESENTATION_PLOTS)"
+
+check-presentation-tools:
+	$(MAKE) -C docs/thesis check-presentation-tools LATEXMK="$(LATEXMK)" PYTHON="$(PYTHON)"
+
+# Diagnose missing document tools before starting the analysis. Exit code 2
+# still permits a diagnostic presentation; ordinary run/check keep their status.
+run-presentation: check-presentation-tools build
+	"$(PYTHON)" tools/prepare_presentation.py run \
+	  --executable "$(BUILD_DIR)/main" --config "$(CONFIG)"
+	$(MAKE) presentation CONFIG="$(CONFIG)" RESULTS=""
 
 docs-clean:
 	$(MAKE) -C docs/thesis clean LATEXMK="$(LATEXMK)" \

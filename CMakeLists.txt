@@ -183,6 +183,28 @@ target_link_libraries(test_config PRIVATE
 
 add_test(NAME config COMMAND test_config)
 
+add_executable(test_run_manifest
+    tests/test_run_manifest.cpp
+    src/io/run_manifest.cpp
+    src/config/config.cpp
+    src/core/fs.cpp
+    src/core/log.cpp
+    src/fit/result.cpp
+)
+target_include_directories(test_run_manifest PRIVATE ${SRC_DIR})
+target_include_directories(test_run_manifest SYSTEM PRIVATE ${ROOT_INCLUDE_DIRS})
+target_link_libraries(test_run_manifest PRIVATE project_warnings
+    ROOT::Core ROOT::Hist ROOT::Graf ROOT::Gpad nlohmann_json::nlohmann_json
+)
+add_test(NAME run_manifest COMMAND test_run_manifest)
+
+find_package(Python3 QUIET COMPONENTS Interpreter)
+if(Python3_Interpreter_FOUND)
+    add_test(NAME presentation_tools
+        COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tests/test_presentation.py
+    )
+endif()
+
 add_executable(test_fit
     tests/test_fit.cpp
     src/fit/model.cpp

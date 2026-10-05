@@ -1,15 +1,60 @@
 #include "core/fs.h"
 
-#include <filesystem>
+#include <algorithm>
 #include <chrono>
+#include <filesystem>
+#include <mutex>
 #include <stdexcept>
 #include <string>
 #include <system_error>
+#include <vector>
 
 #include <TCanvas.h>
 #include <TError.h>
 
 #include "core/log.h"
+
+namespace
+{
+std::mutex canvas_paths_mutex;
+bool canvas_tracking_enabled = false;
+std::vector<std::string> canvas_paths;
+
+void track_saved_canvas(const std::filesystem::path& destination)
+{
+    const std::lock_guard<std::mutex> lock(canvas_paths_mutex);
+    if (!canvas_tracking_enabled) {
+        return;
+    }
+    const auto path = std::filesystem::absolute(destination).lexically_normal().string();
+    if (std::find(canvas_paths.begin(), canvas_paths.end(), path) == canvas_paths.end()) {
+        canvas_paths.push_back(path);
+    }
+}
+} // namespace
+
+void begin_canvas_tracking()
+{
+    const std::lock_guard<std::mutex> lock(canvas_paths_mutex);
+    if (canvas_tracking_enabled) {
+        throw std::logic_error("canvas tracking is already active");
+    }
+    canvas_paths.clear();
+    canvas_tracking_enabled = true;
+}
+
+void end_canvas_tracking() noexcept
+{
+    const std::lock_guard<std::mutex> lock(canvas_paths_mutex);
+    canvas_tracking_enabled = false;
+    canvas_paths.clear();
+}
+
+std::vector<std::string> saved_canvas_paths()
+{
+    const std::lock_guard<std::mutex> lock(canvas_paths_mutex);
+    return canvas_paths;
+}
 
 void ensure_dir(const std::string& dir)
 {
@@ -50,6 +95,7 @@ void save_canvas_quiet(TCanvas* canvas, const char* filename)
             throw std::runtime_error("cannot save canvas: " + destination.string());
         }
         std::filesystem::rename(temporary, destination);
+        track_saved_canvas(destination);
     } catch (...) {
         gErrorIgnoreLevel = prevLevel;
         std::error_code ignored;

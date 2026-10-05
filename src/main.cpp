@@ -1,6 +1,7 @@
 #include <array>
 #include <cmath>
 #include <exception>
+#include <filesystem>
 #include <iomanip>
 #include <iostream>
 #include <memory>
@@ -17,6 +18,7 @@
 #include "config/config.h"
 #include "core/log.h"
 #include "fit/types.h"
+#include "io/run_manifest.h"
 
 namespace
 {
@@ -91,6 +93,8 @@ int main(int argc, char** argv) noexcept
         ROOT::EnableThreadSafety();
 
         Config cfg = load(argv[1]);
+        cfg.input.file = std::filesystem::absolute(cfg.input.file).lexically_normal().string();
+        cfg.output.dir = std::filesystem::absolute(cfg.output.dir).lexically_normal().string();
 
         auto input = std::make_unique<TFile>(cfg.input.file.c_str(), "READ");
         if (!input || input->IsZombie()) {
@@ -98,6 +102,7 @@ int main(int argc, char** argv) noexcept
         }
         prepare_stage_dependencies(cfg);
         write_run_config(cfg);
+        RunManifest run_manifest(cfg);
 
         const std::string logFile =
             cfg.logging.file.empty() ? "" : cfg.output.dir + "/" + cfg.logging.file;
@@ -149,12 +154,14 @@ int main(int argc, char** argv) noexcept
                                "unusable; diagnostic outputs written to " +
                                cfg.output.dir);
                 logging::finish();
+                run_manifest.finish(cfg, 2);
                 return 2;
             }
         }
 
         logging::info("cf_maker: requested stages completed");
         logging::finish();
+        run_manifest.finish(cfg, 0);
         std::cout << "All outputs written to " << cfg.output.dir << "\n";
         logging::info("cf_maker: all outputs written to " + cfg.output.dir);
         return 0;

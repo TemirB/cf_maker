@@ -287,6 +287,9 @@
     в рамках этого обновления.
 \end{frame}
 
+% XeLaTeX searches the output directory first, so each build reads its own chapter.
+\IfFileExists{\jobname-results.tex}{\input{\jobname-results.tex}}{}
+
 \begin{frame}{Заключение}
     \begin{itemize}
 	\item Был сгенерирован набор частиц в транспортной модели “SMASH”.
