@@ -24,13 +24,32 @@
     {\setmainfont{CMU Serif}}
     {\IfFontExistsTF{Times New Roman}
         {\setmainfont{Times New Roman}}
-        {\setmainfont{FreeSerif.otf}}}
+        {\setmainfont{FreeSerif.otf}[
+            BoldFont=FreeSerifBold.otf,
+            ItalicFont=FreeSerifItalic.otf,
+            BoldItalicFont=FreeSerifBoldItalic.otf]}}
 \IfFontExistsTF{Arial}
     {\setsansfont{Arial}\newfontfamily\cyrillicfontsf{Arial}[Script=Cyrillic]}
-    {\setsansfont{FreeSans.otf}\newfontfamily\cyrillicfontsf{FreeSans.otf}[Script=Cyrillic]}
+    {\setsansfont{FreeSans.otf}[
+        BoldFont=FreeSansBold.otf,
+        ItalicFont=FreeSansOblique.otf,
+        BoldItalicFont=FreeSansBoldOblique.otf]
+    \newfontfamily\cyrillicfontsf{FreeSans.otf}[
+        Script=Cyrillic,
+        BoldFont=FreeSansBold.otf,
+        ItalicFont=FreeSansOblique.otf,
+        BoldItalicFont=FreeSansBoldOblique.otf]}
 \IfFontExistsTF{Courier New}
     {\setmonofont{Courier New}\newfontfamily\cyrillicfonttt{Courier New}[Script=Cyrillic]}
-    {\setmonofont{FreeMono.otf}\newfontfamily\cyrillicfonttt{FreeMono.otf}[Script=Cyrillic]}
+    {\setmonofont{FreeMono.otf}[
+        BoldFont=FreeMonoBold.otf,
+        ItalicFont=FreeMonoOblique.otf,
+        BoldItalicFont=FreeMonoBoldOblique.otf]
+    \newfontfamily\cyrillicfonttt{FreeMono.otf}[
+        Script=Cyrillic,
+        BoldFont=FreeMonoBold.otf,
+        ItalicFont=FreeMonoOblique.otf,
+        BoldItalicFont=FreeMonoBoldOblique.otf]}
 
 % настройка ссылок и метаданных документа
 \hypersetup{unicode=true,colorlinks=true,linkcolor=red,citecolor=green,filecolor=magenta,urlcolor=cyan,

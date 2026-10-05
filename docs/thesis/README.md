@@ -57,11 +57,13 @@ make -C docs/thesis clean
 
 ## Зависимости
 
-Нужны XeLaTeX, latexmk и Biber. Минимальный набор пакетов для Ubuntu:
+Нужны XeLaTeX, latexmk и Biber. Набор пакетов для Ubuntu:
 
 ```bash
-sudo apt install texlive-xetex texlive-latex-extra texlive-fonts-extra \
-  texlive-bibtex-extra texlive-lang-cyrillic latexmk biber fonts-freefont-otf
+sudo apt-get update
+sudo apt-get install latexmk biber texlive-xetex texlive-latex-extra \
+  texlive-bibtex-extra texlive-lang-cyrillic texlive-science \
+  fonts-freefont-otf texlive-fonts-extra-links
 ```
 
 Альтернатива — полный набор TeX Live:
@@ -73,6 +75,17 @@ sudo apt install texlive-full latexmk biber fonts-freefont-otf
 Документы используют кириллицу, `polyglossia`, `fontspec`, `biblatex-gost`,
 `algorithm2e`, а презентация — тему Metropolis. В macOS подходит установленный
 MacTeX с `latexmk`, XeLaTeX и Biber в `PATH`.
+
+`texlive-science` нужен для `algorithm2e` в тексте работы;
+`texlive-fonts-extra-links` обеспечивает поиск файлов FreeFont из TeX.
+Для этих документов весь пакет `texlive-fonts-extra` не требуется.
+
+Библиография презентации подключается через `\input`, поэтому её сборка
+в отдельный каталог не требует подкаталога `templates/` для служебных файлов.
+Это устраняет ошибку записи `templates/bib-page.aux` с latexmk 4.83.
+6 октября исправление проверено на TeX Live 2026 прямым запуском XeLaTeX
+и полной сборкой презентации с пустым каталогом результатов.
+Все 12 начертаний FreeFont проверены отдельно на латинице и кириллице.
 
 Эта копия проверена 5 октября 2026 г. на XeLaTeX из TeX Live 2026,
 latexmk 4.88 и Biber 2.22: текст работы собран на 15 страницах,
