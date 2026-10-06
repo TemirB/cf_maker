@@ -2,11 +2,18 @@
 
 #include <algorithm>
 #include <array>
+#include <cctype>
 #include <cmath>
 #include <cstdio>
+#include <limits>
 #include <memory>
 #include <string>
 
+#include <Fit/BinData.h>
+#include <Fit/DataOptions.h>
+#include <Fit/DataRange.h>
+#include <HFitInterface.h>
+#include <Math/ProbFuncMathCore.h>
 #include <TFitResult.h>
 #include <TList.h>
 #include <TMath.h>
@@ -142,6 +149,75 @@ TF3* create_cf_3d_fit(const Config& cfg, int ch, int centr, int b)
     return make_cf_3d_fit(cfg, ch, centr, b, cfg.fit.use_default_ip);
 }
 
+std::optional<FitStatistics> calculate_fit_statistics(const TH3D& cf_hist, TF3& fit3d,
+                                                      const FitConfig& fit_cfg)
+{
+    std::string options = fit_cfg.options;
+    std::transform(options.begin(), options.end(), options.begin(), [](unsigned char character) {
+        return static_cast<char>(std::toupper(character));
+    });
+    // Execution modifiers contain letters which are also single-character fit
+    // options (e.g. I/L/R in SERIAL); they do not change the objective.
+    for (const std::string modifier : {"MULTITHREAD", "MULTIPROCESS", "SERIAL"}) {
+        std::size_t position;
+        while ((position = options.find(modifier)) != std::string::npos) {
+            options.erase(position, modifier.size());
+        }
+    }
+    if (options.find_first_of("LPU") != std::string::npos ||
+        options.find("WIDTH") != std::string::npos) {
+        return std::nullopt;
+    }
+
+    ROOT::Fit::DataOptions data_options;
+    data_options.fIntegral = fit_cfg.use_integral || options.find('I') != std::string::npos;
+    data_options.fUseRange = options.find('R') != std::string::npos;
+    data_options.fErrors1 = options.find('W') != std::string::npos;
+    data_options.fUseEmpty = options.find("WW") != std::string::npos;
+    ROOT::Fit::DataRange range;
+    if (data_options.fUseRange) {
+        std::array<double, 3> lower{}, upper{};
+        fit3d.GetRange(lower[0], lower[1], lower[2], upper[0], upper[1], upper[2]);
+        for (unsigned int axis = 0; axis < 3; ++axis) {
+            range.AddRange(axis, lower[axis], upper[axis]);
+        }
+    }
+    // Reuse only ROOT's bin selection, including zero-error exclusions and
+    // active TAxis ranges. The chi-square sum itself is evaluated here.
+    ROOT::Fit::BinData data(data_options, range);
+    ROOT::Fit::FillData(data, &cf_hist, &fit3d);
+    long double chi2 = 0.0L;
+    for (unsigned int i = 0; i < data.Size(); ++i) {
+        double value = 0.0, inverse_error = 0.0;
+        const double* coordinates = data.GetPoint(i, value, inverse_error);
+        double expected;
+        if (data_options.fIntegral) {
+            std::array<double, 3> upper{};
+            data.GetBinUpEdgeCoordinates(i, upper.data());
+            const double volume = (upper[0] - coordinates[0]) * (upper[1] - coordinates[1]) *
+                                  (upper[2] - coordinates[2]);
+            expected = fit3d.Integral(coordinates[0], upper[0], coordinates[1], upper[1],
+                                      coordinates[2], upper[2], 1e-9) /
+                       volume;
+        } else {
+            expected = fit3d.Eval(coordinates[0], coordinates[1], coordinates[2]);
+        }
+        const long double residual = (static_cast<long double>(value) - expected) * inverse_error;
+        chi2 += residual * residual;
+    }
+
+    FitStatistics statistics;
+    statistics.chi2 = static_cast<double>(chi2);
+    statistics.ndf = std::max(0, static_cast<int>(data.Size()) - fit3d.GetNumberFreeParameters());
+    if (!std::isfinite(statistics.chi2)) {
+        statistics.p_value = std::numeric_limits<double>::quiet_NaN();
+    } else if (statistics.ndf > 0) {
+        // P(Chi-square_ndf >= chi2) = Gamma(ndf/2, chi2/2) / Gamma(ndf/2).
+        statistics.p_value = ROOT::Math::chisquared_cdf_c(statistics.chi2, statistics.ndf);
+    }
+    return statistics;
+}
+
 FitResult fit_cf_3d(TH3D* cf_hist, TF3* fit3d, const FitConfig& fitCfg)
 {
     FitResult res{};
@@ -174,9 +250,15 @@ FitResult fit_cf_3d(TH3D* cf_hist, TF3* fit3d, const FitConfig& fitCfg)
     cf_hist->GetListOfFunctions()->Remove(fit3d);
 
     if (fit_ptr.Get()) {
-        res.chi2 = fit_ptr->Chi2();
-        res.ndf = fit_ptr->Ndf();
-        res.p_value = fit_ptr->Prob();
+        if (const auto statistics = calculate_fit_statistics(*cf_hist, *fit3d, fitCfg)) {
+            res.chi2 = statistics->chi2;
+            res.ndf = statistics->ndf;
+            res.p_value = statistics->p_value;
+        } else {
+            res.chi2 = fit_ptr->Chi2();
+            res.ndf = fit_ptr->Ndf();
+            res.p_value = fit_ptr->Prob();
+        }
         res.status = fit_ptr->Status();
         res.cov_status = fit_ptr->CovMatrixStatus();
         res.ok = (res.chi2 >= 0 && res.ndf > 0) && (res.status == 0) && fit_ptr->IsValid() &&
@@ -244,10 +326,12 @@ FitResult fit_cf_3d_with_retry(TH3D* cf_hist, const Config& cfg, int ch, int cen
 
     auto fit3d = std::unique_ptr<TF3>(create_cf_3d_fit(cfg, ch, centr, b));
     FitResult best = fit_cf_3d(cf_hist, fit3d.get(), cfg.fit);
-    logging::debug(task + ": chi2=" + std::to_string(best.chi2) +
-                   ", ndf=" + std::to_string(best.ndf) + ", status=" + std::to_string(best.status) +
-                   ", covStatus=" + std::to_string(best.cov_status) +
-                   ", atLimit=" + (best.at_limit ? "true" : "false"));
+    logging::debug(
+        task + ": chi2=" + std::to_string(best.chi2) + ", ndf=" + std::to_string(best.ndf) +
+        ", chi2/ndf=" + std::to_string(best.chi2_ndf()) +
+        ", p_value=" + std::to_string(best.p_value) + ", status=" + std::to_string(best.status) +
+        ", covStatus=" + std::to_string(best.cov_status) +
+        ", atLimit=" + (best.at_limit ? "true" : "false"));
 
     if (is_usable_fit(best) || best.attempts == 0 || !cfg.fit.retry_with_defaults) {
         return best;
