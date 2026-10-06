@@ -1,81 +1,84 @@
 \begin{frame}{КФ как средний вес пары}
     \small
-    Числитель и знаменатель заполняются одними и теми же $N$ парами.
-    Каждая пара вносит вес $w_i$ в числитель и 1 в знаменатель.
+    $A(\mathbf q)$ --- распределение пар в числителе,
+    $B(\mathbf q)$ --- опорное распределение; $C=\mathcal{N}A/B$.
+    $\mathcal{N}$ --- нормировка, $n$ --- число пар в ячейке.
+    Здесь $\mathcal{N}=1$, обе гистограммы заполняются по одним $n$ парам:
     \[
-        N = \sum_i 1, \qquad S = \sum_i w_i, \qquad Q = \sum_i w_i^2.
+        A = \sum_{i=1}^{n} w_i, \qquad
+        B = \sum_{i=1}^{n} 1 = n, \qquad Q_A = \sum_{i=1}^{n} w_i^2.
     \]
     Поэтому КФ в одной ячейке представляет собой средний вес:
     \[
-        C = \frac{S}{N} = \overline{w}, \qquad N>0.
+        C = \frac{A}{B} = \frac{A}{n} = \overline{w}, \qquad n>0.
     \]
     \begin{itemize}
-        \item $Q$ хранится в \texttt{Sumw2} взвешенной гистограммы.
-        \item При случайном $N$ суммы $S$ и $N$ могут быть зависимы:
-              они построены по общим парам.
+        \item $Q_A$ хранится в \texttt{Sumw2} взвешенной гистограммы.
+        \item При случайном $n$ общие пары могут связывать суммы $A$ и $B$.
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Ошибка среднего при фиксированном числе пар}
     \small
-    Пусть $N$ фиксировано, а веса независимы и одинаково распределены
+    Пусть $n$ фиксировано, а веса независимы и одинаково распределены
     с дисперсией $\sigma_w^2$. Тогда
     \[
-        \operatorname{Var}(C\mid N) = \frac{\sigma_w^2}{N}.
+        \operatorname{Var}(C\mid n) = \frac{\sigma_w^2}{n}.
     \]
-    Несмещённая выборочная оценка при $N>1$:
+    Несмещённая выборочная оценка при $n>1$:
     \[
-        s_w^2 = \frac{Q-S^2/N}{N-1}, \qquad
-        \widehat{\operatorname{Var}}(C\mid N)
-        = \frac{s_w^2}{N}
-        = \frac{Q-S^2/N}{N(N-1)}.
+        s_w^2 = \frac{Q_A-A^2/n}{n-1}, \qquad
+        \widehat{\operatorname{Var}}(C\mid n)
+        = \frac{s_w^2}{n}
+        = \frac{Q_A-A^2/n}{n(n-1)}.
     \]
     \begin{itemize}
         \item $\sigma_w^2$ --- дисперсия распределения весов;
               $s_w^2$ --- её оценка по наблюдаемым парам.
-        \item Поправка $N-1$ учитывает оценивание среднего по той же выборке.
+        \item Поправка $n-1$ учитывает оценивание среднего по той же выборке.
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Частный случай: бинарный отбор}
     \small
     Для индикатора отбора $I_i\in\{0,1\}$ выполнено $I_i^2=I_i$.
-    Поэтому $Q=S$, а $C=\widehat p=S/N$ оценивает вероятность отбора $p$.
+    Поэтому $Q_A=A$, а $\widehat p=A/B=A/n$ оценивает вероятность отбора $p$.
     \[
-        \operatorname{Var}(\widehat p\mid N) = \frac{p(1-p)}{N}.
+        \operatorname{Var}(\widehat p\mid n) = \frac{p(1-p)}{n}.
     \]
     Две оценки этой дисперсии:
     \[
         \begin{aligned}
             \widehat V_{\mathrm{ROOT\ B}}
-                &= \frac{\widehat p(1-\widehat p)}{N},
+                &= \frac{\widehat p(1-\widehat p)}{n},
                 &&\text{подстановка }p\to\widehat p;\\
             \widehat V_{\texttt{cf\_maker}}
-                &= \frac{\widehat p(1-\widehat p)}{N-1},
-                &&\text{несмещённая оценка},\quad N>1.
+                &= \frac{\widehat p(1-\widehat p)}{n-1},
+                &&\text{несмещённая оценка},\quad n>1.
         \end{aligned}
     \]
     Одного ограничения $0\leq w_i\leq 1$ недостаточно:
-    для небинарных весов равенство $Q=S$ обычно не выполняется.
+    для небинарных весов равенство $Q_A=A$ обычно не выполняется.
 \end{frame}
 
 \begin{frame}{Общие суммы: пуассоновская модель}
     \small
-    Здесь число вкладов случайно: $N\sim\operatorname{Pois}(\mu)$.
-    Вклады $(a_i,b_i)$ независимы, одинаково распределены и не зависят от $N$.
+    Здесь число вкладов случайно: $n\sim\operatorname{Pois}(\mu)$.
+    Вклады $(a_i,b_i)$ независимы, одинаково распределены и не зависят от $n$.
     \[
         A=\sum_i a_i, \qquad B=\sum_i b_i, \qquad C=\frac{A}{B}.
     \]
-    Оценки моментов сумм в этой модели:
+    Суммы для оценки дисперсий и ковариации:
     \[
-        \widehat V_A=\sum_i a_i^2, \qquad
-        \widehat V_B=\sum_i b_i^2, \qquad
-        \widehat{\operatorname{Cov}}(A,B)=\sum_i a_i b_i.
+        Q_A=\sum_i a_i^2, \qquad
+        Q_B=\sum_i b_i^2, \qquad Q_{AB}=\sum_i a_i b_i.
     \]
+    $\widehat V_A=Q_A$, $\widehat V_B=Q_B$,
+    $\widehat{\operatorname{Cov}}(A,B)=Q_{AB}$.
     Разложение отношения до первого порядка даёт
     \[
         \widehat{\operatorname{Var}}(C)\simeq
-        \frac{\sum_i a_i^2-2C\sum_i a_i b_i+C^2\sum_i b_i^2}{B^2},
+        \frac{Q_A-2C Q_{AB}+C^2 Q_B}{B^2},
         \qquad B\ne 0.
     \]
     Это дельта-оценка, а не точная дисперсия отношения для малой выборки.
@@ -85,21 +88,21 @@
     \small
     Для КФ в пуассоновской модели $a_i=w_i$, $b_i=1$. Поэтому
     \[
-        \widehat V_S=Q, \qquad \widehat V_N=N, \qquad
-        \widehat{\operatorname{Cov}}(S,N)=\sum_i w_i\cdot 1=S.
+        \widehat V_A=Q_A, \qquad \widehat V_B=n, \qquad
+        \widehat{\operatorname{Cov}}(A,B)=\sum_i w_i\cdot 1=A.
     \]
-    Подставляя $C=S/N$ в дельта-оценку, получаем
+    Подставляя $C=A/B$ и $B=n$ в дельта-оценку, получаем
     \[
         \widehat V_{\Delta}=
-        \frac{Q-2CS+C^2N}{N^2}
-        =\frac{Q-S^2/N}{N^2}.
+        \frac{Q_A-2CA+C^2B}{B^2}
+        =\frac{Q_A-A^2/n}{n^2}.
     \]
-    Оценка \texttt{cf\_maker} для фиксированного $N$ отличается поправкой:
+    Оценка \texttt{cf\_maker} для фиксированного $n$ отличается поправкой:
     \[
-        \widehat{\operatorname{Var}}(C\mid N)
-        =\frac{N}{N-1}\,\widehat V_{\Delta}, \qquad N>1.
+        \widehat{\operatorname{Var}}(C\mid n)
+        =\frac{n}{n-1}\,\widehat V_{\Delta}, \qquad n>1.
     \]
-    При большом $N$ оценки асимптотически совпадают.
+    При большом $n$ оценки асимптотически совпадают.
     Их статистические допущения различаются.
 \end{frame}
 
@@ -109,19 +112,19 @@
     \[
         \begin{array}{l|c|c|c}
             & a_i & b_i & \widehat{\operatorname{Cov}}(A,B)\\ \hline
-            \text{КФ} & w_i & 1 & S\\
+            \text{КФ} & w_i & 1 & A\\
             \text{эффективность} & u_i I_i & u_i & Q_{\mathrm{pass}}
         \end{array}
     \]
-    Во втором случае $I_i\in\{0,1\}$, $u_i\geq 0$ и
+    Для эффективности $\varepsilon=A/B$, $I_i\in\{0,1\}$, $u_i\geq 0$ и
     \[
         Q_{\mathrm{pass}}=\sum_i u_i^2 I_i=\widehat V_A,
         \qquad Q_{\mathrm{all}}=\sum_i u_i^2.
     \]
     Дельта-оценка эффективности имеет вид формулы ROOT \texttt{B}:
     \[
-        \widehat{\operatorname{Var}}(C)\simeq
-        \frac{(1-2C)Q_{\mathrm{pass}}+C^2 Q_{\mathrm{all}}}{B^2}.
+        \widehat{\operatorname{Var}}(\varepsilon)\simeq
+        \frac{(1-2\varepsilon)Q_{\mathrm{pass}}+\varepsilon^2 Q_{\mathrm{all}}}{B^2}.
     \]
     Произвольные веса $w_i$ в числителе не обеспечивают эту ковариацию.
     \par\medskip
@@ -131,7 +134,7 @@
 
 \begin{frame}{Контрольный пример: произвольные веса}
     \small
-    По 100 пар, знаменатель --- единицы. Проверка: ROOT 6.40.02.
+    По $n=100$ пар, $B=n$. Проверка: ROOT 6.40.02.
     \begin{center}
         \renewcommand{\arraystretch}{1.35}
         \begin{tabular}{lccc}
@@ -145,25 +148,25 @@
         Контрольный пример, не данные столкновений.
     \end{center}
     \begin{itemize}
-        \item Во второй строке $S=N$, но веса изменяются, и ошибка среднего ненулевая.
-        \item ROOT \texttt{B} задаёт нулевую ошибку при $S=N$.
+        \item Во второй строке $A=B$, но веса изменяются, и ошибка среднего ненулевая.
+        \item ROOT \texttt{B} задаёт нулевую ошибку при $A=B$.
               Это не проверка применимости модели эффективности.
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Корреляции пар и применимость ошибок}
     \small
-    Число пар $N$ фиксировано, но веса могут быть зависимы:
+    Число пар $n$ фиксировано, но веса могут быть зависимы:
     \[
-        \operatorname{Var}(C\mid N)=\frac{1}{N^2}
-        \left[\sum_i\operatorname{Var}(w_i\mid N)
-        +2\sum_{i<j}\operatorname{Cov}(w_i,w_j\mid N)\right].
+        \operatorname{Var}(C\mid n)=\frac{1}{n^2}
+        \left[\sum_i\operatorname{Var}(w_i\mid n)
+        +2\sum_{i<j}\operatorname{Cov}(w_i,w_j\mid n)\right].
     \]
     \begin{itemize}
         \item Общие события или треки могут связывать веса разных пар.
         \item Bootstrap или jackknife по событиям сохраняют
               совместные вклады пар внутри события.
-        \item При $N\leq 1$ выборочная дисперсия недоступна;
+        \item При $n\leq 1$ выборочная дисперсия недоступна;
               нулевая записанная ошибка не означает точное измерение.
     \end{itemize}
     Опция ROOT \texttt{B} не устраняет событийные корреляции.
