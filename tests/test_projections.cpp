@@ -209,6 +209,13 @@ void check_canvas(TMemFile& output, const std::string& name, int dimension, int 
             continue;
         }
         ++histograms;
+        if (std::string(histogram->GetName()).rfind("fit_", 0) == 0) {
+            for (int bin = 0; bin < histogram->GetNcells(); ++bin) {
+                if (histogram->GetBinError(bin) != 0.0) {
+                    throw std::runtime_error("Fixed fitted curve has artificial counting errors");
+                }
+            }
+        }
         if (histogram->GetDimension() != dimension) {
             throw std::runtime_error("Wrong projection dimension");
         }

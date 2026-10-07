@@ -128,6 +128,11 @@ std::unique_ptr<TH1D> build_lcms_fit_from_3d_weighted(const TH3D& denSource, con
         static_cast<TH1D*>(hist_num->Clone(("fit_" + tag + "_" + axis_name(axis)).c_str())));
     fit->SetDirectory(nullptr);
     fit->Divide(hist_num.get(), hist_den.get());
+    // This curve is evaluated at fixed fitted parameters and fixed projection
+    // weights. ROOT must not infer counting errors from its bin contents.
+    for (int bin = 0; bin < fit->GetNcells(); ++bin) {
+        fit->SetBinError(bin, 0.0);
+    }
 
     return fit;
 }
@@ -202,6 +207,14 @@ void draw_cf_over_fit(TCanvas* c, TH1D* cf, TH1D* fit, TPaveText* stats, std::st
     auto axis = LCMSAxis(lcms);
     std::unique_ptr<TH1D> fit_over_cf(static_cast<TH1D*>(cf->Clone("fit_over_cf")));
     fit_over_cf->Divide(fit, cf);
+    for (int bin = 0; bin < fit_over_cf->GetNcells(); ++bin) {
+        const double value = cf->GetBinContent(bin);
+        const double model = fit->GetBinContent(bin);
+        // Conditional diagnostic: the fitted curve is held fixed.
+        const double error =
+            value != 0 ? std::abs(model / value) * (cf->GetBinError(bin) / std::abs(value)) : 0.0;
+        fit_over_cf->SetBinError(bin, error);
+    }
 
     std::string name_fit_over_cf = name + " " + axis_name(axis);
     style_1d_cf(fit_over_cf.get(), name_fit_over_cf.data(), axis_name(axis).data(), style);

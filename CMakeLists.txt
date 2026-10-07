@@ -136,6 +136,17 @@ target_link_libraries(main PRIVATE
 )
 
 add_executable(generate_gaussian tools/generate_gaussian.cpp)
+add_executable(statistics_diff EXCLUDE_FROM_ALL
+    proof/statistics_diff.cpp src/config/config.cpp src/core/fs.cpp src/core/log.cpp
+    src/core/correlation.cpp src/core/lcms.cpp src/io/input.cpp
+    src/fit/model.cpp src/fit/initial_parameters.cpp src/fit/result.cpp
+)
+target_include_directories(statistics_diff PRIVATE ${SRC_DIR})
+target_include_directories(statistics_diff SYSTEM PRIVATE ${ROOT_INCLUDE_DIRS})
+target_link_libraries(statistics_diff PRIVATE project_warnings
+    ROOT::Core ROOT::RIO ROOT::Hist ROOT::Graf ROOT::Gpad ROOT::MathCore
+    nlohmann_json::nlohmann_json
+)
 target_include_directories(generate_gaussian PRIVATE ${SRC_DIR})
 target_include_directories(generate_gaussian SYSTEM PRIVATE ${ROOT_INCLUDE_DIRS})
 target_link_libraries(generate_gaussian PRIVATE
