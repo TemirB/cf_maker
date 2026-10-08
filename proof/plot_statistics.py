@@ -109,6 +109,37 @@ def plot_directory(directory):
     axes[2].legend()
     figure.suptitle("Different error models can select different cells: chi2 alone is not a model ranking")
     save(figure, "fit_quality")
+    diagnostic_path = directory / "diagnostic_cells.csv"
+    if diagnostic_path.is_file():
+        diagnostics = list(rows(diagnostic_path))
+        figure, axes = plt.subplots(1, 2, figsize=(12, 4))
+        for variant, color in zip(variants, colors):
+            for state, marker in (("1", "o"), ("0", "x")):
+                selected = [row for row in diagnostics if row["variant"] == variant
+                            and row["usable_fit"] == state]
+                label = variant + (" converged" if state == "1" else " failed / limit")
+                positive = [row for row in selected if number(row, "N") > 0
+                            and number(row, "chi2_contribution") > 0]
+                axes[0].scatter([number(row, "N") for row in positive],
+                                [number(row, "chi2_contribution") for row in positive],
+                                s=12, marker=marker, color=color, label=label, alpha=.6)
+                field = {"program": "sigma_program", "B": "sigma_B",
+                         "independent": "sigma_independent"}[variant]
+                positive = [row for row in selected if number(row, field) > 0
+                            and math.isfinite(number(row, field))]
+                axes[1].scatter([number(row, "C") for row in positive],
+                                [number(row, field) for row in positive],
+                                s=12, marker=marker, color=color, alpha=.6)
+        axes[0].set_xscale("log")
+        axes[0].set_yscale("log")
+        axes[0].set_xlabel("Pair count N")
+        axes[0].set_ylabel("Cell chi2 contribution")
+        axes[0].legend(fontsize=7)
+        axes[1].set_xlabel("Correlation C = S/N")
+        axes[1].set_ylabel("Error used in this variant")
+        axes[1].set_yscale("log")
+        figure.suptitle("Up to five largest contributions per fit; a selected subset of cells")
+        save(figure, "outlier_cells")
     b_ratios = collections.Counter()
     b_zero = compared = 0
     for row in rows(directory / "cells.csv"):
