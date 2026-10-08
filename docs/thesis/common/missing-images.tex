@@ -1,0 +1,23 @@
+% Clearly mark missing source figures; never substitute fabricated analysis results.
+% Define \ThesisStrictAssets before loading the document to require all figures.
+\let\thesisoriginalincludegraphics\includegraphics
+\RenewDocumentCommand{\includegraphics}{s O{} m}{%
+    \IfFileExists{#3}{%
+        \IfBooleanTF{#1}{\thesisoriginalincludegraphics*[#2]{#3}}%
+                         {\thesisoriginalincludegraphics[#2]{#3}}%
+    }{%
+        \ifdefined\ThesisStrictAssets
+            \PackageError{thesis-assets}{Missing source figure: #3}%
+                {Copy the original figure to the path shown.}%
+        \else
+            \PackageWarning{thesis-assets}{Missing source figure: #3}%
+            \begingroup
+                \setlength{\fboxsep}{5pt}%
+                \fbox{\parbox[c][0.16\textheight][c]%
+                    {\dimexpr.92\linewidth-2\fboxsep-2\fboxrule\relax}%
+                    {\centering\footnotesize\textbf{Рисунок отсутствует}\\[3pt]%
+                     \ttfamily\detokenize{#3}}}%
+            \endgroup
+        \fi
+    }%
+}

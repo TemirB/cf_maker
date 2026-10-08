@@ -23,7 +23,7 @@ TGraphErrors* build_chi2_ndf_graph(const Config& cfg, int ch, int centr)
     int point = 0;
     for (int b = 0; b < bin.count; ++b) {
         const FitResult& res = cfg.fit_results[ch][centr][b];
-        if (res.ndf <= 0) {
+        if (!is_usable_fit(res)) {
             continue;
         }
 
@@ -42,11 +42,15 @@ TGraphErrors* build_pvalue_graph(const Config& cfg, int ch, int centr)
     TGraphErrors* g = make_styled_graph(
         Form("g_pvalue_%s_centr_%s", charge::kNames[ch], centrality::kNames[centr]), centr);
 
+    int point = 0;
     for (int b = 0; b < bin.count; b++) {
         const FitResult& res = cfg.fit_results[ch][centr][b];
-
-        g->SetPoint(b, bin_center(bin, b), res.p_value);
-        g->SetPointError(b, 0, 0);
+        if (!is_usable_fit(res)) {
+            continue;
+        }
+        g->SetPoint(point, bin_center(bin, b), res.p_value);
+        g->SetPointError(point, 0, 0);
+        ++point;
     }
 
     return g;
@@ -70,9 +74,9 @@ MeanWithError compute_fit_over_cf_mean(const TH3D& cf, const FitResult& r, doubl
     for (int ix = 1; ix <= cf.GetNbinsX(); ++ix) {
         for (int iy = 1; iy <= cf.GetNbinsY(); ++iy) {
             for (int iz = 1; iz <= cf.GetNbinsZ(); ++iz) {
-                const double qOut = cf.GetXaxis()->Getbin_center(ix);
-                const double qSide = cf.GetYaxis()->Getbin_center(iy);
-                const double qLong = cf.GetZaxis()->Getbin_center(iz);
+                const double qOut = cf.GetXaxis()->GetBinCenter(ix);
+                const double qSide = cf.GetYaxis()->GetBinCenter(iy);
+                const double qLong = cf.GetZaxis()->GetBinCenter(iz);
 
                 if (std::abs(qOut) > fitRange || std::abs(qSide) > fitRange ||
                     std::abs(qLong) > fitRange) {
@@ -108,6 +112,9 @@ MeanWithError compute_fit_over_cf_mean(const TH3D& cf, const FitResult& r, doubl
     const double mean = sum / n;
     const double variance = std::max(0.0, sumSq / n - mean * mean);
     const double err = std::sqrt(variance / n);
+    if (!std::isfinite(mean) || !std::isfinite(err)) {
+        return {};
+    }
     return {mean, err, true};
 }
 } // namespace
@@ -126,6 +133,9 @@ TGraphErrors* build_fit_over_cf_graph(const Config& cfg, TFile* cf3dFile, int ch
     int point = 0;
     for (int b = 0; b < bin.count; ++b) {
         const FitResult& res = cfg.fit_results[ch][centr][b];
+        if (!is_usable_fit(res)) {
+            continue;
+        }
         const std::string cf_name = get_cf_name(ch, centr, cfg.input.type, bin.names[b]);
         TH3D* cf_hist = dynamic_cast<TH3D*>(cf3dFile->Get(cf_name.c_str()));
         if (!cf_hist) {

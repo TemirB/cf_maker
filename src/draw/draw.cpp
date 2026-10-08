@@ -1,4 +1,5 @@
 #include "draw/draw.h"
+#include "io/output.h"
 
 #include <algorithm>
 #include <array>
@@ -13,6 +14,7 @@
 #include <TList.h>
 #include <TMultiGraph.h>
 #include <TPad.h>
+#include <TPaveText.h>
 
 namespace
 {
@@ -82,15 +84,37 @@ void set_range_with_errors(TMultiGraph* mg, double padFrac)
     mg->SetMaximum(ymax);
 }
 
+bool draw_mg_or_report(TMultiGraph* mg, const char* option)
+{
+    if (mg && mg->GetListOfGraphs()) {
+        for (TObject* object : *mg->GetListOfGraphs()) {
+            const auto* graph = dynamic_cast<TGraph*>(object);
+            if (graph && graph->GetN() > 0) {
+                mg->Draw(option);
+                return true;
+            }
+        }
+    }
+    TPaveText message(0.15, 0.42, 0.85, 0.6, "NDC");
+    message.SetBorderSize(0);
+    message.SetFillStyle(0);
+    message.AddText("No usable fits");
+    message.DrawClone();
+    return false;
+}
+
 void write_mg_with_legend(TFile* file, TMultiGraph* mg, const char* canvasName, const char* xTitle,
-                       const char* yTitle,
-                       const std::vector<std::pair<TObject*, std::string>>& legendEntries,
-                       draw::GraphKind kind)
+                          const char* yTitle,
+                          const std::vector<std::pair<TObject*, std::string>>& legendEntries,
+                          draw::GraphKind kind)
 {
     file->cd();
 
     TCanvas c(canvasName, canvasName, 1000, 800);
-    mg->Draw("A");
+    if (!draw_mg_or_report(mg, "A")) {
+        write_output_object(*file, c, canvasName);
+        return;
+    }
     mg->GetXaxis()->SetTitle(xTitle);
     mg->GetYaxis()->SetTitle(yTitle);
 
@@ -126,11 +150,11 @@ void write_mg_with_legend(TFile* file, TMultiGraph* mg, const char* canvasName, 
     }
     leg.Draw();
 
-    c.Write(canvasName);
+    write_output_object(*file, c, canvasName);
 }
 
 void write_hist(TFile* file, TH1D* hist, const char* canvasName, const char* xTitle,
-               const char* yTitle)
+                const char* yTitle)
 {
     file->cd();
 
@@ -139,8 +163,8 @@ void write_hist(TFile* file, TH1D* hist, const char* canvasName, const char* xTi
     hist->GetXaxis()->SetTitle(xTitle);
     hist->GetYaxis()->SetTitle(yTitle);
 
-    c.Write(canvasName);
-    hist->Write(hist->GetName(), TObject::kOverwrite);
+    write_output_object(*file, c, canvasName);
+    write_output_object(*file, *hist, hist->GetName(), TObject::kOverwrite);
 }
 
 void style_1d_cf(TH1* h, const std::string& name, const char* axis, draw::Style style)

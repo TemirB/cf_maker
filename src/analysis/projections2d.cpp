@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <memory>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -13,10 +14,12 @@
 #include <TString.h>
 
 #include "core/binning.h"
+#include "core/correlation.h"
 #include "core/fs.h"
 #include "core/lcms.h"
 #include "core/log.h"
 #include "io/input.h"
+#include "io/output.h"
 
 template <class T> using RootPtr = std::unique_ptr<T>;
 
@@ -34,26 +37,26 @@ std::size_t canvas_index(int ch, int centr)
     return static_cast<std::size_t>(ch) * centrality::kCount + static_cast<std::size_t>(centr);
 }
 
-void write_2d_projection(TFile& outFile, const TH3D& den_source, const TH3D& num_source, LCMSAxis ax1,
-                       LCMSAxis ax2, const std::string& tag, TCanvas* canvas, const int y,
-                       bool draw, double freezeWidth, double cropWidth,
-                       std::vector<std::unique_ptr<TH2D>>& keep_alive)
+void write_2d_projection(TFile& outFile, const TH3D& den_source, const TH3D& num_source,
+                         LCMSAxis ax1, LCMSAxis ax2, const std::string& tag, TCanvas* canvas,
+                         const int y, bool draw, double freezeWidth, double cropWidth,
+                         std::vector<std::unique_ptr<TH2D>>& keep_alive,
+                         CorrelationStatistics statistics)
 {
-    auto den = RootPtr<TH3D>(static_cast<TH3D*>(den_source.Clone()));
-    auto num = RootPtr<TH3D>(static_cast<TH3D*>(num_source.Clone()));
-    den->SetDirectory(nullptr);
-    num->SetDirectory(nullptr);
+    auto den_3d = RootPtr<TH3D>(static_cast<TH3D*>(den_source.Clone()));
+    auto num_3d = RootPtr<TH3D>(static_cast<TH3D*>(num_source.Clone()));
+    den_3d->SetDirectory(nullptr);
+    num_3d->SetDirectory(nullptr);
 
-    auto num = RootPtr<TH2D>(project_2d(*num, ax1, ax2, freezeWidth));
-    auto den = RootPtr<TH2D>(project_2d(*den, ax1, ax2, freezeWidth));
+    auto num = RootPtr<TH2D>(project_2d(*num_3d, ax1, ax2, freezeWidth));
+    auto den = RootPtr<TH2D>(project_2d(*den_3d, ax1, ax2, freezeWidth));
     if (!num || !den) {
-        std::cerr << "Project3D failed for " << tag << "\n";
-        return;
+        throw std::runtime_error("Project3D failed for " + tag);
     }
 
     auto name = tag + " " + axis_name(ax1) + "-" + axis_name(ax2);
     auto cf_hist = RootPtr<TH2D>(static_cast<TH2D*>(num->Clone(name.c_str())));
-    cf_hist->Divide(num.get(), den.get());
+    fill_correlation(*cf_hist, *num, *den, statistics);
 
     crop_2d(*cf_hist, cropWidth);
 
@@ -66,8 +69,7 @@ void write_2d_projection(TFile& outFile, const TH3D& den_source, const TH3D& num
     TCanvas c((name).c_str(), "", 650, 600);
     cf_hist->Draw("COLZ");
 
-    outFile.cd();
-    c.Write();
+    write_output_object(outFile, c);
 
     if (draw) {
         canvas->cd(y + 1);
@@ -75,8 +77,8 @@ void write_2d_projection(TFile& outFile, const TH3D& den_source, const TH3D& num
         gPad->SetLeftMargin(0.12f);
         gPad->SetBottomMargin(0.12f);
 
-        auto cf_clone =
-            std::unique_ptr<TH2D>(static_cast<TH2D*>(cf_hist->Clone(Form("%s_clone", cf_hist->GetName()))));
+        auto cf_clone = std::unique_ptr<TH2D>(
+            static_cast<TH2D*>(cf_hist->Clone(Form("%s_clone", cf_hist->GetName()))));
         cf_clone->Draw("COLZ");
 
         gPad->Modified();
@@ -89,12 +91,13 @@ void write_2d_projection(TFile& outFile, const TH3D& den_source, const TH3D& num
 
 void make_lcms_2d_projections(const Config& cfg, TFile* in, TFile* out)
 {
+    const auto statistics = correlation_statistics(*in);
     const Bin& bin = cfg.binning;
     std::string dir = cfg.output.dir + "/all_2d_histos";
     ensure_dir(dir);
-    log::Info("projections_2d: " + std::to_string(cfg.selection.charges.size()) + " charges x " +
-              std::to_string(cfg.selection.centralities.size()) + " centralities x " +
-              std::to_string(bin.count) + " bins");
+    logging::info("projections_2d: " + std::to_string(cfg.selection.charges.size()) +
+                  " charges x " + std::to_string(cfg.selection.centralities.size()) +
+                  " centralities x " + std::to_string(bin.count) + " bins");
 
     const std::string ext = cfg.general.images.format;
     std::vector<std::unique_ptr<TCanvas>> canvases(static_cast<std::size_t>(charge::kCount) *
@@ -114,22 +117,30 @@ void make_lcms_2d_projections(const Config& cfg, TFile* in, TFile* out)
     for (const int ch_idx : cfg.selection.charges) {
         for (const int cent_idx : cfg.selection.centralities) {
             for (int b = 0; b < bin.count; b++) {
-                auto [den, num] = get_hists(in, ch_idx, cent_idx, b);
+                auto [den_raw, num_raw] = get_hists(in, ch_idx, cent_idx, b);
+                std::unique_ptr<TH3D> den(den_raw), num(num_raw);
                 if (!den || !num) {
-                    continue;
+                    throw std::runtime_error(
+                        "projections_2d: missing input histograms for charge=" +
+                        std::to_string(ch_idx) + ", centrality=" + std::to_string(cent_idx) +
+                        ", bin=" + std::to_string(b));
                 }
+                validate_correlation_inputs(*num, *den, statistics);
 
                 std::string cf_name = get_cf_name(ch_idx, cent_idx, cfg.input.type, bin.names[b]);
 
                 write_2d_projection(*out, *den, *num, LCMSAxis::Out, LCMSAxis::Side, cf_name,
-                                  canvases[canvas_index(ch_idx, cent_idx)].get(), b, false,
-                                  cfg.projections.slice_2d, cfg.projections.crop_2d, keep_alive);
+                                    canvases[canvas_index(ch_idx, cent_idx)].get(), b, false,
+                                    cfg.projections.slice_2d, cfg.projections.crop_2d, keep_alive,
+                                    statistics);
                 write_2d_projection(*out, *den, *num, LCMSAxis::Out, LCMSAxis::Long, cf_name,
-                                  canvases[canvas_index(ch_idx, cent_idx)].get(), b, true,
-                                  cfg.projections.slice_2d, cfg.projections.crop_2d, keep_alive);
+                                    canvases[canvas_index(ch_idx, cent_idx)].get(), b, true,
+                                    cfg.projections.slice_2d, cfg.projections.crop_2d, keep_alive,
+                                    statistics);
                 write_2d_projection(*out, *den, *num, LCMSAxis::Side, LCMSAxis::Long, cf_name,
-                                  canvases[canvas_index(ch_idx, cent_idx)].get(), b, false,
-                                  cfg.projections.slice_2d, cfg.projections.crop_2d, keep_alive);
+                                    canvases[canvas_index(ch_idx, cent_idx)].get(), b, false,
+                                    cfg.projections.slice_2d, cfg.projections.crop_2d, keep_alive,
+                                    statistics);
             }
         }
     }

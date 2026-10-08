@@ -1,0 +1,335 @@
+\begin{frame}[plain,c]\titlepage\end{frame}
+
+\begin{frame}{Введение. Корреляционная функция.}
+    \textbf{Корреляционная функция} (КФ) --- отношение измеренных двухчастичного инклюзивного и одночастичного инклюзивного спектров.
+    \[C = \frac{A}{B}, \qquad A = \sum_i w_i, \qquad B = \sum_i 1\]
+    Здесь $A$ --- взвешенное распределение пар, $B$ --- опорное без весов.
+    \[w_i = femtoweight_i = 1 + \cos\frac{(\Delta P_i\cdot\Delta r_i)}{hc}\]
+    \centering, где $\Delta$ P --- разница 4-импульсов, а $\Delta$ r --- разница 4-векторов
+\end{frame}
+
+\begin{frame}{Введение. 1-мерная КФ.}
+    В случае 1-мерной КФ используется инвариантный импульс пары:
+    \[q_{inv} = \sqrt{{(P_{a} - P_{b})}^{2} - {(E_{a} - E_{b})}^{2}}\]
+    Тогда КФ имеет следующий вид:
+    \[C(q_{inv}) = \frac{A(q_{inv})}{B(q_{inv})}\]
+    А аппроксимирующая её кривая:
+    \[C(q_{inv}) = 1 + \lambda\exp{\left(-\frac{R_{inv}^{2} q_{inv}^{2}}{(\hbar c)^2}\right)}\]
+\end{frame}
+
+\begin{frame}{Введение. 3-мерная КФ.}
+    В случае 3-мерной КФ используется:
+    \[q = p_{a} - p_{b}, \qquad P = p_{a} + p_{b}\]
+    И система координат LCMS в которой любой 4-вектор $V$ из СЦМ представим в виде:
+
+    \[V_{out } = (P_x V_x+P_y V_y) / P_T\]
+    \[V_{side } = (P_x V_y-P_y V_x) / P_T\]
+    \[V_{long} = (P_0 V_z-P_z V_0) / M_T\]
+    \[\text{где } M_T^2=P_0^2-P_z^2 \text{ \;,a } P_T^2=P_x^2+P_y^2\]
+
+\end{frame}
+
+\begin{frame}{Введение. 3-мерная КФ.}
+    Тогда 3-мерная КФ имеет вид:
+    \[
+        C =
+        \frac{
+            A(q_{out}, q_{side}, q_{long})
+        }{
+            B(q_{out}, q_{side}, q_{long})
+        }
+    \]
+    А аппроксимирующая её кривая:
+    \[
+        C(q) = 1 + \lambda \exp{(
+            -\sum_{i,j\in\{o,s,l\}}
+            \frac{
+                R_{ij}q_{i}q_{j}
+            }{(\hbar c)^2}
+        )}
+    \]
+    В самом простом случае (без учета недиагональных элементов)
+    \[
+        C(q_{out}, q_{side}, q_{long}) =
+        1 + \lambda \exp{(
+            -\frac{
+                R_{out}^{2} q_{out}^{2} +
+                R_{side}^{2} q_{side}^{2} +
+                R_{long}^{2} q_{long}^{2}
+            }{(\hbar c)^2}
+        )}
+    \]
+\end{frame}
+
+
+\begin{frame}{Поперечный импульс пары: $k_T$}
+    \small
+    Поперечные импульсы лежат в плоскости, перпендикулярной оси пучка:
+    \[
+        \mathbf p_{T,i}=(p_{x,i},p_{y,i}),\qquad
+        \mathbf k_T=\frac{\mathbf p_{T,1}+\mathbf p_{T,2}}{2}.
+    \]
+    \[
+        k_T=|\mathbf k_T|
+        =\frac12\sqrt{(p_{x,1}+p_{x,2})^2+(p_{y,1}+p_{y,2})^2}.
+    \]
+    \begin{itemize}
+        \item $k_T$ характеризует общее поперечное движение пары;
+              $\mathbf q=\mathbf p_1-\mathbf p_2$ --- относительное движение.
+        \item Направление out в LCMS задаётся вектором $\mathbf k_T$ при $k_T>0$.
+        \item Два импульса по $0.3$ ГэВ/$c$ в одном направлении дают
+              $k_T=0.3$ ГэВ/$c$, в противоположных --- $k_T=0$.
+    \end{itemize}
+    {\footnotesize Источник:
+        \href{https://arxiv.org/pdf/1502.00559}{ALICE: Two-pion femtoscopy in p--Pb collisions, раздел 3.1}.}
+\end{frame}
+
+\begin{frame}{Настройка модели и отбор частиц.}
+	Для генерации использована транспортная модель SMASH:
+    \begin{itemize}
+        \item Столкновение:
+            $^{197}_{79}\!Au + ^{197}_{79}\!Au$
+        \item При энергии центра масс:
+            $\sqrt{s_{NN}} = 3$ GeV
+    \end{itemize}
+    Для построения КФ смешивались частицы:
+    \begin{itemize}
+        \item Пионы (+) и (-).
+        \item Произошло кинетическое вымораживание.
+        \item $P_{total}$ $\in$ [0.15, 1.5] GeV/c
+        \item $P_{T}$ $\in$ [0.15, 1.5] GeV/c
+        \item $\eta$ $\in$ [-1.5, 1.5]
+    \end{itemize}
+    Также мы не учитываем события с упругим взаимодействием.
+\end{frame}
+
+\begin{frame}{Гистограммы событий.Прицельный параметр}
+    \begin{figure}[H]
+        \includegraphics[width=0.7\textwidth]{fig/impact_parameter.png}
+        \caption{Распределене событий по прицельному параметру}\label{fig:sample}
+    \end{figure}
+\end{frame}
+
+\setcounter{figure}{3}
+\begin{frame}{Гистограммы частиц. 1.Координаты}
+    \begin{figure}[H]
+        \centering
+        \begin{minipage}[b]{0.4\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{fig/x.png}
+        \end{minipage}
+        \begin{minipage}[b]{0.4\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{fig/y.png}
+        \end{minipage}
+        \begin{minipage}[b]{0.4\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{fig/z.png}
+        \end{minipage}\label{fig:coordinates}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Гистограммы частиц. 2.Время кинетического вымораживания}
+    \begin{figure}[H]
+        \includegraphics[width=0.7\textwidth]{fig/t.png}\label{fig:kineticfreezouttime}
+        \caption{Распределение по времени наступления кинетического вымораживания}
+    \end{figure}
+\end{frame}
+
+\setcounter{figure}{6}
+\begin{frame}{Гистограммы частиц. 3.Импульсы}
+    \begin{figure}[H]
+        \centering
+        \begin{minipage}[b]{0.4\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{fig/px.png}
+        \end{minipage}
+        \hfill
+        \begin{minipage}[b]{0.4\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{fig/py.png}
+        \end{minipage}
+        \hfill
+        \begin{minipage}[b]{0.4\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{fig/pz.png}
+        \end{minipage}\label{fig:momentums}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Гистограммы частиц. 4.Полный и поперечный импульсы}
+    \begin{figure}[H]
+        \centering
+        \begin{minipage}[b]{0.47\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{fig/p_total.png}
+        \end{minipage}
+        \begin{minipage}[b]{0.47\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{fig/pt.png}
+        \end{minipage}\label{fig:total_and_transvmomentums}
+        \caption{Распределение по полному и поперечному импульсу для пионов}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Гистограммы частиц. 5. Быстрота и псевдобыстрота}
+    \begin{figure}[H]
+        \centering
+        \begin{minipage}[b]{0.47\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{fig/rapidity.png}
+        \end{minipage}
+        \begin{minipage}[b]{0.47\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{fig/pseudorapidity.png}
+        \end{minipage}\label{fig:pseudo_and_rapidity}
+        \caption{Распределение по быстроте и псевдобыстроте для пионов}
+    \end{figure}
+\end{frame}
+
+
+
+\begin{frame}{Сравнение вычисленных параметров при разных центральностях}
+    \begin{figure}[H]
+        \centering
+        \begin{minipage}[b]{0.47\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{fig/c_Rinv_vs_kt.png}
+        \end{minipage}
+        \begin{minipage}[b]{0.47\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{fig/c_lambda_vs_kt.png}
+        \end{minipage}\label{fig:Rinv_lambda_4}
+    \end{figure}
+
+    $R_{inv}$ и $\lambda$ уменьшается с $k_{t}$ и от центральных к периферическим столкновениям
+\end{frame}
+
+\begin{frame}{1-мерная проекция 3-мерной КФ}
+    \begin{figure}[H]
+        \includegraphics[width=0.7\textwidth]{fig/c_1DCF_min.png}\label{fig:cf_3d_projection_1d}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{2-мерная проекция 3-мерной КФ}
+    \begin{figure}[H]
+        \includegraphics[width=0.7\textwidth]{fig/c_2DCF_min.png}\label{fig:cf_3d_projection_2d}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Сравнение вычисленных параметров из 3-мерной КФ при разны центральностях}
+    \begin{figure}[H]
+        \includegraphics[width=0.65\textwidth]{fig/c_out_side_long_lambda.png}\label{fig:radii_lambda_centrality_3d}
+    \end{figure}
+\end{frame}
+
+\section{Статистика корреляционной функции}
+\input{chapters/correlation-statistics}
+\input{chapters/statistics-checks}
+
+\section{Обновление программного анализа}
+
+\begin{frame}{Обновление анализа. Точность исходных гистограмм}
+    \small
+    \begin{itemize}
+        \item Добавлено чтение исходных \texttt{TH3F} и \texttt{TH3D} с сохранением
+              моментов, осей и числа заполнений.
+        \item Преобразование \texttt{TH3F} в \texttt{TH3D} сохраняет данные,
+              но не восстанавливает потерянную при накоплении точность.
+        \item Если $Q_A-A^2/n$ неразличимо на фоне округления, значение $A/B$
+              сохраняется. Ошибка такого бина недоступна, и он исключается из
+              $\chi^2$-аппроксимации. При $n=1$ ошибка также недоступна;
+              пустые бины не оцениваются.
+        \item Нарушения моментов за пределами оценки округления приводят к
+              явной ошибке с диагностикой $n$, $A$ и $Q_A$.
+    \end{itemize}
+    Для следующих генераций требуется накопление исходных сумм в двойной точности.
+\end{frame}
+
+\begin{frame}{Обновление анализа. Проекции и сравнение зарядов}
+    \small
+    Проекция КФ учитывает число пар в ячейках среза $\mathcal{W}$:
+    \[
+        C_{\mathrm{proj}}(q_i) =
+        \frac{\sum_{j\in\mathcal{W}} A_j}{\sum_{j\in\mathcal{W}} B_j}.
+    \]
+    Отношение проекций и среднее отношения по $K$ допустимым ячейкам:
+    \[
+        \frac{C^{++}_{\mathrm{proj}}}{C^{--}_{\mathrm{proj}}},
+        \qquad
+        \left\langle\frac{C^{++}}{C^{--}}\right\rangle_{\mathcal{W}}
+        = \frac{1}{K}\sum_{j\in\mathcal{W}}\frac{C^{++}_j}{C^{--}_j}.
+    \]
+    \begin{itemize}
+        \item Среднее отношения одинаковых ненулевых КФ равно 1 при $K>0$.
+        \item В 2-мерных проекциях первая выбранная LCMS-ось соответствует $X$,
+              вторая --- $Y$.
+        \item Бины среза выбираются по фактическим границам с учётом округления.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Обновление анализа. Контроль аппроксимации}
+    \small
+    \begin{itemize}
+        \item В графики параметров и модельные кривые включаются успешные
+              конечные результаты с $\mathrm{ndf}>0$ и без попадания
+              свободных параметров на границы.
+        \item При повторной аппроксимации пригодный результат имеет приоритет
+              перед граничным. $\chi^2$ сравнивается внутри одного класса
+              успешных результатов.
+        \item Сохраняются параметры, ошибки, корреляции, статусы,
+              $\chi^2/\mathrm{ndf}$ и число фактических попыток.
+        \item Повторный запуск этапов использует сохранённые результаты только
+              при совпадении исходного файла и настроек анализа.
+        \item Непригодные фиты сохраняются для диагностики и дают ненулевой
+              код завершения с указанием причин.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Обновление анализа. Проверка результатов}
+    \small
+    \begin{itemize}
+        \item Локально пройдены все 14 проверок CTest в обычной сборке
+              и со средствами ASan/UBSan (macOS, ROOT 6.40).
+        \item На контрольном \texttt{TH3F}-входе проверены все этапы анализа,
+              восстановление заданных параметров, ROOT-выходы и изображения.
+        \item По логам от 4 октября 2026 г. запуск по быстроте
+              \texttt{y\_run\_3609\_fpc} завершил все этапы:
+              80 из 80 фитов прошли критерии пригодности.
+        \item В запуске по $k_t$ \texttt{kt\_run\_2707\_fpc} сохранена диагностика
+              6 непригодных фитов из 32. После исправления выбора повторного
+              фита этот набор ещё требует проверки.
+    \end{itemize}
+    Прохождение критериев пригодности не заменяет проверку физических
+    допущений и статистической модели. Прежние рисунки выше не пересчитаны
+    в рамках этого обновления.
+\end{frame}
+
+% XeLaTeX searches the output directory first, so each build reads its own chapter.
+\IfFileExists{\jobname-results.tex}{\input{\jobname-results.tex}}{}
+
+\begin{frame}{Заключение}
+    \begin{itemize}
+	\item Был сгенерирован набор частиц в транспортной модели “SMASH”.
+        \item Были построены и изучены гистограммы для базового анализа столкновения.
+        \item На базе сгенерированных модельных данных был освоен метод фемтоскопических корреляций.
+        \item Были построены корреляционные функции для одномерного и трехмерного анализа.
+        \item Были получены зависимости радиусов и силы корреляции от поперечного импульса и центральности.
+        \item Был обновлён и проверен программный анализ: статистические ошибки,
+              проекции, сравнение зарядов и контроль качества аппроксимации.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Цели}
+    \begin{itemize}
+	\item  Набрать более полную статистику для высокой центральности и для разных значений $\sqrt{S_{NN}}$.
+        \item Изучить асимметрию. В частности для направления out.
+        \item Проверить соответствие модельных и экспериментальных данных.
+    \end{itemize}
+\end{frame}
+
+\InputIfFileExists{presentation-results.tex}{}{}
+
+\begin{frame}
+	\Large \textbf{Спасибо за внимание!}
+\end{frame}

@@ -416,7 +416,7 @@ void Validate(const Config& cfg)
         throw std::runtime_error("threads must be >= 0 (0 = auto)");
     }
 
-    static_cast<void>(log::parse_level(cfg.logging.level));
+    static_cast<void>(logging::parse_level(cfg.logging.level));
 }
 
 } // namespace
@@ -551,8 +551,10 @@ Config load(const std::string& path)
         cfg.fit.minimizer = OptionalString(fit, "minimizer", cfg.fit.minimizer, "config.fit");
         cfg.fit.retry_with_defaults =
             OptionalBool(fit, "retry_with_defaults", cfg.fit.retry_with_defaults, "config.fit");
-        cfg.fit.use_integral = OptionalBool(fit, "use_integral", cfg.fit.use_integral, "config.fit");
-        cfg.fit.minos_errors = OptionalBool(fit, "minos_errors", cfg.fit.minos_errors, "config.fit");
+        cfg.fit.use_integral =
+            OptionalBool(fit, "use_integral", cfg.fit.use_integral, "config.fit");
+        cfg.fit.minos_errors =
+            OptionalBool(fit, "minos_errors", cfg.fit.minos_errors, "config.fit");
         ParseLimits(fit, cfg.fit);
         ParseFreeze(fit, cfg.fit);
     }
@@ -622,13 +624,20 @@ Config load(const std::string& path)
     Validate(cfg);
     build(cfg);
 
-    ensure_dir(cfg.output.dir);
+    return cfg;
+}
 
+void write_run_config(const Config& cfg)
+{
+    ensure_dir(cfg.output.dir);
     const std::string snapshotPath = cfg.output.dir + "/run_config.json";
     std::ofstream snapshot(snapshotPath);
-    if (snapshot) {
-        snapshot << ToJson(cfg).dump(2);
+    if (!snapshot) {
+        throw std::runtime_error("cannot create config snapshot: " + snapshotPath);
     }
-
-    return cfg;
+    snapshot << ToJson(cfg).dump(2);
+    snapshot.close();
+    if (!snapshot) {
+        throw std::runtime_error("cannot write config snapshot: " + snapshotPath);
+    }
 }

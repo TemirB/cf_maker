@@ -1,4 +1,5 @@
 #include <cstdlib>
+#include <chrono>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -234,8 +235,9 @@ void TestSnapshot()
     const auto path = TmpDir() / "snapshot.json";
     WriteConfig(path, Wrap(""));
 
-    const Config cfg = load(path.string());
-
+    Config cfg = load(path.string());
+    cfg.output.dir = (TmpDir() / "explicit_snapshot").string();
+    write_run_config(cfg);
     const std::filesystem::path snapshotPath =
         std::filesystem::path(cfg.output.dir) / "run_config.json";
     CHECK(std::filesystem::exists(snapshotPath));
@@ -248,6 +250,23 @@ void TestSnapshot()
     CHECK(content.find("\"q_max\"") != std::string::npos);
     CHECK(content.find("\"r_os\"") != std::string::npos);
     CHECK(content.find("\"binning\"") != std::string::npos);
+}
+
+void TestReadHasNoOutputSideEffects()
+{
+    const std::string leaf =
+        "preflight_" + std::to_string(std::chrono::steady_clock::now().time_since_epoch().count());
+    std::string content = Wrap("");
+    const std::string original = "\"dir\": \"results\"";
+    const auto position = content.find(original);
+    CHECK(position != std::string::npos);
+    content.replace(position, original.size(), "\"dir\": \"" + leaf + "\"");
+    const auto path = TmpDir() / (leaf + ".json");
+    WriteConfig(path, content);
+    const Config cfg = load(path.string());
+    CHECK(!std::filesystem::exists(cfg.output.dir));
+    write_run_config(cfg);
+    CHECK(std::filesystem::exists(std::filesystem::path(cfg.output.dir) / "run_config.json"));
 }
 
 void TestErrors()
@@ -296,6 +315,7 @@ int main()
     TestDefaults();
     TestOverrides();
     TestSnapshot();
+    TestReadHasNoOutputSideEffects();
     TestErrors();
     std::cout << "All tests passed\n";
     return 0;

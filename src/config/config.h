@@ -112,3 +112,5 @@ struct Config
 
 [[nodiscard]] Config load(const std::string& path);
 void build(Config& cfg);
+// Write only after input and stage dependencies have passed preflight.
+void write_run_config(const Config& cfg);
