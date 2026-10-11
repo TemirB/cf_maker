@@ -1,0 +1,71 @@
+% настройки polyglossia
+\setdefaultlanguage{russian}
+\setotherlanguage{english}
+
+% локализация
+\addto\captionsrussian{
+	\renewcommand{\partname}{Глава}
+	\renewcommand{\contentsname}{Содержание}
+	\renewcommand{\figurename}{Рисунок}
+}
+
+% основной шрифт документа
+
+% перечень использованных источников
+\addbibresource{../report/references.bib}
+
+% оформление презентации
+\usetheme{metropolis}
+\usecolortheme{seagull}
+\beamertemplatenavigationsymbolsempty
+
+% Кириллические шрифты: системные при наличии, иначе файлы GNU FreeFont из TeX Live.
+\IfFontExistsTF{CMU Serif}
+    {\setmainfont{CMU Serif}}
+    {\IfFontExistsTF{Times New Roman}
+        {\setmainfont{Times New Roman}}
+        {\setmainfont{FreeSerif.otf}[
+            BoldFont=FreeSerifBold.otf,
+            ItalicFont=FreeSerifItalic.otf,
+            BoldItalicFont=FreeSerifBoldItalic.otf]}}
+\IfFontExistsTF{Arial}
+    {\setsansfont{Arial}\newfontfamily\cyrillicfontsf{Arial}[Script=Cyrillic]}
+    {\setsansfont{FreeSans.otf}[
+        BoldFont=FreeSansBold.otf,
+        ItalicFont=FreeSansOblique.otf,
+        BoldItalicFont=FreeSansBoldOblique.otf]
+    \newfontfamily\cyrillicfontsf{FreeSans.otf}[
+        Script=Cyrillic,
+        BoldFont=FreeSansBold.otf,
+        ItalicFont=FreeSansOblique.otf,
+        BoldItalicFont=FreeSansBoldOblique.otf]}
+\IfFontExistsTF{Courier New}
+    {\setmonofont{Courier New}\newfontfamily\cyrillicfonttt{Courier New}[Script=Cyrillic]}
+    {\setmonofont{FreeMono.otf}[
+        BoldFont=FreeMonoBold.otf,
+        ItalicFont=FreeMonoOblique.otf,
+        BoldItalicFont=FreeMonoBoldOblique.otf]
+    \newfontfamily\cyrillicfonttt{FreeMono.otf}[
+        Script=Cyrillic,
+        BoldFont=FreeMonoBold.otf,
+        ItalicFont=FreeMonoOblique.otf,
+        BoldItalicFont=FreeMonoBoldOblique.otf]}
+
+% настройка ссылок и метаданных документа
+\hypersetup{unicode=true,colorlinks=true,linkcolor=red,citecolor=green,filecolor=magenta,urlcolor=cyan,
+	pdftitle={\docname},
+	pdfauthor={\studentname},
+	pdfsubject={\docname},
+	pdfcreator={\studentname},
+	pdfproducer={XeLaTeX},
+	pdfkeywords={\docname}
+}
+
+% путь к каталогу с рисунками
+\graphicspath{{fig/}}
+
+% настоящее матожидание
+\newcommand{\MExpect}{\mathsf{M}}
+
+% объявили оператор!
+\DeclareMathOperator{\sgn}{\mathop{sgn}}

@@ -18,6 +18,7 @@
 #include "core/log.h"
 #include "draw/draw.h"
 #include "fit/types.h"
+#include "io/output.h"
 
 void make_dependency(Config& cfg, TFile* cf3dFile, TFile* outFile)
 {
@@ -28,11 +29,11 @@ void make_dependency(Config& cfg, TFile* cf3dFile, TFile* outFile)
 
     std::string dir = cfg.output.dir + "/dependency";
     ensure_dir(dir);
-    log::Info("dependency: output dir = " + dir);
+    logging::info("dependency: output dir = " + dir);
 
     const std::string ext = cfg.general.images.format;
     for (const int ch : cfg.selection.charges) {
-        log::Debug("dependency: charge = " + std::string(charge::kNames[ch]));
+        logging::debug("dependency: charge = " + std::string(charge::kNames[ch]));
         std::array<std::unique_ptr<TMultiGraph>, lcms::kCount> mg_radii;
         for (auto& mg : mg_radii) {
             mg = std::make_unique<TMultiGraph>();
@@ -46,9 +47,10 @@ void make_dependency(Config& cfg, TFile* cf3dFile, TFile* outFile)
         for (const int centr : cfg.selection.centralities) {
             std::array<TGraphErrors*, lcms::kCount> g_radii{};
             for (int lcms = 0; lcms < lcms::kCount; lcms++) {
-                g_radii[lcms] = make_styled_graph(Form("g_R_%s_%s_centr_%s", lcms::kNames[lcms],
-                                                 charge::kNames[ch], centrality::kNames[centr]),
-                                            centr);
+                g_radii[lcms] =
+                    make_styled_graph(Form("g_R_%s_%s_centr_%s", lcms::kNames[lcms],
+                                           charge::kNames[ch], centrality::kNames[centr]),
+                                      centr);
             }
             TGraphErrors* g_lambda = make_styled_graph(
                 Form("g_L_%s_centr_%s", charge::kNames[ch], centrality::kNames[centr]), centr);
@@ -56,20 +58,29 @@ void make_dependency(Config& cfg, TFile* cf3dFile, TFile* outFile)
             TGraphErrors* g_pvalue = build_pvalue_graph(cfg, ch, centr);
             TGraphErrors* g_fit_over_cf = build_fit_over_cf_graph(cfg, cf3dFile, ch, centr);
 
-            legend_entries.emplace_back(g_radii[0], centrality::kNames[centr]);
-
+            int point = 0;
             for (int b = 0; b < bin.count; b++) {
                 const FitResult& res = fit_results[ch][centr][b];
+                if (!is_usable_fit(res)) {
+                    logging::debug(
+                        "dependency: excluding unavailable fit ch=" + std::to_string(ch) +
+                        " centr=" + std::to_string(centr) + " bin=" + std::to_string(b));
+                    continue;
+                }
 
                 double x_val = bin_center(bin, b);
 
                 for (int lcms = 0; lcms < lcms::kCount; lcms++) {
-                    g_radii[lcms]->SetPoint(b, x_val, res.r[lcms]);
-                    g_radii[lcms]->SetPointError(b, 0, res.e_r[lcms]);
+                    g_radii[lcms]->SetPoint(point, x_val, res.r[lcms]);
+                    g_radii[lcms]->SetPointError(point, 0, res.e_r[lcms]);
                 }
 
-                g_lambda->SetPoint(b, x_val, res.lambda);
-                g_lambda->SetPointError(b, 0, res.e_lambda);
+                g_lambda->SetPoint(point, x_val, res.lambda);
+                g_lambda->SetPointError(point, 0, res.e_lambda);
+                ++point;
+            }
+            if (point > 0) {
+                legend_entries.emplace_back(g_radii[0], centrality::kNames[centr]);
             }
 
             for (int lcms = 0; lcms < lcms::kCount; lcms++) {
@@ -90,27 +101,27 @@ void make_dependency(Config& cfg, TFile* cf3dFile, TFile* outFile)
                 kind = draw::GraphKind::Cross;
             }
             write_mg_with_legend(outFile, mg_radii[lcms].get(), mg_radii[lcms]->GetName(), mode,
-                              Form("R_{%s} (fm)", lcms::kNames[lcms]), legend_entries, kind);
+                                 Form("R_{%s} (fm)", lcms::kNames[lcms]), legend_entries, kind);
         }
 
         set_range_with_errors(mg_lambda.get(), 0.1);
         mg_lambda->SetName(Form("mg_L_%s", charge::kNames[ch]));
-        write_mg_with_legend(outFile, mg_lambda.get(), mg_lambda->GetName(), mode, "lambda", legend_entries,
-                          draw::GraphKind::Lambda);
+        write_mg_with_legend(outFile, mg_lambda.get(), mg_lambda->GetName(), mode, "lambda",
+                             legend_entries, draw::GraphKind::Lambda);
 
         set_range_with_errors(mg_chi2_ndf.get(), 0.1);
         mg_chi2_ndf->SetName(Form("mg_chi2_ndf_%s", charge::kNames[ch]));
-        write_mg_with_legend(outFile, mg_chi2_ndf.get(), mg_chi2_ndf->GetName(), mode, "#chi^{2}/ndf",
-                          legend_entries, draw::GraphKind::chi2_ndf);
+        write_mg_with_legend(outFile, mg_chi2_ndf.get(), mg_chi2_ndf->GetName(), mode,
+                             "#chi^{2}/ndf", legend_entries, draw::GraphKind::chi2_ndf);
 
         set_range_with_errors(mg_fit_over_cf.get(), 0.1);
         mg_fit_over_cf->SetName(Form("mg_FitOverCF_%s", charge::kNames[ch]));
-        write_mg_with_legend(outFile, mg_fit_over_cf.get(), mg_fit_over_cf->GetName(), mode, "<fit/CF>",
-                          legend_entries, draw::GraphKind::FitOverCF);
+        write_mg_with_legend(outFile, mg_fit_over_cf.get(), mg_fit_over_cf->GetName(), mode,
+                             "<fit/CF>", legend_entries, draw::GraphKind::FitOverCF);
 
         mg_pvalue->SetName(Form("mg_Pvalue_%s", charge::kNames[ch]));
         write_mg_with_legend(outFile, mg_pvalue.get(), mg_pvalue->GetName(), mode, "p_{value}",
-                          legend_entries, draw::GraphKind::PValue);
+                             legend_entries, draw::GraphKind::PValue);
 
         {
             std::string name = Form("c_all_graphs_%s", charge::kNames[ch]);
@@ -119,11 +130,11 @@ void make_dependency(Config& cfg, TFile* cf3dFile, TFile* outFile)
             c->Divide(2, 2);
             for (int lcms = 0; lcms < 3; lcms++) {
                 c->cd(lcms + 1);
-                mg_radii[lcms]->Draw("APL");
+                draw_mg_or_report(mg_radii[lcms].get());
             }
 
             c->cd(4);
-            mg_lambda->Draw("APL");
+            draw_mg_or_report(mg_lambda.get());
             std::string save_name = dir;
             save_name += "/";
             save_name += name;
@@ -142,14 +153,16 @@ void make_dependency(Config& cfg, TFile* cf3dFile, TFile* outFile)
 
             c->cd(1);
             gPad->SetLogy();
-            mg_chi2_ndf->Draw("APL");
-            mg_chi2_ndf->GetXaxis()->SetTitle(mode);
-            mg_chi2_ndf->GetYaxis()->SetTitle("#chi^{2}/ndf");
+            if (draw_mg_or_report(mg_chi2_ndf.get())) {
+                mg_chi2_ndf->GetXaxis()->SetTitle(mode);
+                mg_chi2_ndf->GetYaxis()->SetTitle("#chi^{2}/ndf");
+            }
 
             c->cd(2);
-            mg_fit_over_cf->Draw("APL");
-            mg_fit_over_cf->GetXaxis()->SetTitle(mode);
-            mg_fit_over_cf->GetYaxis()->SetTitle("<fit/CF>");
+            if (draw_mg_or_report(mg_fit_over_cf.get())) {
+                mg_fit_over_cf->GetXaxis()->SetTitle(mode);
+                mg_fit_over_cf->GetYaxis()->SetTitle("<fit/CF>");
+            }
 
             std::string save_name = dir;
             save_name += "/";
@@ -169,7 +182,7 @@ void make_dependency(Config& cfg, TFile* cf3dFile, TFile* outFile)
             int idx = 1;
             for (int lcms = 0; lcms < 3; lcms++) {
                 c->cd(idx);
-                mg_radii[lcms + 3]->Draw("APL");
+                draw_mg_or_report(mg_radii[lcms + 3].get());
                 idx++;
             }
 
@@ -188,11 +201,10 @@ void make_dependency(Config& cfg, TFile* cf3dFile, TFile* outFile)
             std::string title = Form("P-value %s", charge::kNames[ch]);
 
             auto c = std::make_unique<TCanvas>(name.data(), title.data(), 1600, 1600);
-            mg_pvalue->Draw("APL");
+            draw_mg_or_report(mg_pvalue.get());
 
             {
-                outFile->cd();
-                mg_pvalue->Write();
+                write_output_object(*outFile, *mg_pvalue);
             }
             std::string save_name = Form("%s/%s.%s", dir.data(), name.data(), ext.data());
             if (cfg.general.images.need) {
