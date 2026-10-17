@@ -1,0 +1,635 @@
+[
+  {
+    "source": "sources/kraeva_2024.pdf",
+    "source_url": "https://inspirehep.net/files/6a9386d330d51f4723a2145d87465b26",
+    "doi": "https://doi.org/10.3390/universe10040188",
+    "sha256": "9190fd23d5e4fdc30dd4c92fa53e4c0a0c69fc6a808468b47c69aa68cf7999d0",
+    "credit": "A. Kraeva on behalf of STAR, Universe 10 (2024) 188, CC BY 4.0; original STAR Preliminary labels retained",
+    "asset": "figures/kraeva_2024_pid.pdf",
+    "source_pdf_page": 6,
+    "source_raster_pixels": [
+      598,
+      976
+    ],
+    "source_image_index_left_to_right": 0,
+    "crop_pixels": [
+      0,
+      0,
+      598,
+      976
+    ],
+    "legend_crop_pixels": null,
+    "legend_scale": null,
+    "header_crop_pixels": null,
+    "footer_crop_pixels": null,
+    "pdf_points": [
+      149.5,
+      244.0
+    ],
+    "description": "Figure 2: TPC ionization and TOF mass-squared particle identification",
+    "conditions": "STAR Au+Au sqrt(sNN)=3 GeV, 0-80%; signed p/q; top dE/dx, bottom TOF m^2. Illustrates PID, not the femtoscopic source.",
+    "source_is_vector": false,
+    "method": "Original embedded raster preserved; PDF clipping without resampling or redrawing"
+  },
+  {
+    "source": "sources/kraeva_2024.pdf",
+    "source_url": "https://inspirehep.net/files/6a9386d330d51f4723a2145d87465b26",
+    "doi": "https://doi.org/10.3390/universe10040188",
+    "sha256": "9190fd23d5e4fdc30dd4c92fa53e4c0a0c69fc6a808468b47c69aa68cf7999d0",
+    "credit": "A. Kraeva on behalf of STAR, Universe 10 (2024) 188, CC BY 4.0; original STAR Preliminary labels retained",
+    "asset": "figures/kraeva_2024_pid_tpc_dedx.pdf",
+    "source_pdf_page": 6,
+    "source_raster_pixels": [
+      598,
+      976
+    ],
+    "source_image_index_left_to_right": 0,
+    "crop_pixels": [
+      0,
+      0,
+      598,
+      487
+    ],
+    "legend_crop_pixels": null,
+    "legend_scale": null,
+    "header_crop_pixels": null,
+    "footer_crop_pixels": [
+      0,
+      901,
+      598,
+      976
+    ],
+    "pdf_points": [
+      149.5,
+      140.5
+    ],
+    "description": "Figure 2 top: TPC dE/dx PID with the original shared momentum axis",
+    "conditions": "STAR Au+Au sqrt(sNN)=3 GeV, 0-80%. dE/dx versus signed p/q; colored curves are species expectations. The common x-axis tick labels and p/q label are copied from the bottom of the same figure. This illustrates single-track PID, not a position measurement at the femtoscopic scale.",
+    "source_is_vector": false,
+    "method": "Original embedded raster preserved; PDF clipping without resampling or redrawing"
+  },
+  {
+    "source": "sources/kraeva_2024.pdf",
+    "source_url": "https://inspirehep.net/files/6a9386d330d51f4723a2145d87465b26",
+    "doi": "https://doi.org/10.3390/universe10040188",
+    "sha256": "9190fd23d5e4fdc30dd4c92fa53e4c0a0c69fc6a808468b47c69aa68cf7999d0",
+    "credit": "A. Kraeva on behalf of STAR, Universe 10 (2024) 188, CC BY 4.0; original STAR Preliminary labels retained",
+    "asset": "figures/kraeva_2024_pid_tof_mass2.pdf",
+    "source_pdf_page": 6,
+    "source_raster_pixels": [
+      598,
+      976
+    ],
+    "source_image_index_left_to_right": 0,
+    "crop_pixels": [
+      0,
+      487,
+      598,
+      976
+    ],
+    "legend_crop_pixels": null,
+    "legend_scale": null,
+    "header_crop_pixels": [
+      0,
+      0,
+      598,
+      72
+    ],
+    "footer_crop_pixels": null,
+    "pdf_points": [
+      149.5,
+      140.25
+    ],
+    "description": "Figure 2 bottom: TOF mass-squared PID with the original STAR/energy header",
+    "conditions": "STAR Au+Au sqrt(sNN)=3 GeV, 0-80%. m^2 inferred from TOF and TPC momentum/path length versus signed p/q. The STAR/energy/centrality header is copied from the top of the same figure. Finite resolution allows negative reconstructed m^2 values; these are measurement estimates, not negative physical mass squared.",
+    "source_is_vector": false,
+    "method": "Original embedded raster preserved; PDF clipping without resampling or redrawing"
+  },
+  {
+    "source": "sources/kraeva_2024.pdf",
+    "source_url": "https://inspirehep.net/files/6a9386d330d51f4723a2145d87465b26",
+    "doi": "https://doi.org/10.3390/universe10040188",
+    "sha256": "9190fd23d5e4fdc30dd4c92fa53e4c0a0c69fc6a808468b47c69aa68cf7999d0",
+    "credit": "A. Kraeva on behalf of STAR, Universe 10 (2024) 188, CC BY 4.0; original STAR Preliminary labels retained",
+    "asset": "figures/kraeva_2024_acceptance.pdf",
+    "source_pdf_page": 7,
+    "source_raster_pixels": [
+      1798,
+      776
+    ],
+    "source_image_index_left_to_right": 0,
+    "crop_pixels": [
+      0,
+      0,
+      1798,
+      776
+    ],
+    "legend_crop_pixels": null,
+    "legend_scale": null,
+    "header_crop_pixels": null,
+    "footer_crop_pixels": null,
+    "pdf_points": [
+      449.5,
+      194.0
+    ],
+    "description": "Figure 3: pion-pair acceptance and selected rapidity windows",
+    "conditions": "STAR Au+Au sqrt(sNN)=3 GeV, 0-80%; positive pairs left, negative right. Horizontal coordinate is pair rapidity in the CM; y_beam=1.05 is used for the lab-to-CM shift.",
+    "source_is_vector": false,
+    "method": "Original embedded raster preserved; PDF clipping without resampling or redrawing"
+  },
+  {
+    "source": "sources/kraeva_2024.pdf",
+    "source_url": "https://inspirehep.net/files/6a9386d330d51f4723a2145d87465b26",
+    "doi": "https://doi.org/10.3390/universe10040188",
+    "sha256": "9190fd23d5e4fdc30dd4c92fa53e4c0a0c69fc6a808468b47c69aa68cf7999d0",
+    "credit": "A. Kraeva on behalf of STAR, Universe 10 (2024) 188, CC BY 4.0; original STAR Preliminary labels retained",
+    "asset": "figures/kraeva_2024_acceptance_positive.pdf",
+    "source_pdf_page": 7,
+    "source_raster_pixels": [
+      1798,
+      776
+    ],
+    "source_image_index_left_to_right": 0,
+    "crop_pixels": [
+      0,
+      0,
+      900,
+      776
+    ],
+    "legend_crop_pixels": null,
+    "legend_scale": null,
+    "header_crop_pixels": null,
+    "footer_crop_pixels": null,
+    "pdf_points": [
+      225.0,
+      194.0
+    ],
+    "description": "Figure 3 left: positive-pion pair acceptance",
+    "conditions": "STAR Au+Au sqrt(sNN)=3 GeV, 0-80%; pi+pi+; pair CM rapidity versus kT. Dashed lines mark rapidity-analysis windows; this is detector acceptance.",
+    "source_is_vector": false,
+    "method": "Original embedded raster preserved; PDF clipping without resampling or redrawing"
+  },
+  {
+    "source": "sources/kraeva_2024.pdf",
+    "source_url": "https://inspirehep.net/files/6a9386d330d51f4723a2145d87465b26",
+    "doi": "https://doi.org/10.3390/universe10040188",
+    "sha256": "9190fd23d5e4fdc30dd4c92fa53e4c0a0c69fc6a808468b47c69aa68cf7999d0",
+    "credit": "A. Kraeva on behalf of STAR, Universe 10 (2024) 188, CC BY 4.0; original STAR Preliminary labels retained",
+    "asset": "figures/kraeva_2024_correlation_projections.pdf",
+    "source_pdf_page": 9,
+    "source_raster_pixels": [
+      1844,
+      676
+    ],
+    "source_image_index_left_to_right": 0,
+    "crop_pixels": [
+      0,
+      35,
+      1844,
+      655
+    ],
+    "legend_crop_pixels": null,
+    "legend_scale": null,
+    "header_crop_pixels": null,
+    "footer_crop_pixels": null,
+    "pdf_points": [
+      461.0,
+      155.0
+    ],
+    "description": "Figure 4: measured out-side-long correlation projections and fits",
+    "conditions": "STAR Preliminary, Au+Au sqrt(sNN)=3 GeV, 0-10%, 0.15<kT<0.25 GeV/c; no additional pair-rapidity constraint. Red pi+pi+, blue pi-pi-; curves are Bowler-Sinyukov fits. For each projection the other q components are integrated over +/-0.05 GeV/c. Error bars are statistical. q=p1-p2, LCMS; these are projections of a 3D correlation, not q_inv.",
+    "source_is_vector": false,
+    "method": "Original embedded raster preserved; PDF clipping without resampling or redrawing"
+  },
+  {
+    "source": "sources/kraeva_2024.pdf",
+    "source_url": "https://inspirehep.net/files/6a9386d330d51f4723a2145d87465b26",
+    "doi": "https://doi.org/10.3390/universe10040188",
+    "sha256": "9190fd23d5e4fdc30dd4c92fa53e4c0a0c69fc6a808468b47c69aa68cf7999d0",
+    "credit": "A. Kraeva on behalf of STAR, Universe 10 (2024) 188, CC BY 4.0; original STAR Preliminary labels retained",
+    "asset": "figures/kraeva_2024_correlation_out.pdf",
+    "source_pdf_page": 9,
+    "source_raster_pixels": [
+      1844,
+      676
+    ],
+    "source_image_index_left_to_right": 0,
+    "crop_pixels": [
+      0,
+      35,
+      638,
+      655
+    ],
+    "legend_crop_pixels": [
+      1060,
+      85,
+      1205,
+      210
+    ],
+    "legend_scale": 1.0,
+    "header_crop_pixels": null,
+    "footer_crop_pixels": null,
+    "pdf_points": [
+      198.75,
+      155.0
+    ],
+    "description": "Figure 4 out projection, with a separate original charge/fit legend",
+    "conditions": "STAR Preliminary, Au+Au sqrt(sNN)=3 GeV, 0-10%, 0.15<kT<0.25 GeV/c; no additional pair-rapidity constraint. Red pi+pi+, blue pi-pi-; curves are Bowler-Sinyukov fits. For each projection the other q components are integrated over +/-0.05 GeV/c. Error bars are statistical. q=p1-p2, LCMS; these are projections of a 3D correlation, not q_inv. Right-hand legend is copied from the same original figure.",
+    "source_is_vector": false,
+    "method": "Original embedded raster preserved; PDF clipping without resampling or redrawing"
+  },
+  {
+    "source": "sources/kraeva_2024.pdf",
+    "source_url": "https://inspirehep.net/files/6a9386d330d51f4723a2145d87465b26",
+    "doi": "https://doi.org/10.3390/universe10040188",
+    "sha256": "9190fd23d5e4fdc30dd4c92fa53e4c0a0c69fc6a808468b47c69aa68cf7999d0",
+    "credit": "A. Kraeva on behalf of STAR, Universe 10 (2024) 188, CC BY 4.0; original STAR Preliminary labels retained",
+    "asset": "figures/kraeva_2024_radii_kt.pdf",
+    "source_pdf_page": 9,
+    "source_raster_pixels": [
+      997,
+      969
+    ],
+    "source_image_index_left_to_right": 0,
+    "crop_pixels": [
+      0,
+      0,
+      997,
+      969
+    ],
+    "legend_crop_pixels": null,
+    "legend_scale": null,
+    "header_crop_pixels": null,
+    "footer_crop_pixels": null,
+    "pdf_points": [
+      249.25,
+      242.25
+    ],
+    "description": "Figure 5: measured LCMS radii versus pair transverse momentum",
+    "conditions": "STAR Preliminary, Au+Au sqrt(sNN)=3 GeV, 0-10%; rapidity-integrated acceptance without additional y_pair cut. Red Rout, blue Rside, black Rlong; filled pi-pi-, open pi+pi+. Error bars statistical; shaded boxes systematic. Horizontal axis is kT, not mT.",
+    "source_is_vector": false,
+    "method": "Original embedded raster preserved; PDF clipping without resampling or redrawing"
+  },
+  {
+    "source": "sources/kraeva_2024.pdf",
+    "source_url": "https://inspirehep.net/files/6a9386d330d51f4723a2145d87465b26",
+    "doi": "https://doi.org/10.3390/universe10040188",
+    "sha256": "9190fd23d5e4fdc30dd4c92fa53e4c0a0c69fc6a808468b47c69aa68cf7999d0",
+    "credit": "A. Kraeva on behalf of STAR, Universe 10 (2024) 188, CC BY 4.0; original STAR Preliminary labels retained",
+    "asset": "figures/kraeva_2024_rapidity_all.pdf",
+    "source_pdf_page": 10,
+    "source_raster_pixels": [
+      1844,
+      1112
+    ],
+    "source_image_index_left_to_right": 0,
+    "crop_pixels": [
+      0,
+      0,
+      1844,
+      1112
+    ],
+    "legend_crop_pixels": null,
+    "legend_scale": null,
+    "header_crop_pixels": null,
+    "footer_crop_pixels": null,
+    "pdf_points": [
+      461.0,
+      278.0
+    ],
+    "description": "Figure 6: radii, lambda, and signed out-long coefficient versus pair CM rapidity",
+    "conditions": "STAR Preliminary, Au+Au sqrt(sNN)=3 GeV, 0.15<kT<0.6 GeV/c; black 0-10%, red 10-30%, blue 30-50%. Filled pi-pi-, open pi+pi+; boxes systematic. Gray symbols are mirrored measured points, not independent data. R_out-long^2 is a signed coefficient in -2*q_out*q_long*R_out-long^2, with fm^2 units.",
+    "source_is_vector": false,
+    "method": "Original embedded raster preserved; PDF clipping without resampling or redrawing"
+  },
+  {
+    "source": "sources/kraeva_2024.pdf",
+    "source_url": "https://inspirehep.net/files/6a9386d330d51f4723a2145d87465b26",
+    "doi": "https://doi.org/10.3390/universe10040188",
+    "sha256": "9190fd23d5e4fdc30dd4c92fa53e4c0a0c69fc6a808468b47c69aa68cf7999d0",
+    "credit": "A. Kraeva on behalf of STAR, Universe 10 (2024) 188, CC BY 4.0; original STAR Preliminary labels retained",
+    "asset": "figures/kraeva_2024_rapidity_out_long.pdf",
+    "source_pdf_page": 10,
+    "source_raster_pixels": [
+      1844,
+      1112
+    ],
+    "source_image_index_left_to_right": 0,
+    "crop_pixels": [
+      615,
+      565,
+      1233,
+      1112
+    ],
+    "legend_crop_pixels": [
+      1255,
+      585,
+      1844,
+      870
+    ],
+    "legend_scale": 0.65,
+    "header_crop_pixels": null,
+    "footer_crop_pixels": null,
+    "pdf_points": [
+      253.21,
+      136.75
+    ],
+    "description": "Figure 6e: signed out-long coefficient, with the original legend",
+    "conditions": "STAR Preliminary, Au+Au sqrt(sNN)=3 GeV, 0.15<kT<0.6 GeV/c; black 0-10%, red 10-30%, blue 30-50%. Filled pi-pi-, open pi+pi+; boxes systematic. Gray symbols are mirrored measured points, not independent data. R_out-long^2 is a signed coefficient in -2*q_out*q_long*R_out-long^2, with fm^2 units.",
+    "source_is_vector": false,
+    "method": "Original embedded raster preserved; PDF clipping without resampling or redrawing"
+  },
+  {
+    "source": "sources/kraeva_2024.pdf",
+    "source_url": "https://inspirehep.net/files/6a9386d330d51f4723a2145d87465b26",
+    "doi": "https://doi.org/10.3390/universe10040188",
+    "sha256": "9190fd23d5e4fdc30dd4c92fa53e4c0a0c69fc6a808468b47c69aa68cf7999d0",
+    "credit": "A. Kraeva on behalf of STAR, Universe 10 (2024) 188, CC BY 4.0; original STAR Preliminary labels retained",
+    "asset": "figures/kraeva_2024_rapidity_side.pdf",
+    "source_pdf_page": 10,
+    "source_raster_pixels": [
+      1844,
+      1112
+    ],
+    "source_image_index_left_to_right": 0,
+    "crop_pixels": [
+      615,
+      0,
+      1233,
+      558
+    ],
+    "legend_crop_pixels": [
+      1255,
+      585,
+      1844,
+      870
+    ],
+    "legend_scale": 0.65,
+    "header_crop_pixels": null,
+    "footer_crop_pixels": null,
+    "pdf_points": [
+      253.21,
+      139.5
+    ],
+    "description": "Figure 6b: Rside versus pair CM rapidity, with the original legend",
+    "conditions": "STAR Preliminary, Au+Au sqrt(sNN)=3 GeV, 0.15<kT<0.6 GeV/c; black 0-10%, red 10-30%, blue 30-50%. Filled pi-pi-, open pi+pi+; boxes systematic. Gray symbols are mirrored measured points, not independent data. R_out-long^2 is a signed coefficient in -2*q_out*q_long*R_out-long^2, with fm^2 units.",
+    "source_is_vector": false,
+    "method": "Original embedded raster preserved; PDF clipping without resampling or redrawing"
+  },
+  {
+    "source": "sources/balinov_2025.pdf",
+    "source_url": "http://web-static-data.msu.dubna.ru:8093/epp/kursov_4/2025/Balinov.pdf",
+    "sha256": "8d822f7a2618fad46bb8c5376530f7c2622e8fd17952614a3b0217679febe4a4",
+    "credit": "T. M. Balinov, archival defense presentation (2025); original graphs and uncertainties unchanged",
+    "limitations": "Historical model result. 2025 fit code and error algorithm unavailable; source formulas contain dimensional/sign ambiguities.",
+    "asset": "figures/balinov_2025_correlation_kt.pdf",
+    "source_pdf_page": 13,
+    "source_raster_pixels": [
+      896,
+      672
+    ],
+    "source_image_index_left_to_right": 0,
+    "crop_pixels": [
+      0,
+      0,
+      896,
+      672
+    ],
+    "legend_crop_pixels": null,
+    "legend_scale": null,
+    "header_crop_pixels": null,
+    "footer_crop_pixels": null,
+    "pdf_points": [
+      224.0,
+      168.0
+    ],
+    "description": "Archival 1D correlations for four kT intervals at centrality 0-10%",
+    "conditions": "SMASH model Au+Au sqrt(sNN)=3 GeV; selected charged pions, |p| and pT in [0.15,1.5] GeV/c, eta in [-1.5,1.5]. Historical 2025 result; no new simulation or refit. Fixed centrality 0-10%; kT=[0.15,0.25],[0.25,0.35],[0.35,0.45],[0.45,0.60] GeV/c. Horizontal axis q_inv.",
+    "source_is_vector": false,
+    "method": "Original embedded raster preserved; PDF clipping without resampling or redrawing"
+  },
+  {
+    "source": "sources/balinov_2025.pdf",
+    "source_url": "http://web-static-data.msu.dubna.ru:8093/epp/kursov_4/2025/Balinov.pdf",
+    "sha256": "8d822f7a2618fad46bb8c5376530f7c2622e8fd17952614a3b0217679febe4a4",
+    "credit": "T. M. Balinov, archival defense presentation (2025); original graphs and uncertainties unchanged",
+    "limitations": "Historical model result. 2025 fit code and error algorithm unavailable; source formulas contain dimensional/sign ambiguities.",
+    "asset": "figures/balinov_2025_correlation_centrality.pdf",
+    "source_pdf_page": 13,
+    "source_raster_pixels": [
+      896,
+      672
+    ],
+    "source_image_index_left_to_right": 1,
+    "crop_pixels": [
+      0,
+      0,
+      896,
+      672
+    ],
+    "legend_crop_pixels": null,
+    "legend_scale": null,
+    "header_crop_pixels": null,
+    "footer_crop_pixels": null,
+    "pdf_points": [
+      224.0,
+      168.0
+    ],
+    "description": "Archival 1D correlations for four centralities at fixed kT",
+    "conditions": "SMASH model Au+Au sqrt(sNN)=3 GeV; selected charged pions, |p| and pT in [0.15,1.5] GeV/c, eta in [-1.5,1.5]. Historical 2025 result; no new simulation or refit. Fixed kT=[0.15,0.25] GeV/c; centralities 0-10%,10-30%,30-50%,50-80%. Horizontal axis q_inv.",
+    "source_is_vector": false,
+    "method": "Original embedded raster preserved; PDF clipping without resampling or redrawing"
+  },
+  {
+    "source": "sources/balinov_2025.pdf",
+    "source_url": "http://web-static-data.msu.dubna.ru:8093/epp/kursov_4/2025/Balinov.pdf",
+    "sha256": "8d822f7a2618fad46bb8c5376530f7c2622e8fd17952614a3b0217679febe4a4",
+    "credit": "T. M. Balinov, archival defense presentation (2025); original graphs and uncertainties unchanged",
+    "limitations": "Historical model result. 2025 fit code and error algorithm unavailable; source formulas contain dimensional/sign ambiguities.",
+    "asset": "figures/balinov_2025_rinv.pdf",
+    "source_pdf_page": 14,
+    "source_raster_pixels": [
+      696,
+      472
+    ],
+    "source_image_index_left_to_right": 0,
+    "crop_pixels": [
+      0,
+      0,
+      696,
+      472
+    ],
+    "legend_crop_pixels": null,
+    "legend_scale": null,
+    "header_crop_pixels": null,
+    "footer_crop_pixels": null,
+    "pdf_points": [
+      174.0,
+      118.0
+    ],
+    "description": "Archival R_inv versus kT, four centralities",
+    "conditions": "SMASH model Au+Au sqrt(sNN)=3 GeV; selected charged pions, |p| and pT in [0.15,1.5] GeV/c, eta in [-1.5,1.5]. Historical 2025 result; no new simulation or refit. Effective 1D Gaussian parameter in fm; original fit errors retained, error algorithm unknown.",
+    "source_is_vector": false,
+    "method": "Original embedded raster preserved; PDF clipping without resampling or redrawing"
+  },
+  {
+    "source": "sources/balinov_2025.pdf",
+    "source_url": "http://web-static-data.msu.dubna.ru:8093/epp/kursov_4/2025/Balinov.pdf",
+    "sha256": "8d822f7a2618fad46bb8c5376530f7c2622e8fd17952614a3b0217679febe4a4",
+    "credit": "T. M. Balinov, archival defense presentation (2025); original graphs and uncertainties unchanged",
+    "limitations": "Historical model result. 2025 fit code and error algorithm unavailable; source formulas contain dimensional/sign ambiguities.",
+    "asset": "figures/balinov_2025_lambda_1d.pdf",
+    "source_pdf_page": 14,
+    "source_raster_pixels": [
+      696,
+      472
+    ],
+    "source_image_index_left_to_right": 1,
+    "crop_pixels": [
+      0,
+      0,
+      696,
+      472
+    ],
+    "legend_crop_pixels": null,
+    "legend_scale": null,
+    "header_crop_pixels": null,
+    "footer_crop_pixels": null,
+    "pdf_points": [
+      174.0,
+      118.0
+    ],
+    "description": "Archival 1D lambda versus kT, four centralities",
+    "conditions": "SMASH model Au+Au sqrt(sNN)=3 GeV; selected charged pions, |p| and pT in [0.15,1.5] GeV/c, eta in [-1.5,1.5]. Historical 2025 result; no new simulation or refit. Dimensionless 1D fit strength; original fit errors retained, error algorithm unknown.",
+    "source_is_vector": false,
+    "method": "Original embedded raster preserved; PDF clipping without resampling or redrawing"
+  },
+  {
+    "source": "sources/balinov_2025.pdf",
+    "source_url": "http://web-static-data.msu.dubna.ru:8093/epp/kursov_4/2025/Balinov.pdf",
+    "sha256": "8d822f7a2618fad46bb8c5376530f7c2622e8fd17952614a3b0217679febe4a4",
+    "credit": "T. M. Balinov, archival defense presentation (2025); original graphs and uncertainties unchanged",
+    "limitations": "Historical model result. 2025 fit code and error algorithm unavailable; source formulas contain dimensional/sign ambiguities.",
+    "asset": "figures/balinov_2025_rout_3d.pdf",
+    "source_pdf_page": 17,
+    "source_raster_pixels": [
+      896,
+      672
+    ],
+    "source_image_index_left_to_right": 0,
+    "crop_pixels": [
+      0,
+      0,
+      437,
+      334
+    ],
+    "legend_crop_pixels": null,
+    "legend_scale": null,
+    "header_crop_pixels": null,
+    "footer_crop_pixels": null,
+    "pdf_points": [
+      109.25,
+      83.5
+    ],
+    "description": "Archival Rout versus kT, individual 3D panel",
+    "conditions": "SMASH model Au+Au sqrt(sNN)=3 GeV; selected charged pions, |p| and pT in [0.15,1.5] GeV/c, eta in [-1.5,1.5]. Historical 2025 result; no new simulation or refit. Centralities 0-10%,10-30%,30-50%,50-80%. Original axes and legend retained; error algorithm unknown.",
+    "source_is_vector": false,
+    "method": "Original embedded raster preserved; PDF clipping without resampling or redrawing"
+  },
+  {
+    "source": "sources/balinov_2025.pdf",
+    "source_url": "http://web-static-data.msu.dubna.ru:8093/epp/kursov_4/2025/Balinov.pdf",
+    "sha256": "8d822f7a2618fad46bb8c5376530f7c2622e8fd17952614a3b0217679febe4a4",
+    "credit": "T. M. Balinov, archival defense presentation (2025); original graphs and uncertainties unchanged",
+    "limitations": "Historical model result. 2025 fit code and error algorithm unavailable; source formulas contain dimensional/sign ambiguities.",
+    "asset": "figures/balinov_2025_rside_3d.pdf",
+    "source_pdf_page": 17,
+    "source_raster_pixels": [
+      896,
+      672
+    ],
+    "source_image_index_left_to_right": 0,
+    "crop_pixels": [
+      443,
+      0,
+      896,
+      334
+    ],
+    "legend_crop_pixels": null,
+    "legend_scale": null,
+    "header_crop_pixels": null,
+    "footer_crop_pixels": null,
+    "pdf_points": [
+      113.25,
+      83.5
+    ],
+    "description": "Archival Rside versus kT, individual 3D panel",
+    "conditions": "SMASH model Au+Au sqrt(sNN)=3 GeV; selected charged pions, |p| and pT in [0.15,1.5] GeV/c, eta in [-1.5,1.5]. Historical 2025 result; no new simulation or refit. Centralities 0-10%,10-30%,30-50%,50-80%. Original axes and legend retained; error algorithm unknown.",
+    "source_is_vector": false,
+    "method": "Original embedded raster preserved; PDF clipping without resampling or redrawing"
+  },
+  {
+    "source": "sources/balinov_2025.pdf",
+    "source_url": "http://web-static-data.msu.dubna.ru:8093/epp/kursov_4/2025/Balinov.pdf",
+    "sha256": "8d822f7a2618fad46bb8c5376530f7c2622e8fd17952614a3b0217679febe4a4",
+    "credit": "T. M. Balinov, archival defense presentation (2025); original graphs and uncertainties unchanged",
+    "limitations": "Historical model result. 2025 fit code and error algorithm unavailable; source formulas contain dimensional/sign ambiguities.",
+    "asset": "figures/balinov_2025_rlong_3d.pdf",
+    "source_pdf_page": 17,
+    "source_raster_pixels": [
+      896,
+      672
+    ],
+    "source_image_index_left_to_right": 0,
+    "crop_pixels": [
+      0,
+      342,
+      437,
+      672
+    ],
+    "legend_crop_pixels": null,
+    "legend_scale": null,
+    "header_crop_pixels": null,
+    "footer_crop_pixels": null,
+    "pdf_points": [
+      109.25,
+      82.5
+    ],
+    "description": "Archival Rlong versus kT, individual 3D panel",
+    "conditions": "SMASH model Au+Au sqrt(sNN)=3 GeV; selected charged pions, |p| and pT in [0.15,1.5] GeV/c, eta in [-1.5,1.5]. Historical 2025 result; no new simulation or refit. Centralities 0-10%,10-30%,30-50%,50-80%. Original axes and legend retained; error algorithm unknown.",
+    "source_is_vector": false,
+    "method": "Original embedded raster preserved; PDF clipping without resampling or redrawing"
+  },
+  {
+    "source": "sources/balinov_2025.pdf",
+    "source_url": "http://web-static-data.msu.dubna.ru:8093/epp/kursov_4/2025/Balinov.pdf",
+    "sha256": "8d822f7a2618fad46bb8c5376530f7c2622e8fd17952614a3b0217679febe4a4",
+    "credit": "T. M. Balinov, archival defense presentation (2025); original graphs and uncertainties unchanged",
+    "limitations": "Historical model result. 2025 fit code and error algorithm unavailable; source formulas contain dimensional/sign ambiguities.",
+    "asset": "figures/balinov_2025_lambda_3d.pdf",
+    "source_pdf_page": 17,
+    "source_raster_pixels": [
+      896,
+      672
+    ],
+    "source_image_index_left_to_right": 0,
+    "crop_pixels": [
+      443,
+      342,
+      896,
+      672
+    ],
+    "legend_crop_pixels": null,
+    "legend_scale": null,
+    "header_crop_pixels": null,
+    "footer_crop_pixels": null,
+    "pdf_points": [
+      113.25,
+      82.5
+    ],
+    "description": "Archival 3D lambda versus kT, individual 3D panel",
+    "conditions": "SMASH model Au+Au sqrt(sNN)=3 GeV; selected charged pions, |p| and pT in [0.15,1.5] GeV/c, eta in [-1.5,1.5]. Historical 2025 result; no new simulation or refit. Centralities 0-10%,10-30%,30-50%,50-80%. Original axes and legend retained; error algorithm unknown.",
+    "source_is_vector": false,
+    "method": "Original embedded raster preserved; PDF clipping without resampling or redrawing"
+  }
+]

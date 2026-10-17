@@ -1,0 +1,19 @@
+Tool: built-in image_gen.imagegen
+Mode: edit / new composition based on the prior scientific schematic
+Reference: femtoscopy_announcement_scientific.png
+Transparent background: false
+
+Use case: scientific-educational.
+Asset type: engaging, scientifically restrained editorial illustration for a university lecture announcement about two-pion correlation femtoscopy. Landscape 16:9.
+
+Image 1 is the previous overly plain schematic. Completely replace its composition. Keep the clarity of a scientific figure, but make the new image a lively scientific illustration rather than four arrows between lettered points. Do not retain its A/B diagram, captions, or empty layout.
+
+New composition: an elegant two-dimensional transverse detector event-display composition on an off-white background. One large circular tracking region is positioned slightly left of center, with a few fine concentric detector rings and very sparse azimuthal guide marks. At its center, suggest the collision of two gold nuclei using two small, overlapping, flat clusters of simple muted gray and ochre nucleon disks — no glossy spheres. A compact extended oval emission region emerges from that overlap. About thirty clean charged-particle tracks sweep outward through the tracking region, varying in curvature and length, making an energetic but readable fan. Track curvature should resemble a simplified event display in an axial magnetic field. Track strokes are uniform, sharp, restrained charcoal and muted blue-gray, with no glowing effects. Highlight precisely two nearby tracks in teal and burnt orange, with nearby outgoing directions; these are the pion pair being studied. They originate at different places inside the small emission region, with no bridge or interaction line between them.
+
+Use the right third for a small enlarged scientific inset of the extended emission region connected by two thin neutral-gray magnification guide lines. Inside the inset, show a sparse distribution of discrete emission points inside a faint flat ellipse and the highlighted pair leaving from two distinct points in nearly parallel directions. The inset makes it clear that the emission region has spatial extent. There is no literal equality of the detector and source length scales. Keep ample whitespace around this inset, without boxed infographic cards.
+
+Visual style: refined journal scientific illustration, crisp almost vector-like drafting, flat limited colors, balanced diagonal visual movement, technical precision with an attractive cover-like composition. Off-white, graphite, muted teal and restrained burnt orange. The dense but orderly tracks provide visual interest; no decorative effects. At thumbnail scale the circular detector and highlighted pair remain immediately recognizable.
+Text: no sentences, no title, no A/B labels, no numbers, no plotted data. Only tiny mathematical labels "p₁" and "p₂" next to the highlighted outgoing directions in the enlarged inset.
+Scientific constraints: clearly an original schematic illustration, not a claimed real STAR event; extended source, no claim to reconstruct individual emission coordinates. No plot, no invented measurements, no error bars. No explicit QGP or phase-transition imagery.
+Avoid: gradients, glow, bloom, lens flare, sparks, volumetric light, explosions, cosmic scenes, orbiting electrons, metallic surfaces, 3D rendering, glossy particles, holograms, sinusoidal light bridges between pions, garbled lettering, logos and watermark.
+

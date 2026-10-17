@@ -1,0 +1,18 @@
+Tool: built-in image_gen.imagegen
+Mode: edit / complete restyling of the prior announcement illustration
+Reference: femtoscopy_announcement.png
+Scientific concept reference: Lisa et al. (2005), Fig. 1, https://arxiv.org/pdf/nucl-ex/0505014
+Transparent background: false
+
+Edit Image 1 with a complete scientific restyling. Replace its entire decorative rendering with an original flat two-dimensional schematic suitable for a nuclear-physics review article. The old image is the subject reference only; retain no glow, textures, detector cylinder, gold spheres, particles flying through space, or 3D appearance.
+
+Use case: scientific-educational.
+Asset type: a wide, clean figure for a university lecture announcement, landscape 16:9.
+Style: restrained publication-quality line diagram, white background, near-black hairline strokes, light neutral-gray source fill and one muted teal accent. Crisp, uniform line weights; flat solid fills; professional mathematical lettering. Generous white margins. The figure should be simple enough to reproduce in TikZ.
+
+Exact diagram: At the left, one vertically elongated ellipse representing an extended emission source. Place two small black emission points inside this SAME ellipse, A above and B below; both clearly interior. At the right, two small open endpoint circles aligned vertically, p₁ above and p₂ below. These endpoints represent final measured momentum states, not physical detector positions. Draw exactly FOUR straight arrows: solid near-black A→p₁ and B→p₂; dashed muted-teal A→p₂ and B→p₁. Solid arrows do not cross; dashed arrows cross once. No dot at the crossing, no scattering vertex there. Both arrow families coexist, illustrating two indistinguishable assignments. The source ellipse and points occupy the left quarter, the right momentum endpoints sit near the right quarter, the lines span the central area.
+
+Text: only these short labels, accurately typeset: "A", "B", "p₁", "p₂"; "Источник" above the ellipse; "Конечные импульсы" above the two endpoints; "π⁺π⁺" below the source. No title, no lecture text, no caption, no equations, no decorative lettering.
+Scientific constraint: arrows show amplitude assignments, not reconstructed femtometre trajectories. No simulated/experimental plot, no data markers, no additional waves, no Feynman loops.
+Avoid: gradients, shading, shadows, bevels, metallic objects, holograms, glowing lines, sparks, lens effects, fractal clouds, bokeh, starfields, atoms with electron orbits, explosion, visual noise, boxed infographic cards, clip-art, logos and watermark.
+

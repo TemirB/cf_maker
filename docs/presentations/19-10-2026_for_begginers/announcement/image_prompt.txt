@@ -1,0 +1,10 @@
+Tool: built-in image_gen.imagegen
+Transparent background: false
+
+Use case: scientific-educational.
+Asset type: standalone wide illustration for an announcement of a Russian undergraduate physics lecture, landscape 16:9.
+Primary request: an elegant scientific editorial illustration about correlation femtoscopy in heavy-ion collisions: learning the spatial extent of a tiny short-lived emission source from measured particle momenta.
+Scene and composition: a coherent left-to-right visual story. On the left, a compact gold-on-gold nuclear collision produces a softly glowing, translucent, finite ellipsoidal emission region. Its fine granular texture suggests many emission points. Across the middle and right, clean thin curved particle tracks fan out through a restrained cylindrical wireframe suggestion of a tracking detector. Highlight precisely two nearby tracks in warm gold among muted teal tracks; two delicate overlapping wave patterns near the source suggest the interference of identical pions. Subtle nested translucent ellipsoids around the emission region evoke inference of source size. Keep the collision and tracks visually dominant and legible at thumbnail scale. Use generous breathing room and a clear silhouette; avoid clutter.
+Style: sophisticated scientific cover art, polished dimensional illustration with controlled linework, more editorial and precise than a cinematic explosion. Dark navy background (#142D43), teal (#007F86), warm gold (#CE8429), restrained white highlights, matching the lecture's visual palette.
+Scientific constraints: conceptual illustration, not an image of measured STAR data. The source is an extended cloud of many emission points, not a point explosion; do not suggest tracks reveal individual femtometre emission positions. Do not depict a phase transition or label quark-gluon plasma. No fake axes, data points, equations, numbers, letters, titles, labels, logos, or watermark. No planets, atoms with electron orbits, mushroom clouds, fireballs, stars, or cosmic scene. The result is the picture only, without typography.
+

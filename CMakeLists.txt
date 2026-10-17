@@ -147,6 +147,15 @@ target_link_libraries(statistics_diff PRIVATE project_warnings
     ROOT::Core ROOT::RIO ROOT::Hist ROOT::Graf ROOT::Gpad ROOT::MathCore
     nlohmann_json::nlohmann_json
 )
+add_executable(physics_audit_checks EXCLUDE_FROM_ALL
+    proof/physics_audit_checks.cpp src/core/correlation.cpp src/core/log.cpp
+    src/fit/model.cpp src/fit/initial_parameters.cpp src/fit/result.cpp
+)
+target_include_directories(physics_audit_checks PRIVATE ${SRC_DIR})
+target_include_directories(physics_audit_checks SYSTEM PRIVATE ${ROOT_INCLUDE_DIRS})
+target_link_libraries(physics_audit_checks PRIVATE project_warnings
+    ROOT::Core ROOT::RIO ROOT::Hist ROOT::Graf ROOT::Gpad ROOT::MathCore
+)
 target_include_directories(generate_gaussian PRIVATE ${SRC_DIR})
 target_include_directories(generate_gaussian SYSTEM PRIVATE ${ROOT_INCLUDE_DIRS})
 target_link_libraries(generate_gaussian PRIVATE
