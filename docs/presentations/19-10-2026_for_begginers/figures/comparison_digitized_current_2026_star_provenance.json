@@ -1,0 +1,1094 @@
+{
+  "kind": "DIGITIZED MARKER CENTRES; NOT ORIGINAL NUMERICAL TABLES",
+  "purpose": "Qualitative comparison of visible radius scales and kT trends; no chi-square or statistical agreement is inferred.",
+  "common_confirmed_conditions": {
+    "system": "Au+Au",
+    "sqrt_sNN_GeV": 3,
+    "centrality_percent": [
+      0,
+      10
+    ],
+    "pion_pair_charge": "negative",
+    "radii_frame": "LCMS"
+  },
+  "method": "Current red-series centres located manually on the unscaled original JPEG; least-squares linear tick calibration. STAR negative-pion centres imported without recalibration or coordinate changes.",
+  "pixel_origin": "Top-left of each original source raster; x rightwards, y downwards.",
+  "units": {
+    "kt": "GeV/c",
+    "R": "fm",
+    "estimatepixeluncertainty": "source-raster pixels"
+  },
+  "precision_warning": "Pixel location budgets and derived digitization_precision columns are not statistical or systematic uncertainties, confidence intervals, or fit errors. CSV decimal places express computation only.",
+  "physical_errors": "Original physical uncertainties are not reconstructed and are not assumed zero. They are not represented by error bars in this comparison; consult source figures and original fit results.",
+  "comparison_limitations": [
+    "This compares the newly provided current model images with STAR; it is not the 2025 model archive.",
+    "Detailed current track/pair selections and fit treatment have not yet been matched to STAR.",
+    "The last plotted kT group differs between model and experiment; no rebinning or interpolation onto common bin centres is performed.",
+    "Model line segments only guide the eye through the four centres; they are not an additional fit.",
+    "STAR Preliminary status from the source is retained."
+  ],
+  "sources": {
+    "SMASH_current_images_2026_10_19": {
+      "path": "sources/current_2026_10_19/kt_c_all_graphs_neg.jpg",
+      "sha256": "3410a3b9e125bc73449b2c3369cd58af2acfd7d57505df2eedd6fab2875dd82a",
+      "image_pixels": [
+        3196,
+        1572
+      ],
+      "origin": "User-provided current calculation images, 19 October 2026.",
+      "selected_series": "Red points; negative pions; centrality 0-10% confirmed by the user.",
+      "confirmed_by_user": {
+        "model": "SMASH",
+        "system": "Au+Au",
+        "sqrt_sNN_GeV": 3,
+        "centrality_percent": [
+          0,
+          10
+        ],
+        "radii_frame": "LCMS",
+        "rapidity_frame": "collision_center_of_mass"
+      },
+      "readable_in_fit_header": {
+        "charge": "negative",
+        "first_kt_interval_GeV_c": [
+          0.15,
+          0.25
+        ]
+      },
+      "supporting_images": [
+        {
+          "path": "sources/current_2026_10_19/kt_cfs_neg_0-10_0.15-0.25.jpg",
+          "sha256": "6ebd20159b97762c39677d7065f763fe329df4a48ea2039607782c85b3ca6809",
+          "image_pixels": [
+            2396,
+            772
+          ]
+        },
+        {
+          "path": "sources/current_2026_10_19/c_all_graphs_neg.jpg",
+          "sha256": "16051d82e8659f64125ee7eebaba069204a744503dbb14c4d66620d4b96d90a8",
+          "image_pixels": [
+            3196,
+            1572
+          ]
+        },
+        {
+          "path": "sources/current_2026_10_19/cfs_neg_0-10_0.0_0.2.jpg",
+          "sha256": "395b91a05da0e1ba1e9f8db91e53721c3d7b20cb0e385facaa96b302246f3acd",
+          "image_pixels": [
+            2396,
+            772
+          ]
+        }
+      ],
+      "unconfirmed_current_conditions": [
+        "Single-particle cuts and pair-rapidity integration for the kT analysis.",
+        "Fit/FSI settings, centrality calibration and interpretation of printed fit errors."
+      ]
+    },
+    "STAR_Kraeva_2024": {
+      "source_pdf": "sources/kraeva_2024.pdf",
+      "source_pdf_sha256": "9190fd23d5e4fdc30dd4c92fa53e4c0a0c69fc6a808468b47c69aa68cf7999d0",
+      "source_pdf_page": 9,
+      "source_figure": 5,
+      "source_url": "https://doi.org/10.3390/universe10040188",
+      "source_raster_pixels": [
+        997,
+        969
+      ],
+      "embedded_raster_sha256": "3135829d58bf478ea8facfcce8eadccf28e5bc42154076d106fdf74f5bf3a1b7",
+      "credit": "A. Kraeva for STAR, Universe 10 (2024) 188, Figure 5; STAR Preliminary, CC BY 4.0.",
+      "import_csv": "figures/comparison_digitized_2025_star.csv",
+      "import_csv_sha256": "a6557a447ec4430d234b417a198cc94681a11d639a779b145993fd67a343c133",
+      "import_provenance": "figures/comparison_digitized_2025_star_provenance.json",
+      "import_provenance_sha256": "6da18d876a1666004b02959ab6a4764acecd4a02ac8f49923c772c6a420891ad",
+      "original_imported_csv_records": [
+        {
+          "source": "STAR_Kraeva_2024",
+          "charge": "pi-pi-",
+          "radius": "out",
+          "kt": "0.200032",
+          "R": "5.301718",
+          "estimatepixeluncertainty": "3.0",
+          "flags": "digitized_marker_centre;original_errors_not_transferred;acceptance_differs;STAR_Preliminary;original_graphical_x_offset_preserved",
+          "pixel_x": "202",
+          "pixel_y": "221",
+          "kt_digitization_precision_GeV_c": "0.001337",
+          "R_digitization_precision_fm": "0.017783",
+          "calibration": "star_all",
+          "visible_group_index": "1"
+        },
+        {
+          "source": "STAR_Kraeva_2024",
+          "charge": "pi-pi-",
+          "radius": "out",
+          "kt": "0.299841",
+          "R": "4.774154",
+          "estimatepixeluncertainty": "3.0",
+          "flags": "digitized_marker_centre;original_errors_not_transferred;acceptance_differs;STAR_Preliminary;original_graphical_x_offset_preserved",
+          "pixel_x": "426",
+          "pixel_y": "310",
+          "kt_digitization_precision_GeV_c": "0.001337",
+          "R_digitization_precision_fm": "0.017783",
+          "calibration": "star_all",
+          "visible_group_index": "2"
+        },
+        {
+          "source": "STAR_Kraeva_2024",
+          "charge": "pi-pi-",
+          "radius": "out",
+          "kt": "0.400095",
+          "R": "4.211025",
+          "estimatepixeluncertainty": "3.0",
+          "flags": "digitized_marker_centre;original_errors_not_transferred;acceptance_differs;STAR_Preliminary;original_graphical_x_offset_preserved",
+          "pixel_x": "651",
+          "pixel_y": "405",
+          "kt_digitization_precision_GeV_c": "0.001337",
+          "R_digitization_precision_fm": "0.017783",
+          "calibration": "star_all",
+          "visible_group_index": "3"
+        },
+        {
+          "source": "STAR_Kraeva_2024",
+          "charge": "pi-pi-",
+          "radius": "out",
+          "kt": "0.499904",
+          "R": "3.76645",
+          "estimatepixeluncertainty": "3.0",
+          "flags": "digitized_marker_centre;original_errors_not_transferred;acceptance_differs;STAR_Preliminary;original_graphical_x_offset_preserved",
+          "pixel_x": "875",
+          "pixel_y": "480",
+          "kt_digitization_precision_GeV_c": "0.001337",
+          "R_digitization_precision_fm": "0.017783",
+          "calibration": "star_all",
+          "visible_group_index": "4"
+        },
+        {
+          "source": "STAR_Kraeva_2024",
+          "charge": "pi-pi-",
+          "radius": "side",
+          "kt": "0.200032",
+          "R": "5.21873",
+          "estimatepixeluncertainty": "4.0",
+          "flags": "digitized_marker_centre;original_errors_not_transferred;acceptance_differs;STAR_Preliminary;original_graphical_x_offset_preserved",
+          "pixel_x": "202",
+          "pixel_y": "235",
+          "kt_digitization_precision_GeV_c": "0.001782",
+          "R_digitization_precision_fm": "0.023711",
+          "calibration": "star_all",
+          "visible_group_index": "1"
+        },
+        {
+          "source": "STAR_Kraeva_2024",
+          "charge": "pi-pi-",
+          "radius": "side",
+          "kt": "0.299841",
+          "R": "4.513337",
+          "estimatepixeluncertainty": "4.0",
+          "flags": "digitized_marker_centre;original_errors_not_transferred;acceptance_differs;STAR_Preliminary;original_graphical_x_offset_preserved",
+          "pixel_x": "426",
+          "pixel_y": "354",
+          "kt_digitization_precision_GeV_c": "0.001782",
+          "R_digitization_precision_fm": "0.023711",
+          "calibration": "star_all",
+          "visible_group_index": "2"
+        },
+        {
+          "source": "STAR_Kraeva_2024",
+          "charge": "pi-pi-",
+          "radius": "side",
+          "kt": "0.400095",
+          "R": "3.902786",
+          "estimatepixeluncertainty": "4.0",
+          "flags": "digitized_marker_centre;original_errors_not_transferred;acceptance_differs;STAR_Preliminary;original_graphical_x_offset_preserved",
+          "pixel_x": "651",
+          "pixel_y": "457",
+          "kt_digitization_precision_GeV_c": "0.001782",
+          "R_digitization_precision_fm": "0.023711",
+          "calibration": "star_all",
+          "visible_group_index": "3"
+        },
+        {
+          "source": "STAR_Kraeva_2024",
+          "charge": "pi-pi-",
+          "radius": "side",
+          "kt": "0.499904",
+          "R": "3.505632",
+          "estimatepixeluncertainty": "4.0",
+          "flags": "digitized_marker_centre;original_errors_not_transferred;acceptance_differs;STAR_Preliminary;original_graphical_x_offset_preserved",
+          "pixel_x": "875",
+          "pixel_y": "524",
+          "kt_digitization_precision_GeV_c": "0.001782",
+          "R_digitization_precision_fm": "0.023711",
+          "calibration": "star_all",
+          "visible_group_index": "4"
+        },
+        {
+          "source": "STAR_Kraeva_2024",
+          "charge": "pi-pi-",
+          "radius": "long",
+          "kt": "0.200032",
+          "R": "4.113219",
+          "estimatepixeluncertainty": "3.0",
+          "flags": "digitized_marker_centre;original_errors_not_transferred;acceptance_differs;STAR_Preliminary;original_graphical_x_offset_preserved",
+          "pixel_x": "202",
+          "pixel_y": "421.5",
+          "kt_digitization_precision_GeV_c": "0.001337",
+          "R_digitization_precision_fm": "0.017783",
+          "calibration": "star_all",
+          "visible_group_index": "1"
+        },
+        {
+          "source": "STAR_Kraeva_2024",
+          "charge": "pi-pi-",
+          "radius": "long",
+          "kt": "0.299841",
+          "R": "3.354476",
+          "estimatepixeluncertainty": "3.0",
+          "flags": "digitized_marker_centre;original_errors_not_transferred;acceptance_differs;STAR_Preliminary;original_graphical_x_offset_preserved",
+          "pixel_x": "426",
+          "pixel_y": "549.5",
+          "kt_digitization_precision_GeV_c": "0.001337",
+          "R_digitization_precision_fm": "0.017783",
+          "calibration": "star_all",
+          "visible_group_index": "2"
+        },
+        {
+          "source": "STAR_Kraeva_2024",
+          "charge": "pi-pi-",
+          "radius": "long",
+          "kt": "0.400095",
+          "R": "2.755781",
+          "estimatepixeluncertainty": "3.0",
+          "flags": "digitized_marker_centre;original_errors_not_transferred;acceptance_differs;STAR_Preliminary;original_graphical_x_offset_preserved",
+          "pixel_x": "651",
+          "pixel_y": "650.5",
+          "kt_digitization_precision_GeV_c": "0.001337",
+          "R_digitization_precision_fm": "0.017783",
+          "calibration": "star_all",
+          "visible_group_index": "3"
+        },
+        {
+          "source": "STAR_Kraeva_2024",
+          "charge": "pi-pi-",
+          "radius": "long",
+          "kt": "0.499904",
+          "R": "2.311205",
+          "estimatepixeluncertainty": "3.0",
+          "flags": "digitized_marker_centre;original_errors_not_transferred;acceptance_differs;STAR_Preliminary;original_graphical_x_offset_preserved",
+          "pixel_x": "875",
+          "pixel_y": "725.5",
+          "kt_digitization_precision_GeV_c": "0.001337",
+          "R_digitization_precision_fm": "0.017783",
+          "calibration": "star_all",
+          "visible_group_index": "4"
+        }
+      ],
+      "note": "STAR pixel coordinates, calibrated values and digitization budgets are unchanged. Only the negative-pion series is selected; no new STAR digitization is performed."
+    }
+  },
+  "calibrations": {
+    "current_out": {
+      "axes_bounds_pixels": [
+        185,
+        91,
+        1412,
+        694
+      ],
+      "x": {
+        "value_per_pixel": 0.00031762819677478763,
+        "value_at_pixel_zero": 0.10886727462732489,
+        "ticks_pixel_value": [
+          [
+            287,
+            0.2
+          ],
+          [
+            444,
+            0.25
+          ],
+          [
+            602,
+            0.3
+          ],
+          [
+            759,
+            0.35
+          ],
+          [
+            917,
+            0.4
+          ],
+          [
+            1074,
+            0.45
+          ],
+          [
+            1231,
+            0.5
+          ],
+          [
+            1389,
+            0.55
+          ]
+        ],
+        "max_tick_residual_pixels": 0.41688724192658055
+      },
+      "y": {
+        "value_per_pixel": -0.016568723140400254,
+        "value_at_pixel_zero": 11.50397695638621,
+        "ticks_pixel_value": [
+          [
+            91,
+            10
+          ],
+          [
+            151,
+            9
+          ],
+          [
+            211,
+            8
+          ],
+          [
+            272,
+            7
+          ],
+          [
+            332,
+            6
+          ],
+          [
+            393,
+            5
+          ],
+          [
+            453,
+            4
+          ],
+          [
+            513,
+            3
+          ],
+          [
+            574,
+            2
+          ],
+          [
+            634,
+            1
+          ],
+          [
+            694,
+            0
+          ]
+        ],
+        "max_tick_residual_pixels": 0.48141149406424166
+      }
+    },
+    "current_side": {
+      "axes_bounds_pixels": [
+        1783,
+        91,
+        3010,
+        694
+      ],
+      "x": {
+        "value_per_pixel": 0.0003176281967747874,
+        "value_at_pixel_zero": -0.3987025838187852,
+        "ticks_pixel_value": [
+          [
+            1885,
+            0.2
+          ],
+          [
+            2042,
+            0.25
+          ],
+          [
+            2200,
+            0.3
+          ],
+          [
+            2357,
+            0.35
+          ],
+          [
+            2515,
+            0.4
+          ],
+          [
+            2672,
+            0.45
+          ],
+          [
+            2829,
+            0.5
+          ],
+          [
+            2987,
+            0.55
+          ]
+        ],
+        "max_tick_residual_pixels": 0.4168872419267993
+      },
+      "y": {
+        "value_per_pixel": -0.016568723140400254,
+        "value_at_pixel_zero": 11.50397695638621,
+        "ticks_pixel_value": [
+          [
+            91,
+            10
+          ],
+          [
+            151,
+            9
+          ],
+          [
+            211,
+            8
+          ],
+          [
+            272,
+            7
+          ],
+          [
+            332,
+            6
+          ],
+          [
+            393,
+            5
+          ],
+          [
+            453,
+            4
+          ],
+          [
+            513,
+            3
+          ],
+          [
+            574,
+            2
+          ],
+          [
+            634,
+            1
+          ],
+          [
+            694,
+            0
+          ]
+        ],
+        "max_tick_residual_pixels": 0.48141149406424166
+      }
+    },
+    "current_long": {
+      "axes_bounds_pixels": [
+        185,
+        877,
+        1412,
+        1480
+      ],
+      "x": {
+        "value_per_pixel": 0.00031762819677478763,
+        "value_at_pixel_zero": 0.10886727462732489,
+        "ticks_pixel_value": [
+          [
+            287,
+            0.2
+          ],
+          [
+            444,
+            0.25
+          ],
+          [
+            602,
+            0.3
+          ],
+          [
+            759,
+            0.35
+          ],
+          [
+            917,
+            0.4
+          ],
+          [
+            1074,
+            0.45
+          ],
+          [
+            1231,
+            0.5
+          ],
+          [
+            1389,
+            0.55
+          ]
+        ],
+        "max_tick_residual_pixels": 0.41688724192658055
+      },
+      "y": {
+        "value_per_pixel": -0.01656872314040023,
+        "value_at_pixel_zero": 24.52699334474079,
+        "ticks_pixel_value": [
+          [
+            877,
+            10
+          ],
+          [
+            937,
+            9
+          ],
+          [
+            997,
+            8
+          ],
+          [
+            1058,
+            7
+          ],
+          [
+            1118,
+            6
+          ],
+          [
+            1179,
+            5
+          ],
+          [
+            1239,
+            4
+          ],
+          [
+            1299,
+            3
+          ],
+          [
+            1360,
+            2
+          ],
+          [
+            1420,
+            1
+          ],
+          [
+            1480,
+            0
+          ]
+        ],
+        "max_tick_residual_pixels": 0.4814114940644568
+      }
+    },
+    "star_all": {
+      "x": {
+        "value_per_pixel": 0.00044557552458546136,
+        "value_at_pixel_zero": 0.1100257531875442,
+        "ticks_pixel_value": [
+          [
+            202,
+            0.2
+          ],
+          [
+            314,
+            0.25
+          ],
+          [
+            426,
+            0.3
+          ],
+          [
+            539,
+            0.35
+          ],
+          [
+            651,
+            0.4
+          ],
+          [
+            763,
+            0.45
+          ],
+          [
+            875,
+            0.5
+          ]
+        ],
+        "max_tick_residual_pixels": 0.42857142857100206
+      },
+      "y": {
+        "value_per_pixel": -0.005927676027733236,
+        "value_at_pixel_zero": 6.611734057819263,
+        "ticks_pixel_value": [
+          [
+            103,
+            6
+          ],
+          [
+            272,
+            5
+          ],
+          [
+            441,
+            4
+          ],
+          [
+            609,
+            3
+          ],
+          [
+            778,
+            2
+          ]
+        ],
+        "max_tick_residual_pixels": 0.4000000000000386
+      }
+    }
+  },
+  "first_point_fit_box_checks": [
+    {
+      "radius": "out",
+      "source_image": "sources/current_2026_10_19/kt_cfs_neg_0-10_0.15-0.25.jpg",
+      "R_fm": 6.185,
+      "printed_fit_error_fm": 0.006,
+      "digitized_R_fm": 6.185417,
+      "difference_fm": 0.000417,
+      "within_digitization_location_budget": true
+    },
+    {
+      "radius": "side",
+      "source_image": "sources/current_2026_10_19/kt_cfs_neg_0-10_0.15-0.25.jpg",
+      "R_fm": 4.832,
+      "printed_fit_error_fm": 0.004,
+      "digitized_R_fm": 4.826782,
+      "difference_fm": -0.005218,
+      "within_digitization_location_budget": true
+    },
+    {
+      "radius": "long",
+      "source_image": "sources/current_2026_10_19/kt_cfs_neg_0-10_0.15-0.25.jpg",
+      "R_fm": 4.804,
+      "printed_fit_error_fm": 0.005,
+      "digitized_R_fm": 4.810213,
+      "difference_fm": 0.006213,
+      "within_digitization_location_budget": true
+    }
+  ],
+  "points": [
+    {
+      "source": "SMASH_current_images_2026_10_19",
+      "charge": "pi-pi-",
+      "radius": "out",
+      "kt": 0.200027,
+      "R": 6.185417,
+      "estimatepixeluncertainty": 2.0,
+      "flags": "digitized_marker_centre;JPEG_location_budget_not_physical_error;original_fit_errors_not_reconstructed;selections_may_differ",
+      "pixel_x": 287,
+      "pixel_y": 321,
+      "kt_digitization_precision_GeV_c": 0.000635,
+      "R_digitization_precision_fm": 0.033137,
+      "calibration": "current_out",
+      "visible_group_index": 1,
+      "series_colour_in_source": "red",
+      "source_digitization_flags": ""
+    },
+    {
+      "source": "SMASH_current_images_2026_10_19",
+      "charge": "pi-pi-",
+      "radius": "out",
+      "kt": 0.300079,
+      "R": 5.837474,
+      "estimatepixeluncertainty": 2.0,
+      "flags": "digitized_marker_centre;JPEG_location_budget_not_physical_error;original_fit_errors_not_reconstructed;selections_may_differ",
+      "pixel_x": 602,
+      "pixel_y": 342,
+      "kt_digitization_precision_GeV_c": 0.000635,
+      "R_digitization_precision_fm": 0.033137,
+      "calibration": "current_out",
+      "visible_group_index": 2,
+      "series_colour_in_source": "red",
+      "source_digitization_flags": ""
+    },
+    {
+      "source": "SMASH_current_images_2026_10_19",
+      "charge": "pi-pi-",
+      "radius": "out",
+      "kt": 0.400132,
+      "R": 5.390118,
+      "estimatepixeluncertainty": 2.0,
+      "flags": "digitized_marker_centre;JPEG_location_budget_not_physical_error;original_fit_errors_not_reconstructed;selections_may_differ",
+      "pixel_x": 917,
+      "pixel_y": 369,
+      "kt_digitization_precision_GeV_c": 0.000635,
+      "R_digitization_precision_fm": 0.033137,
+      "calibration": "current_out",
+      "visible_group_index": 3,
+      "series_colour_in_source": "red",
+      "source_digitization_flags": ""
+    },
+    {
+      "source": "SMASH_current_images_2026_10_19",
+      "charge": "pi-pi-",
+      "radius": "out",
+      "kt": 0.52496,
+      "R": 4.760507,
+      "estimatepixeluncertainty": 2.0,
+      "flags": "digitized_marker_centre;JPEG_location_budget_not_physical_error;original_fit_errors_not_reconstructed;selections_may_differ;last_kt_group_position_differs_from_STAR",
+      "pixel_x": 1310,
+      "pixel_y": 407,
+      "kt_digitization_precision_GeV_c": 0.000635,
+      "R_digitization_precision_fm": 0.033137,
+      "calibration": "current_out",
+      "visible_group_index": 4,
+      "series_colour_in_source": "red",
+      "source_digitization_flags": ""
+    },
+    {
+      "source": "SMASH_current_images_2026_10_19",
+      "charge": "pi-pi-",
+      "radius": "side",
+      "kt": 0.200027,
+      "R": 4.826782,
+      "estimatepixeluncertainty": 2.0,
+      "flags": "digitized_marker_centre;JPEG_location_budget_not_physical_error;original_fit_errors_not_reconstructed;selections_may_differ",
+      "pixel_x": 1885,
+      "pixel_y": 403,
+      "kt_digitization_precision_GeV_c": 0.000635,
+      "R_digitization_precision_fm": 0.033137,
+      "calibration": "current_side",
+      "visible_group_index": 1,
+      "series_colour_in_source": "red",
+      "source_digitization_flags": ""
+    },
+    {
+      "source": "SMASH_current_images_2026_10_19",
+      "charge": "pi-pi-",
+      "radius": "side",
+      "kt": 0.300079,
+      "R": 4.246876,
+      "estimatepixeluncertainty": 2.0,
+      "flags": "digitized_marker_centre;JPEG_location_budget_not_physical_error;original_fit_errors_not_reconstructed;selections_may_differ",
+      "pixel_x": 2200,
+      "pixel_y": 438,
+      "kt_digitization_precision_GeV_c": 0.000635,
+      "R_digitization_precision_fm": 0.033137,
+      "calibration": "current_side",
+      "visible_group_index": 2,
+      "series_colour_in_source": "red",
+      "source_digitization_flags": ""
+    },
+    {
+      "source": "SMASH_current_images_2026_10_19",
+      "charge": "pi-pi-",
+      "radius": "side",
+      "kt": 0.400132,
+      "R": 3.849227,
+      "estimatepixeluncertainty": 2.0,
+      "flags": "digitized_marker_centre;JPEG_location_budget_not_physical_error;original_fit_errors_not_reconstructed;selections_may_differ",
+      "pixel_x": 2515,
+      "pixel_y": 462,
+      "kt_digitization_precision_GeV_c": 0.000635,
+      "R_digitization_precision_fm": 0.033137,
+      "calibration": "current_side",
+      "visible_group_index": 3,
+      "series_colour_in_source": "red",
+      "source_digitization_flags": ""
+    },
+    {
+      "source": "SMASH_current_images_2026_10_19",
+      "charge": "pi-pi-",
+      "radius": "side",
+      "kt": 0.52496,
+      "R": 3.700108,
+      "estimatepixeluncertainty": 2.0,
+      "flags": "digitized_marker_centre;JPEG_location_budget_not_physical_error;original_fit_errors_not_reconstructed;selections_may_differ;last_kt_group_position_differs_from_STAR",
+      "pixel_x": 2908,
+      "pixel_y": 471,
+      "kt_digitization_precision_GeV_c": 0.000635,
+      "R_digitization_precision_fm": 0.033137,
+      "calibration": "current_side",
+      "visible_group_index": 4,
+      "series_colour_in_source": "red",
+      "source_digitization_flags": ""
+    },
+    {
+      "source": "SMASH_current_images_2026_10_19",
+      "charge": "pi-pi-",
+      "radius": "long",
+      "kt": 0.200027,
+      "R": 4.810213,
+      "estimatepixeluncertainty": 2.0,
+      "flags": "digitized_marker_centre;JPEG_location_budget_not_physical_error;original_fit_errors_not_reconstructed;selections_may_differ",
+      "pixel_x": 287,
+      "pixel_y": 1190,
+      "kt_digitization_precision_GeV_c": 0.000635,
+      "R_digitization_precision_fm": 0.033137,
+      "calibration": "current_long",
+      "visible_group_index": 1,
+      "series_colour_in_source": "red",
+      "source_digitization_flags": ""
+    },
+    {
+      "source": "SMASH_current_images_2026_10_19",
+      "charge": "pi-pi-",
+      "radius": "long",
+      "kt": 0.300079,
+      "R": 3.68354,
+      "estimatepixeluncertainty": 2.0,
+      "flags": "digitized_marker_centre;JPEG_location_budget_not_physical_error;original_fit_errors_not_reconstructed;selections_may_differ",
+      "pixel_x": 602,
+      "pixel_y": 1258,
+      "kt_digitization_precision_GeV_c": 0.000635,
+      "R_digitization_precision_fm": 0.033137,
+      "calibration": "current_long",
+      "visible_group_index": 2,
+      "series_colour_in_source": "red",
+      "source_digitization_flags": ""
+    },
+    {
+      "source": "SMASH_current_images_2026_10_19",
+      "charge": "pi-pi-",
+      "radius": "long",
+      "kt": 0.400132,
+      "R": 2.954516,
+      "estimatepixeluncertainty": 2.0,
+      "flags": "digitized_marker_centre;JPEG_location_budget_not_physical_error;original_fit_errors_not_reconstructed;selections_may_differ",
+      "pixel_x": 917,
+      "pixel_y": 1302,
+      "kt_digitization_precision_GeV_c": 0.000635,
+      "R_digitization_precision_fm": 0.033137,
+      "calibration": "current_long",
+      "visible_group_index": 3,
+      "series_colour_in_source": "red",
+      "source_digitization_flags": ""
+    },
+    {
+      "source": "SMASH_current_images_2026_10_19",
+      "charge": "pi-pi-",
+      "radius": "long",
+      "kt": 0.52496,
+      "R": 2.623141,
+      "estimatepixeluncertainty": 2.0,
+      "flags": "digitized_marker_centre;JPEG_location_budget_not_physical_error;original_fit_errors_not_reconstructed;selections_may_differ;last_kt_group_position_differs_from_STAR",
+      "pixel_x": 1310,
+      "pixel_y": 1322,
+      "kt_digitization_precision_GeV_c": 0.000635,
+      "R_digitization_precision_fm": 0.033137,
+      "calibration": "current_long",
+      "visible_group_index": 4,
+      "series_colour_in_source": "red",
+      "source_digitization_flags": ""
+    },
+    {
+      "source": "STAR_Kraeva_2024",
+      "charge": "pi-pi-",
+      "radius": "out",
+      "kt": 0.200032,
+      "R": 5.301718,
+      "estimatepixeluncertainty": 3.0,
+      "flags": "digitized_marker_centre;original_errors_not_transferred;STAR_Preliminary;selections_may_differ;imported_STAR_coordinates_unchanged",
+      "pixel_x": 202.0,
+      "pixel_y": 221.0,
+      "kt_digitization_precision_GeV_c": 0.001337,
+      "R_digitization_precision_fm": 0.017783,
+      "calibration": "star_all",
+      "visible_group_index": 1,
+      "source_digitization_flags": "digitized_marker_centre;original_errors_not_transferred;acceptance_differs;STAR_Preliminary;original_graphical_x_offset_preserved",
+      "series_colour_in_source": "red"
+    },
+    {
+      "source": "STAR_Kraeva_2024",
+      "charge": "pi-pi-",
+      "radius": "out",
+      "kt": 0.299841,
+      "R": 4.774154,
+      "estimatepixeluncertainty": 3.0,
+      "flags": "digitized_marker_centre;original_errors_not_transferred;STAR_Preliminary;selections_may_differ;imported_STAR_coordinates_unchanged",
+      "pixel_x": 426.0,
+      "pixel_y": 310.0,
+      "kt_digitization_precision_GeV_c": 0.001337,
+      "R_digitization_precision_fm": 0.017783,
+      "calibration": "star_all",
+      "visible_group_index": 2,
+      "source_digitization_flags": "digitized_marker_centre;original_errors_not_transferred;acceptance_differs;STAR_Preliminary;original_graphical_x_offset_preserved",
+      "series_colour_in_source": "red"
+    },
+    {
+      "source": "STAR_Kraeva_2024",
+      "charge": "pi-pi-",
+      "radius": "out",
+      "kt": 0.400095,
+      "R": 4.211025,
+      "estimatepixeluncertainty": 3.0,
+      "flags": "digitized_marker_centre;original_errors_not_transferred;STAR_Preliminary;selections_may_differ;imported_STAR_coordinates_unchanged",
+      "pixel_x": 651.0,
+      "pixel_y": 405.0,
+      "kt_digitization_precision_GeV_c": 0.001337,
+      "R_digitization_precision_fm": 0.017783,
+      "calibration": "star_all",
+      "visible_group_index": 3,
+      "source_digitization_flags": "digitized_marker_centre;original_errors_not_transferred;acceptance_differs;STAR_Preliminary;original_graphical_x_offset_preserved",
+      "series_colour_in_source": "red"
+    },
+    {
+      "source": "STAR_Kraeva_2024",
+      "charge": "pi-pi-",
+      "radius": "out",
+      "kt": 0.499904,
+      "R": 3.76645,
+      "estimatepixeluncertainty": 3.0,
+      "flags": "digitized_marker_centre;original_errors_not_transferred;STAR_Preliminary;selections_may_differ;imported_STAR_coordinates_unchanged",
+      "pixel_x": 875.0,
+      "pixel_y": 480.0,
+      "kt_digitization_precision_GeV_c": 0.001337,
+      "R_digitization_precision_fm": 0.017783,
+      "calibration": "star_all",
+      "visible_group_index": 4,
+      "source_digitization_flags": "digitized_marker_centre;original_errors_not_transferred;acceptance_differs;STAR_Preliminary;original_graphical_x_offset_preserved",
+      "series_colour_in_source": "red"
+    },
+    {
+      "source": "STAR_Kraeva_2024",
+      "charge": "pi-pi-",
+      "radius": "side",
+      "kt": 0.200032,
+      "R": 5.21873,
+      "estimatepixeluncertainty": 4.0,
+      "flags": "digitized_marker_centre;original_errors_not_transferred;STAR_Preliminary;selections_may_differ;imported_STAR_coordinates_unchanged",
+      "pixel_x": 202.0,
+      "pixel_y": 235.0,
+      "kt_digitization_precision_GeV_c": 0.001782,
+      "R_digitization_precision_fm": 0.023711,
+      "calibration": "star_all",
+      "visible_group_index": 1,
+      "source_digitization_flags": "digitized_marker_centre;original_errors_not_transferred;acceptance_differs;STAR_Preliminary;original_graphical_x_offset_preserved",
+      "series_colour_in_source": "blue"
+    },
+    {
+      "source": "STAR_Kraeva_2024",
+      "charge": "pi-pi-",
+      "radius": "side",
+      "kt": 0.299841,
+      "R": 4.513337,
+      "estimatepixeluncertainty": 4.0,
+      "flags": "digitized_marker_centre;original_errors_not_transferred;STAR_Preliminary;selections_may_differ;imported_STAR_coordinates_unchanged",
+      "pixel_x": 426.0,
+      "pixel_y": 354.0,
+      "kt_digitization_precision_GeV_c": 0.001782,
+      "R_digitization_precision_fm": 0.023711,
+      "calibration": "star_all",
+      "visible_group_index": 2,
+      "source_digitization_flags": "digitized_marker_centre;original_errors_not_transferred;acceptance_differs;STAR_Preliminary;original_graphical_x_offset_preserved",
+      "series_colour_in_source": "blue"
+    },
+    {
+      "source": "STAR_Kraeva_2024",
+      "charge": "pi-pi-",
+      "radius": "side",
+      "kt": 0.400095,
+      "R": 3.902786,
+      "estimatepixeluncertainty": 4.0,
+      "flags": "digitized_marker_centre;original_errors_not_transferred;STAR_Preliminary;selections_may_differ;imported_STAR_coordinates_unchanged",
+      "pixel_x": 651.0,
+      "pixel_y": 457.0,
+      "kt_digitization_precision_GeV_c": 0.001782,
+      "R_digitization_precision_fm": 0.023711,
+      "calibration": "star_all",
+      "visible_group_index": 3,
+      "source_digitization_flags": "digitized_marker_centre;original_errors_not_transferred;acceptance_differs;STAR_Preliminary;original_graphical_x_offset_preserved",
+      "series_colour_in_source": "blue"
+    },
+    {
+      "source": "STAR_Kraeva_2024",
+      "charge": "pi-pi-",
+      "radius": "side",
+      "kt": 0.499904,
+      "R": 3.505632,
+      "estimatepixeluncertainty": 4.0,
+      "flags": "digitized_marker_centre;original_errors_not_transferred;STAR_Preliminary;selections_may_differ;imported_STAR_coordinates_unchanged",
+      "pixel_x": 875.0,
+      "pixel_y": 524.0,
+      "kt_digitization_precision_GeV_c": 0.001782,
+      "R_digitization_precision_fm": 0.023711,
+      "calibration": "star_all",
+      "visible_group_index": 4,
+      "source_digitization_flags": "digitized_marker_centre;original_errors_not_transferred;acceptance_differs;STAR_Preliminary;original_graphical_x_offset_preserved",
+      "series_colour_in_source": "blue"
+    },
+    {
+      "source": "STAR_Kraeva_2024",
+      "charge": "pi-pi-",
+      "radius": "long",
+      "kt": 0.200032,
+      "R": 4.113219,
+      "estimatepixeluncertainty": 3.0,
+      "flags": "digitized_marker_centre;original_errors_not_transferred;STAR_Preliminary;selections_may_differ;imported_STAR_coordinates_unchanged",
+      "pixel_x": 202.0,
+      "pixel_y": 421.5,
+      "kt_digitization_precision_GeV_c": 0.001337,
+      "R_digitization_precision_fm": 0.017783,
+      "calibration": "star_all",
+      "visible_group_index": 1,
+      "source_digitization_flags": "digitized_marker_centre;original_errors_not_transferred;acceptance_differs;STAR_Preliminary;original_graphical_x_offset_preserved",
+      "series_colour_in_source": "black"
+    },
+    {
+      "source": "STAR_Kraeva_2024",
+      "charge": "pi-pi-",
+      "radius": "long",
+      "kt": 0.299841,
+      "R": 3.354476,
+      "estimatepixeluncertainty": 3.0,
+      "flags": "digitized_marker_centre;original_errors_not_transferred;STAR_Preliminary;selections_may_differ;imported_STAR_coordinates_unchanged",
+      "pixel_x": 426.0,
+      "pixel_y": 549.5,
+      "kt_digitization_precision_GeV_c": 0.001337,
+      "R_digitization_precision_fm": 0.017783,
+      "calibration": "star_all",
+      "visible_group_index": 2,
+      "source_digitization_flags": "digitized_marker_centre;original_errors_not_transferred;acceptance_differs;STAR_Preliminary;original_graphical_x_offset_preserved",
+      "series_colour_in_source": "black"
+    },
+    {
+      "source": "STAR_Kraeva_2024",
+      "charge": "pi-pi-",
+      "radius": "long",
+      "kt": 0.400095,
+      "R": 2.755781,
+      "estimatepixeluncertainty": 3.0,
+      "flags": "digitized_marker_centre;original_errors_not_transferred;STAR_Preliminary;selections_may_differ;imported_STAR_coordinates_unchanged",
+      "pixel_x": 651.0,
+      "pixel_y": 650.5,
+      "kt_digitization_precision_GeV_c": 0.001337,
+      "R_digitization_precision_fm": 0.017783,
+      "calibration": "star_all",
+      "visible_group_index": 3,
+      "source_digitization_flags": "digitized_marker_centre;original_errors_not_transferred;acceptance_differs;STAR_Preliminary;original_graphical_x_offset_preserved",
+      "series_colour_in_source": "black"
+    },
+    {
+      "source": "STAR_Kraeva_2024",
+      "charge": "pi-pi-",
+      "radius": "long",
+      "kt": 0.499904,
+      "R": 2.311205,
+      "estimatepixeluncertainty": 3.0,
+      "flags": "digitized_marker_centre;original_errors_not_transferred;STAR_Preliminary;selections_may_differ;imported_STAR_coordinates_unchanged",
+      "pixel_x": 875.0,
+      "pixel_y": 725.5,
+      "kt_digitization_precision_GeV_c": 0.001337,
+      "R_digitization_precision_fm": 0.017783,
+      "calibration": "star_all",
+      "visible_group_index": 4,
+      "source_digitization_flags": "digitized_marker_centre;original_errors_not_transferred;acceptance_differs;STAR_Preliminary;original_graphical_x_offset_preserved",
+      "series_colour_in_source": "black"
+    }
+  ],
+  "assets": {
+    "csv": "figures/comparison_digitized_current_2026_star.csv",
+    "pdf": "figures/comparison_star_smash_current_2026.pdf",
+    "png": "figures/comparison_star_smash_current_2026.png"
+  }
+}

@@ -231,8 +231,9 @@ def main():
             "SMASH model Au+Au sqrt(sNN)=3 GeV; selected charged pions, |p| and pT in [0.15,1.5] GeV/c, "
             "eta in [-1.5,1.5]. Historical 2025 result; no new simulation or refit."
         )
-        # These larger single-panel PDFs retain complete original headings and
-        # legends.  The 3D raster is split at empty gutters, never across axes.
+        # Split at empty gutters, never across data or axes. Technical ROOT
+        # histogram names in the 3D-correlation headers are omitted below;
+        # their centrality/kT conditions are repeated in the slide caption.
         b("correlation_kt", 13, (896, 672), (0, 0, 896, 672),
           "Archival 1D correlations for four kT intervals at centrality 0-10%",
           model_conditions + " Fixed centrality 0-10%; kT=[0.15,0.25],[0.25,0.35],[0.35,0.45],[0.45,0.60] GeV/c. Horizontal axis q_inv.")
@@ -240,6 +241,19 @@ def main():
           "Archival 1D correlations for four centralities at fixed kT",
           model_conditions + " Fixed kT=[0.15,0.25] GeV/c; centralities 0-10%,10-30%,30-50%,50-80%. Horizontal axis q_inv.",
           image_index=1)
+
+        for direction, rect in [
+            ("out", (0, 28, 440, 336)),
+            ("side", (446, 28, 896, 336)),
+            ("long", (0, 368, 440, 672)),
+        ]:
+            b(f"correlation_{direction}_3d", 15, (896, 672), rect,
+              f"Archival 3D correlation: {direction} projection and original fit",
+              model_conditions + " Centrality 0-10%; kT=[0.15,0.25] GeV/c. "
+              "Projection of the 3D LCMS correlation, not q_inv. "
+              "Technical ROOT histogram-name header omitted; centrality and kT repeated in slide caption. "
+              "The source does not state the integration window of the other q components "
+              "or a charge-specific selection for these panels. Do not assign STAR's projection window.")
 
         b("rinv", 14, (696, 472), (0, 0, 696, 472),
           "Archival R_inv versus kT, four centralities",

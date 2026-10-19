@@ -15,18 +15,48 @@ def escape(text):
              "$": r"\$", "#": r"\#", "_": r"\_", "{": r"\{", "}": r"\}"}
     return "".join(trans.get(c,c) for c in text)
 
+MATH_TOKEN = re.compile(
+    r"(?<![\\$])(\$\$.*?(?<!\\)\$\$|\$(?!\$)(?:\\.|[^$\\])+\$(?!\$))",
+    flags=re.S,
+)
+
+def render_text(text):
+    """Escape prose, retaining paragraphs while joining wrapped source lines."""
+    text = re.sub(r"\n[ \t]*\n", "\n\n", text)
+    text = re.sub(r"(?<!\n)\n(?!\n)", " ", text)
+    chunks = re.split(r"(https?://[^\s)]+)", text)
+    for index, chunk in enumerate(chunks):
+        if chunk.startswith(("https://", "http://")):
+            url = chunk.rstrip(".,;")
+            chunks[index] = r"\url{" + url + "}" + escape(chunk[len(url):])
+        else:
+            chunks[index] = escape(chunk)
+    text = "".join(chunks)
+    return re.sub(r"(?m)^(Время|Тезис|Визуал|На экране|Текст|Пауза|Переход|Справка|Источники(?: и условия)?):",
+                  r"\\textbf{\1:}", text)
+
+def render_body(body):
+    """Render $inline$ and $$display$$ math; keep all other input as prose."""
+    rendered = []
+    position = 0
+    for match in MATH_TOKEN.finditer(body):
+        rendered.append(render_text(body[position:match.start()]))
+        formula = match.group(0)
+        if formula.startswith("$$"):
+            rendered.append(r"\[" + formula[2:-2] + r"\]")
+        else:
+            rendered.append(r"\(" + formula[1:-1] + r"\)")
+        position = match.end()
+    rendered.append(render_text(body[position:]))
+    return "".join(rendered)
+
 sections=[]
 seconds=0
 main_slides=[]
 reserve_slides=[]
 for i in range(1,len(parts),3):
     number,title,body=parts[i:i+3]
-    paras=[]
-    for p in body.strip().split("\n\n"):
-        p=escape(p.replace("\n"," "))
-        p=re.sub(r"^(Время|Тезис|Визуал|Текст|Переход):",r"\\textbf{\1:}",p)
-        paras.append(p)
-    content="\n\n".join(paras)+"\n"
+    content=render_body(body.strip())+"\n"
     (notes/f"n{number}.tex").write_text(content)
     page_break = r"\clearpage"+"\n" if sections else ""
     sections.append(page_break+r"\section*{Слайд "+number+". "+escape(title)+"}\n"+content)
@@ -41,14 +71,19 @@ for i in range(1,len(parts),3):
 
 header=r"""\documentclass[11pt,a4paper]{article}
 \usepackage{fontspec,polyglossia}
+\usepackage{amsmath,amssymb}
+\newcommand{\hc}{\hbar c}
+\newcommand{\dd}{\mathrm d}
 \setdefaultlanguage{russian}
 \setmainfont{Arial}
 \newfontfamily\cyrillicfont{Arial}[Script=Cyrillic]
+\newfontfamily\cyrillicfonttt{Arial}[Script=Cyrillic]
 \usepackage[margin=21mm]{geometry}
 \usepackage{xcolor,hyperref}
 \definecolor{ink}{HTML}{142D43}
 \definecolor{teal}{HTML}{007F86}
 \hypersetup{colorlinks=true,urlcolor=teal,pdftitle={Заметки докладчика: фемтоскопия},pdfauthor={Балинов Темир}}
+\urlstyle{same}
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{6pt}
 \linespread{1.08}

@@ -7,6 +7,7 @@
 \setmainfont{Arial}
 \newfontfamily\cyrillicfont{Arial}[Script=Cyrillic]
 \newfontfamily\cyrillicfontsf{Arial}[Script=Cyrillic]
+\newfontfamily\cyrillicfonttt{Arial}[Script=Cyrillic]
 \usepackage{amsmath,amssymb,booktabs,tikz}
 \usepackage{lmodern}
 \geometry{paperwidth=192mm,paperheight=108mm}
@@ -32,15 +33,15 @@
 \hyphenpenalty=10000
 \exhyphenpenalty=10000
 \setbeamertemplate{frametitle}{\vspace{2mm}\insertframetitle\par\vspace{1.5mm}{\color{teal}\hrule height .7pt}\vspace{1mm}}
-\setbeamertemplate{footline}{\hspace{8mm}\color{muted}\fontsize{5.7}{7}\selectfont
-  БАЛИНОВ ТЕМИР\quad /\quad МГУ\hfill\insertsectionhead\hfill
-  \ifnum\value{framenumber}>\MainSlideCount РЕЗЕРВ\else\insertframenumber\,/\,\MainSlideCount\fi
+\setbeamertemplate{footline}{\hfill\color{muted}\fontsize{7}{8}\selectfont
+  \ifnum\value{framenumber}>\MainSlideCount Резерв\else\insertframenumber\,/\,\MainSlideCount\fi
   \hspace{8mm}\vspace{2mm}}
 \hypersetup{colorlinks=true,urlcolor=teal,linkcolor=teal,
  pdftitle={От импульсов к пространству: корреляционная фемтоскопия},
  pdfauthor={Балинов Темир},pdfsubject={Вводная лекция, 19.10.2026}}
-\newcommand{\src}[1]{\par\vfill{\color{muted}\fontsize{6.5}{8}\selectfont #1\par}}
-\newcommand{\takeaway}[1]{\par\vspace{1mm}\colorbox{pale}{\parbox{\dimexpr\linewidth-2\fboxsep}{\raggedright\small\color{teal}\textbf{#1}}}}
+\urlstyle{same}
+
+\newcommand{\takeaway}[1]{\par\vspace{4mm}{\large\color{teal}\textbf{#1}\par}}
 \newcommand{\tagline}[1]{{\color{teal}\scriptsize\bfseries #1}\par}
 \newcommand{\slidenote}[1]{\note{\input{notes/n#1.tex}}}
 \newcommand{\hc}{\hbar c}
@@ -50,15 +51,14 @@
 \newcommand{\Kref}{А. Краева (STAR), Universe 10, 188 (2024)}
 \newcommand{\chip}[2]{\colorbox{pale}{\parbox[c][12mm][c]{\dimexpr#1-2\fboxsep\relax}{\centering\small\color{ink}#2}}}
 \newcommand{\prompt}[1]{{\color{teal}\large\bfseries #1}\par}
-\newcommand{\measuretag}{\tagline{ЭКСПЕРИМЕНТ STAR / Au+Au / 3 ГэВ / PRELIMINARY}}
+\newcommand{\measuretag}{\tagline{STAR · ЭКСПЕРИМЕНТ · Au+Au, 3 ГэВ}}
 \tikzset{every node/.style={font=\small},arr/.style={-{Stealth[length=2mm]},thick},
   card/.style={rounded corners=2mm,draw=teal!30,fill=pale,align=center,inner sep=3mm},
   source/.style={circle,fill=teal,inner sep=2pt,text=white}}
 \graphicspath{{figures/}}
 \input{build/talk_metadata.tex}
 \begin{document}
-\section{Вопрос к столкновениям ядер}
-% 01
+\section{Физическая задача}
 {\setbeamercolor{background canvas}{bg=ink}\setbeamercolor{normal text}{fg=white}
 \begin{frame}[plain]
 \begin{tikzpicture}[remember picture,overlay]
@@ -81,19 +81,13 @@
 \vfill{\small Балинов Темир\quad\color{white!65} Для студентов 1–2 курсов}
 \slidenote{01}
 \end{frame}}
-% 02
-\begin{frame}{Зачем сталкивать тяжёлые ядра?}
+\begin{frame}{Столкновения тяжёлых ядер: горячая плотная материя}
 \begin{columns}[c,onlytextwidth]
 \column{.53\textwidth}
-\tagline{СТОЛКНОВЕНИЕ ТЯЖЁЛЫХ ЯДЕР}
-\prompt{Создаём горячую}\prompt{плотную материю.}
-\vspace{2mm}
-Много частиц взаимодействует\par и коллективно расширяется.
-\par\vspace{4mm}
-\textbf{Что хотим узнать?}\par
-Размеры области испускания.\par Как развивается система.
-\par\vspace{3mm}
-\small Пионы — лёгкие адроны\par (частицы сильного взаимодействия), спин $0$.
+\prompt{Горячая плотная материя.}
+\vspace{7mm}
+Каковы её размеры?\par\vspace{2mm}
+Как она расширяется?
 \column{.43\textwidth}
 \begin{tikzpicture}[scale=.82]
 \fill[teal!12] (0,0) circle(1.05);
@@ -111,40 +105,38 @@
 \draw[teal,thick] (1.35,-3) ellipse (1.65 and .9);
 \foreach \x/\y in {0/0,-.7/.2,.6/.3,.9/-.2,-.4/-.4,.2/-.4}{
 \fill[teal] (1.35+\x,-3+\y) circle(.07);}
-\foreach \a in {0,45,...,315}{
+\foreach \a in {0,45,135,180,225,315}{
 \draw[arr,gold] ($(1.35,-3)+(\a:.7)$)--($(1.35,-3)+(\a:1.3)$);}
 \node[font=\scriptsize,align=center] at (1.35,-4.6) {Взаимодействующая и\\расширяющаяся система};
 \end{tikzpicture}
 \end{columns}
-\takeaway{Наша цель — связать наблюдаемые частицы с пространством и временем их испускания.}
-\src{Качественная схема. \Lref, введение и §4; \Kref, введение. При высокой энергии возможна КГП; её образование при 3 ГэВ здесь не утверждается.}
+
 \slidenote{02}
 \end{frame}
-% 03
-\begin{frame}{Какую стадию помнят конечные пионы?}
+
+\begin{frame}{Этапы столкновения и вымораживание частиц}
 \begin{tikzpicture}[x=1cm,y=1cm]
 \draw[arr,ink] (.2,0)--(16.2,0) node[below left,font=\scriptsize] {время};
 \foreach \x/\a/\b in {1/{Перекрытие}/{ядер},5/{Плотная}/{среда},9.2/{Химическое}/{вымораживание},13.8/{Кинетическое}/{вымораживание}}{
 \fill[teal] (\x,0) circle (.07);\node[align=center,font=\small\bfseries] at (\x,-.65) {\a\\\b};}
-\draw[teal,thick,fill=teal!10] (.8,1.2) ellipse (.15 and .65);
-\draw[gold,thick,fill=gold!15] (1.2,1.2) ellipse (.15 and .65);
-\fill[gold!50] (5,1.2) ellipse (.85 and .7);
-\draw[teal,fill=teal!10,thick] (9.2,1.2) ellipse (1.1 and .75);
-\foreach \a in {0,45,...,315}{\fill[teal] ($(9.2,1.2)+(\a:.65)$) circle (.055);}
-\foreach \a in {0,35,...,350}{\fill[teal] ($(13.8,1.2)+(\a:1.05)$) circle (.045);
-\draw[arr,gold] ($(13.8,1.2)+(\a:1.1)$)--($(13.8,1.2)+(\a:1.55)$);}
+\draw[teal,thick,fill=teal!10] (.8,1.8) ellipse (.15 and .65);
+\draw[gold,thick,fill=gold!15] (1.2,1.8) ellipse (.15 and .65);
+\fill[gold!50] (5,1.8) ellipse (.85 and .7);
+\draw[teal,fill=teal!10,thick] (9.2,1.8) ellipse (1.1 and .75);
+\foreach \a in {0,45,...,315}{\fill[teal] ($(9.2,1.8)+(\a:.65)$) circle (.055);}
+\foreach \a in {0,35,...,350}{\fill[teal] ($(13.8,1.8)+(\a:1.05)$) circle (.045);
+\draw[arr,gold] ($(13.8,1.8)+(\a:1.1)$)--($(13.8,1.8)+(\a:1.55)$);}
 \end{tikzpicture}
 \vspace{3mm}
 \begin{columns}[T,onlytextwidth]
-\column{.47\textwidth}\tagline{ХИМИЧЕСКОЕ}\textbf{Состав} почти перестаёт меняться.
-\column{.49\textwidth}\tagline{КИНЕТИЧЕСКОЕ}\textbf{Перерассеяние} прекращается.
+\column{.47\textwidth}\tagline{ХИМИЧЕСКОЕ}\textbf{Состав частиц} почти не меняется.
+\column{.49\textwidth}\tagline{КИНЕТИЧЕСКОЕ}Частицы \textbf{перестают рассеиваться}.
 \end{columns}
-\takeaway{У каждого пиона — своя точка и время последнего взаимодействия или рождения при распаде.}
-\src{Качественная схема, без универсальной шкалы времени. \Lref, §2 и §5; \Kref, введение. Вымораживание распределено по пространству и времени.}
+\takeaway{Фемтоскопия характеризует область испускания пионов.}
+
 \slidenote{03}
 \end{frame}
-% 04
-\begin{frame}{Как узнать размеры исчезнувшего источника?}
+\begin{frame}{Импульсы измерены, точки испускания неизвестны}
 \begin{columns}[c,onlytextwidth]
 \column{.48\textwidth}
 \begin{tikzpicture}[scale=.95]
@@ -154,24 +146,23 @@
 \draw[arr,teal,line width=1.4pt] (1,.4)--(3.7,1.6) node[right] {$\mathbf p_1$};
 \draw[arr,gold,line width=1.4pt] (1,-.4)--(3.7,-1.3) node[right] {$\mathbf p_2$};
 \node[font=\small,align=center] at (0,-1.8) {Область\\испускания};
-\node[font=\scriptsize,text=muted] at (1.3,2.5) {Размер? Время?};
+\node[font=\scriptsize,text=muted] at (0,1.65) {Размер? Время?};
 \end{tikzpicture}
 \column{.48\textwidth}
-\prompt{Импульсы измеряем.}
-Детекторы восстанавливают треки\par и помогают выбрать пионы.
+\prompt{Импульсы известны.}
+По траекториям частиц.
 \par\vspace{4mm}
-\prompt{А точки испускания?}
-Точности трекинга недостаточно\par для фемтометровых расстояний.
+\prompt{Координаты неизвестны.}
+Разрешения детектора недостаточно\par для фемтометровых расстояний.
 \[1\ \text{фм}=10^{-15}\ \text{м}.\]
 \end{columns}
-\takeaway{Можно ли узнать размер по тому, как часто частицы регистрируются вместе?}
-\src{Собственная схема обратной задачи по \Lref, введение и §3. Общая вершина столкновения измеряется; индивидуальные фемтометровые разделения недоступны трекингу.}
+\takeaway{Корреляции импульсов содержат информацию о размерах.}
+
 \slidenote{04}
 \end{frame}
 \section{От звезды к пионным парам}
-% 05
-\begin{frame}{HBT: размер звезды без её фотографии}
-\tagline{1956 / HANBURY BROWN И TWISS / ОПТИКА}
+\begin{frame}{HBT: измерение углового размера звезды}
+\tagline{1956 / ХЭНБЕРИ БРАУН И ТВИСС (HBT)}
 \begin{tikzpicture}[x=1cm,y=1cm]
 \fill[gold!30] (1.4,1.6) circle(.65);\draw[gold!80!black,thick] (1.4,1.6) circle(.65);
 \node[font=\small] at (1.4,.55) {Звезда};
@@ -182,14 +173,13 @@
 \node[card,text width=3.2cm,minimum height=20mm] (c) at (13.5,1.6) {Сравниваем\\флуктуации\\интенсивности};
 \draw[arr,ink] (a.east)--(c.north west);\draw[arr,ink] (b.east)--(c.south west);
 \end{tikzpicture}\par\vspace{2mm}
-\begin{center}\textbf{Меняем расстояние $d$ между приёмниками}\par
-$\to$ меняется корреляция сигналов $\to$ находим \textbf{угловой размер} звезды.\end{center}
-\takeaway{Размер источника можно исследовать через статистическую связь двух сигналов.}
-\src{Hanbury Brown, Twiss: Nature 177, 27–29 (1956), DOI 10.1038/177027a0; измерение Сириуса: Nature 178, 1046–1048 (1956), DOI 10.1038/1781046a0. Схема принципа.}
+\begin{center}
+Угловой размер определяют по зависимости корреляции\par
+от расстояния $d$ между приёмниками.
+\end{center}
 \slidenote{05}
 \end{frame}
-% 06
-\begin{frame}{От фотонов — к пионам, затем к столкновениям ядер}
+\begin{frame}{Корреляции фотонов и тождественных пионов}
 \begin{columns}[T,onlytextwidth]
 \column{.29\textwidth}
 \tagline{1956 / ОПТИКА}
@@ -198,66 +188,59 @@ $\to$ меняется корреляция сигналов $\to$ находи�
 \node[card] (a) at (3,1) {$I_1$};\node[card] (b) at (3,-1) {$I_2$};
 \draw[arr,teal] (.4,.2)--(a);\draw[arr,teal] (.4,-.2)--(b);
 \end{tikzpicture}\par
-Фотоны — бозоны.\par Корреляция интенсивности\par несёт информацию о размере.
+Фотоны: корреляция\par интенсивностей.
 \column{.32\textwidth}
-\tagline{1960 / GOLDHABER ET AL.}
+\tagline{1960 / ПИОННЫЕ КОРРЕЛЯЦИИ}
 \[\overline p+p\longrightarrow\pi\pi\ldots\]
 \[{\color{teal}\pi^+\pi^+}\quad\text{или}\quad{\color{teal}\pi^-\pi^-}.\]
-Пионы тоже бозоны.\par Симметризация качественно\par объясняет сближение\par одинаковых пионов по углам.
+Пионы: корреляции\par тождественных бозонов.
 \column{.31\textwidth}
 \tagline{1970-е / КОПЫЛОВ–ПОДГОРЕЦКИЙ}
 \begin{tikzpicture}[scale=.8]
 \fill[pale] (0,0) ellipse (1.1 and .7);
 \foreach \a in {0,45,...,315}{\draw[arr,teal] (\a:.5)--(\a:1.35);}
 \end{tikzpicture}\par
-Как связать корреляцию\par с распределением\par координат и времён\par рождения частиц?
+Корреляция $\leftrightarrow$\par пространство и время\par испускания.
 \end{columns}
-\takeaway{Общий принцип — корреляции тождественных частиц. Но оптическая база и относительный импульс — разные переменные.}
-\src{Goldhaber et al., Phys. Rev. 120, 300 (1960), DOI 10.1103/PhysRev.120.300; Копылов–Подгорецкий, ЯФ 15, 392 (1972). Исторический обзор: \Lref, введение.}
+
 \slidenote{06}
 \end{frame}
 \section{Почему корреляция связана с размером}
-% 07
-\begin{frame}{Знать спектр — ещё не знать пары}
+\begin{frame}{Двухчастичные корреляции дополняют спектры}
 \begin{columns}[c,onlytextwidth]
-\column{.57\textwidth}\includegraphics[width=\linewidth]{single_spectrum.pdf}
+\column{.57\textwidth}\tagline{УЧЕБНЫЙ СПЕКТР}\includegraphics[width=\linewidth]{single_spectrum.pdf}
 \column{.39\textwidth}
 \tagline{ОДНА ЧАСТИЦА}
 $f(\mathbf p)$: какие импульсы\par встречаются часто?\par\vspace{3mm}
 \tagline{ДВЕ ЧАСТИЦЫ}
 $f_2(\mathbf p_1,\mathbf p_2)$:\par какие встречаются \textbf{вместе}?\par\vspace{3mm}
 \[C=\mathcal N\frac{f_2}{f(\mathbf p_1)f(\mathbf p_2)}.\]
-Независимый фон: $C=1$.
+При независимом испускании: $C=1$.
 \end{columns}
-\takeaway{Одинаковые одночастичные спектры могут сопровождаться разными корреляциями пар.}
-\src{Схема отношения плотностей выходов с общей нормировкой $\mathcal N$. Слева — учебный нормированный спектр $p_x$, не данные. \Lref, §2.1.}
+
 \slidenote{07}
 \end{frame}
-% 08
-\begin{frame}{Какие пары считаем близкими?}
+\begin{frame}{Разность и полусумма импульсов пары}
 \begin{columns}[c,onlytextwidth]
 \column{.50\textwidth}
-\tagline{РАЗНОСТЬ И СРЕДНЕЕ ДВУХ ИМПУЛЬСОВ}
 \[\boxed{\mathbf q=\mathbf p_1-\mathbf p_2}.\]
 \[\mathbf K=\frac{\mathbf p_1+\mathbf p_2}{2},\qquad k_T=|\mathbf K_T|.\]
 \vspace{2mm}
-Малое $|\mathbf q|$\par $\to$ близкие импульсы.\par\vspace{2mm}
-Близкие $\mathbf K$\par $\to$ похожее движение пары.
+$\mathbf q$: разность импульсов.\par\vspace{2mm}
+$\mathbf K$: средний импульс пары.
 \column{.46\textwidth}
 \begin{tikzpicture}[scale=1.15]
 \draw[arr,teal,line width=1.7pt] (0,0)--(3,1.4) node[right] {$\mathbf p_{1T}$};
 \draw[arr,gold!85!black,line width=1.7pt] (0,0)--(2.5,.3) node[right] {$\mathbf p_{2T}$};
-\draw[arr,ink] (2.5,.3)--(3,1.4) node[midway,left] {$\mathbf q_T$};
-\draw[arr,ink,dashed] (0,0)--(2.75,.85) node[midway,below] {$\mathbf K_T$};
-\end{tikzpicture}\par\vspace{4mm}
-\small Поперечный импульс — компонента\par перпендикулярно пучку.
+\draw[arr,ink] (2.5,.3)--(3,1.4) node[midway,right=1.5mm] {$\mathbf q_T$};
+\draw[arr,ink,dashed] (0,0)--(2.75,.85);
+\node[font=\small] at (1.6,-.55) {Пунктир: $\mathbf K_T$};
+\end{tikzpicture}
 \end{columns}
-\takeaway{Сравниваем пары при близком среднем движении и изучаем зависимость от разности импульсов.}
-\src{Здесь введены пространственные векторы в одной системе отсчёта. Полная релятивистская запись и $q_{\rm inv}$ — в резерве. $q$ в лекции — полная разность, не половина.}
+
 \slidenote{08}
 \end{frame}
-% 09
-\begin{frame}{Два назначения — один квантовый исход}
+\begin{frame}{Неразличимость пионов и квантовая интерференция}
 \begin{columns}[c,onlytextwidth]
 \column{.68\textwidth}
 \begin{tikzpicture}[x=1cm,y=1cm]
@@ -266,84 +249,96 @@ $f_2(\mathbf p_1,\mathbf p_2)$:\par какие встречаются \textbf{в
 \node[card] (p1) at (6.5,2) {$p_1$};\node[card] (p2) at (6.5,0) {$p_2$};
 \draw[arr,teal,line width=1.5pt] (a)--(p1);\draw[arr,teal,line width=1.5pt] (b)--(p2);
 \draw[arr,gold,dashed,line width=1.5pt] (a)--(p2);\draw[arr,gold,dashed,line width=1.5pt] (b)--(p1);
-\node[teal,font=\small] at (3.2,2.6) {Прямое назначение};
-\node[gold,font=\small] at (3.2,-.7) {Обменное назначение};
+\node[teal,font=\small] at (3.2,2.6) {Первый вариант};
+\node[gold,font=\small] at (3.2,-.7) {Перестановка пионов};
 \node[font=\scriptsize,align=center] at (0,-1.4) {точки\\испускания};
 \node[font=\scriptsize,align=center] at (6.5,-1.4) {конечные\\импульсы};
 \end{tikzpicture}
 \column{.28\textwidth}
 {\Large $\pi^+\pi^+$}\par\vspace{3mm}
-Тождественные\par частицы, спин $0$.\par\vspace{3mm}
 Какой пион\par пришёл из $A$?\par\vspace{3mm}
-\textbf{Исходы}\par\textbf{неразличимы.}
+Варианты\par\textbf{неразличимы.}
 \end{columns}
-\takeaway{Складываем амплитуды прямого и обменного процессов.}
-\src{Схема по \Lref, рис. 1. HBT: Hanbury Brown–Twiss (1956, фотоны); Goldhaber et al. (1960, пионы).}
+
 \slidenote{09}
 \end{frame}
-% 10
-\begin{frame}{Сначала амплитуды. Потом вероятность}
-\noindent{\scriptsize Релятивистская запись: $p^\mu=(E,\mathbf p)$, $q^\mu=p_1^\mu-p_2^\mu$, $K^\mu=(p_1^\mu+p_2^\mu)/2$; $c=1$.}\par
-\begin{columns}[T,onlytextwidth]
-\column{.73\textwidth}
-\[a=e^{-i(p_1\cdot x_A+p_2\cdot x_B)/\hc},\qquad
- b=e^{-i(p_2\cdot x_A+p_1\cdot x_B)/\hc}.\]
-\[\Psi=\frac{a+b}{\sqrt2},\qquad
- |\Psi|^2=\frac{|a|^2+|b|^2+2\operatorname{Re}(ab^*)}{2}.\]
-\[\boxed{|\Psi|^2=1+\cos\!\left(\frac{q\cdot\Delta x}{\hc}\right)}\]
-\[q\cdot\Delta x=q^0\Delta(ct)-\mathbf q\cdot\Delta\mathbf r.\]
-{\small $p$ — ГэВ; $x$ — фм; $\hc\simeq0.197$ ГэВ·фм.\par}
-\column{.23\textwidth}
-\tagline{НАПОМИНАНИЕ}
-$P\propto |a|^2$\par вероятность.\par\vspace{2mm}
-$e^{i\varphi}$\par волна с фазой $\varphi$.\par\vspace{2mm}
-$*$ — сопряжение;\par $\operatorname{Re}$ —\par действительная часть.
+\begin{frame}{Амплитуда пары тождественных пионов}
+\begin{columns}[c,onlytextwidth]
+\column{.28\textwidth}
+\tagline{ПЕРВЫЙ ВАРИАНТ}
+$A\to p_1$,\quad $B\to p_2$
+\column{.68\textwidth}
+\[a=\exp\!\left[-\frac{i}{\hc}\left(p_1\cdot x_A+p_2\cdot x_B\right)\right]\]
 \end{columns}
-\takeaway{При $q\to0$ идеальный обменный вклад даёт двукратное усиление.}
-\src{Плоские волны, близкие импульсы, одинаковые модули амплитуд; FSI пока нет. $\Delta x=x_A-x_B$, $x=(ct,\mathbf r)$ в фм, $p$ в ГэВ; $\hc=0.19732698$ ГэВ·фм.}
+\vspace{3mm}
+\begin{columns}[c,onlytextwidth]
+\column{.28\textwidth}
+{\color{gold!85!black}\scriptsize\bfseries ПЕРЕСТАНОВКА ПИОНОВ}\par
+$A\to p_2$,\quad $B\to p_1$
+\column{.68\textwidth}
+\[b=\exp\!\left[-\frac{i}{\hc}\left(p_2\cdot x_A+p_1\cdot x_B\right)\right]\]
+\end{columns}
+\vspace{3mm}
+\[\boxed{\Psi=\frac{a+b}{\sqrt2}},\qquad |a|=|b|=1.\]
+\begin{center}
+\small $p^\mu=(E,\mathbf p)$; $x^\mu=(ct,\mathbf r)$; $p\cdot x=Ect-\mathbf p\cdot\mathbf r$; $c=1$.\par
+$p$ — ГэВ, $x$ — фм; $\hc\simeq0.197$ ГэВ·фм.
+\end{center}
 \slidenote{10}
 \end{frame}
-% 11
-\begin{frame}{От двух точек — ко всему источнику}
-\begin{columns}[T,onlytextwidth]
-\column{.32\textwidth}
-\begin{tikzpicture}[scale=.8]
+\begin{frame}{От суммы амплитуд к интерференционному члену}
+\[|\Psi|^2=\frac{|a|^2+|b|^2+ab^*+a^*b}{2}
+           =1+\operatorname{Re}(ab^*).\]
+\vspace{2mm}
+\[
+\begin{aligned}
+ab^*&=\exp\!\left[-\frac{i}{\hc}\Bigl(p_1\cdot x_A+p_2\cdot x_B
+                       -p_2\cdot x_A-p_1\cdot x_B\Bigr)\right]\\[2mm]
+    &=\exp\!\left[-\frac{i}{\hc}(p_1-p_2)\cdot(x_A-x_B)\right]=e^{-i\varphi}.
+\end{aligned}
+\]
+\vspace{2mm}
+\[q^\mu=p_1^\mu-p_2^\mu,\qquad\Delta x=x_A-x_B,\qquad\varphi=\frac{q\cdot\Delta x}{\hc}.\]
+\[\boxed{|\Psi|^2=1+\cos\varphi}\]
+\begin{center}\small $*$ — комплексное сопряжение; $\operatorname{Re}$ — действительная часть.\par
+При $q\to0$ относительная вероятность стремится к 2.\end{center}
+\slidenote{11}
+\end{frame}
+\begin{frame}{Корреляция и распределение точек испускания}
+\begin{columns}[c,onlytextwidth]
+\column{.34\textwidth}
+\begin{tikzpicture}[scale=.9]
 \fill[pale] (0,0) ellipse (2 and 1.55);
 \foreach \x/\y in {-1/.4,-.4/1,.1/-.4,.9/.7,1.4/-.6,-1.2/-.6,.4/.2}{\fill[teal] (\x,\y) circle(.09);}
 \node[source] (a) at (-.4,1) {$A$};\node[source] (b) at (1.4,-.6) {$B$};
 \draw[<->,gold,thick] (a)--(b);
-\node[align=center,font=\small] at (0,-2.1) {$\rho(x;K)$ — плотность\\испускания частиц};
+\node[align=center,font=\small] at (0,-2.6) {$\rho(x;K)$\\распределение испускания\\[2mm]$\int\dd^4x\,\rho(x;K)=1$};
 \end{tikzpicture}
-\column{.64\textwidth}
-\tagline{ПРИ ФИКСИРОВАННОМ $K$}
-\[\int\rho(x;K)\,\dd^4x=1.\]
-\[C-1\simeq\iint\dd^4x_A\dd^4x_B\,\rho_A\rho_B
-\cos\!\frac{q\cdot(x_A-x_B)}{\hc}\]
-\[\boxed{C-1\simeq\left|\int\dd^4x\,\rho(x;K)e^{iq\cdot x/\hc}\right|^2}.\]
+\column{.62\textwidth}
+{\large Усредняем по точкам источника}
+\[C(q,K)\simeq\bigl\langle|\Psi|^2\bigr\rangle=1+\langle\cos\varphi\rangle.\]
+\[\boxed{C-1\simeq\left|\int\dd^4x\,\rho(x;K)e^{iq\cdot x/\hc}\right|^2}\]
+\vspace{3mm}
+\small Независимое испускание.\par Взаимодействием между пионами\par после испускания пренебрегаем.
 \end{columns}
-\takeaway{Усреднение по независимым точкам даёт квадрат модуля Фурье-образа источника.}
-\src{Хаотическое независимое испускание; приближение гладкости; плоские волны, без FSI и многобозонных эффектов. \Lref, §2.1–2.2. Модуль и массовая оболочка ограничивают обратную задачу.}
-\slidenote{11}
+\slidenote{12}
 \end{frame}
-% 12
-\begin{frame}{Больше источник — уже пик}
+\begin{frame}{Чем больше источник, тем уже корреляционный пик}
 \begin{columns}[c,onlytextwidth]
 \column{.60\textwidth}\includegraphics[width=\linewidth]{gaussian_radii.pdf}
 \column{.36\textwidth}
-\tagline{МГНОВЕННЫЙ ГАУССОВ ИСТОЧНИК}
-\[\rho(\mathbf r)\propto e^{-\mathbf r^2/(2R^2)}.\]
+\tagline{УЧЕБНЫЙ ГАУССОВ ИСТОЧНИК}
 \[C=1+\lambda e^{-R^2q^2/(\hc)^2}.\]
 \[{\color{teal}\Delta q\sim\frac{\hc}{R}}.\]
-\small $R$: ширина одной координаты.\par
-$\lambda$: сила разрешённого сигнала.
+\small $R$: среднеквадратичный\par размер по одной оси.\par\vspace{2mm}
+$\lambda$: высота пика\par над уровнем $C=1$.
 \end{columns}
-\takeaway{Сравниваем ширину. Высота также зависит от распадов, примесей, разрешения и когерентности.}
-\src{Учебные кривые: $R=3,6$ фм, $\lambda=0.7$, $q=|\mathbf q|$ в системе источника. Не данные и не фит. В идеальной хаотической модели $\lambda=1$. \Lref, §2.5–2.6.}
-\slidenote{12}
+
+
+\slidenote{13}
 \end{frame}
 \section{Как это измеряют в STAR}
-% 13
-\begin{frame}{TPC: как частица оставляет трёхмерный след}
+\begin{frame}{Время-проекционная камера (TPC)}
 \begin{columns}[c,onlytextwidth]
 \column{.56\textwidth}
 \begin{tikzpicture}[x=1cm,y=1cm]
@@ -360,22 +355,19 @@ $\lambda$: сила разрешённого сигнала.
 \node[font=\scriptsize] at (3.3,-.22) {Торцевая плоскость считывания: площадки $(x,y)$};
 \draw[arr,ink] (-.45,.6)--(-.45,3.9) node[above] {$z$};
 \draw[arr,muted] (7,2.7)--(7,3.8) node[above] {$\mathbf E,\mathbf B$};
-\node[font=\scriptsize,text=muted,align=center] at (3.3,-1) {Продольный разрез: показана одна половина TPC\\дрейф вдоль оси пучка, к соответствующему торцу};
+
 \end{tikzpicture}
 \column{.40\textwidth}
-\tagline{TIME PROJECTION CHAMBER}
-\textbf{Газ сохраняет след частицы.}\par\vspace{3mm}
+{\bfseries По ионизации восстанавливаем\par траекторию частицы.\par}\par\vspace{3mm}
 Площадки $\to (x,y)$.\par Время дрейфа $\to z$.
-\[\ell_z=v_{\rm drift}\Delta t_{\rm drift}.\]
 \par\vspace{2mm}
-Много точек\par $\to$ \textbf{трёхмерный трек}.
+Трек — восстановленная\par траектория частицы.
 \end{columns}
-\takeaway{TPC превращает распределённую ионизацию газа в измеренную траекторию.}
-\src{Собственная схема по \Dref, §5.1–5.2, arXiv:nucl-ex/0301015. Время дрейфа электронов не является временем пролёта частицы.}
-\slidenote{13}
+
+
+\slidenote{14}
 \end{frame}
-% 14
-\begin{frame}{По кривизне — импульс, по ионизации — подсказка}
+\begin{frame}{Импульс и ионизационные потери частицы в TPC}
 \begin{columns}[c,onlytextwidth]
 \column{.45\textwidth}
 \begin{tikzpicture}[scale=1.05]
@@ -389,78 +381,75 @@ $\lambda$: сила разрешённого сигнала.
 \node[font=\scriptsize,text=muted] at (1.6,-.5) {Поперечная плоскость};
 \end{tikzpicture}
 \[p_T[\text{ГэВ}/c]\simeq0.30\,|Q/e|\,B[\text{Т}]\,r[\text{м}].\]
-\small Наклон трека даёт полный $p$.\par Заряд — по направлению изгиба.
+
 \column{.51\textwidth}
 \includegraphics[width=\linewidth,height=56mm,keepaspectratio]{kraeva_2024_pid_tpc_dedx.pdf}\par
-\small При известном $p$ сравниваем $dE/dx$\par с ожиданиями для $\pi$, $K$, $p$.
+\small При известном $p$ сравниваем $dE/dx$\par с расчётными значениями для $\pi$, $K$, $p$.
 \end{columns}
-\src{Геометрия: \Dref, §5.7. Реальные полосы PID: \Kref, рис. 2, Au+Au 3 ГэВ, 0–80\%. $r$ — радиус кривизны; на оси оригинала $p/q$ знак задаёт заряд.}
-\slidenote{14}
+
+\slidenote{15}
 \end{frame}
-% 15
-\begin{frame}{TOF: измеряем скорость и узнаём массу}
+\begin{frame}{Времяпролётная система (TOF)}
 \begin{columns}[c,onlytextwidth]
 \column{.44\textwidth}
-\tagline{TIME OF FLIGHT}
 \begin{tikzpicture}[x=1cm,y=1cm]
 \node[source] (a) at (.2,0) {$t_0$};
 \node[card] (b) at (5.3,0) {$t_{\rm hit}$};
-\draw[arr,teal,thick] (a) to[bend left=22] node[above] {путь $L$ по треку} (b);
+\draw[arr,teal,thick] (a) to[bend left=22] node[above] {длина пути $L$} (b);
 \node[font=\scriptsize] at (.2,-.7) {событие};\node[font=\scriptsize] at (5.3,-.7) {TOF};
 \end{tikzpicture}
 \[\Delta t=t_{\rm hit}-t_0,\qquad\beta=\frac{L}{c\Delta t}.\]
 \[\boxed{m^2=p^2(\beta^{-2}-1)}\quad(c=1).\]
-\small $p$ и $L$ — из трекинга.\par $t_0$ — определённое время события.
+
 \column{.52\textwidth}
 \includegraphics[width=\linewidth,height=56mm,keepaspectratio]{kraeva_2024_pid_tof_mass2.pdf}\par
 \small Импульс + скорость $\to$ оценка массы\par $\to$ отбор пионов.
 \end{columns}
-\takeaway{TPC и TOF дополняют друг друга: нужен и импульс, и сорт частицы.}
-\src{Shao et al., NIM A 558, 419–429 (2006), §3.2, arXiv:nucl-ex/0505026. PID: \Kref, рис. 2. $p$ — полный импульс; разрешение допускает отрицательные оценки $m^2$.}
-\slidenote{15}
+
+
+\slidenote{16}
 \end{frame}
-% 16
-\begin{frame}{Пары и контроль: как построить корреляцию}
+\begin{frame}{STAR: столкновения ядер золота при 3 ГэВ}
+\begin{columns}[c,onlytextwidth]
+\column{.60\textwidth}
+\begin{tikzpicture}[x=1cm,y=1cm]
+\fill[pale,rounded corners] (.3,-1.5) rectangle (9,1.7);
+\draw[teal!40,thick] (.3,-1.5) rectangle (9,1.7);
+\node[teal,font=\small\bfseries] at (5,2.1) {Детектор STAR};
+\draw[arr,ink,very thick] (-.3,0)--(1.9,0) node[midway,above] {пучок Au};
+\draw[gold,line width=4pt] (2.1,-.5)--(2.1,.5);
+\node[below,font=\small,align=center] at (2.1,-1.65) {Неподвижная\\мишень Au};
+\foreach \y in {-1.1,-.4,.4,1.1}{\draw[teal,line width=1.1pt] (2.1,0) to[out=10,in=180] (8.4,\y);}
+\node[font=\small] at (6.8,1.45) {Пионы};
+\node[font=\small] at (6.8,-2.08) {TPC + TOF};
+\node[font=\scriptsize,text=muted] at (4.7,-3.0) {Продольная схема, без масштаба};
+\end{tikzpicture}
+\column{.36\textwidth}
+{\bfseries Сжатие и расширение\par ядерного вещества.\par}
+\par\vspace{6mm}
+По корреляциям пионов\par определяем размеры\par области испускания.
+\end{columns}
+\vspace{5mm}
+\begin{center}
+\small $\sqrt{s_{NN}}=3$ ГэВ — энергия пары нуклонов в их системе центра масс.
+\end{center}
+\slidenote{17}
+\end{frame}
+\begin{frame}{Корреляционная функция и смешивание событий}
 \begin{columns}[c,onlytextwidth]
 \column{.64\textwidth}\includegraphics[width=\linewidth]{same_mixed.pdf}
 \column{.32\textwidth}
-\tagline{СИГНАЛ И КОНТРОЛЬ}
 $A$: пары \textbf{внутри}\par одного события.\par\vspace{2mm}
 $B$: пары из \textbf{разных}\par похожих событий.
 \[\boxed{C(q)=\mathcal N\frac{A(q)}{B(q)}}\]
-\small Классы: центральность,\par вершина, условия\par регистрации.\par\vspace{2mm}
-$\mathcal N$: $C\simeq1$\par в контрольной области.
+$\mathcal N$: $C\simeq1$\par в области нормировки.
 \end{columns}
-\takeaway{Учебный пример: независимые пуассоновские счёты; смешивание событий здесь не моделируется.}
-\src{Экспозиция $B$ в 10 раз больше, $\mathcal N=10$ задано. $q=|\mathbf q|$ в одной системе отсчёта. Реальный метод: \Lref, §3; Краева (2024), §2.1.}
-\slidenote{16}
-\end{frame}
-% 17
-\begin{frame}{4950 пар — не 4950 независимых измерений}
-\begin{columns}[c,onlytextwidth]
-\column{.41\textwidth}
-\begin{tikzpicture}[scale=.9]
-\node[font=\small] at (2,3.75) {$100$ треков $\to 100\cdot99/2=4950$ пар};
-\node[source,minimum size=13mm] (a) at (0,1) {трек};
-\foreach \y/\txt in {2.6/{пара 1},1.3/{пара 2},0/{пара 3},-1.3/{пара 4}}{
-\node[card,text width=2.2cm] (p) at (4,\y) {\txt};\draw[arr,teal] (a)--(p);}
-\node[font=\scriptsize,text=muted] at (1.9,-2.2) {Один трек входит во многие пары};
-\end{tikzpicture}
-\column{.55\textwidth}
-\[\frac{\sigma_C}{C}\simeq\sqrt{\frac1A+\frac1B}.\]
-\small Только независимые пуассоновские $A,B$\par и фиксированная нормировка.
-\par\vspace{3mm}
-\textbf{Проверяем по событиям:}\par bootstrap $\to$ смешивание $\to$ нормировка $\to$ фит.
-\par\vspace{3mm}
-\textbf{Меняем условия анализа:}\par отборы треков, фон, диапазон фита.
-\end{columns}
-\takeaway{Большое число пар не устраняет зависимости и систематические смещения.}
-\src{Учебная схема; \Lref, §3. В статье Краевой (2024), §2.3: вариации слияния/раздвоения треков, диапазона фита и кулоновского радиуса 3–7 фм.}
-\slidenote{17}
+\vspace{3mm}{\small\color{muted}Учебный пример: независимые пуассоновские гистограммы. Реальное смешивание событий не моделируется.\par}
+
+\slidenote{18}
 \end{frame}
 \section{Что извлекаем из данных}
-% 18
-\begin{frame}{Три направления вместо одного радиуса}
+\begin{frame}{Три радиуса области испускания}
 \begin{columns}[c,onlytextwidth]
 \column{.38\textwidth}
 \begin{tikzpicture}[scale=1.03]
@@ -472,30 +461,29 @@ $\mathcal N$: $C\simeq1$\par в контрольной области.
 \node[font=\scriptsize] at (1.1,-2) {пучок};
 \end{tikzpicture}
 \column{.58\textwidth}
-\tagline{LCMS: УБИРАЕМ ПРОДОЛЬНОЕ ДВИЖЕНИЕ ПАРЫ}
+{\color{teal}\textbf{Система отсчёта LCMS}}\par
+\small Суммарный продольный импульс пары равен нулю:
 \[p_{1z}+p_{2z}=0.\]
 \small Поперечное движение остаётся.\par\vspace{3mm}
 \[C=1+\lambda e^{-\left(R_o^2q_o^2+R_s^2q_s^2+R_l^2q_l^2\right)/(\hc)^2}.\]
 \par\vspace{2mm}
 \textbf{out}: вдоль $\mathbf K_T$;\quad \textbf{long}: вдоль пучка.\par
-\textbf{side}: перпендикулярно обоим.
+\textbf{side}: перпендикулярно $\mathbf K_T$ и пучку.
 \end{columns}
-\takeaway{Три ширины корреляции $\to$ три масштаба области испускания.}
-\src{Диагональное гауссово приближение без FSI. Оси задаются для каждой пары; при $k_T=0$ out не определено. \Lref, §2.4–2.5; Краева (2024), §2.1.}
-\slidenote{18}
-\end{frame}
-% 19
-\begin{frame}{Так выглядит корреляция STAR при 3 ГэВ}
-\measuretag
-\centering\includegraphics[width=.98\textwidth,height=49mm,keepaspectratio]{kraeva_2024_correlation_projections.pdf}\par
-{\scriptsize 0–10\%; $0.15<k_T<0.25$ ГэВ/$c$; другие компоненты $q$: $\pm0.05$ ГэВ/$c$.}\par
-{\small $C(\mathbf q)=\mathcal N\big[(1-\lambda)+\lambda K_{\rm C}(\mathbf q)(1+G(\mathbf q))\big].$\par}
-\takeaway{Точки — данные. Линии — фит с учётом бозонной интерференции и кулоновского отталкивания.}
-\src{\Kref, рис. 4, формула (2). Bowler–Sinyukov: $K_{\rm C}$ — кулоновский фактор, $G$ — гауссова обменная часть. Сильное FSI здесь не моделируется этой формулой.}
+
+
 \slidenote{19}
 \end{frame}
-% 20
-\begin{frame}{Почему быстрые пары видят меньшую область?}
+\begin{frame}{Двухпионные корреляции STAR при 3 ГэВ}
+\measuretag
+\vspace{3mm}
+\centering\includegraphics[width=\textwidth,height=59mm,keepaspectratio]{kraeva_2024_correlation_projections.pdf}\par
+\vspace{4mm}
+{\small Точки — измерения STAR.\par
+Линии — аппроксимация с учётом кулоновского отталкивания.\par}
+\slidenote{20}
+\end{frame}
+\begin{frame}{Коллективное расширение и область однородности}
 \begin{columns}[c,onlytextwidth]
 \column{.60\textwidth}
 \begin{tikzpicture}[scale=1.05]
@@ -509,95 +497,214 @@ $\mathcal N$: $C\simeq1$\par в контрольной области.
 \node[font=\scriptsize,align=center] at (0,-2.3) {Весь источник};
 \end{tikzpicture}
 \column{.36\textwidth}
-\prompt{Поток связывает}\prompt{координату и импульс.}
+\prompt{Средний импульс зависит}\prompt{от места испускания.}
 \vspace{3mm}
-Одинаковый $K$\par отбирает часть системы:\par \textbf{область однородности}.\par\vspace{3mm}
-Её размер меняется\par при изменении $k_T$.
+Пионы с близкими импульсами\par испускаются преимущественно\par из части системы —\par \textbf{области однородности}.\par\vspace{3mm}
+
 \end{columns}
-\takeaway{Уменьшение $R(k_T)$ может отражать поток даже при большом полном источнике.}
-\src{Качественная схема по \Lref, §2.7; Краева (2024), §3–4. HBT-радиусы зависят от выбранных импульсов и модели интерпретации.}
-\slidenote{20}
+
+
+\slidenote{21}
 \end{frame}
-% 21
-\begin{frame}{Что STAR узнаёт из зависимости радиусов?}
+\begin{frame}{Радиусы STAR: зависимость от $k_T$}
 \measuretag
 \begin{columns}[c,onlytextwidth]
 \column{.61\textwidth}\centering\includegraphics[width=\linewidth,height=60mm,keepaspectratio]{kraeva_2024_radii_kt.pdf}
 \column{.35\textwidth}
-\textcolor{red!75!black}{\textbf{$R_{\rm out}$}}\quad
-\textcolor{blue!75!black}{\textbf{$R_{\rm side}$}}\quad
-\textcolor{black}{\textbf{$R_{\rm long}$}}\par\vspace{3mm}
-\small Закрашенные: $\pi^-\pi^-$.\par Пустые: $\pi^+\pi^+$.\par
-Полосы: систематика.\par\vspace{3mm}
-\textbf{Данные согласуются}\par с картиной потока\par и областей однородности.\par\vspace{2mm}
-\textbf{Зачем?}\par Проверить описание\par коллективного расширения.
+\prompt{Радиусы уменьшаются}\prompt{при увеличении $k_T$.}
+\vspace{5mm}
+Какие сценарии расширения\par воспроизводят эту зависимость?
 \end{columns}
-\src{\Kref, рис. 5. Au+Au, 3 ГэВ, 0–10\%; без отдельного отбора по быстроте пары. Радиусы из 3D-фита в LCMS. Точки и ошибки сохранены.}
-\slidenote{21}
-\end{frame}
-% 22
-\begin{frame}{Почему радиус out не является прямыми часами?}
-{\small Для частиц одной массы:}
-\[q\cdot K=0\quad\Rightarrow\quad q^0=\boldsymbol\beta\cdot\mathbf q,
-\qquad\boldsymbol\beta=\mathbf K/K^0.\]
-\vspace{2mm}
-\[\boxed{R_{\rm out}^2=
-\underbrace{\langle\widetilde x_o^2\rangle_K}_{\text{пространство}}
-\;\color{gold!70!black}-\underbrace{2\beta_T\langle\widetilde x_o\widetilde{ct}\rangle_K}_{\text{корреляция }x\text{ и }t}\color{ink}
-\;+\underbrace{\beta_T^2\langle\widetilde{ct}^{\,2}\rangle_K}_{\text{время}}}.\]
-\vspace{3mm}
-\begin{columns}[c,onlytextwidth]
-\column{.47\textwidth}
-\[R_{\rm side}^2=\langle\widetilde x_s^2\rangle_K,\qquad
-R_{\rm long}^2=\langle\widetilde x_l^2\rangle_K\quad\text{в LCMS}.\]
-\column{.49\textwidth}\small $\widetilde a=a-\langle a\rangle_K$:\par отклонение от среднего\par при выбранном $K$.
-\end{columns}
-\takeaway{По одному отношению $R_{\rm out}/R_{\rm side}$ нельзя прочитать длительность испускания.}
-\src{Моменты гауссовой функции испускания. \Lref, §2.5.2. Интерпретация зарядовых различий радиусов Краевой (2024) требует дополнительных предположений.}
+
 \slidenote{22}
 \end{frame}
-\section{Проверяем интерпретацию на модели}
-% 23
-\begin{frame}{SMASH: проверяем метод на известной истории}
+\begin{frame}{Пространство и время в радиусе $R_{\rm out}$}
+\begin{center}
+{\large В интерференционной фазе связаны положение и время}
+\vspace{5mm}
+{\Large\[\boxed{R_{\rm out}^2=\left\langle\left(\widetilde x_o-\beta_T\widetilde{ct}\right)^2\right\rangle_K}\]}
+\vspace{5mm}
+\small $\widetilde a=a-\langle a\rangle_K$; $\beta_T$ — поперечная скорость пары в единицах $c$.
+\par\vspace{3mm}
+Пространство, время и их корреляция.\par
+\vspace{6mm}
+{\color{teal}\large Одного радиуса недостаточно для измерения длительности.\par}
+\end{center}
+\slidenote{23}
+\end{frame}
+\section{Моделирование в SMASH}
+\begin{frame}{Адронная транспортная модель SMASH}
 \begin{tikzpicture}[x=1cm,y=1cm]
 \node[card,text width=3.2cm,minimum height=18mm] (a) at (2,0) {Ядра\\и начальные условия};
-\node[card,text width=4cm,minimum height=18mm] (b) at (7.4,0) {Адроны движутся,\\сталкиваются, распадаются};
-\node[card,text width=3.5cm,minimum height=18mm] (c) at (13.2,0) {История событий\\$\{x_i^\mu,p_i^\mu,\mathrm{ID}_i\}$};
+\node[card,text width=4cm,minimum height=18mm] (b) at (7.4,0) {Движение адронов,\\столкновения, распады};
+\node[card,text width=3.5cm,minimum height=18mm] (c) at (13.2,0) {Точки испускания\\и импульсы\\$\{x_i^\mu,p_i^\mu\}$};
 \draw[arr,teal] (a)--(b);\draw[arr,teal] (b)--(c);
 \end{tikzpicture}
 \vspace{6mm}
 \begin{columns}[c,onlytextwidth]
-\column{.49\textwidth}\tagline{В ЭКСПЕРИМЕНТЕ}\textbf{Импульсы известны.}\par Источник требуется восстановить.
-\column{.47\textwidth}\tagline{В МОДЕЛИ}\textbf{Известна история источника.}\par Можно проверить метод восстановления.
+\column{.49\textwidth}\tagline{В ЭКСПЕРИМЕНТЕ}\textbf{Импульсы известны.}\par Координаты испускания неизвестны.
+\column{.47\textwidth}\tagline{В МОДЕЛИ}\textbf{Координаты испускания известны.}\par Можно проверить извлечение радиусов.
 \end{columns}
-\takeaway{SMASH — адронный транспорт. В гибридной модели он описывает позднюю адронную стадию.}
-\src{SMASH: Simulating Many Accelerated Strongly-interacting Hadrons. Weil et al., PRC 94, 054905 (2016); \href{https://smash-transport.github.io/}{официальная документация}.}
-\slidenote{23}
+\vspace{5mm}{\color{teal}\large SMASH моделирует адронную стадию.\par}
+
+\slidenote{24}
 \end{frame}
-% 24
-\begin{frame}{Как добавить квантовую интерференцию к событиям?}
+\begin{frame}{Расчёт корреляций по событиям SMASH}
 \begin{tikzpicture}[x=1cm,y=1cm]
-\node[card,text width=3.3cm] (a) at (2.1,0) {Конечные пионы\\точки испускания + импульсы};
-\node[card,text width=3cm] (b) at (7.7,0) {Пары в выбранном бине\\$q_i,\ \Delta x_i$};
+\node[card,text width=3.3cm] (a) at (2.1,0) {Точки испускания\\и импульсы пионов};
+\node[card,text width=3cm] (b) at (7.7,0) {Группируем пары по $\mathbf q$\\$q_i,\ \Delta x_i$};
 \node[card,text width=3.1cm] (c) at (13,0) {Квантовый вес\\$w_i=1+\cos\varphi_i$};
 \draw[arr,teal] (a)--(b);\draw[arr,teal] (b)--(c);
 \end{tikzpicture}
-\vspace{3mm}
-\begin{columns}[c,onlytextwidth]
-\column{.48\textwidth}
-\[\varphi_i=\frac{q_i\cdot\Delta x_i}{\hc},\qquad
-C_{\rm model}=\frac{\sum_iw_i}{n}=\overline w.\]
-\small Одни и те же пары\par в сумме весов и в числе $n$.
-\column{.48\textwidth}
-\textbf{Какая точка нужна?}\par Последнее взаимодействие\par или рождение конечного пиона.\par\vspace{2mm}
-\small Поздние координаты свободного пролёта\par требуют отдельного восстановления.
-\end{columns}
-\takeaway{Это средний вес пары. Его ошибка отличается от ошибки независимого отношения счётов.}
-\src{Плосковолновая обработка без FSI. Балинов (2025), слайд 2; \Lref, §2.8. $n$ — число пар в бине. Общие треки требуют оценки ошибок по событиям.}
-\slidenote{24}
+\vspace{7mm}
+\[\varphi_i=\frac{q_i\cdot\Delta x_i}{\hc},\qquad\boxed{C_{\rm model}=\frac{\sum_iw_i}{n}}\]
+\vspace{4mm}
+\begin{center}\small Средний вес тех же $n$ пар. Взаимодействием пионов после испускания пренебрегаем.\end{center}
+\slidenote{25}
 \end{frame}
-% 25
-\begin{frame}{Мой расчёт: выбранные пары $\to$ корреляция}
+\begin{frame}{SMASH: трёхмерная корреляционная функция}
+\tagline{SMASH · ТЕКУЩИЙ РАСЧЁТ · Au+Au, 3 ГэВ · $\pi^-\pi^-$ · LCMS}
+\vspace{2mm}
+\begin{columns}[T,onlytextwidth]
+\column{.32\textwidth}\centering
+{\large\color{teal}\textbf{out}\quad $C(q_{\rm out})$}\par\vspace{1mm}
+\includegraphics[width=\linewidth,height=43mm,keepaspectratio]{current_2026_cf_kt_out.pdf}\par
+{\small $q_{\rm out}$, ГэВ/$c$}
+\column{.32\textwidth}\centering
+{\large\color{gold!80!black}\textbf{side}\quad $C(q_{\rm side})$}\par\vspace{1mm}
+\includegraphics[width=\linewidth,height=43mm,keepaspectratio]{current_2026_cf_kt_side.pdf}\par
+{\small $q_{\rm side}$, ГэВ/$c$}
+\column{.32\textwidth}\centering
+{\large\color{ink}\textbf{long}\quad $C(q_{\rm long})$}\par\vspace{1mm}
+\includegraphics[width=\linewidth,height=43mm,keepaspectratio]{current_2026_cf_kt_long.pdf}\par
+{\small $q_{\rm long}$, ГэВ/$c$}
+\end{columns}
+\vspace{2mm}
+\begin{center}\small Центральность 0–10\%; $0.15<k_T<0.25$ ГэВ/$c$.\end{center}
+
+
+\slidenote{26}
+\end{frame}
+\begin{frame}{SMASH: поперечные радиусы $R_{\rm out}$ и $R_{\rm side}$, фм}
+\tagline{SMASH · ТЕКУЩИЙ РАСЧЁТ · Au+Au, 3 ГэВ · $\pi^-\pi^-$ · LCMS}
+\vspace{2mm}
+\begin{columns}[T,onlytextwidth]
+\column{.48\textwidth}\centering
+{\large\color{teal}$R_{\rm out}$, фм}\par
+\includegraphics[width=\linewidth,height=57mm,keepaspectratio]{current_2026_kt_out.pdf}
+\column{.48\textwidth}\centering
+{\large\color{gold!80!black}$R_{\rm side}$, фм}\par
+\includegraphics[width=\linewidth,height=57mm,keepaspectratio]{current_2026_kt_side.pdf}
+\end{columns}
+\par\vspace{1mm}{\centering\small $k_T$, ГэВ/$c$\par\vspace{1mm}Центральность:\quad \textcolor{red!75!black}{0–10\%}\quad \textcolor{blue!75!black}{10–30\%}\quad \textcolor{magenta!75!black}{30–50\%}\quad \textcolor{green!35!black}{50–80\%}\par}
+
+
+\slidenote{27}
+\end{frame}
+\begin{frame}{SMASH: продольный радиус $R_{\rm long}$}
+\begin{columns}[c,onlytextwidth]
+\column{.65\textwidth}\centering
+\includegraphics[width=\linewidth,height=60mm,keepaspectratio]{current_2026_kt_long.pdf}
+\column{.31\textwidth}
+\tagline{SMASH · ТЕКУЩИЙ РАСЧЁТ}
+{\large $R_{\rm long}(k_T)$, фм}\par
+\small $\pi^-\pi^-$ · LCMS\par $k_T$, ГэВ/$c$\par\vspace{4mm}
+\small Центральность:\par\vspace{1mm}
+\textcolor{red!75!black}{0–10\%}\par
+\textcolor{blue!75!black}{10–30\%}\par
+\textcolor{magenta!75!black}{30–50\%}\par
+\textcolor{green!35!black}{50–80\%}
+\end{columns}
+
+
+\slidenote{28}
+\end{frame}
+\begin{frame}{Сравнение радиусов SMASH и STAR}
+\tagline{Au+Au · $\sqrt{s_{NN}}=3$ ГэВ · 0–10\% · $\pi^-\pi^-$ · LCMS}
+\vspace{1mm}
+\centering\includegraphics[width=\textwidth,height=65mm,keepaspectratio]{comparison_star_smash_current_2026.pdf}\par
+\slidenote{29}
+\end{frame}
+\section{Результаты и интерпретация}
+\begin{frame}{Корреляции пионов характеризуют область испускания}
+\begin{columns}[T,onlytextwidth]
+\column{.29\textwidth}
+\prompt{Детекторы}
+\vspace{4mm}
+TPC + TOF\par\vspace{2mm}
+Импульсы и виды частиц.
+\column{.31\textwidth}
+\prompt{Корреляция}
+\vspace{4mm}
+Корреляция $C(q)$\par\vspace{2mm}
+Ширина пика $\to$\par масштаб испускания.
+\column{.31\textwidth}
+\prompt{Область испускания}
+\vspace{4mm}
+Радиусы и их зависимости\par\vspace{2mm}
+Модели расширения\par плотной материи.
+\end{columns}
+\vspace{7mm}
+\begin{center}\large\color{teal}Парные корреляции дополняют одночастичные спектры.\end{center}
+\slidenote{30}
+\end{frame}
+\appendix
+\section{Источники и резерв}
+\begin{frame}{Литература: теория, STAR и SMASH}
+\small
+\textbf{Lisa, Pratt, Soltz, Wiedemann (2005).}\par
+Формализм, области однородности, методы анализа.\par
+\href{https://arxiv.org/abs/nucl-ex/0505014}{arXiv:nucl-ex/0505014}\par\vspace{2mm}
+\textbf{Anna Kraeva for STAR. Universe 10, 188 (2024).}\par
+\emph{Two-Pion Bose–Einstein Correlations in Au+Au Collisions at $\sqrt{s_{NN}}=3$ GeV in the STAR Experiment.}\par
+\href{https://doi.org/10.3390/universe10040188}{DOI: 10.3390/universe10040188}\quad
+\href{https://indico.cern.ch/event/1258038/contributions/5537099/attachments/2700455/4687127/ISMD_2023_v6.pdf}{Доклад ISMD 2023}\par\vspace{2mm}
+\textbf{Weil et al. PRC 94, 054905 (2016).}\par
+SMASH: \href{https://arxiv.org/abs/1606.06642}{arXiv:1606.06642},
+\href{https://smash-transport.github.io/}{официальная документация}.\par\vspace{2mm}
+\textbf{STAR. PRC 71, 044906 (2005).}\quad\href{https://arxiv.org/abs/nucl-ex/0411036}{Методика и детекторные эффекты.}
+
+\slidenote{31}
+\end{frame}
+\begin{frame}{Литература: история метода и детекторы}
+\small
+\textbf{Hanbury Brown, Twiss (1956): корреляции и Сириус.}\par
+\href{https://doi.org/10.1038/177027a0}{Nature 177, 27–29};\quad
+\href{https://doi.org/10.1038/1781046a0}{Nature 178, 1046–1048}.\par\vspace{2mm}
+\textbf{Goldhaber, Goldhaber, Lee, Pais (1960): пионы.}\par
+\href{https://doi.org/10.1103/PhysRev.120.300}{Phys. Rev. 120, 300–312.}\par\vspace{2mm}
+\textbf{Копылов–Подгорецкий (1972); Копылов (1974).}\par
+ЯФ 15, 392;\quad\href{https://doi.org/10.1016/0370-2693(74)90263-9}{Phys. Lett. B 50, 472–474}.\par\vspace{2mm}
+\textbf{Anderson et al.: STAR TPC.}\quad\href{https://arxiv.org/abs/nucl-ex/0301015}{nucl-ex/0301015}.\par
+\textbf{Shao et al.: совместная идентификация.}\quad\href{https://arxiv.org/abs/nucl-ex/0505026}{nucl-ex/0505026}.\par
+\textbf{Llope et al.: STAR TOFp.}\quad\href{https://arxiv.org/abs/nucl-ex/0308022}{nucl-ex/0308022}.
+
+\slidenote{32}
+\end{frame}
+\begin{frame}{Работы автора: архив 2023–2025}
+\begin{columns}[T,onlytextwidth]
+\column{.50\textwidth}\small
+\textbf{Балинов, 2023:} полный текст, 21 стр.\par
+\href{https://epp.phys.msu.ru/kr2kurs}{Архив кафедры, 2 курс}. Обзор метода.\par\vspace{2mm}
+\textbf{Балинов, 2025:} защита, 28 слайдов.\par
+\href{https://epp.phys.msu.ru/kr4kurs}{Архив кафедры, 4 курс}. Модельные графики.\par\vspace{2mm}
+Число событий, версия SMASH,\par способ оценки погрешностей\par и программа подгонки\par по архиву не установлены.\par\vspace{2mm}
+В исходных формулах есть ошибки\par размерностей и знаков; реализация\par 2025 года не проверена.
+\column{.46\textwidth}\small
+\begin{tabular}{@{}ll@{}}\toprule
+Система & Au+Au, 3 ГэВ\\
+Пары & $\pi^+\pi^+$, $\pi^-\pi^-$\\
+$|\mathbf p|,p_T$ & 0.15–1.5 ГэВ/$c$\\
+$\eta$ & $[-1.5,1.5]$\\
+$k_T$ & 0.15–0.25; 0.25–0.35;\\
+(ГэВ/$c$) & 0.35–0.45; 0.45–0.60\\
+Центральность & 0–10; 10–30;\\
+ & 30–50; 50–80\%\\\bottomrule\end{tabular}
+\end{columns}
+
+\slidenote{33}
+\end{frame}
+\begin{frame}{Расчёт 2025 года: одномерная корреляция}
 \begin{columns}[c,onlytextwidth]
 \column{.68\textwidth}\centering\includegraphics[width=\linewidth,height=61mm,keepaspectratio]{balinov_2025_correlation_kt.pdf}
 \column{.28\textwidth}
@@ -611,160 +718,26 @@ C_{\rm model}=\frac{\sum_iw_i}{n}=\overline w.\]
 \textcolor{green!45!black}{0.45–0.60}\par ГэВ/$c$.
 \end{columns}
 \takeaway{Отбор по импульсу пары входит в определение измеряемого источника.}
-\src{Оригинал: Балинов (2025), слайд 13, левая панель; ось $q_{\rm inv}$ — ГэВ/$c$. График укрупнён, точки и ошибки не перерисованы.}
-\slidenote{25}
+
+\slidenote{34}
 \end{frame}
-% 26
-\begin{frame}{Что получилось из аппроксимации?}
+\begin{frame}{Расчёт 2025 года: радиус $R_{\rm inv}$}
 \begin{columns}[c,onlytextwidth]
 \column{.68\textwidth}\centering\includegraphics[width=\linewidth,height=58mm,keepaspectratio]{balinov_2025_rinv.pdf}
 \column{.28\textwidth}
 \tagline{SMASH / АРХИВ 2025}
-\textbf{$R_{\rm inv}(k_T)$}\par эффективный масштаб\par одномерного фита.\par\vspace{3mm}
+\textbf{$R_{\rm inv}(k_T)$}\par параметр одномерной\par аппроксимации.\par\vspace{3mm}
 \small \textcolor{red}{0–10\%}\par
 \textcolor{blue}{10–30\%}\par
 \textcolor{magenta}{30–50\%}\par
 \textcolor{green!45!black}{50–80\%}\par\vspace{3mm}
-Радиус зависит\par от выбранного класса.
+Радиус зависит\par от центральности.
 \end{columns}
-\takeaway{Архивный результат: реализация фита и метод ошибок 2025 года независимо не проверены.}
-\src{Балинов (2025), слайд 14. В формулах архива есть ошибки записи; код того расчёта недоступен. $R_{\rm inv}$ не равен отдельным LCMS-радиусам и радиусу ядра.}
-\slidenote{26}
+\takeaway{Программа подгонки и способ оценки погрешностей не проверены.}
+
+\slidenote{35}
 \end{frame}
-% 27
-\begin{frame}{Как проверить, описывает ли модель эксперимент?}
-\begin{columns}[T,onlytextwidth]
-\column{.46\textwidth}\tagline{STAR / КРАЕВА, 2024}
-\chip{\linewidth}{Реальные треки\quad $A/B$}\par\vspace{2mm}
-\chip{\linewidth}{3D-радиусы в LCMS}\par\vspace{2mm}
-\chip{\linewidth}{Кулон + отборы + систематика}
-\column{.46\textwidth}\tagline{SMASH / БАЛИНОВ, 2025}
-\chip{\linewidth}{Модельные пионы\quad $\overline w$}\par\vspace{2mm}
-\chip{\linewidth}{Здесь показан 1D-$R_{\rm inv}$}\par\vspace{2mm}
-\chip{\linewidth}{Плоские волны; свой набор отборов}
-\end{columns}
-\vspace{4mm}
-\begin{center}\textbf{Согласовать:}\quad заряд пары\quad $k_T$\quad быстроту\quad центральность\quad FSI.\end{center}
-\takeaway{Одинаковая энергия 3 ГэВ — начало сравнения. Для численного сопоставления нужны одинаковые определения.}
-\src{Сопоставление методик, не новый фит данных. Краева (2024), §2–3: $-2<\eta<0$; Балинов (2025), слайд 6: $-1.5<\eta<1.5$. Быстрота $y$ и псевдобыстрота $\eta$ различаются.}
-\slidenote{27}
-\end{frame}
-\section{Как и зачем: итог}
-% 28
-\begin{frame}{Детектор $\to$ корреляция $\to$ источник: что и зачем?}
-\begin{columns}[T,onlytextwidth]
-\column{.30\textwidth}
-\tagline{ЧТО ИЗМЕРЯЕМ?}
-\textbf{TPC + TOF}\par дают импульсы\par и отбор пионов.\par\vspace{3mm}
-Статистика пар\par $\to$ корреляция $C(q)$.
-\column{.31\textwidth}
-\tagline{КАК УЗНАЁМ РАЗМЕР?}
-\textbf{Обменная интерференция}\par связывает импульсы\par и точки испускания.\par\vspace{3mm}
-Больший масштаб\par $\to$ более узкий пик.
-\column{.31\textwidth}
-\tagline{ЗАЧЕМ ЭТО НУЖНО?}
-\textbf{Проверяем динамику}\par горячей плотной материи:\par размеры, поток,\par пространственные\par и временные связи.\par\vspace{2mm}
-Сопоставляем с моделями\par при одинаковых отборах.
-\end{columns}
-\vspace{4mm}
-\takeaway{Наблюдаем импульсы. Получаем ограничения на область испускания и сценарии её эволюции.}
-\src{Радиусы относятся к областям однородности выбранных пар; прямое изображение источника и независимые часы не получаются без дополнительных предположений.}
-\slidenote{28}
-\end{frame}
-\appendix
-\section{Источники и резерв}
-% 29
-\begin{frame}{Источники: теория, данные STAR и транспорт}
-\small
-\textbf{Lisa, Pratt, Soltz, Wiedemann (2005).}\par
-Формализм, области однородности, методы анализа.\par
-\href{https://arxiv.org/abs/nucl-ex/0505014}{arXiv:nucl-ex/0505014}\par\vspace{2mm}
-\textbf{Anna Kraeva for STAR. Universe 10, 188 (2024).}\par
-\emph{Two-Pion Bose–Einstein Correlations in Au+Au Collisions at $\sqrt{s_{NN}}=3$ GeV in the STAR Experiment.}\par
-\href{https://doi.org/10.3390/universe10040188}{DOI: 10.3390/universe10040188}\quad
-\href{https://indico.cern.ch/event/1258038/contributions/5537099/attachments/2700455/4687127/ISMD_2023_v6.pdf}{Доклад ISMD 2023}\par\vspace{2mm}
-\textbf{Weil et al. PRC 94, 054905 (2016).}\par
-SMASH: \href{https://arxiv.org/abs/1606.06642}{arXiv:1606.06642},
-\href{https://smash-transport.github.io/}{официальная документация}.\par\vspace{2mm}
-\textbf{STAR. PRC 71, 044906 (2005).}\quad\href{https://arxiv.org/abs/nucl-ex/0411036}{Методика и детекторные эффекты.}
-\src{Результаты статьи Краевой опубликованы в 2024 году; на исходных графиках сохранён статус STAR Preliminary. Полное происхождение — sources\_and\_provenance.md.}
-\slidenote{29}
-\end{frame}
-% 30
-\begin{frame}{Откуда взялась идея и как работают детекторы}
-\small
-\textbf{Hanbury Brown, Twiss (1956): корреляции и Сириус.}\par
-\href{https://doi.org/10.1038/177027a0}{Nature 177, 27–29};\quad
-\href{https://doi.org/10.1038/1781046a0}{Nature 178, 1046–1048}.\par\vspace{2mm}
-\textbf{Goldhaber, Goldhaber, Lee, Pais (1960): пионы.}\par
-\href{https://doi.org/10.1103/PhysRev.120.300}{Phys. Rev. 120, 300–312.}\par\vspace{2mm}
-\textbf{Копылов–Подгорецкий (1972); Копылов (1974).}\par
-ЯФ 15, 392;\quad\href{https://doi.org/10.1016/0370-2693(74)90263-9}{Phys. Lett. B 50, 472–474}.\par\vspace{2mm}
-\textbf{Anderson et al.: STAR TPC.}\quad\href{https://arxiv.org/abs/nucl-ex/0301015}{nucl-ex/0301015}.\par
-\textbf{Shao et al.: совместная идентификация.}\quad\href{https://arxiv.org/abs/nucl-ex/0505026}{nucl-ex/0505026}.\par
-\textbf{Llope et al.: STAR TOFp.}\quad\href{https://arxiv.org/abs/nucl-ex/0308022}{nucl-ex/0308022}.
-\src{HBT в оптике и пионные корреляции имеют общую квантовую основу, но разные измеряемые переменные и экспериментальные процедуры.}
-\slidenote{30}
-\end{frame}
-% 31
-\begin{frame}{Авторские источники: условия и границы проверки}
-\begin{columns}[T,onlytextwidth]
-\column{.50\textwidth}\small
-\textbf{Балинов, 2023:} полный текст, 21 стр.\par
-\href{https://epp.phys.msu.ru/kr2kurs}{Архив кафедры, 2 курс}. Обзор метода.\par\vspace{2mm}
-\textbf{Балинов, 2025:} защита, 28 слайдов.\par
-\href{https://epp.phys.msu.ru/kr4kurs}{Архив кафедры, 4 курс}. Модельные графики.\par\vspace{2mm}
-Число событий, версия SMASH,\par алгоритм ошибок и код фита\par по архиву не установлены.\par\vspace{2mm}
-В исходных формулах есть ошибки\par размерностей и знаков; реализация\par 2025 года не проверена.
-\column{.46\textwidth}\small
-\begin{tabular}{@{}ll@{}}\toprule
-Система & Au+Au, 3 ГэВ\\
-Пары & $\pi^+\pi^+$, $\pi^-\pi^-$\\
-$|\mathbf p|,p_T$ & 0.15–1.5 ГэВ/$c$\\
-$\eta$ & $[-1.5,1.5]$\\
-$k_T$ & 0.15–0.25; 0.25–0.35;\\
-(ГэВ/$c$) & 0.35–0.45; 0.45–0.60\\
-Центральность & 0–10; 10–30;\\
- & 30–50; 50–80\%\\\bottomrule\end{tabular}
-\end{columns}
-\src{Оригинал 2025, слайды 6, 13. Заявлены кинетическое вымораживание и исключение упругих событий; точный программный критерий неизвестен. Отчёт 2026 года не подменяет источник 2025.}
-\slidenote{31}
-\end{frame}
-% 32
-\begin{frame}{Средний вес имеет другую статистическую ошибку}
-Для $n$ одних и тех же модельных пар:
-\[C=\frac{\sum_iw_i}{n}=\overline w,\qquad
-\widehat{\operatorname{Var}}(\overline w)=\frac{\sum_i(w_i-\overline w)^2}{n(n-1)}.\]
-\small Условная оценка для независимых пар при фиксированном $n>1$.\par
-Общие треки требуют анализа на уровне событий.\par\vspace{3mm}
-Для отношения $C=\mathcal NA/B$ с фиксированной $\mathcal N$:
-\[\frac{\operatorname{Var}(C)}{C^2}\simeq
-\frac{\operatorname{Var}(A)}{A^2}+\frac{\operatorname{Var}(B)}{B^2}
--2\frac{\operatorname{Cov}(A,B)}{AB}.\]
-\takeaway{Ковариация существенна, если числитель и знаменатель используют одни пары.}
-\src{Вывод через дисперсию среднего и линейное распространение ошибок. При оценке нормировки по данным нужны также её дисперсия и ковариации.}
-\slidenote{32}
-\end{frame}
-% 33
-\begin{frame}{Архив 2025: трёхмерные радиусы out и side}
-\begin{columns}[c,onlytextwidth]
-\column{.48\textwidth}\centering\includegraphics[width=\linewidth,height=60mm,keepaspectratio]{balinov_2025_rout_3d.pdf}
-\column{.48\textwidth}\centering\includegraphics[width=\linewidth,height=60mm,keepaspectratio]{balinov_2025_rside_3d.pdf}
-\end{columns}
-\src{Балинов (2025), слайд 17, верхние панели; исходные точки, легенды и ошибки. Это архивная демонстрация 3D-анализа; реализация фита не проверена.}
-\slidenote{33}
-\end{frame}
-% 34
-\begin{frame}{Архив 2025: $R_{\rm long}$ и сила 1D-корреляции}
-\begin{columns}[c,onlytextwidth]
-\column{.48\textwidth}\centering\includegraphics[width=\linewidth,height=58mm,keepaspectratio]{balinov_2025_rlong_3d.pdf}
-\column{.48\textwidth}\centering\includegraphics[width=\linewidth,height=58mm,keepaspectratio]{balinov_2025_lambda_1d.pdf}
-\end{columns}
-\src{Балинов (2025): слева 3D-$R_{\rm long}$ со слайда 17, справа 1D-$\lambda$ со слайда 14. Это параметры разных фитов; сопоставление панелей не задаёт общую аппроксимацию.}
-\slidenote{34}
-\end{frame}
-% 35
-\begin{frame}{А если менять продольное движение пары?}
+\begin{frame}{Смешанный член корреляции и быстрота пары}
 \measuretag
 \begin{columns}[c,onlytextwidth]
 \column{.55\textwidth}\centering\includegraphics[width=\linewidth,height=52mm,keepaspectratio]{kraeva_2024_rapidity_out_long.pdf}\par
@@ -772,17 +745,16 @@ $k_T$ & 0.15–0.25; 0.25–0.35;\\
 \column{.41\textwidth}
 \tagline{БЫСТРОТА ПАРЫ В СИСТЕМЕ ЦЕНТРА МАСС}
 \[y_{\rm pair}=\frac12\ln\frac{E_{\rm pair}+P_z}{E_{\rm pair}-P_z}.\]
-\small Общая с.ц.м. столкновения;\par LCMS строим затем для каждой пары.\par\vspace{1mm}
+\small Система центра масс столкновения.\par В LCMS переходим для каждой пары.\par\vspace{1mm}
 В гауссовой экспоненте возникает\par смешанный член:
 \[\color{teal}-\frac{2q_o q_l R_{ol}^2}{(\hc)^2}.\]
 \small $R_{ol}^2$ — коэффициент \textbf{со знаком},\par а не квадрат положительной длины.
 \end{columns}
-\takeaway{Продольная динамика оставляет след в смешанном члене out–long.}
-\src{\Kref, рис. 6(e): 0.15–0.6 ГэВ/$c$, 0–10 / 10–30 / 30–50\%. Серые точки не являются новыми измерениями. Конвенция быстроты и знака — финальная статья.}
-\slidenote{35}
+\takeaway{Смешанный член out–long связан с продольным расширением.}
+
+\slidenote{36}
 \end{frame}
-% 36
-\begin{frame}{Полная конвенция импульсов: для вопросов после доклада}
+\begin{frame}{Обозначения импульсов и системы отсчёта}
 \begin{columns}[c,onlytextwidth]
 \column{.53\textwidth}
 \tagline{ПОЛНАЯ РАЗНОСТЬ И ПОЛУСУММА}
@@ -794,17 +766,17 @@ $k_T$ & 0.15–0.25; 0.25–0.35;\\
 \begin{tikzpicture}[scale=1.0]
 \draw[arr,teal,line width=1.7pt] (0,0)--(3,1.4) node[right] {$\mathbf p_{1T}$};
 \draw[arr,gold,line width=1.7pt] (0,0)--(2.5,.3) node[right] {$\mathbf p_{2T}$};
-\draw[arr,ink] (2.5,.3)--(3,1.4) node[midway,left] {$\mathbf q_T$};
-\draw[arr,ink,dashed] (0,0)--(2.75,.85) node[midway,below] {$\mathbf K_T$};
+\draw[arr,ink] (2.5,.3)--(3,1.4) node[midway,right=1.5mm] {$\mathbf q_T$};
+\draw[arr,ink,dashed] (0,0)--(2.75,.85);
+\node[font=\small] at (1.6,-.55) {Пунктир: $\mathbf K_T$};
 \end{tikzpicture}
 \[k_T=\frac{|\mathbf p_{1T}+\mathbf p_{2T}|}{2}.\]
-\textbf{Близкие $K$}\par $\to$ близкое движение пары.
+
 \end{columns}
-\src{Метрика $(+,-,-,-)$. У Lisa для равных масс $q_{\rm Lisa}=q/2$. Конвенция $q$ и $k_T$ совпадает со статьёй Краевой (2024).}
-\slidenote{36}
+
+\slidenote{37}
 \end{frame}
-% 37
-\begin{frame}{STAR при 3 ГэВ: неподвижная мишень и отбор частиц}
+\begin{frame}{STAR: столкновения с неподвижной мишенью}
 \measuretag
 \begin{columns}[c,onlytextwidth]
 \column{.60\textwidth}
@@ -825,18 +797,159 @@ $k_T$ & 0.15–0.25; 0.25–0.35;\\
 \textbf{Импульс — измеряем.}\par
 Масштабы области\par испускания — оцениваем\par статистически.
 \end{columns}
-\src{По статье \Kref, §2.2 и рис. 2; доклад ISMD 2023, слайд 3. Пучок 3.85 ГэВ/$c$ на нуклон; $\sqrt{s_{NN}}=3$ ГэВ. Схема авторская.}
-\slidenote{37}
+
+\slidenote{38}
 \end{frame}
-% 38
-\begin{frame}{Как STAR выбирает пионы и область наблюдения}
+\begin{frame}{STAR: отбор пионов и область регистрации}
 \measuretag
 \begin{columns}[c,onlytextwidth]
 \column{.47\textwidth}\centering\includegraphics[width=\linewidth,height=58mm,keepaspectratio]{kraeva_2024_pid.pdf}
 \column{.49\textwidth}\centering\includegraphics[width=\linewidth,height=50mm,keepaspectratio]{kraeva_2024_acceptance.pdf}\par
-\small $y_{\rm pair}$ — быстрота пары;\par $\eta$ — угловая переменная отдельного трека.
+\small $y_{\rm pair}$ — быстрота пары;\par $\eta$ — псевдобыстрота отдельного пиона.
 \end{columns}
-\src{\Kref, рис. 2–3. Лабораторный отбор треков $-2<\eta<0$; чистота одиночных пионов оценена не ниже 98\%. Принятая система знаков — исходная статья.}
-\slidenote{38}
+
+\slidenote{39}
+\end{frame}
+\begin{frame}{Фазовая диаграмма и область 3 ГэВ}
+\begin{columns}[c,onlytextwidth]
+\column{.64\textwidth}
+\begin{tikzpicture}[x=1cm,y=1cm]
+\fill[teal!7] (0,3.5) .. controls (2.5,3.5) and (5,3) .. (7.2,1.8) -- (7.2,5) -- (0,5) -- cycle;
+\fill[gold!12] (5.6,.1) rectangle (7.2,4.95);
+\draw[arr,ink] (0,0)--(7.7,0);
+\draw[arr,ink] (0,0)--(0,5.4) node[above right] {$T$};
+\draw[teal,very thick] (0,3.5) .. controls (1.0,3.5) and (1.7,3.5) .. (2.4,3.35);
+\draw[teal,very thick,dashed] (2.4,3.35) .. controls (4,3.2) and (5.5,2.8) .. (7.2,1.8);
+\node[font=\small,align=center] at (3.1,4.35) {Кварк-глюонная\\плазма};
+\node[font=\small,align=center] at (2.7,1.7) {Адронная\\материя};
+\node[font=\small,text=gold!75!black,align=center] at (6.4,.9) {STAR FXT\\3 ГэВ};
+\node[font=\scriptsize,text=muted] at (4.7,3.5) {Переход?};
+\node[font=\small,align=center] at (3.8,-.65) {Барионный химический потенциал $\mu_B$};
+\node[font=\scriptsize,text=muted] at (3.7,-1.25) {Качественная схема};
+\end{tikzpicture}
+\column{.32\textwidth}
+\prompt{Материя с высокой}\prompt{барионной плотностью.}
+\vspace{6mm}
+Как она расширяется\par и испускает частицы?
+\end{columns}
+\slidenote{40}
+\end{frame}
+\begin{frame}{Расчёт 2025 года: трёхмерная корреляция}
+\tagline{SMASH · РАСЧЁТ 2025 · Au+Au, 3 ГэВ}
+\vspace{2mm}
+\begin{columns}[T,onlytextwidth]
+\column{.32\textwidth}\centering
+{\large\color{teal}\textbf{out}\quad $C(q_{\rm out})$}\par\vspace{1mm}
+\includegraphics[width=\linewidth,height=38mm,keepaspectratio]{balinov_2025_correlation_out_3d.pdf}\par
+{\small $q_{\rm out}$, ГэВ/$c$}
+\column{.32\textwidth}\centering
+{\large\color{gold!80!black}\textbf{side}\quad $C(q_{\rm side})$}\par\vspace{1mm}
+\includegraphics[width=\linewidth,height=38mm,keepaspectratio]{balinov_2025_correlation_side_3d.pdf}\par
+{\small $q_{\rm side}$, ГэВ/$c$}
+\column{.32\textwidth}\centering
+{\large\color{ink}\textbf{long}\quad $C(q_{\rm long})$}\par\vspace{1mm}
+\includegraphics[width=\linewidth,height=38mm,keepaspectratio]{balinov_2025_correlation_long_3d.pdf}\par
+{\small $q_{\rm long}$, ГэВ/$c$}
+\end{columns}
+\vspace{2mm}
+\begin{center}\small Центральность 0–10\%; $0.15<k_T<0.25$ ГэВ/$c$.\end{center}
+
+
+\slidenote{41}
+\end{frame}
+\begin{frame}{Расчёт 2025 года: поперечные радиусы}
+\tagline{SMASH · РАСЧЁТ 2025 · Au+Au, 3 ГэВ}
+\vspace{2mm}
+\begin{columns}[T,onlytextwidth]
+\column{.48\textwidth}\centering
+{\large\color{teal}$R_{\rm out}$}\par
+\includegraphics[width=\linewidth,height=57mm,keepaspectratio]{balinov_2025_rout_3d.pdf}
+\column{.48\textwidth}\centering
+{\large\color{gold!80!black}$R_{\rm side}$}\par
+\includegraphics[width=\linewidth,height=57mm,keepaspectratio]{balinov_2025_rside_3d.pdf}
+\end{columns}
+\par\vspace{1mm}{\centering\small Центральность:\quad \textcolor{red!75!black}{0–10\%}\quad \textcolor{blue!75!black}{10–30\%}\quad \textcolor{magenta!75!black}{30–50\%}\quad \textcolor{green!35!black}{50–80\%}\par}
+
+
+\slidenote{42}
+\end{frame}
+\begin{frame}{Расчёт 2025 года: продольный радиус}
+\begin{columns}[c,onlytextwidth]
+\column{.65\textwidth}\centering
+\includegraphics[width=\linewidth,height=60mm,keepaspectratio]{balinov_2025_rlong_3d.pdf}
+\column{.31\textwidth}
+\tagline{SMASH · РАСЧЁТ 2025}
+{\large $R_{\rm long}(k_T)$}\par\vspace{5mm}
+\small Центральность:\par\vspace{1mm}
+\textcolor{red!75!black}{0–10\%}\par
+\textcolor{blue!75!black}{10–30\%}\par
+\textcolor{magenta!75!black}{30–50\%}\par
+\textcolor{green!35!black}{50–80\%}
+\end{columns}
+
+
+\slidenote{43}
+\end{frame}
+\begin{frame}{SMASH: корреляции в интервале быстроты 0–0,2}
+\tagline{SMASH · ТЕКУЩИЙ РАСЧЁТ · Au+Au, 3 ГэВ · $\pi^-\pi^-$ · LCMS}
+\vspace{2mm}
+\begin{columns}[T,onlytextwidth]
+\column{.32\textwidth}\centering
+{\large\color{teal}\textbf{out}\quad $C(q_{\rm out})$}\par\vspace{1mm}
+\includegraphics[width=\linewidth,height=43mm,keepaspectratio]{current_2026_cf_y_out.pdf}\par
+{\small $q_{\rm out}$, ГэВ/$c$}
+\column{.32\textwidth}\centering
+{\large\color{gold!80!black}\textbf{side}\quad $C(q_{\rm side})$}\par\vspace{1mm}
+\includegraphics[width=\linewidth,height=43mm,keepaspectratio]{current_2026_cf_y_side.pdf}\par
+{\small $q_{\rm side}$, ГэВ/$c$}
+\column{.32\textwidth}\centering
+{\large\color{ink}\textbf{long}\quad $C(q_{\rm long})$}\par\vspace{1mm}
+\includegraphics[width=\linewidth,height=43mm,keepaspectratio]{current_2026_cf_y_long.pdf}\par
+{\small $q_{\rm long}$, ГэВ/$c$}
+\end{columns}
+\vspace{2mm}
+\begin{center}\small Центральность 0–10\%; $y\in[0,0.2]$ в системе центра масс Au+Au.\end{center}
+
+
+\slidenote{44}
+\end{frame}
+\begin{frame}{SMASH: радиусы по быстроте}
+\tagline{ТЕКУЩИЙ РАСЧЁТ · Au+Au, 3 ГэВ · $\pi^-\pi^-$ · LCMS}
+\begin{columns}[T,onlytextwidth]
+\column{.32\textwidth}\centering
+{\large\color{teal}$R_{\rm out}$, фм}\par
+\includegraphics[width=\linewidth]{current_2026_y_out.pdf}
+\column{.32\textwidth}\centering
+{\large\color{gold!80!black}$R_{\rm side}$, фм}\par
+\includegraphics[width=\linewidth]{current_2026_y_side.pdf}
+\column{.32\textwidth}\centering
+{\large\color{ink}$R_{\rm long}$, фм}\par
+\includegraphics[width=\linewidth]{current_2026_y_long.pdf}
+\end{columns}
+\begin{center}\small Быстрота пары в системе центра масс: $-1<y<1$, шаг 0.2.\end{center}
+{\centering\small Центральность:\quad \textcolor{red!75!black}{0–10\%}\quad \textcolor{blue!75!black}{10–30\%}\quad \textcolor{magenta!75!black}{30–50\%}\quad \textcolor{green!35!black}{50–80\%}\par}
+\slidenote{45}
+\end{frame}
+\begin{frame}{SMASH: параметр $\lambda$}
+\tagline{ТЕКУЩИЙ РАСЧЁТ · Au+Au, 3 ГэВ · $\pi^-\pi^-$ · LCMS}
+\begin{columns}[T,onlytextwidth]
+\column{.48\textwidth}\centering
+{\large $\lambda(k_T)$}\par
+\includegraphics[width=\linewidth]{current_2026_kt_lambda.pdf}\par
+{\small $k_T$, ГэВ/$c$}
+\column{.48\textwidth}\centering
+{\large $\lambda(y)$}\par
+\includegraphics[width=\linewidth]{current_2026_y_lambda.pdf}\par
+{\small $y$ в системе центра масс}
+\end{columns}
+\vspace{3mm}
+{\centering\small Центральность:\quad \textcolor{red!75!black}{0–10\%}\quad \textcolor{blue!75!black}{10–30\%}\quad \textcolor{magenta!75!black}{30–50\%}\quad \textcolor{green!35!black}{50–80\%}\par}
+\slidenote{46}
+\end{frame}
+\begin{frame}{Сравнение радиусов SMASH 2025 и STAR}
+\tagline{Au+Au · $\sqrt{s_{NN}}=3$ ГэВ · 0–10\% · LCMS}
+\vspace{1mm}
+\centering\includegraphics[width=\textwidth,height=65mm,keepaspectratio]{comparison_star_smash_2025.pdf}\par
+\slidenote{47}
 \end{frame}
 \end{document}

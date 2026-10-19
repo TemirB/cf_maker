@@ -1,0 +1,101 @@
+{
+  "description": "Current original author-provided JPEG plots; separate from the 2025 archival presentation",
+  "supplied_date": "2026-10-19",
+  "provenance_type": "current_author_provided",
+  "byte_identical_source_copies": true,
+  "source_files": [
+    {
+      "source": "sources/current_2026_10_19/kt_c_all_graphs_neg.jpg",
+      "original_absolute_path": "/Users/temir-balinov/kt_c_all_graphs_neg.jpg",
+      "sha256": "3410a3b9e125bc73449b2c3369cd58af2acfd7d57505df2eedd6fab2875dd82a",
+      "bytes": 148251,
+      "pixels": [
+        3196,
+        1572
+      ],
+      "provenance_type": "current_author_provided",
+      "supplied_date": "2026-10-19",
+      "archival_2025_source": false
+    },
+    {
+      "source": "sources/current_2026_10_19/c_all_graphs_neg.jpg",
+      "original_absolute_path": "/Users/temir-balinov/c_all_graphs_neg.jpg",
+      "sha256": "16051d82e8659f64125ee7eebaba069204a744503dbb14c4d66620d4b96d90a8",
+      "bytes": 148286,
+      "pixels": [
+        3196,
+        1572
+      ],
+      "provenance_type": "current_author_provided",
+      "supplied_date": "2026-10-19",
+      "archival_2025_source": false
+    },
+    {
+      "source": "sources/current_2026_10_19/kt_cfs_neg_0-10_0.15-0.25.jpg",
+      "original_absolute_path": "/Users/temir-balinov/kt_cfs_neg_0-10_0.15-0.25.jpg",
+      "sha256": "6ebd20159b97762c39677d7065f763fe329df4a48ea2039607782c85b3ca6809",
+      "bytes": 86630,
+      "pixels": [
+        2396,
+        772
+      ],
+      "provenance_type": "current_author_provided",
+      "supplied_date": "2026-10-19",
+      "archival_2025_source": false
+    },
+    {
+      "source": "sources/current_2026_10_19/cfs_neg_0-10_0.0_0.2.jpg",
+      "original_absolute_path": "/Users/temir-balinov/cfs_neg_0-10_0.0_0.2.jpg",
+      "sha256": "395b91a05da0e1ba1e9f8db91e53721c3d7b20cb0e385facaa96b302246f3acd",
+      "bytes": 87619,
+      "pixels": [
+        2396,
+        772
+      ],
+      "provenance_type": "current_author_provided",
+      "supplied_date": "2026-10-19",
+      "archival_2025_source": false
+    }
+  ],
+  "author_confirmed_common_conditions": {
+    "model": "SMASH",
+    "collision_system": "Au+Au",
+    "sqrt_sNN_GeV": 3,
+    "system_energy_model_evidence": "Explicitly confirmed by the author in the current session",
+    "source_charge_tag": "neg",
+    "charge_evidence": "Source filenames; the correlation-panel headers explicitly state charge=neg",
+    "centrality_colors_percent": {
+      "red": [
+        0,
+        10
+      ],
+      "blue": [
+        10,
+        30
+      ],
+      "pink": [
+        30,
+        50
+      ],
+      "green": [
+        50,
+        80
+      ]
+    },
+    "centrality_color_evidence": "Explicitly confirmed by the author in the current session",
+    "not_inferred_from_2025": true,
+    "radii_reference_frame": "LCMS",
+    "rapidity_reference_frame": "collision center-of-mass system",
+    "reference_frame_evidence": "Explicit current-session author confirmation: Да: радиусы в LCMS, y в системе центра масс. This evidence is author confirmation, not independent verification of a code run."
+  },
+  "unknown_or_not_verified": [
+    "SMASH version and number of generated events",
+    "Full single-particle momentum and pseudorapidity cuts",
+    "A rapidity cut is not assigned to the kT plots",
+    "kT integration range for rapidity-dependent panels",
+    "Projection windows in the other q components",
+    "Uncertainty estimator and meaning of the quoted fit errors",
+    "Full fit implementation and final-state-interaction treatment"
+  ],
+  "numerical_processing": "None; no digitization, new fits, uncertainty reconstruction, or transfer of 2025 settings"
+}

@@ -1,0 +1,1473 @@
+{
+  "description": "PDF clipping of current JPEG plots supplied by the author on 2026-10-19",
+  "source_manifest": "sources/current_2026_10_19/manifest.json",
+  "coordinate_system": "Original JPEG pixels, origin at upper left; rectangles [x0,y0,x1,y1]",
+  "points_per_pixel": 0.25,
+  "unknown_or_not_verified": [
+    "SMASH version and number of generated events",
+    "Full single-particle momentum and pseudorapidity cuts",
+    "A rapidity cut is not assigned to the kT plots",
+    "kT integration range for rapidity-dependent panels",
+    "Projection windows in the other q components",
+    "Uncertainty estimator and meaning of the quoted fit errors",
+    "Full fit implementation and final-state-interaction treatment"
+  ],
+  "assets": [
+    {
+      "asset": "figures/current_2026_kt_out.pdf",
+      "source": "sources/current_2026_10_19/kt_c_all_graphs_neg.jpg",
+      "source_sha256": "3410a3b9e125bc73449b2c3369cd58af2acfd7d57505df2eedd6fab2875dd82a",
+      "provenance_type": "current_author_provided",
+      "supplied_date": "2026-10-19",
+      "archival_2025_source": false,
+      "source_raster_pixels": [
+        3196,
+        1572
+      ],
+      "crop_pixels": [
+        60,
+        50,
+        1460,
+        770
+      ],
+      "retained_source_rectangles_pixels": [
+        [
+          60.0,
+          50.0,
+          1460.0,
+          770.0
+        ]
+      ],
+      "technical_cf_header_removed": false,
+      "header_band_pixels": null,
+      "pdf_points": [
+        350.0,
+        180.0
+      ],
+      "description": "Current author-provided out parameter versus kT",
+      "conditions": {
+        "model": "SMASH",
+        "collision_system": "Au+Au",
+        "sqrt_sNN_GeV": 3,
+        "system_energy_model_evidence": "Explicitly confirmed by the author in the current session",
+        "source_charge_tag": "neg",
+        "charge_evidence": "Source filenames; the correlation-panel headers explicitly state charge=neg",
+        "centrality_colors_percent": {
+          "red": [
+            0,
+            10
+          ],
+          "blue": [
+            10,
+            30
+          ],
+          "pink": [
+            30,
+            50
+          ],
+          "green": [
+            50,
+            80
+          ]
+        },
+        "centrality_color_evidence": "Explicitly confirmed by the author in the current session",
+        "not_inferred_from_2025": true,
+        "horizontal_variable": "kT",
+        "kT_unit": "GeV/c is the usual project convention; the source axis prints only kt",
+        "radii_reference_frame": "LCMS",
+        "rapidity_reference_frame": "collision center-of-mass system",
+        "reference_frame_evidence": "Explicit current-session author confirmation: Да: радиусы в LCMS, y в системе центра масс. This evidence is author confirmation, not independent verification of a code run."
+      },
+      "method": "Exact original JPEG stream embedded; PDF clipping without resampling, retouching, redrawing, or error reconstruction",
+      "embedded_jpeg_sha256_verified": true,
+      "source_is_vector": false
+    },
+    {
+      "asset": "figures/current_2026_kt_side.pdf",
+      "source": "sources/current_2026_10_19/kt_c_all_graphs_neg.jpg",
+      "source_sha256": "3410a3b9e125bc73449b2c3369cd58af2acfd7d57505df2eedd6fab2875dd82a",
+      "provenance_type": "current_author_provided",
+      "supplied_date": "2026-10-19",
+      "archival_2025_source": false,
+      "source_raster_pixels": [
+        3196,
+        1572
+      ],
+      "crop_pixels": [
+        1658,
+        50,
+        3058,
+        770
+      ],
+      "retained_source_rectangles_pixels": [
+        [
+          1658.0,
+          50.0,
+          3058.0,
+          770.0
+        ]
+      ],
+      "technical_cf_header_removed": false,
+      "header_band_pixels": null,
+      "pdf_points": [
+        350.0,
+        180.0
+      ],
+      "description": "Current author-provided side parameter versus kT",
+      "conditions": {
+        "model": "SMASH",
+        "collision_system": "Au+Au",
+        "sqrt_sNN_GeV": 3,
+        "system_energy_model_evidence": "Explicitly confirmed by the author in the current session",
+        "source_charge_tag": "neg",
+        "charge_evidence": "Source filenames; the correlation-panel headers explicitly state charge=neg",
+        "centrality_colors_percent": {
+          "red": [
+            0,
+            10
+          ],
+          "blue": [
+            10,
+            30
+          ],
+          "pink": [
+            30,
+            50
+          ],
+          "green": [
+            50,
+            80
+          ]
+        },
+        "centrality_color_evidence": "Explicitly confirmed by the author in the current session",
+        "not_inferred_from_2025": true,
+        "horizontal_variable": "kT",
+        "kT_unit": "GeV/c is the usual project convention; the source axis prints only kt",
+        "radii_reference_frame": "LCMS",
+        "rapidity_reference_frame": "collision center-of-mass system",
+        "reference_frame_evidence": "Explicit current-session author confirmation: Да: радиусы в LCMS, y в системе центра масс. This evidence is author confirmation, not independent verification of a code run."
+      },
+      "method": "Exact original JPEG stream embedded; PDF clipping without resampling, retouching, redrawing, or error reconstruction",
+      "embedded_jpeg_sha256_verified": true,
+      "source_is_vector": false
+    },
+    {
+      "asset": "figures/current_2026_kt_long.pdf",
+      "source": "sources/current_2026_10_19/kt_c_all_graphs_neg.jpg",
+      "source_sha256": "3410a3b9e125bc73449b2c3369cd58af2acfd7d57505df2eedd6fab2875dd82a",
+      "provenance_type": "current_author_provided",
+      "supplied_date": "2026-10-19",
+      "archival_2025_source": false,
+      "source_raster_pixels": [
+        3196,
+        1572
+      ],
+      "crop_pixels": [
+        60,
+        836,
+        1460,
+        1556
+      ],
+      "retained_source_rectangles_pixels": [
+        [
+          60.0,
+          836.0,
+          1460.0,
+          1556.0
+        ]
+      ],
+      "technical_cf_header_removed": false,
+      "header_band_pixels": null,
+      "pdf_points": [
+        350.0,
+        180.0
+      ],
+      "description": "Current author-provided long parameter versus kT",
+      "conditions": {
+        "model": "SMASH",
+        "collision_system": "Au+Au",
+        "sqrt_sNN_GeV": 3,
+        "system_energy_model_evidence": "Explicitly confirmed by the author in the current session",
+        "source_charge_tag": "neg",
+        "charge_evidence": "Source filenames; the correlation-panel headers explicitly state charge=neg",
+        "centrality_colors_percent": {
+          "red": [
+            0,
+            10
+          ],
+          "blue": [
+            10,
+            30
+          ],
+          "pink": [
+            30,
+            50
+          ],
+          "green": [
+            50,
+            80
+          ]
+        },
+        "centrality_color_evidence": "Explicitly confirmed by the author in the current session",
+        "not_inferred_from_2025": true,
+        "horizontal_variable": "kT",
+        "kT_unit": "GeV/c is the usual project convention; the source axis prints only kt",
+        "radii_reference_frame": "LCMS",
+        "rapidity_reference_frame": "collision center-of-mass system",
+        "reference_frame_evidence": "Explicit current-session author confirmation: Да: радиусы в LCMS, y в системе центра масс. This evidence is author confirmation, not independent verification of a code run."
+      },
+      "method": "Exact original JPEG stream embedded; PDF clipping without resampling, retouching, redrawing, or error reconstruction",
+      "embedded_jpeg_sha256_verified": true,
+      "source_is_vector": false
+    },
+    {
+      "asset": "figures/current_2026_kt_lambda.pdf",
+      "source": "sources/current_2026_10_19/kt_c_all_graphs_neg.jpg",
+      "source_sha256": "3410a3b9e125bc73449b2c3369cd58af2acfd7d57505df2eedd6fab2875dd82a",
+      "provenance_type": "current_author_provided",
+      "supplied_date": "2026-10-19",
+      "archival_2025_source": false,
+      "source_raster_pixels": [
+        3196,
+        1572
+      ],
+      "crop_pixels": [
+        1658,
+        836,
+        3058,
+        1556
+      ],
+      "retained_source_rectangles_pixels": [
+        [
+          1658.0,
+          836.0,
+          3058.0,
+          1556.0
+        ]
+      ],
+      "technical_cf_header_removed": false,
+      "header_band_pixels": null,
+      "pdf_points": [
+        350.0,
+        180.0
+      ],
+      "description": "Current author-provided lambda parameter versus kT",
+      "conditions": {
+        "model": "SMASH",
+        "collision_system": "Au+Au",
+        "sqrt_sNN_GeV": 3,
+        "system_energy_model_evidence": "Explicitly confirmed by the author in the current session",
+        "source_charge_tag": "neg",
+        "charge_evidence": "Source filenames; the correlation-panel headers explicitly state charge=neg",
+        "centrality_colors_percent": {
+          "red": [
+            0,
+            10
+          ],
+          "blue": [
+            10,
+            30
+          ],
+          "pink": [
+            30,
+            50
+          ],
+          "green": [
+            50,
+            80
+          ]
+        },
+        "centrality_color_evidence": "Explicitly confirmed by the author in the current session",
+        "not_inferred_from_2025": true,
+        "horizontal_variable": "kT",
+        "kT_unit": "GeV/c is the usual project convention; the source axis prints only kt",
+        "radii_reference_frame": "LCMS",
+        "rapidity_reference_frame": "collision center-of-mass system",
+        "reference_frame_evidence": "Explicit current-session author confirmation: Да: радиусы в LCMS, y в системе центра масс. This evidence is author confirmation, not independent verification of a code run."
+      },
+      "method": "Exact original JPEG stream embedded; PDF clipping without resampling, retouching, redrawing, or error reconstruction",
+      "embedded_jpeg_sha256_verified": true,
+      "source_is_vector": false
+    },
+    {
+      "asset": "figures/current_2026_kt_all.pdf",
+      "source": "sources/current_2026_10_19/kt_c_all_graphs_neg.jpg",
+      "source_sha256": "3410a3b9e125bc73449b2c3369cd58af2acfd7d57505df2eedd6fab2875dd82a",
+      "provenance_type": "current_author_provided",
+      "supplied_date": "2026-10-19",
+      "archival_2025_source": false,
+      "source_raster_pixels": [
+        3196,
+        1572
+      ],
+      "crop_pixels": [
+        0,
+        0,
+        3196,
+        1572
+      ],
+      "retained_source_rectangles_pixels": [
+        [
+          0.0,
+          0.0,
+          3196.0,
+          1572.0
+        ]
+      ],
+      "technical_cf_header_removed": false,
+      "header_band_pixels": null,
+      "pdf_points": [
+        799.0,
+        393.0
+      ],
+      "description": "Current author-provided four parameter panels versus kT",
+      "conditions": {
+        "model": "SMASH",
+        "collision_system": "Au+Au",
+        "sqrt_sNN_GeV": 3,
+        "system_energy_model_evidence": "Explicitly confirmed by the author in the current session",
+        "source_charge_tag": "neg",
+        "charge_evidence": "Source filenames; the correlation-panel headers explicitly state charge=neg",
+        "centrality_colors_percent": {
+          "red": [
+            0,
+            10
+          ],
+          "blue": [
+            10,
+            30
+          ],
+          "pink": [
+            30,
+            50
+          ],
+          "green": [
+            50,
+            80
+          ]
+        },
+        "centrality_color_evidence": "Explicitly confirmed by the author in the current session",
+        "not_inferred_from_2025": true,
+        "horizontal_variable": "kT",
+        "kT_unit": "GeV/c is the usual project convention; the source axis prints only kt",
+        "radii_reference_frame": "LCMS",
+        "rapidity_reference_frame": "collision center-of-mass system",
+        "reference_frame_evidence": "Explicit current-session author confirmation: Да: радиусы в LCMS, y в системе центра масс. This evidence is author confirmation, not independent verification of a code run."
+      },
+      "method": "Exact original JPEG stream embedded; PDF clipping without resampling, retouching, redrawing, or error reconstruction",
+      "embedded_jpeg_sha256_verified": true,
+      "source_is_vector": false
+    },
+    {
+      "asset": "figures/current_2026_y_out.pdf",
+      "source": "sources/current_2026_10_19/c_all_graphs_neg.jpg",
+      "source_sha256": "16051d82e8659f64125ee7eebaba069204a744503dbb14c4d66620d4b96d90a8",
+      "provenance_type": "current_author_provided",
+      "supplied_date": "2026-10-19",
+      "archival_2025_source": false,
+      "source_raster_pixels": [
+        3196,
+        1572
+      ],
+      "crop_pixels": [
+        60,
+        50,
+        1460,
+        770
+      ],
+      "retained_source_rectangles_pixels": [
+        [
+          60.0,
+          50.0,
+          1460.0,
+          770.0
+        ]
+      ],
+      "technical_cf_header_removed": false,
+      "header_band_pixels": null,
+      "pdf_points": [
+        350.0,
+        180.0
+      ],
+      "description": "Current author-provided out parameter versus rapidity",
+      "conditions": {
+        "model": "SMASH",
+        "collision_system": "Au+Au",
+        "sqrt_sNN_GeV": 3,
+        "system_energy_model_evidence": "Explicitly confirmed by the author in the current session",
+        "source_charge_tag": "neg",
+        "charge_evidence": "Source filenames; the correlation-panel headers explicitly state charge=neg",
+        "centrality_colors_percent": {
+          "red": [
+            0,
+            10
+          ],
+          "blue": [
+            10,
+            30
+          ],
+          "pink": [
+            30,
+            50
+          ],
+          "green": [
+            50,
+            80
+          ]
+        },
+        "centrality_color_evidence": "Explicitly confirmed by the author in the current session",
+        "not_inferred_from_2025": true,
+        "horizontal_variable": "rapidity",
+        "rapidity_binning_confirmed": {
+          "range": [
+            -1,
+            1
+          ],
+          "step": 0.2
+        },
+        "radii_reference_frame": "LCMS",
+        "rapidity_reference_frame": "collision center-of-mass system",
+        "reference_frame_evidence": "Explicit current-session author confirmation: Да: радиусы в LCMS, y в системе центра масс. This evidence is author confirmation, not independent verification of a code run."
+      },
+      "method": "Exact original JPEG stream embedded; PDF clipping without resampling, retouching, redrawing, or error reconstruction",
+      "embedded_jpeg_sha256_verified": true,
+      "source_is_vector": false
+    },
+    {
+      "asset": "figures/current_2026_y_side.pdf",
+      "source": "sources/current_2026_10_19/c_all_graphs_neg.jpg",
+      "source_sha256": "16051d82e8659f64125ee7eebaba069204a744503dbb14c4d66620d4b96d90a8",
+      "provenance_type": "current_author_provided",
+      "supplied_date": "2026-10-19",
+      "archival_2025_source": false,
+      "source_raster_pixels": [
+        3196,
+        1572
+      ],
+      "crop_pixels": [
+        1658,
+        50,
+        3058,
+        770
+      ],
+      "retained_source_rectangles_pixels": [
+        [
+          1658.0,
+          50.0,
+          3058.0,
+          770.0
+        ]
+      ],
+      "technical_cf_header_removed": false,
+      "header_band_pixels": null,
+      "pdf_points": [
+        350.0,
+        180.0
+      ],
+      "description": "Current author-provided side parameter versus rapidity",
+      "conditions": {
+        "model": "SMASH",
+        "collision_system": "Au+Au",
+        "sqrt_sNN_GeV": 3,
+        "system_energy_model_evidence": "Explicitly confirmed by the author in the current session",
+        "source_charge_tag": "neg",
+        "charge_evidence": "Source filenames; the correlation-panel headers explicitly state charge=neg",
+        "centrality_colors_percent": {
+          "red": [
+            0,
+            10
+          ],
+          "blue": [
+            10,
+            30
+          ],
+          "pink": [
+            30,
+            50
+          ],
+          "green": [
+            50,
+            80
+          ]
+        },
+        "centrality_color_evidence": "Explicitly confirmed by the author in the current session",
+        "not_inferred_from_2025": true,
+        "horizontal_variable": "rapidity",
+        "rapidity_binning_confirmed": {
+          "range": [
+            -1,
+            1
+          ],
+          "step": 0.2
+        },
+        "radii_reference_frame": "LCMS",
+        "rapidity_reference_frame": "collision center-of-mass system",
+        "reference_frame_evidence": "Explicit current-session author confirmation: Да: радиусы в LCMS, y в системе центра масс. This evidence is author confirmation, not independent verification of a code run."
+      },
+      "method": "Exact original JPEG stream embedded; PDF clipping without resampling, retouching, redrawing, or error reconstruction",
+      "embedded_jpeg_sha256_verified": true,
+      "source_is_vector": false
+    },
+    {
+      "asset": "figures/current_2026_y_long.pdf",
+      "source": "sources/current_2026_10_19/c_all_graphs_neg.jpg",
+      "source_sha256": "16051d82e8659f64125ee7eebaba069204a744503dbb14c4d66620d4b96d90a8",
+      "provenance_type": "current_author_provided",
+      "supplied_date": "2026-10-19",
+      "archival_2025_source": false,
+      "source_raster_pixels": [
+        3196,
+        1572
+      ],
+      "crop_pixels": [
+        60,
+        836,
+        1460,
+        1556
+      ],
+      "retained_source_rectangles_pixels": [
+        [
+          60.0,
+          836.0,
+          1460.0,
+          1556.0
+        ]
+      ],
+      "technical_cf_header_removed": false,
+      "header_band_pixels": null,
+      "pdf_points": [
+        350.0,
+        180.0
+      ],
+      "description": "Current author-provided long parameter versus rapidity",
+      "conditions": {
+        "model": "SMASH",
+        "collision_system": "Au+Au",
+        "sqrt_sNN_GeV": 3,
+        "system_energy_model_evidence": "Explicitly confirmed by the author in the current session",
+        "source_charge_tag": "neg",
+        "charge_evidence": "Source filenames; the correlation-panel headers explicitly state charge=neg",
+        "centrality_colors_percent": {
+          "red": [
+            0,
+            10
+          ],
+          "blue": [
+            10,
+            30
+          ],
+          "pink": [
+            30,
+            50
+          ],
+          "green": [
+            50,
+            80
+          ]
+        },
+        "centrality_color_evidence": "Explicitly confirmed by the author in the current session",
+        "not_inferred_from_2025": true,
+        "horizontal_variable": "rapidity",
+        "rapidity_binning_confirmed": {
+          "range": [
+            -1,
+            1
+          ],
+          "step": 0.2
+        },
+        "radii_reference_frame": "LCMS",
+        "rapidity_reference_frame": "collision center-of-mass system",
+        "reference_frame_evidence": "Explicit current-session author confirmation: Да: радиусы в LCMS, y в системе центра масс. This evidence is author confirmation, not independent verification of a code run."
+      },
+      "method": "Exact original JPEG stream embedded; PDF clipping without resampling, retouching, redrawing, or error reconstruction",
+      "embedded_jpeg_sha256_verified": true,
+      "source_is_vector": false
+    },
+    {
+      "asset": "figures/current_2026_y_lambda.pdf",
+      "source": "sources/current_2026_10_19/c_all_graphs_neg.jpg",
+      "source_sha256": "16051d82e8659f64125ee7eebaba069204a744503dbb14c4d66620d4b96d90a8",
+      "provenance_type": "current_author_provided",
+      "supplied_date": "2026-10-19",
+      "archival_2025_source": false,
+      "source_raster_pixels": [
+        3196,
+        1572
+      ],
+      "crop_pixels": [
+        1658,
+        836,
+        3058,
+        1556
+      ],
+      "retained_source_rectangles_pixels": [
+        [
+          1658.0,
+          836.0,
+          3058.0,
+          1556.0
+        ]
+      ],
+      "technical_cf_header_removed": false,
+      "header_band_pixels": null,
+      "pdf_points": [
+        350.0,
+        180.0
+      ],
+      "description": "Current author-provided lambda parameter versus rapidity",
+      "conditions": {
+        "model": "SMASH",
+        "collision_system": "Au+Au",
+        "sqrt_sNN_GeV": 3,
+        "system_energy_model_evidence": "Explicitly confirmed by the author in the current session",
+        "source_charge_tag": "neg",
+        "charge_evidence": "Source filenames; the correlation-panel headers explicitly state charge=neg",
+        "centrality_colors_percent": {
+          "red": [
+            0,
+            10
+          ],
+          "blue": [
+            10,
+            30
+          ],
+          "pink": [
+            30,
+            50
+          ],
+          "green": [
+            50,
+            80
+          ]
+        },
+        "centrality_color_evidence": "Explicitly confirmed by the author in the current session",
+        "not_inferred_from_2025": true,
+        "horizontal_variable": "rapidity",
+        "rapidity_binning_confirmed": {
+          "range": [
+            -1,
+            1
+          ],
+          "step": 0.2
+        },
+        "radii_reference_frame": "LCMS",
+        "rapidity_reference_frame": "collision center-of-mass system",
+        "reference_frame_evidence": "Explicit current-session author confirmation: Да: радиусы в LCMS, y в системе центра масс. This evidence is author confirmation, not independent verification of a code run."
+      },
+      "method": "Exact original JPEG stream embedded; PDF clipping without resampling, retouching, redrawing, or error reconstruction",
+      "embedded_jpeg_sha256_verified": true,
+      "source_is_vector": false
+    },
+    {
+      "asset": "figures/current_2026_y_all.pdf",
+      "source": "sources/current_2026_10_19/c_all_graphs_neg.jpg",
+      "source_sha256": "16051d82e8659f64125ee7eebaba069204a744503dbb14c4d66620d4b96d90a8",
+      "provenance_type": "current_author_provided",
+      "supplied_date": "2026-10-19",
+      "archival_2025_source": false,
+      "source_raster_pixels": [
+        3196,
+        1572
+      ],
+      "crop_pixels": [
+        0,
+        0,
+        3196,
+        1572
+      ],
+      "retained_source_rectangles_pixels": [
+        [
+          0.0,
+          0.0,
+          3196.0,
+          1572.0
+        ]
+      ],
+      "technical_cf_header_removed": false,
+      "header_band_pixels": null,
+      "pdf_points": [
+        799.0,
+        393.0
+      ],
+      "description": "Current author-provided four parameter panels versus rapidity",
+      "conditions": {
+        "model": "SMASH",
+        "collision_system": "Au+Au",
+        "sqrt_sNN_GeV": 3,
+        "system_energy_model_evidence": "Explicitly confirmed by the author in the current session",
+        "source_charge_tag": "neg",
+        "charge_evidence": "Source filenames; the correlation-panel headers explicitly state charge=neg",
+        "centrality_colors_percent": {
+          "red": [
+            0,
+            10
+          ],
+          "blue": [
+            10,
+            30
+          ],
+          "pink": [
+            30,
+            50
+          ],
+          "green": [
+            50,
+            80
+          ]
+        },
+        "centrality_color_evidence": "Explicitly confirmed by the author in the current session",
+        "not_inferred_from_2025": true,
+        "horizontal_variable": "rapidity",
+        "rapidity_binning_confirmed": {
+          "range": [
+            -1,
+            1
+          ],
+          "step": 0.2
+        },
+        "radii_reference_frame": "LCMS",
+        "rapidity_reference_frame": "collision center-of-mass system",
+        "reference_frame_evidence": "Explicit current-session author confirmation: Да: радиусы в LCMS, y в системе центра масс. This evidence is author confirmation, not independent verification of a code run."
+      },
+      "method": "Exact original JPEG stream embedded; PDF clipping without resampling, retouching, redrawing, or error reconstruction",
+      "embedded_jpeg_sha256_verified": true,
+      "source_is_vector": false
+    },
+    {
+      "asset": "figures/current_2026_cf_kt_out.pdf",
+      "source": "sources/current_2026_10_19/kt_cfs_neg_0-10_0.15-0.25.jpg",
+      "source_sha256": "6ebd20159b97762c39677d7065f763fe329df4a48ea2039607782c85b3ca6809",
+      "provenance_type": "current_author_provided",
+      "supplied_date": "2026-10-19",
+      "archival_2025_source": false,
+      "source_raster_pixels": [
+        2396,
+        772
+      ],
+      "crop_pixels": [
+        0,
+        0,
+        799,
+        772
+      ],
+      "retained_source_rectangles_pixels": [
+        [
+          0.0,
+          44.0,
+          799.0,
+          772.0
+        ],
+        [
+          0.0,
+          0.0,
+          136.0,
+          44.0
+        ]
+      ],
+      "technical_cf_header_removed": true,
+      "header_band_pixels": [
+        0,
+        0,
+        2396,
+        44
+      ],
+      "pdf_points": [
+        199.75,
+        193.0
+      ],
+      "description": "Current author-provided out correlation projection, kt selection",
+      "conditions": {
+        "model": "SMASH",
+        "collision_system": "Au+Au",
+        "sqrt_sNN_GeV": 3,
+        "system_energy_model_evidence": "Explicitly confirmed by the author in the current session",
+        "source_charge_tag": "neg",
+        "charge_evidence": "Explicitly written in original correlation-panel headers",
+        "centrality_colors_percent": {
+          "red": [
+            0,
+            10
+          ],
+          "blue": [
+            10,
+            30
+          ],
+          "pink": [
+            30,
+            50
+          ],
+          "green": [
+            50,
+            80
+          ]
+        },
+        "centrality_color_evidence": "Explicitly confirmed by the author in the current session",
+        "not_inferred_from_2025": true,
+        "centrality_percent": [
+          0,
+          10
+        ],
+        "centrality_evidence": "Explicitly written in original correlation-panel headers",
+        "fit_box_retained_in_long_panel": true,
+        "kT_GeV_per_c": [
+          0.15,
+          0.25
+        ],
+        "kT_evidence": "Original CF header explicitly states kt=0.15-0.25; the header does not print a unit",
+        "radii_reference_frame": "LCMS",
+        "rapidity_reference_frame": "collision center-of-mass system",
+        "reference_frame_evidence": "Explicit current-session author confirmation: Да: радиусы в LCMS, y в системе центра масс. This evidence is author confirmation, not independent verification of a code run."
+      },
+      "method": "Exact original JPEG stream embedded; PDF clipping without resampling, retouching, redrawing, or error reconstruction",
+      "embedded_jpeg_sha256_verified": true,
+      "source_is_vector": false
+    },
+    {
+      "asset": "figures/current_2026_cf_kt_side.pdf",
+      "source": "sources/current_2026_10_19/kt_cfs_neg_0-10_0.15-0.25.jpg",
+      "source_sha256": "6ebd20159b97762c39677d7065f763fe329df4a48ea2039607782c85b3ca6809",
+      "provenance_type": "current_author_provided",
+      "supplied_date": "2026-10-19",
+      "archival_2025_source": false,
+      "source_raster_pixels": [
+        2396,
+        772
+      ],
+      "crop_pixels": [
+        799,
+        0,
+        1598,
+        772
+      ],
+      "retained_source_rectangles_pixels": [
+        [
+          799.0,
+          44.0,
+          1598.0,
+          772.0
+        ],
+        [
+          799.0,
+          0.0,
+          935.0,
+          44.0
+        ]
+      ],
+      "technical_cf_header_removed": true,
+      "header_band_pixels": [
+        0,
+        0,
+        2396,
+        44
+      ],
+      "pdf_points": [
+        199.75,
+        193.0
+      ],
+      "description": "Current author-provided side correlation projection, kt selection",
+      "conditions": {
+        "model": "SMASH",
+        "collision_system": "Au+Au",
+        "sqrt_sNN_GeV": 3,
+        "system_energy_model_evidence": "Explicitly confirmed by the author in the current session",
+        "source_charge_tag": "neg",
+        "charge_evidence": "Explicitly written in original correlation-panel headers",
+        "centrality_colors_percent": {
+          "red": [
+            0,
+            10
+          ],
+          "blue": [
+            10,
+            30
+          ],
+          "pink": [
+            30,
+            50
+          ],
+          "green": [
+            50,
+            80
+          ]
+        },
+        "centrality_color_evidence": "Explicitly confirmed by the author in the current session",
+        "not_inferred_from_2025": true,
+        "centrality_percent": [
+          0,
+          10
+        ],
+        "centrality_evidence": "Explicitly written in original correlation-panel headers",
+        "fit_box_retained_in_long_panel": true,
+        "kT_GeV_per_c": [
+          0.15,
+          0.25
+        ],
+        "kT_evidence": "Original CF header explicitly states kt=0.15-0.25; the header does not print a unit",
+        "radii_reference_frame": "LCMS",
+        "rapidity_reference_frame": "collision center-of-mass system",
+        "reference_frame_evidence": "Explicit current-session author confirmation: Да: радиусы в LCMS, y в системе центра масс. This evidence is author confirmation, not independent verification of a code run."
+      },
+      "method": "Exact original JPEG stream embedded; PDF clipping without resampling, retouching, redrawing, or error reconstruction",
+      "embedded_jpeg_sha256_verified": true,
+      "source_is_vector": false
+    },
+    {
+      "asset": "figures/current_2026_cf_kt_long.pdf",
+      "source": "sources/current_2026_10_19/kt_cfs_neg_0-10_0.15-0.25.jpg",
+      "source_sha256": "6ebd20159b97762c39677d7065f763fe329df4a48ea2039607782c85b3ca6809",
+      "provenance_type": "current_author_provided",
+      "supplied_date": "2026-10-19",
+      "archival_2025_source": false,
+      "source_raster_pixels": [
+        2396,
+        772
+      ],
+      "crop_pixels": [
+        1598,
+        0,
+        2396,
+        772
+      ],
+      "retained_source_rectangles_pixels": [
+        [
+          1598.0,
+          44.0,
+          2396.0,
+          772.0
+        ],
+        [
+          1598.0,
+          0.0,
+          1733.0,
+          44.0
+        ]
+      ],
+      "technical_cf_header_removed": true,
+      "header_band_pixels": [
+        0,
+        0,
+        2396,
+        44
+      ],
+      "pdf_points": [
+        199.5,
+        193.0
+      ],
+      "description": "Current author-provided long correlation projection, kt selection",
+      "conditions": {
+        "model": "SMASH",
+        "collision_system": "Au+Au",
+        "sqrt_sNN_GeV": 3,
+        "system_energy_model_evidence": "Explicitly confirmed by the author in the current session",
+        "source_charge_tag": "neg",
+        "charge_evidence": "Explicitly written in original correlation-panel headers",
+        "centrality_colors_percent": {
+          "red": [
+            0,
+            10
+          ],
+          "blue": [
+            10,
+            30
+          ],
+          "pink": [
+            30,
+            50
+          ],
+          "green": [
+            50,
+            80
+          ]
+        },
+        "centrality_color_evidence": "Explicitly confirmed by the author in the current session",
+        "not_inferred_from_2025": true,
+        "centrality_percent": [
+          0,
+          10
+        ],
+        "centrality_evidence": "Explicitly written in original correlation-panel headers",
+        "fit_box_retained_in_long_panel": true,
+        "kT_GeV_per_c": [
+          0.15,
+          0.25
+        ],
+        "kT_evidence": "Original CF header explicitly states kt=0.15-0.25; the header does not print a unit",
+        "radii_reference_frame": "LCMS",
+        "rapidity_reference_frame": "collision center-of-mass system",
+        "reference_frame_evidence": "Explicit current-session author confirmation: Да: радиусы в LCMS, y в системе центра масс. This evidence is author confirmation, not independent verification of a code run."
+      },
+      "method": "Exact original JPEG stream embedded; PDF clipping without resampling, retouching, redrawing, or error reconstruction",
+      "embedded_jpeg_sha256_verified": true,
+      "source_is_vector": false
+    },
+    {
+      "asset": "figures/current_2026_cf_kt_all.pdf",
+      "source": "sources/current_2026_10_19/kt_cfs_neg_0-10_0.15-0.25.jpg",
+      "source_sha256": "6ebd20159b97762c39677d7065f763fe329df4a48ea2039607782c85b3ca6809",
+      "provenance_type": "current_author_provided",
+      "supplied_date": "2026-10-19",
+      "archival_2025_source": false,
+      "source_raster_pixels": [
+        2396,
+        772
+      ],
+      "crop_pixels": [
+        0,
+        0,
+        2396,
+        772
+      ],
+      "retained_source_rectangles_pixels": [
+        [
+          0.0,
+          44.0,
+          2396.0,
+          772.0
+        ],
+        [
+          0.0,
+          0.0,
+          136.0,
+          44.0
+        ],
+        [
+          799.0,
+          0.0,
+          935.0,
+          44.0
+        ],
+        [
+          1598.0,
+          0.0,
+          1733.0,
+          44.0
+        ]
+      ],
+      "technical_cf_header_removed": true,
+      "header_band_pixels": [
+        0,
+        0,
+        2396,
+        44
+      ],
+      "pdf_points": [
+        599.0,
+        193.0
+      ],
+      "description": "Current author-provided three correlation projections, kt selection",
+      "conditions": {
+        "model": "SMASH",
+        "collision_system": "Au+Au",
+        "sqrt_sNN_GeV": 3,
+        "system_energy_model_evidence": "Explicitly confirmed by the author in the current session",
+        "source_charge_tag": "neg",
+        "charge_evidence": "Explicitly written in original correlation-panel headers",
+        "centrality_colors_percent": {
+          "red": [
+            0,
+            10
+          ],
+          "blue": [
+            10,
+            30
+          ],
+          "pink": [
+            30,
+            50
+          ],
+          "green": [
+            50,
+            80
+          ]
+        },
+        "centrality_color_evidence": "Explicitly confirmed by the author in the current session",
+        "not_inferred_from_2025": true,
+        "centrality_percent": [
+          0,
+          10
+        ],
+        "centrality_evidence": "Explicitly written in original correlation-panel headers",
+        "fit_box_retained_in_long_panel": true,
+        "kT_GeV_per_c": [
+          0.15,
+          0.25
+        ],
+        "kT_evidence": "Original CF header explicitly states kt=0.15-0.25; the header does not print a unit",
+        "radii_reference_frame": "LCMS",
+        "rapidity_reference_frame": "collision center-of-mass system",
+        "reference_frame_evidence": "Explicit current-session author confirmation: Да: радиусы в LCMS, y в системе центра масс. This evidence is author confirmation, not independent verification of a code run."
+      },
+      "method": "Exact original JPEG stream embedded; PDF clipping without resampling, retouching, redrawing, or error reconstruction",
+      "embedded_jpeg_sha256_verified": true,
+      "source_is_vector": false
+    },
+    {
+      "asset": "figures/current_2026_cf_y_out.pdf",
+      "source": "sources/current_2026_10_19/cfs_neg_0-10_0.0_0.2.jpg",
+      "source_sha256": "395b91a05da0e1ba1e9f8db91e53721c3d7b20cb0e385facaa96b302246f3acd",
+      "provenance_type": "current_author_provided",
+      "supplied_date": "2026-10-19",
+      "archival_2025_source": false,
+      "source_raster_pixels": [
+        2396,
+        772
+      ],
+      "crop_pixels": [
+        0,
+        0,
+        799,
+        772
+      ],
+      "retained_source_rectangles_pixels": [
+        [
+          0.0,
+          44.0,
+          799.0,
+          772.0
+        ],
+        [
+          0.0,
+          0.0,
+          136.0,
+          44.0
+        ]
+      ],
+      "technical_cf_header_removed": true,
+      "header_band_pixels": [
+        0,
+        0,
+        2396,
+        44
+      ],
+      "pdf_points": [
+        199.75,
+        193.0
+      ],
+      "description": "Current author-provided out correlation projection, y selection",
+      "conditions": {
+        "model": "SMASH",
+        "collision_system": "Au+Au",
+        "sqrt_sNN_GeV": 3,
+        "system_energy_model_evidence": "Explicitly confirmed by the author in the current session",
+        "source_charge_tag": "neg",
+        "charge_evidence": "Explicitly written in original correlation-panel headers",
+        "centrality_colors_percent": {
+          "red": [
+            0,
+            10
+          ],
+          "blue": [
+            10,
+            30
+          ],
+          "pink": [
+            30,
+            50
+          ],
+          "green": [
+            50,
+            80
+          ]
+        },
+        "centrality_color_evidence": "Explicitly confirmed by the author in the current session",
+        "not_inferred_from_2025": true,
+        "centrality_percent": [
+          0,
+          10
+        ],
+        "centrality_evidence": "Explicitly written in original correlation-panel headers",
+        "fit_box_retained_in_long_panel": true,
+        "rapidity": [
+          0.0,
+          0.2
+        ],
+        "rapidity_evidence": "Original CF header explicitly states rapidity=[0.0,0.2]",
+        "radii_reference_frame": "LCMS",
+        "rapidity_reference_frame": "collision center-of-mass system",
+        "reference_frame_evidence": "Explicit current-session author confirmation: Да: радиусы в LCMS, y в системе центра масс. This evidence is author confirmation, not independent verification of a code run."
+      },
+      "method": "Exact original JPEG stream embedded; PDF clipping without resampling, retouching, redrawing, or error reconstruction",
+      "embedded_jpeg_sha256_verified": true,
+      "source_is_vector": false
+    },
+    {
+      "asset": "figures/current_2026_cf_y_side.pdf",
+      "source": "sources/current_2026_10_19/cfs_neg_0-10_0.0_0.2.jpg",
+      "source_sha256": "395b91a05da0e1ba1e9f8db91e53721c3d7b20cb0e385facaa96b302246f3acd",
+      "provenance_type": "current_author_provided",
+      "supplied_date": "2026-10-19",
+      "archival_2025_source": false,
+      "source_raster_pixels": [
+        2396,
+        772
+      ],
+      "crop_pixels": [
+        799,
+        0,
+        1598,
+        772
+      ],
+      "retained_source_rectangles_pixels": [
+        [
+          799.0,
+          44.0,
+          1598.0,
+          772.0
+        ],
+        [
+          799.0,
+          0.0,
+          935.0,
+          44.0
+        ]
+      ],
+      "technical_cf_header_removed": true,
+      "header_band_pixels": [
+        0,
+        0,
+        2396,
+        44
+      ],
+      "pdf_points": [
+        199.75,
+        193.0
+      ],
+      "description": "Current author-provided side correlation projection, y selection",
+      "conditions": {
+        "model": "SMASH",
+        "collision_system": "Au+Au",
+        "sqrt_sNN_GeV": 3,
+        "system_energy_model_evidence": "Explicitly confirmed by the author in the current session",
+        "source_charge_tag": "neg",
+        "charge_evidence": "Explicitly written in original correlation-panel headers",
+        "centrality_colors_percent": {
+          "red": [
+            0,
+            10
+          ],
+          "blue": [
+            10,
+            30
+          ],
+          "pink": [
+            30,
+            50
+          ],
+          "green": [
+            50,
+            80
+          ]
+        },
+        "centrality_color_evidence": "Explicitly confirmed by the author in the current session",
+        "not_inferred_from_2025": true,
+        "centrality_percent": [
+          0,
+          10
+        ],
+        "centrality_evidence": "Explicitly written in original correlation-panel headers",
+        "fit_box_retained_in_long_panel": true,
+        "rapidity": [
+          0.0,
+          0.2
+        ],
+        "rapidity_evidence": "Original CF header explicitly states rapidity=[0.0,0.2]",
+        "radii_reference_frame": "LCMS",
+        "rapidity_reference_frame": "collision center-of-mass system",
+        "reference_frame_evidence": "Explicit current-session author confirmation: Да: радиусы в LCMS, y в системе центра масс. This evidence is author confirmation, not independent verification of a code run."
+      },
+      "method": "Exact original JPEG stream embedded; PDF clipping without resampling, retouching, redrawing, or error reconstruction",
+      "embedded_jpeg_sha256_verified": true,
+      "source_is_vector": false
+    },
+    {
+      "asset": "figures/current_2026_cf_y_long.pdf",
+      "source": "sources/current_2026_10_19/cfs_neg_0-10_0.0_0.2.jpg",
+      "source_sha256": "395b91a05da0e1ba1e9f8db91e53721c3d7b20cb0e385facaa96b302246f3acd",
+      "provenance_type": "current_author_provided",
+      "supplied_date": "2026-10-19",
+      "archival_2025_source": false,
+      "source_raster_pixels": [
+        2396,
+        772
+      ],
+      "crop_pixels": [
+        1598,
+        0,
+        2396,
+        772
+      ],
+      "retained_source_rectangles_pixels": [
+        [
+          1598.0,
+          44.0,
+          2396.0,
+          772.0
+        ],
+        [
+          1598.0,
+          0.0,
+          1733.0,
+          44.0
+        ]
+      ],
+      "technical_cf_header_removed": true,
+      "header_band_pixels": [
+        0,
+        0,
+        2396,
+        44
+      ],
+      "pdf_points": [
+        199.5,
+        193.0
+      ],
+      "description": "Current author-provided long correlation projection, y selection",
+      "conditions": {
+        "model": "SMASH",
+        "collision_system": "Au+Au",
+        "sqrt_sNN_GeV": 3,
+        "system_energy_model_evidence": "Explicitly confirmed by the author in the current session",
+        "source_charge_tag": "neg",
+        "charge_evidence": "Explicitly written in original correlation-panel headers",
+        "centrality_colors_percent": {
+          "red": [
+            0,
+            10
+          ],
+          "blue": [
+            10,
+            30
+          ],
+          "pink": [
+            30,
+            50
+          ],
+          "green": [
+            50,
+            80
+          ]
+        },
+        "centrality_color_evidence": "Explicitly confirmed by the author in the current session",
+        "not_inferred_from_2025": true,
+        "centrality_percent": [
+          0,
+          10
+        ],
+        "centrality_evidence": "Explicitly written in original correlation-panel headers",
+        "fit_box_retained_in_long_panel": true,
+        "rapidity": [
+          0.0,
+          0.2
+        ],
+        "rapidity_evidence": "Original CF header explicitly states rapidity=[0.0,0.2]",
+        "radii_reference_frame": "LCMS",
+        "rapidity_reference_frame": "collision center-of-mass system",
+        "reference_frame_evidence": "Explicit current-session author confirmation: Да: радиусы в LCMS, y в системе центра масс. This evidence is author confirmation, not independent verification of a code run."
+      },
+      "method": "Exact original JPEG stream embedded; PDF clipping without resampling, retouching, redrawing, or error reconstruction",
+      "embedded_jpeg_sha256_verified": true,
+      "source_is_vector": false
+    },
+    {
+      "asset": "figures/current_2026_cf_y_all.pdf",
+      "source": "sources/current_2026_10_19/cfs_neg_0-10_0.0_0.2.jpg",
+      "source_sha256": "395b91a05da0e1ba1e9f8db91e53721c3d7b20cb0e385facaa96b302246f3acd",
+      "provenance_type": "current_author_provided",
+      "supplied_date": "2026-10-19",
+      "archival_2025_source": false,
+      "source_raster_pixels": [
+        2396,
+        772
+      ],
+      "crop_pixels": [
+        0,
+        0,
+        2396,
+        772
+      ],
+      "retained_source_rectangles_pixels": [
+        [
+          0.0,
+          44.0,
+          2396.0,
+          772.0
+        ],
+        [
+          0.0,
+          0.0,
+          136.0,
+          44.0
+        ],
+        [
+          799.0,
+          0.0,
+          935.0,
+          44.0
+        ],
+        [
+          1598.0,
+          0.0,
+          1733.0,
+          44.0
+        ]
+      ],
+      "technical_cf_header_removed": true,
+      "header_band_pixels": [
+        0,
+        0,
+        2396,
+        44
+      ],
+      "pdf_points": [
+        599.0,
+        193.0
+      ],
+      "description": "Current author-provided three correlation projections, y selection",
+      "conditions": {
+        "model": "SMASH",
+        "collision_system": "Au+Au",
+        "sqrt_sNN_GeV": 3,
+        "system_energy_model_evidence": "Explicitly confirmed by the author in the current session",
+        "source_charge_tag": "neg",
+        "charge_evidence": "Explicitly written in original correlation-panel headers",
+        "centrality_colors_percent": {
+          "red": [
+            0,
+            10
+          ],
+          "blue": [
+            10,
+            30
+          ],
+          "pink": [
+            30,
+            50
+          ],
+          "green": [
+            50,
+            80
+          ]
+        },
+        "centrality_color_evidence": "Explicitly confirmed by the author in the current session",
+        "not_inferred_from_2025": true,
+        "centrality_percent": [
+          0,
+          10
+        ],
+        "centrality_evidence": "Explicitly written in original correlation-panel headers",
+        "fit_box_retained_in_long_panel": true,
+        "rapidity": [
+          0.0,
+          0.2
+        ],
+        "rapidity_evidence": "Original CF header explicitly states rapidity=[0.0,0.2]",
+        "radii_reference_frame": "LCMS",
+        "rapidity_reference_frame": "collision center-of-mass system",
+        "reference_frame_evidence": "Explicit current-session author confirmation: Да: радиусы в LCMS, y в системе центра масс. This evidence is author confirmation, not independent verification of a code run."
+      },
+      "method": "Exact original JPEG stream embedded; PDF clipping without resampling, retouching, redrawing, or error reconstruction",
+      "embedded_jpeg_sha256_verified": true,
+      "source_is_vector": false
+    }
+  ]
+}

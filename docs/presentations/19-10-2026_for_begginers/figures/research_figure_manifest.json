@@ -446,6 +446,102 @@
     "sha256": "8d822f7a2618fad46bb8c5376530f7c2622e8fd17952614a3b0217679febe4a4",
     "credit": "T. M. Balinov, archival defense presentation (2025); original graphs and uncertainties unchanged",
     "limitations": "Historical model result. 2025 fit code and error algorithm unavailable; source formulas contain dimensional/sign ambiguities.",
+    "asset": "figures/balinov_2025_correlation_out_3d.pdf",
+    "source_pdf_page": 15,
+    "source_raster_pixels": [
+      896,
+      672
+    ],
+    "source_image_index_left_to_right": 0,
+    "crop_pixels": [
+      0,
+      28,
+      440,
+      336
+    ],
+    "legend_crop_pixels": null,
+    "legend_scale": null,
+    "header_crop_pixels": null,
+    "footer_crop_pixels": null,
+    "pdf_points": [
+      110.0,
+      77.0
+    ],
+    "description": "Archival 3D correlation: out projection and original fit",
+    "conditions": "SMASH model Au+Au sqrt(sNN)=3 GeV; selected charged pions, |p| and pT in [0.15,1.5] GeV/c, eta in [-1.5,1.5]. Historical 2025 result; no new simulation or refit. Centrality 0-10%; kT=[0.15,0.25] GeV/c. Projection of the 3D LCMS correlation, not q_inv. Technical ROOT histogram-name header omitted; centrality and kT repeated in slide caption. The source does not state the integration window of the other q components or a charge-specific selection for these panels. Do not assign STAR's projection window.",
+    "source_is_vector": false,
+    "method": "Original embedded raster preserved; PDF clipping without resampling or redrawing"
+  },
+  {
+    "source": "sources/balinov_2025.pdf",
+    "source_url": "http://web-static-data.msu.dubna.ru:8093/epp/kursov_4/2025/Balinov.pdf",
+    "sha256": "8d822f7a2618fad46bb8c5376530f7c2622e8fd17952614a3b0217679febe4a4",
+    "credit": "T. M. Balinov, archival defense presentation (2025); original graphs and uncertainties unchanged",
+    "limitations": "Historical model result. 2025 fit code and error algorithm unavailable; source formulas contain dimensional/sign ambiguities.",
+    "asset": "figures/balinov_2025_correlation_side_3d.pdf",
+    "source_pdf_page": 15,
+    "source_raster_pixels": [
+      896,
+      672
+    ],
+    "source_image_index_left_to_right": 0,
+    "crop_pixels": [
+      446,
+      28,
+      896,
+      336
+    ],
+    "legend_crop_pixels": null,
+    "legend_scale": null,
+    "header_crop_pixels": null,
+    "footer_crop_pixels": null,
+    "pdf_points": [
+      112.5,
+      77.0
+    ],
+    "description": "Archival 3D correlation: side projection and original fit",
+    "conditions": "SMASH model Au+Au sqrt(sNN)=3 GeV; selected charged pions, |p| and pT in [0.15,1.5] GeV/c, eta in [-1.5,1.5]. Historical 2025 result; no new simulation or refit. Centrality 0-10%; kT=[0.15,0.25] GeV/c. Projection of the 3D LCMS correlation, not q_inv. Technical ROOT histogram-name header omitted; centrality and kT repeated in slide caption. The source does not state the integration window of the other q components or a charge-specific selection for these panels. Do not assign STAR's projection window.",
+    "source_is_vector": false,
+    "method": "Original embedded raster preserved; PDF clipping without resampling or redrawing"
+  },
+  {
+    "source": "sources/balinov_2025.pdf",
+    "source_url": "http://web-static-data.msu.dubna.ru:8093/epp/kursov_4/2025/Balinov.pdf",
+    "sha256": "8d822f7a2618fad46bb8c5376530f7c2622e8fd17952614a3b0217679febe4a4",
+    "credit": "T. M. Balinov, archival defense presentation (2025); original graphs and uncertainties unchanged",
+    "limitations": "Historical model result. 2025 fit code and error algorithm unavailable; source formulas contain dimensional/sign ambiguities.",
+    "asset": "figures/balinov_2025_correlation_long_3d.pdf",
+    "source_pdf_page": 15,
+    "source_raster_pixels": [
+      896,
+      672
+    ],
+    "source_image_index_left_to_right": 0,
+    "crop_pixels": [
+      0,
+      368,
+      440,
+      672
+    ],
+    "legend_crop_pixels": null,
+    "legend_scale": null,
+    "header_crop_pixels": null,
+    "footer_crop_pixels": null,
+    "pdf_points": [
+      110.0,
+      76.0
+    ],
+    "description": "Archival 3D correlation: long projection and original fit",
+    "conditions": "SMASH model Au+Au sqrt(sNN)=3 GeV; selected charged pions, |p| and pT in [0.15,1.5] GeV/c, eta in [-1.5,1.5]. Historical 2025 result; no new simulation or refit. Centrality 0-10%; kT=[0.15,0.25] GeV/c. Projection of the 3D LCMS correlation, not q_inv. Technical ROOT histogram-name header omitted; centrality and kT repeated in slide caption. The source does not state the integration window of the other q components or a charge-specific selection for these panels. Do not assign STAR's projection window.",
+    "source_is_vector": false,
+    "method": "Original embedded raster preserved; PDF clipping without resampling or redrawing"
+  },
+  {
+    "source": "sources/balinov_2025.pdf",
+    "source_url": "http://web-static-data.msu.dubna.ru:8093/epp/kursov_4/2025/Balinov.pdf",
+    "sha256": "8d822f7a2618fad46bb8c5376530f7c2622e8fd17952614a3b0217679febe4a4",
+    "credit": "T. M. Balinov, archival defense presentation (2025); original graphs and uncertainties unchanged",
+    "limitations": "Historical model result. 2025 fit code and error algorithm unavailable; source formulas contain dimensional/sign ambiguities.",
     "asset": "figures/balinov_2025_rinv.pdf",
     "source_pdf_page": 14,
     "source_raster_pixels": [

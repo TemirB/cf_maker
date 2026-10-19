@@ -44,9 +44,11 @@ ax.plot(p,rho,color=TEAL,lw=3)
 ax.fill_between(p,rho,color=TEAL,alpha=.1)
 for value, label, color in [(.12,r"$p_{1x}$",TEAL),(.40,r"$p_{2x}$",GOLD)]:
     ax.axvline(value,color=color,ls="--",lw=2)
-    ax.text(value+.02,1.26,label,color=color)
+    ax.text(value+.02,1.26,label,color=color,zorder=5,
+            bbox=dict(facecolor="#f7f8f6",edgecolor="none",alpha=1,pad=1.2))
 ax.annotate("",(.12,.8),(.40,.8),arrowprops=dict(arrowstyle="<->",color=NAVY,lw=2))
-ax.text(.26,.67,r"$|q_x|=0.28$",ha="center",fontsize=14)
+ax.text(.26,.67,r"$p_{2x}-p_{1x}=0.28$",ha="center",fontsize=16,zorder=5,
+        bbox=dict(facecolor="#f7f8f6",edgecolor="none",alpha=1,pad=1.5))
 ax.set(xlabel=r"$p_x$, ГэВ/$c$",ylabel=r"$f(p_x)$, $(\mathrm{ГэВ}/c)^{-1}$",ylim=(0,1.6))
 ax.grid(alpha=.14); save(fig,"single_spectrum")
 

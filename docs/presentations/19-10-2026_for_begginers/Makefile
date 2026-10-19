@@ -19,3 +19,6 @@ notes:
 figures:
 	$(PYTHON) make_figures.py
 	$(PYTHON) extract_research_figures.py
+	$(PYTHON) make_comparison.py
+	$(PYTHON) make_current_figures.py
+	$(PYTHON) make_comparison_current.py
