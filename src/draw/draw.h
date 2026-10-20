@@ -66,13 +66,16 @@ enum class GraphKind : char
 
 void set_range_with_errors(TMultiGraph* mg, double padFrac = 0.10);
 
+// Draws a message when a multigraph has no points; returns whether axes exist.
+bool draw_mg_or_report(TMultiGraph* mg, const char* option = "APL");
+
 void write_mg_with_legend(TFile* file, TMultiGraph* mg, const char* canvasName, const char* xTitle,
-                       const char* yTitle,
-                       const std::vector<std::pair<TObject*, std::string>>& legendEntries,
-                       draw::GraphKind kind);
+                          const char* yTitle,
+                          const std::vector<std::pair<TObject*, std::string>>& legendEntries,
+                          draw::GraphKind kind);
 
 void write_hist(TFile* file, TH1D* hist, const char* canvasName, const char* xTitle,
-               const char* yTitle);
+                const char* yTitle);
 
 void style_1d_cf(TH1* h, const std::string& name, const char* axis, draw::Style style);
 

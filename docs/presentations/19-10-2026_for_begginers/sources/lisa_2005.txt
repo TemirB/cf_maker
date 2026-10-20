@@ -1,0 +1,3690 @@
+
+--- PDF PAGE 1 ---
+arXiv:nucl-ex/0505014v2  6 Sep 2005
+Femtoscopy in Heavy Ion Collisions
+1
+Femtoscopy in Relativistic Heavy Ion
+Collisions: Two Decades of Progress
+Michael Annan Lisa
+Department of Physics, The Ohio State University, Columbus, Ohio, 43210;
+email lisa@mps.ohio-state.edu
+Scott Pratt
+Department of Physics and Astronomy, Michigan State University, East
+Lansing, Michigan, 48824; email pratts@pa.msu.edu
+Ron Soltz
+N-Division, Livermore National Laboratory, 7000 East Avenue, Livermore,
+California, 94550; email soltz1@llnl.gov
+Urs Wiedemann
+Theory Division, CERN, Geneva, Switzerland; email urs.wiedemann@cern.ch
+Key Words HBT, intensity interferometry, heavy ion Collisions, femtoscopy
+Abstract Analyses of two-particle correlations have provided the chief means for determining
+spatio-temporal characteristics of relativistic heavy ion collisions. We discuss the theoretical
+formalism behind these studies and the experimental methods used in carrying them out. Recent
+results from RHIC are put into context in a systematic review of correlation measurements
+performed over the past two decades. The current understanding of these results is discussed in
+terms of model comparisons and overall trends.
+CONTENTS
+Introduction
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+2
+Theory and Phenomenology Basics . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+Formalism . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+Identical-Particle Interference . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+7
+Correlations from Coulomb and Strong Interactions . . . . . . . . . . . . . . . . . . . .
+7
+Coordinate Systems . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9
+Gaussian Parameterizations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9
+The λ factor
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+Collective Flow and Blast-Wave Models
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+Generating Correlations Functions from Hydrodynamics and from Microscopic Simula-
+tions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+Phase Space Density, Entropy and Coalescence
+. . . . . . . . . . . . . . . . . . . . . .
+17
+
+
+--- PDF PAGE 2 ---
+Femtoscopic measurements
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+18
+Correlation Function Deﬁnition . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+18
+Signal Construction
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+19
+Background Construction
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+20
+Corrections . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+21
+Fitting . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+22
+Measured Femtoscopic Systematics . . . . . . . . . . . . . . . . . . . . . . . . . . .
+24
+System size: Npart and Multiplicity . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+25
+Source Shape: Pair emission angle relative to ˆb . . . . . . . . . . . . . . . . . . . . . .
+26
+Boost invariance : Yππ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+28
+Collective dynamics: kT and particle mass . . . . . . . . . . . . . . . . . . . . . . . . .
+29
+New possibilities: Non-identical particle correlations
+. . . . . . . . . . . . . . . . . . .
+32
+Interpretations of Experimental Results . . . . . . . . . . . . . . . . . . . . . . . .
+34
+General Conclusions from Systematic Trends
+. . . . . . . . . . . . . . . . . . . . . . .
+34
+Phase Space Density and Entropy . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+35
+Dynamic Models and their Comparison with Data . . . . . . . . . . . . . . . . . . . . .
+37
+Summary . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+41
+1
+Introduction
+The study of nucleus-nucleus collisions at ultra-relativistic energies aims to char-
+acterize the dynamical processes by which matter at extreme densities is produced
+and the fundamental properties that this matter exhibits. In nucleus-nucleus col-
+lisions, how do partonic equilibration processes proceed?
+For how long, over
+which spatial extension, and at which density is a QCD equilibration state ap-
+proached, and what are its properties? Particle densities attained during a heavy
+ion collision are expected to exceed signiﬁcantly the inverse volume of a hadron.
+This implies that the high temperature phase of QCD, the Quark Gluon Plasma,
+comes within experimental reach. Chiral symmetry restoration and deconﬁne-
+ment phase transition are testable in heavy ion collisions. However, the experi-
+mental study of QCD at high temperatures and densities is complicated by the
+short lifetime and mesoscopic extension of the produced system. Femtoscopy, the
+spatio-temporal characterization of the collision region on the femtometer scale,
+is needed to frame any discussion of dynamical equilibration processes.
+The Relativistic Heavy Ion Collider (RHIC) just completed the ﬁrst part of a
+dedicated experimental heavy ion program. Center of mass energies (√sNN = 200
+GeV) exceeded those of previous ﬁxed target experiments by a factor 10. The
+current discussion of RHIC data focuses mainly on several qualitatively novel
+phenomena that all support the picture that dense and rapidly equilibrating
+QCD matter is produced in the collision region (1; 2; 3; 4). In particular, identi-
+ﬁed single inclusive hadron spectra appear to emerge from a common ﬂow ﬁeld
+whose size and dependence on transverse momentum and azimuth is consistent
+with expectations that the produced matter is a locally equilibrated, almost ideal
+ﬂuid of very small viscosity. Moreover, high-pT hadron spectra show a centrality
+dependent, strong suppression in Au+Au collisions, but not in a d+Au control
+experiment, indicating that even the hardest partons produced in the collision
+participate signiﬁcantly in equilibration processes. In short, experiments at RHIC
+have demonstrated already that heavy ion collisions produce dense and equilibrat-
+ing matter, and that controlled experimentation of this matter is possible using
+2
+
+
+--- PDF PAGE 3 ---
+Femtoscopy in Heavy Ion Collisions
+3
+a large variety of probes.
+Despite these successes, numerous questions remain concerning the state of the
+matter produced in these collisions. Most notably, the equation of state is far from
+being determined, and issues concerning chiral symmetry restoration are largely
+unresolved. Addressing these fundamental questions about bulk matter requires
+a detailed understanding of the dynamics and chemistry of the collision, which
+can only be acquired by thorough and coordinated analyses of data and theory.
+In particular, spatio-temporal aspects of the reaction need to be experimentally
+addressed. The small size, ∼10−14 m, and transient nature, ∼10−22 seconds,
+of the reactions preclude direct measurement of times or positions.
+Instead,
+femtoscopy must exploit measurements of asymptotic momenta. Correlations of
+two ﬁnal-state particles at small relative momentum provide the most direct link
+to the size and lifetime of subatomic reactions (5; 6; 7; 8; 9; 10; 11; 12). Because
+correlations from either interactions or from identity interference are stronger for
+smaller separations in space-time, spatio-temporal information can be most easily
+extracted for small sources, unlike the limitations of microscopes and telescopes.
+The interference of two particles emitted from chaotic sources was ﬁrst ap-
+plied by Hanbury-Brown and Twiss (13; 14), where photons were exploited to
+determine source sizes for both laboratory and stellar sources in the 1950s and
+1960s. Correlations of identical pions were shown to be sensitive to source di-
+mensions in proton-antiproton collisions by Goldhaber, Goldhaber, Lee, and Pais
+in 1960 (15). In the 1970s, these methods were reﬁned by Kopylov and Pod-
+goretsky (16; 17; 18; 19), Koonin, (20), and Gyulassy (21), and other classes
+of correlations were shown to be useful for source-size measurements, such as
+strong and Coulomb interactions.
+Bevalac analyses showed that interferome-
+try was truly capable of quantitatively determining spatial and temporal source
+dimensions (22; 23) and providing a stringent test of dynamical models (24).
+Throughout the last 25 years this phenomenology has developed into a precision
+tool for heavy ion collisions. Whereas hadronic sources are short lived and one
+measures correlations of the momentum of outgoing particles, stars are long lived
+and require experimental ﬁlters to enforce the approximate simultaneity of the
+two photons. Although the theory for these two classes of measurement are very
+diﬀerent (25; 26), the heavy-ion community often uses the term HBT, in refer-
+ence to Hanbury-Brown and Twiss’s original work with photons, to refer to any
+type of analysis related to size and shape that uses two particles at small relative
+momentum. To some, however, the term HBT refers only to identical-particle
+interferometry. Following Lednicky, we will employ the term femtoscopy (27; 28)
+to denote any measurement that provides spatio-temporal information, including
+coalescence analyses.
+Femtoscopic measurements from truly relativistic heavy ion collisions were ﬁrst
+reported almost twenty years ago.
+Since then, measurements have been per-
+formed for collisions at energies spanning two orders of magnitude. In a double
+sense, then, this review examines recent RHIC results within the larger context of
+two decades’ worth of femtoscopy. The theory and phenomenology of correlation
+femtoscopy are reviewed in the next section, with particular emphasis on describ-
+ing the approximations used to derive the connection between spatio-temporal
+aspects of the emission function and correlations constructed from ﬁnal-state mo-
+menta. Experimental methods and techniques are correspondingly reviewed in
+Section 3. Section 4 presents experimental results, with an emphasis on describing
+the systematics of source dimensions and lifetimes as a function of beam energy,
+
+
+--- PDF PAGE 4 ---
+4
+Lisa et al.
+system size, particle species and a particle’s momentum. In addition to source
+dimensions, results for phase space density and entropy are presented. Compar-
+isons of experimental results and transport models are presented in Section 5,
+with an emphasis on explaining the “HBT puzzle,” i.e., the fact that dynamic
+descriptions that incorporate a phase transition to a new state of matter with
+many degrees of freedom signiﬁcantly over-predict observed source sizes. Section
+6 summarizes the current state of the ﬁeld and lists new directions and challenges
+for future theoretical and experimental analyses.
+2
+Theory and Phenomenology Basics
+2.1
+Formalism
+Two-particle correlation functions are constructed as the ratio of the measured
+two-particle inclusive and single-particle inclusive spectra,
+Cab(P, q)
+=
+dN ab/(d3pad3pb)
+(dN a/d3pa)(dN b/d3pb) ,
+(1)
+P
+≡
+pa + pb,
+qµ = (pa −pb)µ
+2
+−(pa −pb) · P
+2P 2
+P µ .
+The theoretical analysis of (1) aims at relating this experimentally measured
+correlation to the space-time structure of the particle emitting source (7; 6; 8; 11).
+Two forms are common for connecting the measured correlation function to the
+space-time emission function s(p, x) through a convolution with the wave function
+φ. In the ﬁrst form (29),
+Cab(P, q) =
+R
+d4xad4xbsa(pa, xa)sb(pb, xb)|φ(q′, r′)|2
+R
+d4xasa(pa, xa)
+R
+d4xbsb(pb, xb)
+.
+(2)
+In calculations of two-particle correlation functions, the squared relative two-
+particle wave function |φ|2 serves generally as a weight, and the emission function
+s(p, x) contains all space-time information about the source because it describes
+the probability of emitting a particle with momentum p from a space-time point
+x. Here, and throughout this section, primes denote quantities in the center-of-
+mass frame, i.e., the frame where P = 0. The source function sa is evaluated at
+the momentum ¯pa = maP/(ma + mb), ¯p0
+a = Ea(¯pa).
+The second form, which is equally justiﬁed as Equation 2 by the approximations
+described further below, is,
+Cab(P, q) −1
+=
+Z
+d3r′SP(r′)
+
+|φ(q′, r′)|2 −1
+
+,
+(3)
+SP(r′)
+≡
+R
+d4xad4xbsa(¯pa, xa)sb(¯pb, xb)δ (r′ −x′
+a + x′
+b)
+R
+d4xad4xbsa(¯pa, xa)sb( ¯pb, xb)
+.
+This expression allows one to consider |φ|2 as a kernel with which one can trans-
+form from the coordinate-space basis to the relative-momentum basis. It also
+emphasizes the limitation of correlation functions, that they can provide, at best,
+the function SP(r′), the distribution of relative positions of particles with iden-
+tical velocities and total momentum P as they move in their asymptotic state.
+Thus, correlations do not measure the size of the entire source. Instead, they ad-
+
+
+--- PDF PAGE 5 ---
+Femtoscopy in Heavy Ion Collisions
+5
+dress the dimensions of the “region of homogeneity,” a term coined by Sinyukov
+(30), i.e., the size and shape of the phase space cloud of outgoing particles whose
+velocities have a speciﬁc magnitude and direction. If the collective expansion
+of the produced matter is strong, as is the case in central collisions, then the
+region of homogeneity is signiﬁcantly smaller than the entire source volume. In
+the following, we discuss the assumptions on which Equations 2 and 3 are based.
+We start from explicit expressions for the one- and two-particle spectra in terms
+of T-matrix elements. For one-particle emission,
+E dN
+d3p
+=
+Z
+d4x s(p, x) =
+X
+F ′
+|
+Z
+d4xTF ′(x)e−ip·x|2,
+(4)
+s(p, x)
+=
+X
+F ′
+Z
+d4δxT ∗
+F ′(x + δx/2)TF ′(x −δx/2)eip·δx .
+(5)
+Here, F ′ refers to the state of all other particles in the system. All interactions
+with the residual system are incorporated into the T matrix. However, there is a
+choice as to whether mean-ﬁeld interactions are included in the T matrix or are
+instead incorporated into the evolution matrix (31; 32; 33; 34; 35). For example,
+one can include the Coulomb interactions with the residual system by replacing
+the phase factor eip·x in Equation 4 with an outgoing Coulomb wave function.
+This can be quantitatively important, in particular for slow particles. It becomes
+diﬃcult when the two particles interact with one another through the strong or
+Coulomb force, as this represents a quantum three-body problem.
+Assumption 1: Higher order (anti)symmetrization can be neglected.
+Equa-
+tion 4 implies that all particles with asymptotic momentum p must have had
+their last interaction with the source at some point x. For distinguishable par-
+ticles, this is indeed the case and Equation 4 does not represent an assumption.
+However, if there are Na > 1 particles of the same type a, then one must consider
+Ta(x1 · · · xNa). The evolution matrix is then no longer a simple phase factor but
+includes Na! interference terms. The single-particle probability is then obtained
+by integrating over the other Na −1 momenta. This can be accomplished ex-
+plicitly for simple source functions (36; 37; 38; 39; 40). The distortion to the
+single-particle spectra and to the two-particle correlation function were found
+to be important when the phase space density approached unity.
+Otherwise,
+Equation 4 is well justiﬁed.
+Assumption 2: The emission process is initially uncorrelated. In writing Equa-
+tion 4, one requires that two-particle matrix elements factorize, TF ′′(xa, xb) =
+TF ′a(xa)TF ′
+b(xb), i.e., that the emission is independent.
+If multi-particle sym-
+metrization can be neglected, the two-particle evolution operator factorizes into
+a center-of-mass and a relative operator. One has U(xa, xb; pa, pb) = uq′(x′
+a −
+x′
+b)eiP ·(E′
+axa/Minv+E′
+bxb/Minv) for non-identical particles, whereas for identical par-
+ticles U = eiP ·(xa+xb)/2(uq′(x′
+a −x′
+b) ± (uq′(x′
+b −x′
+a))/
+√
+2. This is illustrated in
+Figure 1. Then, the two-particle probability can be expressed in terms of one-
+particle source functions,
+EaEb
+dNab
+d3pad3pb
+=
+Z
+d4xad4xbd4˜qsa((E′
+a/Minv)P + ˜q, xa)sb((E′
+b/Minv)P −˜q, xb)
+×d4δr′ei˜q·δr′u∗
+q′(x′
+a −x′
+b + δr′/2)uq′(x′
+a −x′
+b −δr′/2).
+(6)
+
+
+--- PDF PAGE 6 ---
+6
+Lisa et al.
+Figure 1: Schematic representation of the squared emission amplitude for two
+particles emitted independently from the grey-shaded source region and interact-
+ing with each other in the ﬁnal states. For identical bosons (+) and fermions (-),
+correlation also involves interference between the paths.
+Assumption 3: Smoothness approximation (41; 42; 43). Equation 6 is diﬃcult
+to evaluate as it requires knowledge of the source function evaluated oﬀ-shell. For
+the special case where the particles do not interact aside from identical particle
+interference, uq(xa −xb) = [eiq·(xa−xb) ± eiq·(xb−xa)]/
+√
+2, the integrals over ˜q and
+δr′ can be performed analytically,
+EaEb
+dNab
+d3pad3pb
+=
+Z
+d4xad4xb {s(pa, xa)s(pb, xb)
+(7)
+±s(P/2, xa)s(P/2, xb) cos[(pa −pb) · (xa −xb)]} .
+The source functions in the interference term are evaluated oﬀ-shell for non-zero
+q, P0/2̸ = E(P/2). The smoothness approximation replaces s(P/2, xa)s(P/2, xb)
+with either s(E(P/2), P/2, xa)s(E(P/2), P/2, xb), which leads to Equation 3, or
+with s(pa, xa)s(pb, xb), which leads to Equation 2. If the ﬁrst approximation is
+performed, one should also make the same approximation for the denominator.
+The smoothness approximation has been checked for expanding thermal sources,
+where it was found to be very reasonable for large (RHIC-like) sources, but quite
+questionable for smaller sources such as those found in pp or e+e−collisions (43).
+Assumption 4: Equal time approximation. For the general case where the evo-
+lution operator incorporates Coulomb or strong interactions, deriving Equations 3
+and 2 from Equation 6 is more complicated. First, the smoothness assumption
+amounts here to neglecting the ˜q dependence in the product of the source func-
+tions in Equation 6. This assumption is somewhat more stringent in the presence
+of ﬁnal state interactions because the relevant range of ˜q extends beyond q. With
+this assumption, one obtains a δ-function constraint for δr′, and the integrand
+of (6) is proportional to the squared evolution matrix |u′
+q(x′
+a −x′
+b)|2. This evo-
+lution matrix has non-zero time components, which must be neglected if one is
+to identify it with the relative wave function. because the relative motion in the
+pair rest frame is small, one expects this approximation to be reasonable, but it
+has not yet been tested in model studies.
+The above formalism is semi-classical in the sense that a quantum-mechanical
+particle emission probability, deﬁned by the T-matrix elements, is usually ap-
+proximated by classical source functions. As a consequence, quantum uncertainty
+
+
+--- PDF PAGE 7 ---
+Femtoscopy in Heavy Ion Collisions
+7
+limits the applicability of Equations 3 and 2. To illustrate this limitation, source
+functions have been evaluated by convoluting the emission function with wave
+packets(44; 45; 46; 47) of spatial width σ. This leads to a broadening of spatial
+distributions by (∆R)2 ∼0.5 −1.0 fm2. because quantum smearing may already
+be incorporated into some of the semi-classical treatments through the choice of
+the initial density distribution, these calculations should be regarded as indicative
+of the theoretical uncertainty. because this error aﬀects the size in quadrature,
+it is negligible for large sources, but might be signiﬁcant for sources near 1 fm
+in size with strong space-time correlations (42; 43; 45; 46; 48). In particular,
+analyses of ππ correlations from e+e−collisions, which result in source sizes of
+less than 1.0 fm(49; 50), are diﬃcult to interpret in the above formalism.
+2.2
+Identical-Particle Interference
+In the absence of strong and electromagnetic ﬁnal state interactions, the wave
+function of an identical particle pair in Equation 3 becomes
+|φ(q′, r′)|2 −1 = ± cos(2q′ · r′).
+(8)
+The distribution of separations in coordinate space SP(r′) can then be determined
+by performing a three-dimensional Fourier transform of C(q′)−1. It is instructive
+to consider the properties of this inversion in more detail. The curvature of C(q)
+at q = 0 can be related to the mean-square separation of the three-dimensional
+shape of SP(r) (we neglect the P labels in C and S),
+−d2C(q)
+dq′
+i dq′
+j
+
+q=0 = ⟨rirj⟩=
+Z
+d3rS(r)rirj.
+(9)
+This relation has been useful to qualitatively illustrate the relation between spe-
+ciﬁc space-time information and speciﬁc features of the correlator.
+However,
+applying the identity quantitatively requires careful consideration of pions from
+longer-lived resonances which can dominate the calculation of ⟨r2⟩if not ac-
+counted for.
+2.3
+Correlations from Coulomb and Strong Interactions
+Compared to the case for non-interacting identical particles, where the transfor-
+mation between SP(r) and C(P, q) is a Fourier transform, analyzing the experi-
+mentally measured correlation function with Equation 3 to determine the source
+function is more complicated. Understanding the resolving power of the kernel
+|φ(q, r|2 requires a detailed understanding of the relative wave function. Once one
+averages over spins, the squared relative wave function is a function of q, r and
+cos θqr. In relativistic collisions, correlation analyses are usually conﬁned to light,
+singly charged hadrons. Coulomb-induced correlations are then weak and must
+be analyzed at small q, where quantum eﬀects become important (qr/ℏ∼1).
+The relative two-particle wave function in the presence of Coulomb interactions
+can then be written as a function of qr/ℏ, r/a0 and cos θqr.
+φ
+=
+Γ(1 + iη)e−πη/2eiq·r
+(
+1 +
+∞
+X
+n=1
+hn · (r/a0)n
+)
+,
+(10)
+
+
+--- PDF PAGE 8 ---
+8
+Lisa et al.
+where a0 is the Bohr radius, h1 = 1 and hn = n−1−iη
+−inη hn−1. Here, η ≡µe2/ℏq
+is independent of r, and for small r/a0 the correlation function behaves as the
+Gamow factor, G(η) ≡e−πη|Γ(1 + iη)|2 = 2πη/(e2πη −1). Thus, the Coulomb
+kernels have little resolving power for ππ correlations where a0 = 387 fm, but
+have greater resolving power for pK correlations where a0 = 84 fm.
+For r << a0, the eﬀects of Coulomb interactions can be removed easily from
+the correlation function because η is independent of r (21),
+|φ|2 ≈G(η)[1 + cos(2qr cos θqr)] .
+(11)
+For realistic source sizes, the order r/a0 corrections are of the order of 10%
+for ππ correlations and are larger for heavier pairs (41; 51). Signiﬁcant eﬀort
+has been invested in “correcting” experimental correlation functions to remove
+Coulomb eﬀects to all orders, but such corrections are model-dependent. The
+safest method for determining the source function is either inverting the full kernel
+(52; 53; 54; 55; 56; 57) or ﬁtting C(q) to some parameterized form for S(r), which
+is convoluted with the full kernel. Neither of these tactics are computationally
+prohibitive.
+Strong interactions can also be exploited to provide size and shape information.
+If the size of the source is much larger than the range of the potential between
+the two particles, the kernel (|φ|2 −1) can be determined entirely from knowledge
+of the phase shifts. Pairs that have a resonant interaction are especially useful,
+because the resonance will lead to a peak whose height is inversely proportional
+to the source volume, if qR >> ℏ. At small q the kernel is determined by the
+scattering length, a (58), and the height of the correlation at q = 0 becomes
+C(q = 0) −1 =
+
+−2a
+r + a2
+r2
+
+,
+(12)
+where the averaging is performed using SP (r) as a weight. Of course, the eﬀects
+of strong interactions, Coulomb interference, and identical-particle interference
+can all combine as is the case for pp correlations. The pp kernel has been analyzed
+in depth by Brown and Danielewicz, where the kernel was inverted and applied to
+experimental pp data. Evidence was seen for signiﬁcant non-Gaussian behavior in
+the resulting source functions (56; 57). Strong interactions also provide angular
+resolving power (59) which can be understood from the perspective of classical
+trajectories. Even s-wave scattering can be exploited to discern information about
+shape.
+Strong and Coulomb-induced correlations apply to both identical and non-
+identical particles.
+For non-identical particles, the wave function is not sym-
+metrized and |φ(q, r)|2̸ = |φ(q, −r)|2, which results in odd components of the
+correlations function, C(q)̸ = C(−q) if there are odd components of S(r) as
+is the case for non-identical particle pairs. This asymmetry can be experimen-
+tally exploited to investigate the spatio-temporal diﬀerences between the emission
+functions of diﬀerent particle species (60; 61); this requires, however, suﬃcient
+statistics to select on the angle between the total and relative momentum in the
+pair center of mass ∠(q, P) (62).
+
+
+--- PDF PAGE 9 ---
+Femtoscopy in Heavy Ion Collisions
+9
+2.4
+Coordinate Systems
+Correlation functions depend on two three-dimensional momenta, P and q. For
+high-energy collisions, analyses are usually performed in the longitudinally co-
+moving system (LCMS), a rest frame moving along the longitudinal (beam) di-
+rection such that Pz = 0. Axes are usually chosen according to the out-side-long
+prescription.
+The longitudinal axis is chosen parallel to the beam, while the
+outward axis points in the direction of P, which is perpendicular to the beam
+axis. The sideward axis is chosen perpendicular to the other two. If the system
+is boost-invariant, observables expressed in the LCMS variables are independent
+of Pz and the source has a reﬂection symmetry about the rlong = 0 plane. If
+the collision is central, there is also a reﬂection symmetry about the rside = 0
+plane. Any four-vector V can be expressed in this coordinate system using the
+four-momentum P to project out the components(63; 64; 65),
+Vlong
+=
+(P0Vz −PzV0)/MT ,
+(13)
+Vout
+=
+(PxVx + PyVy)/PT ,
+Vside
+=
+(PxVy −PyVx)/PT ,
+where M2
+T = P 2
+0 −P 2
+z and P 2
+T = P 2
+x + P 2
+y . Dimensions of the source function are
+typically quoted in this coordinate system. One could also perform a second boost
+to the pair frame, in which the transverse components of the total momentum
+are zero. Then,
+V ′
+out = Minv
+MT
+(PxVx + PyVy)
+PT
+−
+PT
+MT Minv
+P · V,
+(14)
+where M2
+inv = P 2. Relative wave functions are more conveniently expressed in
+the frame of the pair. For instance, a sharp resonant peak is no longer sharp if the
+correlation is viewed away from the pair frame. For pairs where the correlation
+is inﬂuenced by Coulomb and strong interactions, most analyses are conducted
+in the pair frame.
+For non-zero impact parameters, azimuthal symmetry is lost and source func-
+tions also depend on the azimuthal direction of the pair’s total momentum (66;
+67; 68). Also, if boost-invariance is broken, the pair’s rapidity needs to be speci-
+ﬁed. In this more general case, reﬂection symmetries are broken and the choice of
+the coordinate axes becomes somewhat arbitrary. One could orient the axes ac-
+cording the event’s impact parameter, or one could rotate the coordinate system
+so that in the new frame cross terms such as ⟨xy⟩vanish (illustrated in Figure 2).
+One would then specify the Euler angles as part of the description of the source
+function.
+2.5
+Gaussian Parameterizations
+To gain a physical understanding of the three-dimensional spatio-temporal source
+distribution, it is useful to summarize its size and shape with a few parameters.
+This motivates the study of Gaussian parameterizations for the source SP(r′)
+and the two-particle correlator. Realistic sources deviate from Gaussians, e.g.
+by exponential tails caused by resonance decay contributions.
+The extracted
+Gaussian source parameters may thus depend on details of the ﬁtting procedures.
+These shortcomings can be overcome with imaging methods, or more complicated
+
+
+--- PDF PAGE 10 ---
+10
+Lisa et al.
+forms for the ﬁtting. A more general three-dimensional analysis of correlations
+would involve decomposing both the correlation and source functions in either
+spherical or Cartesian harmonics (69; 70). Although the detailed non-Gaussian
+aspects of the correlation are important, the extra information can also cloud
+the main trends in the data. In practice, Gaussian parameterizations provide the
+standard minimal description of experimental data.
+2.5.1
+The general case
+The most general form for a Gaussian source is
+exp{−Aαβ(xα−¯xα)(xβ−¯xβ)}, where xα refers to the four dimensions x, y, z, t, and
+A is a 4 × 4 real symmetric matrix. The most general form has 14 parameters,
+10 parameters for A and four more parameters for the oﬀsets ¯xα.
+Reﬂection
+symmetries can be used to eliminate certain cross terms and some of the oﬀsets
+(71). Furthermore, if the particles are identical or have the same phase space
+distributions, all the oﬀsets can be set to zero.
+because the source function
+for the second species b might also have 14 parameters, there could be up to
+28 Gaussian parameters in describing both sa and sb. However, because S(r)
+depends only on the distribution of relative spatial coordinates in the pair frame,
+only nine Gaussian parameters are required to describe the most general S for a
+given P. Three of these nine parameters can be identiﬁed with Gaussian widths,
+three can be identiﬁed with oﬀsets, and the last three can either be identiﬁed
+with cross terms or with the three Euler angles describing the orientation of the
+three-dimensional ellipse.
+Using the reﬂection symmetries for mid-rapidity sources in a symmetric central
+collision, a Gaussian parameterization of the emission function for particle species
+a in the out-side-long coordinate system reads
+sa(p, x)
+∼
+exp
+(
+−(xout −¯xa,out −Vs,a(t −¯ta))2
+2R2
+a,out
+(15)
+−(xside)2
+2R2
+a,side
+−(xlong)2
+2R2
+a,long
+−(t −¯ta)2
+2(∆τa)2
+)
+.
+The symmetries forbid any cross terms in the exponential involving xside or
+xlong, such as xsidexout or xlongt, but do not forbid a cross term between outward
+position xout and time t. Here, this cross term is taken into account by allowing
+the source to move in the outward direction with a velocity Vs. The symmetries
+also forbid oﬀsets in the sideward or longitudinal direction. These other oﬀsets
+have also been addressed for non-central collisions (72; 73).
+The correlation function is determined by the phase space density of the ﬁnal
+state, Equation 27. The resulting phase space density is
+fa(p, r, t)
+∼
+exp
+(
+−
+
+xout −¯Xa(t)
+2
+2
+
+R2
+a,out + (Vs,a −V⊥)2(∆τa)2 −
+x2
+side
+2Ra,side2 −
+x2
+long
+2Ra,long2
+)
+,
+¯Xa(t)
+=
+¯xa,out + V⊥(t −¯ta).
+(16)
+Here, V⊥is the velocity of the pair in the LCMS frame.
+The correlation function is determined by the relative distance function SP(r′),
+
+
+--- PDF PAGE 11 ---
+Femtoscopy in Heavy Ion Collisions
+11
+see Equation 3,
+SP(r′)
+∼
+exp
+(
+−
+
+r′
+out −¯Xout
+2
+4γ2
+⊥R2
+out
+−r′2
+side
+4R2
+side
+−
+r′2
+long
+4R2
+long
+)
+(17)
+R2
+out
+=
+1
+2
+
+R2
+a,out + R2
+b,out + (Vs,a −V⊥)2(∆τa)2 + (Vs,b −V⊥)2(∆τb)2
+,
+R2
+side
+=
+1
+2
+
+R2
+a,side + R2
+b,side
+
+,
+R2
+long = 1
+2
+
+R2
+a,long + R2
+b,long
+
+,
+¯Xout
+=
+¯x′
+a,out −¯x′
+b,out,
+where γ⊥≡(1 −V⊥)−1/2. Thus, there are four measurable parameters, Rout,
+Rside, Rlong, and ¯Xout.
+In the absence of any symmetry, there are ﬁve more
+terms: three cross terms (R2
+out,side, R2
+out,long and R2
+side,long), and two more oﬀsets
+(Xside and Xlong). For identical particles, all the oﬀsets are zero.
+2.5.2
+Sensitivity to Lifetime
+Given the symmetries used to derive Equa-
+tion 17, the most experiment can provide is the determination of the four param-
+eters, Rout, Rside, Rlong, and ¯Xout. The only way to independently determine
+the lifetime is to assume that the two transverse spatial sizes are approximately
+equal (74). After assuming R2
+a,out + R2
+b,out ≈R2
+b,side + R2
+b,side, Equation 17 yields
+for identical particles (Va,s = Vb,s = Vs, ∆τa = ∆τb = ∆τ),
+(V⊥−Vs)2(∆τ)2 ≈R2
+out −R2
+side .
+(18)
+In general, however, the source velocity is not precisely known and outward and
+sideward spatial dimensions are not exactly equal; these factors result in a signif-
+icant systematic error when applying Equation 18, especially because temporal
+eﬀects enter in quadrature. The Rout/Rside ratio only provides a reliable estimate
+of the lifetime when (V⊥−Vs)∆τ is much larger than the transverse size.
+2.5.3
+Gaussian Cross Terms
+In addition to the three Gaussian parame-
+ters, Rout, Rside and Rlong, that describe the dimensions of a Gaussian source, one
+needs, in the general non-symmetric case, three more parameters to describe the
+angular orientation of the principal axes. Figure 2 displays how the principal axes
+might diﬀer from the out-side-long axes once the collisions are oﬀcenter. These
+three Euler angles combined with three sizes can also be related to the parameters
+Aij in the general form for a three-dimensional Gaussian, exp(−Aijrirj), where
+A is a symmetric matrix with six independent components (75; 71; 66; 68).
+For pairs of identical particles, the correlation function for Gaussian sources is
+also Gaussian,
+C(q) = 1 + exp(−(R2)ijQiQj) ,
+(19)
+where Q = 2q. The six experimentally determined parameters, (R)2
+ij, can be
+related to the moments of S(r′) (76),
+⟨rirj⟩= (R2)ij.
+(20)
+For central collisions, the source sizes (R2)ij depend only on the longitudinal
+pair momentum PL and on the modulus of the transverse pair momentum |⃗PT |.
+This is diﬀerent for non-central collisions for which the azimuthal direction φpair =
+∠(⃗PT ,ˆb) of the transverse pair momentum with respect to the impact parameter
+
+
+--- PDF PAGE 12 ---
+12
+Lisa et al.
+Figure 2: For non-central collisions the principal axes describing the orientation
+of the region of homogeneity can diﬀer from the out-side-long axes. By viewing
+the source distribution from the perspective where the beam axis is oriented
+horizontally (left panel) and from peering down the beam pipe (right panel), the
+orientations leading to out-long and out-side cross terms are illustrated.
+direction ˆb matters. The φpair-dependences of (R2)out, (R2)side, and (R2)out−side
+then characterize the degree to which the initially out-of-plane-extended source
+geometry has expanded to the point where it becomes in-plane-extended (66; 67).
+The out-longitudinal and side-longitudinal cross terms contain information about
+the extent to which the main axis of the emission ellipsoid is tilted with respect
+to the beam axis(67). We return to this topic in Section 4.2.
+The Yano-Koonin parameterization (77; 78; 71; 79) provides an alternative
+basis for describing the out-long cross term. The Yano-Koonin form is based on
+the assumption that one can boost along the beam axis to a source frame where
+the correlation function has a simple form.
+C(P, Q) = 1 + exp
+n
+−˜Q2
+⊥R2
+⊥−˜Q2
+||R2
+|| −˜Q2
+0R2
+0
+o
+,
+(21)
+where ˜Q is the momentum diﬀerence deﬁned in the source frame which has ra-
+pidity yYK. In that frame R0 is the Gaussian lifetime and R⊥and R|| are the
+dimensions of the source. This can be transposed to the out-long-side frame by
+boosting ˜Q along the beam axis to the frame where Pz = 0, i.e.
+the LCMS
+frame, then using the fact that Q0 = QoutP⊥/P0 ≡QoutV⊥in the new frame.
+This yields ˜Q0 = cosh(yππ −yY K)QoutV⊥−sinh(yππ −yYK)Qlong, and ˜Q|| =
+cosh(yππ −yY K)Qlong −sinh(yππ −yYK)QoutV⊥, where yππ is the rapidity of the
+LCMS frame. Substituting these expressions into Equation 21 yields a cross term
+in the exponential equal to QoutQlong(R2
+0 + R2
+||) sinh 2(yππ −yYK), which disap-
+pears when yY K = yππ. By ﬁtting yY K as a function of the pair rapidity, aspects
+of boost invariance can be tested. Given that the distribution of source rapidities
+should fall oﬀfor large rapidities, one expects yY K to lag yππ, because pions of
+a given rapidity would more likely have been emitted from sources with smaller
+rapidities (78).
+2.6
+The λ factor
+Many pions measured in experiment come from long-lived decays. Pions from
+weak decays may or may not, depending on the experiment, be identiﬁed and re-
+moved from the analysis, because their decay vertices are typically a few centime-
+ters from the reaction center. Decays from η or η′ mesons occur a few thousand
+
+
+--- PDF PAGE 13 ---
+Femtoscopy in Heavy Ion Collisions
+13
+fm away from the center of the collision. At these distances, they are eﬀectively
+uncorrelated with other particles but cannot be identiﬁed with experiment. If
+a fraction λ of the pairs originate from the spatio-temporal region relevant for
+correlations, the correlation is muted by the factor λ (21). If the source function
+is divided into two contributions, S(r) = λSlocal + (1 −λ)S∞, where both Slocal
+and S∞integrate to unity, the resulting correlation is
+C(q) = (1 −λ) + λ
+Z
+d3r′Slocal(r′)
+
+|φ(q′, r′)|2 −1
+
+.
+(22)
+If the experimental sample includes a contamination from weak decays, η, or
+mis-identiﬁed particles of a fraction f, the lambda factor becomes (1 −f)2. It is
+not uncommon for this contamination factor to be near 30%, which results in λ
+near one half.
+Certainly, this division is somewhat artiﬁcial, as there are non-Gaussian tails,
+or halos (80), to Slocal due to such causes as the exponential fall-oﬀof the source
+function in the longitudinal direction or semi-long-lived resonances such as the φ,
+whose lifetime is 40 fm/c. Non-Gaussian behavior is a subject for either imaging
+(52; 53; 54; 55; 56; 57) or for more complicated parameterizations.
+The λ factor is often referred to as an incoherence factor, the name being mo-
+tivated by the properties of a coherent state, exp{i
+R
+dpη(p)[a(p) + a†(p)]}|0⟩,
+which for identical particles leads to no correlation. Coherent states represent
+highly correlated emissions caused by phase coherence and thus violate the as-
+sumption of incoherence or uncorrelated emission implied by Assumption 2 as
+described early in this section. The question of whether an observation of λ̸ = 1
+is due to coherence or due to contamination from particles from far outside the
+source volume can be tested by analyzing three-particle correlations (81; 82).
+Such analyses of data at both SPS and RHIC have been consistent with the in-
+coherence conjecture (83; 84; 85). Microscopic model calculations at the AGS
+reproduce the excitation function of λ when resonances contributions are in-
+cluded (86).
+2.7
+Collective Flow and Blast-Wave Models
+Both longitudinal and radial collective expansion reduce the size of the region of
+homogeneity, i.e., the relevant volume for particles of a given velocity. For an
+inﬁnite volume, the size of this region is set by the length one must move before
+collective velocity overcomes the thermal velocity, R ∼Vtherm/(dv/dz).
+2.7.1
+Longitudinal Flow
+The Gaussian lifetime ∆τ described in Equa-
+tion 18 represents the spread of the emission times. A small value of ∆τ does
+not imply that particles were emitted early, but that they were emitted suddenly.
+Inferring the mean time at which particles are emitted requires a diﬀerent as-
+sumption. For instance, at RHIC, the initial nuclei are Lorentz contracted by
+a factor of 100, and if there were no subsequent expansion, Rlong would be less
+than a Fermi. If one assumes that the system expands along the beam axis with
+no longitudinal acceleration, the collective velocity becomes
+Vcoll,z = z/t.
+(23)
+If emission then comes from sources moving over a large range of rapidities (a
+boost-invariant expansion), the dimension along the beam axis for the source
+
+
+--- PDF PAGE 14 ---
+14
+Lisa et al.
+Figure 3: because particles with heavier masses have smaller thermal velocities,
+their source volumes are more strongly conﬁned by collective ﬂow. For longitudi-
+nal ﬂow (left panel) this results in smaller values of Rlong for particles with higher
+mT =
+q
+m2 + p2
+T . For radial ﬂow (right panel) this conﬁnes heavier particles
+toward the surface, which results in both a reduced volume and an oﬀset ∆r in
+the outward direction.
+emitting zero-rapidity particles is determined by the distance one can move be-
+fore the collective velocity overwhelms the thermal velocity to force the emission
+function back to zero. The size can then be expressed as:
+Rlong ≈Vtherm
+dv/dz = Vtherm⟨t⟩.
+(24)
+Whereas Rout/Rside gives information about the suddenness of emission, Rlong
+provides insight into the mean time at which emission occurs given an estimate
+of the thermal velocity.
+For a thermal source with relativistic motion, the thermal velocity along the
+beam axis is determined by the temperature and the transverse mass, mT =
+q
+m2 + p2
+T (63). For large mT the thermal velocity in the longitudinal direction
+becomes non-relativistic, Vtherm =
+p
+T/mT , and the source size falls as 1/√mT
+which is referred to as mT scaling (87). This is illustrated in Figure 3. However,
+this assumes all particles are emitted with the same Bjorken time τB and tem-
+perature, independent of the transverse mass. because particles with high mT
+are probably emitted at lower τB, and because the temperature roughly behaves
+at τ −4/3
+B
+, the longitudinal size could fall even more quickly than m−1/2
+T
+.
+In a boost invariant expansion, emission is a function of the Bjorken time
+τB =
+√
+t2 −z2, not the time t, and because t =
+q
+τ 2
+B + z2, those particles emitted
+with small z have a head start.
+This is sometimes referred to as an inside-
+outside cascade. The transverse shape of S(r) is then aﬀected non-trivially by the
+expansion along the beam. The resulting correlation function can be calculated
+analytically in the case of pure identical-particle correlations (88; 89).
+Boost invariance is incorporated into blast-wave models with transverse expan-
+sion and assumed for many hydrodynamic models. The ﬁnite size of the system
+
+
+--- PDF PAGE 15 ---
+Femtoscopy in Heavy Ion Collisions
+15
+would alter the results for two reasons. First, if the distribution of sources cov-
+ers only a ﬁnite range in η, the tails of the distribution S(r) are chopped oﬀ.
+Assuming the distribution in η is Gaussian rather than uniform,
+1
+R2
+long
+∼
+1
+V 2
+thermτ 2
+B
++
+1
+η2
+Gτ 2
+B
+,
+(25)
+where ηG is the range of rapidities over which the sources are distributed. If ηG
+were 1.5 units of rapidity, the extracted values of τB from boost-invariant pictures
+would be underestimating τB by ∼10%.
+A second shortcoming of boost-invariant models is that they ignore acceleration
+in the longitudinal direction. Accounting for this acceleration would alter the
+relation between the time and the velocity gradient. Neglecting this acceleration
+could also lead to a modest underestimate of τB (180).
+2.7.2
+Transverse Collective Flow
+because transverse collective ﬂow
+is intimately related to the pressure and viscosity, it is of central importance.
+Blast-wave models are based on pictures of thermal sources superimposed onto
+the transverse and longitudinal collective velocity proﬁles. Simple forms are then
+chosen for the proﬁles. Only two parameters are important for analyzing spectra,
+the temperature and the transverse velocity. because heavier particles are more
+sensitive to ﬂow than are light particles, the two parameters can be adjusted to
+ﬁt the spectra of several species.
+In addition to the temperature and transverse velocity, correlation measure-
+ments are also sensitive to the space-time parameters of the blast wave. In a
+minimal parameterization this would include the lifetime τB and the transverse
+size R. More sophisticated models would also include a spread in lifetime ∆τ
+and a surface diﬀuseness ∆R. Additional parameters ensue when one considers
+sensitivity to the reaction plane. Then, two parameters are needed to describe
+the transverse size, and two parameters are required to describe the transverse
+collective velocity. These parameters can then depend on the azimuthal direction
+of P (90).
+Choosing a blast-wave parameterization involves a number of choices about the
+form of the parameterization (91). Chemical potentials and temperatures might
+be chosen to vary with the transverse position r (92; 93) or might be chosen
+to be uniform. A wide variety of parameterizations have been employed for the
+transverse velocity proﬁle, which might choose linear proﬁles for either v, γv or
+the transverse rapidity asinh(γv). In some parameterizations, the velocity proﬁle
+has been chosen to rise quadratically with r (94; 95). Although hydrodynamics
+has been invoked as justiﬁcation for diﬀerent parameterizations, proﬁles from
+hydrodynamics vary according to the equation of state.
+For particles moving much faster than the surface velocity, transverse ﬂow
+manifests itself by constraining particles to an increasingly small fraction of the
+blast-wave volume for the same reason that Rlong falls with mT owing to longi-
+tudinal expansion (96). For large mT , this leads to both Rside and Rout falling as
+1/√mT (71; 92; 93; 97). The fact that transverse dimensions fall with mT might
+also result from the dynamics of cooling, superimposed with a growing ﬁreball.
+This correlates high-energy particles with earlier times when the ﬁreball was both
+smaller and at a higher temperature.
+Non-identical particles are of special interest in a blast-wave.
+For particles
+moving faster than the surface of the blast wave, there is a stronger tendency
+
+
+--- PDF PAGE 16 ---
+16
+Lisa et al.
+for heavier particles to be more conﬁned to the region of the surface owing to
+their slower thermal velocities (72). This results in heavy particles being ahead
+of lighter particles of the same asymptotic velocity, and leads to a non-zero ∆r
+illustrated in Figure 3.
+As discussed in Section 2.3, these displacements are
+accessible through measuring odd components of the correlation function (60;
+61; 62).
+2.8
+Generating Correlations Functions from Hydrodynamics and
+from Microscopic Simulations
+Any model that predicts ﬁnal-state space-time and momentum information of
+emitted particles can be used to predict correlation functions.
+This informa-
+tion may be extracted from both microscopic simulations or from hydrodynamic
+calculations.
+Microscopic simulations model the collision by evolving particles along straight-
+line classical trajectories which are punctuated by collisions that are programmed
+to be consistent with free-space cross-sections. When the modeling is done on a
+one-to-one basis, the simulations are referred to as cascades. Boltzmann simula-
+tions are similar but employ an oversampling by a factor Ns accompanied by a
+scaling down of the cross-sections by the same factor. These are then consistent
+with the Boltzmann equation and become local and relativistically covariant in
+the large Ns limit (98; 99). To generate correlation functions from either class of
+simulation, there are essentially two methods which are equally justiﬁed within
+the smoothness approximation. Method I is motivated by Equation 3. This in-
+volves ﬁrst creating two lists, one for each species, of the space time coordinates
+xa and xb of all those particles that were emitted with momenta maP/(ma +mb)
+and mbP/(ma + mb).
+From these lists, one generates SP(r) by sampling the
+distributions of xa −xb. This list is then convoluted with |φ(q, r)|2 to generate
+C(P, q) for all q. In Method II, one samples pairs randomly without regard to
+their momenta. The numerator of the correlation function is then calculated by
+generating pairs with the same weight as one expects to observe experimentally
+and applying a weight given by the square of the relative wave function. The
+denominator would be calculated in a similar manner, but without the weight
+from the wave function. This method reﬂects the description of the correlation
+function in Equation 2. Acceptance eﬀects or kinematic cuts can then be per-
+formed exactly as they would be performed for real particles. Method II has
+an advantage in that it is easier to accurately incorporate acceptance eﬀects or
+tight kinematic cuts. Method I makes for a much quicker calculation because the
+procedure does not require sampling particles for irrelevant momenta (42).
+Given the equation of state and the initial energy density, hydrodynamics pro-
+vides the means for solving for the space-time development of the stress-energy
+tensor which can be used to make predictions for correlations (100; 101; 102).
+Viscous eﬀects can also be incorporated and are non-negligible (103; 104). Gen-
+erating source functions from the output of hydrodynamic calculations is not as
+straightforward as it might seem. The Cooper-Frye prescription (105) conserves
+energy and momentum if the equation of state is one of free particles, but it
+suﬀers from the fact that the particles that cross backwards across the surface
+into the hydrodynamic volume enter the source function as a negative emission
+probability. If the relative velocity of the surface, as measured by an observer in
+the matter’s rest frame, is not much faster than the thermal velocity, a diﬀerent
+
+
+--- PDF PAGE 17 ---
+Femtoscopy in Heavy Ion Collisions
+17
+prescription is required. Numerous prescriptions have been proposed to address
+these issues (106; 107; 108).
+Hydrodynamic models, even those that incorporate viscosity, cannot be justi-
+ﬁed once the system expands to the point that the mean free path is similar to the
+characteristic size of the system. However, Boltzmann descriptions or cascades
+are well justiﬁed at lower densities. Several eﬀorts have thus focused on coupling
+the two approaches (109; 110; 111; 112). because the ﬁnal-state trajectories are
+established in the Boltzmann part of the prescription, one can apply either of the
+methods mentioned above.
+2.9
+Phase Space Density, Entropy and Coalescence
+because phase space density depends on both the momentum p and the position
+r, a measurement of the phase space density must specify the spatial region
+over which it is determined. In practice, spatial information from two-particle
+correlation functions is instrumental to this end. For identical particle pairs, the
+“area” under the correlation function determines the average phase space density
+(113). Substituting the ﬁnal phase space density for the time-integrated source
+function,
+Z tf
+dx0
+Ep(2π)3 s(p, x)|p0=Ep = f(p, x, tf) ,
+(26)
+and inserting into Equation 3 with Q = 2q leads to
+Z
+d3Q [C(Q) −1]
+=
+(2π)3
+R
+d3r|f(P/2, r, tf)|2
+R
+d3rf(P/2, r, tf)
+2 =
+¯f(P/2)
+dN/d3p ,
+(27)
+¯f(p)
+=
+(2π)3
+(2S + 1)
+Ep
+m
+dN
+d3pSP=2p(r′ = 0).
+Equation 28 applies also for the case of non-identical particles of the same phase
+space density. We note that ¯f(p) is the phase space density averaged over coor-
+dinate space for a speciﬁc momentum using the phase space density itself as the
+weight. Unless f(p, r, t) is a constant within a ﬁxed volume, the average phase
+space density will fall below the maximum phase space density (106). For in-
+stance, if f(p, r, t) has a Gaussian proﬁle in coordinate space, the average phase
+space density will be 2−3/2 of the maximum phase space density for that momen-
+tum. For a Gaussian source,
+¯f(p) =
+π3/2
+(2S + 1)mR3
+inv
+E dN
+d3p,
+(28)
+where R3
+inv = (E/m)RoutRsideRlong is the product of the three radii as measured
+in the frame of the pair. The phase space density is determined by combining a
+source size measurement with the spectra. Entropy can be related to the phase
+space density in the standard way (114)
+S
+=
+(2S + 1)
+Z d3rd3p
+(2π)3 [−f ln f ± (1 ± f) ln(1 ± f)] ,
+(29)
+dS/dy
+≈
+Z
+d2pT E dN
+d3p
+5
+2 −ln(23/2 ¯f(p)) ± ¯f(p)/2
+
+.
+(30)
+
+
+--- PDF PAGE 18 ---
+18
+Lisa et al.
+Here, Equation 30 ignores higher powers of ¯f.
+The average phase space density is also straightforward to determine by con-
+structing ratios of spectra with species that can either bind or form a resonance.
+If species a and b can bind to form species c, thermal arguments would state
+fc(r, t) = fa(Pma/mc, r, t)fb(Pmb/mc, r, t)eB/T ,
+(31)
+where B is the binding energy, or the excitation energy if the resonance is un-
+stable. Coalescence arguments, which give the same expression but without the
+binding energy (116; 117), are identical if the binding energy is small compared to
+the temperature, as is the case for nucleon coalescence. The average phase space
+density for a or b can be determined by inserting Equation 31 into Equation 28,
+¯fa,b(p) = e−B/T mb,a(2Sb,a + 1)
+mc(2Sc + 1)
+EcdNc/d3P
+Eb,adNb,a/d3p.
+(32)
+Here, the binding energy needs to be expressed in the frame of the thermal bath.
+For the case where B is small, the assumption of a thermal bath can be neglected.
+Two examples where particles with similar phase-space densities form low-energy
+resonances or bound states are pn →d and φ →K+K−.
+By comparing the expression for ¯f from the ratio of spectra in Equation 32,
+with Equations 28 or 28, one can determine either SP(r′ = 0) or the Gaussian
+parameters from ratios of spectra.
+SP(r′ = 0)
+=
+e−B/T mamb(2Sa + 1)(2Sb + 1)
+(2π)3mc(2Sc + 1)
+EcdNc/d3P
+EadNa/d3pa · dN/d3pb
+, (33)
+R3
+inv(P)
+=
+1
+(4π)3/2SP(r′ = 0).
+(34)
+Coalescence analyses can provide powerful measurements of volumes, but they
+only provide a single number, S(r′ = 0), and they cannot provide any insight
+into either the shape or the r dependence.
+3
+Femtoscopic measurements
+Experimental techniques have developed considerably in response to signiﬁcant
+improvements in both the theory and the quantity and quality of experimental
+data. In this section we discuss the general experimental approach for deﬁning
+and analyzing femtoscopic correlations and their systematic dependence on global
+and kinematic quantities.
+3.1
+Correlation Function Deﬁnition
+In practice, the formal deﬁnition of the correlation function in Equation 1 is
+seldom used in heavy ion physics. Instead the correlation of two particles, a and
+b for a given pair momentum P and relative momentum q, is nominally given by
+Cab
+P (q) = Aab
+P (q)
+Bab
+P (q) · ξP(q),
+(35)
+
+
+--- PDF PAGE 19 ---
+Femtoscopy in Heavy Ion Collisions
+19
+where Aab
+P (q) is the signal distribution, Bab
+P (q) is the reference or background
+distribution which is ideally similar to A in all respects except for the presence
+of femtoscopic correlations, and ξP(q) is a correction factor introduced to com-
+pensate for non-femtoscopic correlations present in the signal that are not fully
+accounted for in the background as well as artifacts resulting, e.g., from ﬁnite
+resolution and contamination.
+3.2
+Signal Construction
+The signal Aab
+P (q) refers to the relative momentum distribution of particles a and
+b for a given range of pair momenta, P, and a given set of event characterizations.
+Although not all analyses proceed in exactly the following fashion, the mechanics
+of constructing the signal and background are most easily understood if one
+considers as separate steps:
+1. Event quality cuts and event-class binning;
+2. Single-track (including particle identiﬁcation) cuts and single-particle bin-
+ning; and
+3. two-particle pairing, two-track cuts, and pair momenta binning.
+Here the term event class refers to both physics observables, such as collision cen-
+trality and reaction plane orientation, and detector considerations, such as event
+vertex position and the condition of the detector when the event was recorded,
+usually keyed by run number. The latter considerations are relevant to the proper
+construction of the background. For event-class, particle, and pair bin, the ﬁ-
+nal signal is usually stored as a set of 3D-histograms in the canonical relative
+momentum variables.
+Single-particle acceptances divide out with a properly constructed background,
+but 2-track acceptances can have a large eﬀect on the correlation function. For
+this reason the analysis of 2-track cuts is the dominant consideration in the signal
+construction for most analyses. The cuts and terminology are diﬀerent for Time
+Projection Chamber (TPC) experiments with near continuous hit distributions
+and Drift Chamber experiments with projective geometry, but the goals are the
+same. Split-tracks (118; 119) and ghost-tracks both refer to single tracks which
+are incorrectly reconstructed as a pair of tracks with very low relative momenta.
+Even after the event-reconstruction algorithms (which generate a list of individual
+tracks) have been optimally tuned, small traces of these false pairs remain and
+must be removed from the analysis with identical pairwise cuts. Usually only
+a tiny fraction of tracks are split, and this eﬀect may be ignored in essentially
+all experimental analyses except femtoscopic ones. Various methods have been
+developed for identifying likely split tracks, usually based on the number (119)
+or topology (118) of space-points associated with the track.
+Pairwise eﬀects usually also result in the loss of pairs at low relative momentum,
+because two tracks with very similar trajectories tend to be reconstructed as a
+single track. (Note that in tracking detectors, this is not a problem if one or both
+of the particles is a topologically identiﬁed neutral particle. In that case, the decay
+daughters may be well-separated even if their parents have identical momentum.)
+Such merging issues are usually resolved by pairwise cuts that remove merged
+pairs. Developing eﬃcient and appropriate cuts can be a subtle exercise, and it
+requires good knowledge of the detector and event reconstruction software. In
+
+
+--- PDF PAGE 20 ---
+20
+Lisa et al.
+most cases these cuts are supported by simulations, but ﬁnal determinations are
+nearly always based upon data.
+What does it mean to cut out merged pairs? After all, if the tracks have merged,
+then the pair is lost anyway.
+The point is twofold.
+First, the pair eﬃciency
+usually does not drop from 100% to 0% sharply as a function of any variable.
+Thus, the cuts are usually tuned to exclude all (86; 118) or most (120; 121; 122)
+of the ineﬃcient region. If regions with less than perfect eﬃciency remain in the
+analysis, a 2-track eﬃciency correction based on Monte Carlo simulations must
+be applied, typically leading to systematic uncertainties of a few percent. The
+second reason for the cut is that it is applied equally to the signal and to the
+background distribution Bab
+P (q) (123). Thus, if some fraction f of pairs is lost
+at some relative momentum q in Aab
+P (q), the same fraction is lost in Bab
+P (q), and
+the ratio in Equation 35 is robust against the eﬀect.
+3.3
+Background Construction
+For reasons described above, all cut-imposed eﬀects on the signal pair distribution
+Aab must be applied to Bab. This often means identifying which pairs would have
+been removed by merging, splitting, or other cuts, had the particles come from
+in the same event.
+The ideal background should be identical to the signal in all respects except
+for the presence of femtoscopic correlations. Therefore, the global event charac-
+teristics, single particle distributions, and acceptances should match those of the
+signal. A simple and straightforward way to construct such a background is to
+form pairs from diﬀerent events within a single event class. This event-mixing
+technique (124) has gained wide acceptance in relativistic heavy-ion collisions
+where violations to energy-momentum conservation are negligible in the high
+multiplicity environment. This technique will be described in detail in what fol-
+lows. However, other methods have also been used, especially if one considers
+femtoscopy in other systems.
+For elementary-particle collisions or in low-multiplicity events, event mixing
+can violate total energy-momentum conservation, especially when exclusive ﬁ-
+nal states or jet-axes must be preserved; thus, the correlation function would
+reﬂect non-femtoscopic in addition to femtoscopic correlations. In these cases,
+the most common techniques form a background from unlike-signed pairs, with
+resonance regions excluded with cuts (125) or normalized with a correlation of
+like- to unlike-signed pairs from a Monte Carlo (126). Other experiments have
+constructed a background using only Monte Carlo generated pairs
+(127).
+A
+few experiments have investigated backgrounds formed by swapping (128) or re-
+versing momentum components relative to a jet-axis (125), but these methods
+are not widely used.
+For detectors with symmetrical acceptance, such as the
+STAR TPC (129), momentum conservation eﬀects may be eliminated by mixing
+pairs from the same event, with the lab momentum of one particle ﬂipped (130).
+Backgrounds constructed from single-particle distributions as formally deﬁned by
+Equation 1 have been used for heavy ion collisions at lower energies and shown
+to be consistent with the more commonly used event-mixing technique (131).
+In order to avoid inducing artiﬁcial structure in the correlation function, the
+particles forming pairs in the background distribution should originate from par-
+ent events with the same event characteristics. The parent events should have
+similar vertex positions to within the experimental resolution. Because detector
+
+
+--- PDF PAGE 21 ---
+Femtoscopy in Heavy Ion Collisions
+21
+acceptances can vary with time (e.g., components may fail for some runs), parent
+events should have been measured close in time to each other; this is usually
+easiest in any case, because event mixing is done on the ﬂy as time-ordered data
+is read sequentially.
+Parent events whose particles are mixed should also have the same single-
+particle momentum distributions. Thus, they should have similar centralities and
+orientations of the reaction plane. For example, mixing particles from events with
+very diﬀerent pT slopes or directions of preferred emission (elliptic ﬂow) would
+produce diﬀerences between Aab(q) and Bab(q) even in the absence of physical
+correlations. because almost all analyses to date have ignored these potential
+biases, it is comforting that they make little diﬀerence in practice (118).
+The list of event classes given here is by no means exhaustive. One can expect
+future analyses to incorporate the orientation of high pT particles (jet axis) or
+any other event-related observable.
+The procedure for deciding how many events to mix remains something of an
+art and involves optimizing over the range of data runs, bin width, and statistics.
+In order to minimize statistical errors, one typically forms approximately ten
+times the number of pairs in the background as in the signal. For the special case
+when all possible combinations are formed, the variance of a particular relative
+momentum bin is proportional to n
+3
+4, where n is the number of entries in the
+bin (22). However, as the number of pairs formed is reduced, the variance per
+bin approaches the n
+1
+2 value expected for Poisson statistics (121). It is possible
+that non-Poisson ﬂuctuations persist in the co-variance between diﬀerent bins,
+but this has not yet been investigated.
+Once the pairs have been mixed, the background must be subject to the same
+2-track cuts that have been applied to the signal. For example, the exact same
+track merging cuts or minimum separation on a detector must be applied to both
+signal and background.
+3.4
+Corrections
+Corrections to the correlation function fall into three categories: ﬁnite resolution
+eﬀects, mis-identiﬁed particle contamination, and compensation for deﬁciencies
+in the background.
+The ﬁrst category concerns single-track momentum resolution, and reaction-
+plane resolution. We consider ﬁnite momentum resolution corrections ﬁrst. Typ-
+ically, momentum resolutions are on the order of 1%. One approach is to correct
+for momentum resolution by a double ratio of the ideal correlation function gen-
+erated from a Monte Carlo simulation with perfect momentum resolution divided
+by a Monte Carlo correlation function with momentum resolution turned on. The
+femtoscopic weights are inserted into the simulations iteratively until the ﬁtted
+radii converge (123; 119; 86; 118). A second approach is similar, but corrects
+only the Coulomb interaction term, which is most greatly aﬀected by momentum
+resolution eﬀects (122). In both cases, the corrections change the ﬁtted radii by
+only <5%.
+As discussed in Section 4.2, azimuthally sensitive analyses (132; 133; 134)
+measure oscillations in correlations as a function of emission angle with respect
+to the reaction plane. Finite resolution eﬀects in the reaction plane angle (135)
+artiﬁcially reduce the oscillation strengths.
+Methods have been developed to
+correct the distributions Aab(q) and Bab(q) for these eﬀects (68; 136).
+
+
+--- PDF PAGE 22 ---
+22
+Lisa et al.
+Another type of correction accounts for the inclusion of mis-identiﬁed and
+secondary-particle contamination.
+For example, electrons may be mistakenly
+identiﬁed as π−mesons. It is usually assumed that the mis-identiﬁed or sec-
+ondary particles are uncorrelated with other particles, so the net eﬀect on the
+correlation function is to damp all structure uniformly in q. For purely Gaus-
+sian correlations (see Section 3.5), this eﬀect is absorbed wholly into the λ factor
+discussed in Section 2.6; homogeneity lengths—derived from the width of the
+Gaussian correlation—are unaﬀected by the reduction in its strength. In many
+cases, however, the homogeneity length is extracted largely from the strength of
+the correlation, and so contamination eﬀects must be removed. In the general
+case, for which the purity ρ depends on the relative momentum, the correlation
+function is corrected according to Ctrue(q) = (Craw(q) −1)/ρ(q) + 1 (62; 118).
+It is more diﬃcult to correct for correlated contamination. For example, if cuts
+cannot completely distinguish primary protons from those coming from Λ decay,
+then measured p −Λ correlations will contain contributions from Λ −Λ corre-
+lations. Unlike the white-noise contamination discussed above, this introduces
+structure into CpΛ(q) that can be accounted for only with detailed simulations.
+Such corrections will become more important at RHIC due to copious resonance
+production, and especially for baryon correlation measurements, in which the
+heavy daughter carries most of the momentum of the parent resonance.
+The last category of corrections are applied to ﬁx deﬁciencies in the back-
+ground distribution.
+This includes corrections to account for two-particle in-
+eﬃciencies, which have been discussed in the previous Section. A second cor-
+rection of this type deals with the residual signal correlation that is present in
+all backgrounds derived from events that contribute to the signal. The residual
+correlation arises because femtoscopic correlations can modify the single particle
+distributions. This is especially true for small-aperture spectrometers. This eﬀect
+can be removed with an iterative procedure (22; 137), however, for many large
+experiments the induced error is often 1% or less, and it is easier to fold this into
+the systematic errors (122).
+3.5
+Fitting
+After the application of all cuts and corrections, the correlation is formed accord-
+ing to Equation 35 and then ﬁt to determine spatial parameters. As described in
+Section 2, there are three approaches to ﬁtting the correlation function: ﬁtting
+to a simpliﬁed Gaussian form with strong and Coulomb interactions neglected or
+factored out, ﬁtting to a convolution of the full kernel convoluted to a parame-
+terization of S(r), and inverting the kernel to ﬁt a source image. The simpliﬁed
+Gaussian ﬁts based on Equation 19 are limited to correlations of identical pions,
+kaons, and photons, but it has been the most widely used method to date be-
+cause of the computational demands of the other methods. We expect its use
+to continue for the large systematic studies in which binning in centrality, reac-
+tion plane, and kT leads to ﬁts of more than one hundred separate correlation
+functions for a single colliding system.
+However, the functional form of the Gaussian parameterization used by exper-
+imentalists has evolved over the years. Before reviewing the most recent func-
+tional forms, it is necessary to review the treatment of the Coulomb interaction
+and the fraction of pairs coming from the source that contribute to the femto-
+scopic correlations. Both were ﬁrst introduced into the literature by Zajc (22) in
+
+
+--- PDF PAGE 23 ---
+Femtoscopy in Heavy Ion Collisions
+23
+1
+1.1
+1.2
+1.3
+1
+1.1
+1.2
+1.3
+ < 30 MeV/c
+ l
+,q
+s
+; q
+o
+q
+Raw C
+Standard CC C
+Standard fit
+Bowler-Sinyukov fit
+0
+0.05
+0.1
+1
+1.1
+1.2
+ < 30 MeV/c
+ l
+,q
+o
+; q
+s
+q
+0
+0.05
+0.1
+0.15
+1
+1.1
+1.2
+ < 30 MeV/c
+s
+,q
+o
+; q
+lq
+q (GeV/c)
+q (GeV/c)
+ C 
+ C 
+ C 
+Figure 4:
+Projections of
+a three-dimensional correla-
+tion function (integrated over
+0-30
+MeV/c
+in
+orthogonal
+components) for low-kT
+π−
+pairs for 200 GeV central
+Au+Au collisions (118) (ﬁlled
+symbols) with ﬁt function.
+Open symbols include cor-
+rection for Coulomb interac-
+tion among all pairs. Projec-
+tions were generated accord-
+ing to the prescription de-
+scribed in (140).
+the form of the Gamow factor given in Section 2 and an empirical parameter λ
+to account for the observation that not all pairs exhibit femtoscopic correlations.
+With steady improvements in data quality and CPU speed, the Gamow factor
+has been replaced with a calculation of an squared unsymmetrized Coulomb wave
+for a ﬁnite Gaussian source. The improvements in data quality have also led to a
+self-consistent treatment of λ with respect to both Coulomb and Gaussian com-
+ponents of the ﬁt function (138; 139). For this to be accurate, we must assume
+that the source is fully chaotic, an assumption that has recently been veriﬁed
+with three-pion correlations (85; 81). The non-femtoscopic pairs consist of mis-
+identiﬁed particles and particles that emanate from too far from the source for
+the correlation to be resolved experimentally. The region far from the source has
+been referred to the source halo, to diﬀerentiate it from the core. The correlation
+ﬁt function is therefore given by Equation 36,
+C(q) = N [λG(q)F(q) + (1 −λ)] ,
+(36)
+where N is the overall normalization, F is the Coulomb component, and G is the
+Gaussian form for the un-damped correlation function, Equation 19 for out-long-
+side coordinates, or Equation 21 for Yano-Koonin variables.
+Figure 4 shows projections of a π−−π−correlation function measured by the
+STAR collaboration (118). The ﬁlled symbols are the measured correlation func-
+tion corrected for momentum resolution only and ﬁt with Equation 36. The open
+symbols have been overcorrected by applying to all pairs the Coulomb correction
+for the ﬁtted source dimensions. Depending on the shape of the correlation and
+degree of experimental contamination, extracted homogeneity lengths may vary
+by up to ∼15% if the correlation function is overcorrected.
+For proton-proton correlations and non-identical particle correlations, direct
+ﬁts are performed by convoluting the full kernel with a parameterized source.
+For these analyses, the paucity of statistics has been more of a limitation than
+the relatively modest demands in CPU power. The examples given in Section 4
+are all for one-dimensional analyses, but recent data from RHIC will soon be
+
+
+--- PDF PAGE 24 ---
+24
+Lisa et al.
+analyzed in multi-dimensions.
+The ability to image the source by inverting the kernel is a relatively recent
+development, but one with very general applications. Because the source is pa-
+rameterized by a series of B-splines, it is a very general form which is sensitive
+to non-Gaussian shapes. To date, source imaging has been performed only with
+one-dimensional correlations, but like with the direct ﬁts, a multi-dimensional
+kernel will soon be possible (141; 69).
+Non-Gaussian eﬀects were reported in the ﬁrst pion correlation measurement
+at RHIC (142). With higher statistics, the STAR Collaboration has studied the
+issue in greater detail (118), performing a functional expansion (the so-called
+Edgeworth expansion (143)) about a Gaussian shape. Although signiﬁcant non-
+Gaussian contributions were reported, the dominant length scales were already
+extracted in the purely Gaussian ﬁts.
+3.5.1
+Minimization
+A simple chi-squared test is inappropriate for ﬁtting
+correlation functions because the ratio of two Poisson distributions is not itself
+Poisson distributed, especially when taking the ratio of small numbers. For this
+reason, a log-likelihood ﬁt function of the form given in Equation 37 is preferred.
+χ2
+P ML = −2
+
+A ln
+C (A + B)
+A (C + 1)
+
++ B ln
+
+A + B
+B (C + 1)
+
+,
+(37)
+where A, B, and C were introduced in Equation 35. This equation derived from
+the principle of maximum likelihood assuming that both signal and background
+are Poisson distributed (121). The full derivation of Equation 37 and comparison
+to earlier log-likelihood functions is given in (121).
+4
+Measured Femtoscopic Systematics
+The ﬁrst systematic study to compare femtoscopic measurements across several
+systems and experiments was performed almost 20 years ago with data from
+intermediate-energy heavy ion collisions at the Bevalac (144). The data, taken
+from experiments with diﬀerent acceptances, triggers, and analysis techniques,
+were suﬃcient to demonstrate a crude A1/3 scaling of the one-dimensional radii,
+indicating that spatial scales were indeed being probed. The ﬁrst femtoscopic
+measurements for relativistic heavy ion collisions were presented by the NA35
+Collaboration at the Quark Matter meeting in Nordkirchen (145; 146). More
+detailed measurements followed with the availability of sulphur and silicon beams
+at the SPS (123) and AGS (147; 148).
+Since then, increasingly sophisticated experiments at the AGS, SPS, and RHIC
+have performed femtoscopic measurements corresponding to a wide range of con-
+trol parameters. The experimental community performing the measurements has
+reached critical mass and matured substantially; a common language and knowl-
+edge base has developed concerning sometimes subtle details in performing and
+interpreting femtoscopic measurements.
+The result of this eﬀort is a striking
+degree of consistency across experiments in regions of phase space where ac-
+ceptances overlap and meaningful generation of systematics across experiments.
+Large-statistics data sets routinely allow three-dimensional correlation measure-
+ments with small statistical error bars. Systematic errors, which now dominate
+the experimental errors, have been reduced to the level of ∼5%, or ∼0.25 fm
+for most measurements. It is no exaggeration to state that femtoscopic measure-
+
+
+--- PDF PAGE 25 ---
+Femtoscopy in Heavy Ion Collisions
+25
+ (fm)
+long
+R
+0
+2
+4
+6
+ (fm)
+side
+R
+0
+2
+4
+6
+ (fm)
+out
+R
+0
+2
+4
+6
+1/3
+part
+N
+0
+2
+4
+6
+8
+1/3
+)
+η
+/d
+ch
+(dN
+0
+2
+4
+6
+8
+10
+200 GeV Au+Au PHENIX
+200 GeV Au+Au STAR
+17.3 GeV Pb+Pb CERES
+  8.7 GeV Pb+Pb CERES
+4.8 GeV Au+Au E802
+5.4 GeV Si+Au  E802
+5.4 GeV Si+Al   E802
+Figure 5: Pion source radius dependence on number of participants (left) and on
+charged particle multiplicity (right). Data are for for Au+Au (Pb+Pb) collisions
+at several values of √sNN, and also for Si+A collisions at the lowest energy.
+Average transverse momentum ⟨kT ⟩∼450 MeV/c for the PHENIX data and
+∼390 MeV/c for the others. Data from (121; 149; 122; 118).
+ments have become a precision tool.
+Here, we cover the most important systematics of femtoscopic measurements
+from the AGS, SPS, and RHIC. We discuss only generally the physics probed
+by a given systematic, appealing to intuitive schematic models such as the blast
+wave (72). Full interpretations and comparisons to dynamic models are given in
+Section 5
+4.1
+System size: Npart and Multiplicity
+As discussed earlier, femtoscopic radii probe homogeneity regions, and not the
+entire source (hereafter, the term source will be used to refer to the entire source
+of particle emission). Nevertheless, the claim that two-particle correlations probe
+spatial scales would be given little credence if the radii did not exhibit a strong,
+positive correlation with system size. Therefore, measuring the systematic varia-
+tion of the radii vs. system composition and centrality represents the most basic
+test of both theoretical and experimental femtoscopic techniques.
+Coalescence studies (150) and two-proton measurements at the AGS (151) and
+SPS (152) unambiguously demonstrate that nucleon homogeneity lengths increase
+with decreasing impact parameter and/or increasing projectile mass, continuing
+the trend mapped at lower energies (153; 154), where directional cuts have allowed
+measurement of the shape of the homogeneity region (155; 156; 157). More de-
+
+
+--- PDF PAGE 26 ---
+26
+Lisa et al.
+tailed information comes from pion correlations at relativistic energies, for which
+three-dimensional analyses allow partial isolation of purely geometrical eﬀects.
+The centrality dependence of Bertsch-Pratt source radii are shown in Figure 5
+for a wide range of collision energies. The left panels show the dependence on the
+number of participating nucleons, Npart, a generalization of the A1/3 linear scal-
+ing of nuclear radii used to approximate the initial overlap geometry. All of the
+radii exhibit a linear scaling in N 1/3
+part, most with ﬁnite intercepts. Only the slope
+of the Rlong dependence shows a signiﬁcant increase from the AGS to RHIC, con-
+sistent with a lifetime that increases with both centrality and √sNN. The trend
+of increasing Rlong with increasing √sNN is reversed for √sNN < 5 GeV (86).
+The right panels of Figure 5 show the same radii as a function of (dNch/dη)1/3.
+The primary motivation for exploring the (dNch/dη)1/3dependence is its relation
+to the ﬁnal state geometry through the density at freeze-out. However, the two
+scaling quantities are highly correlated. In fact, the values of dNch/dη shown
+on the right side of Figure 5 were derived from Npart using the N α
+part parame-
+terizations given in (158), and conversely, the Npart values are often calculated
+from multiplicity distributions using a Glauber model. Given this caveat, the
+Rside and Rlongvalues exhibit a linear dependence on (dNch/dη)1/3, again with
+ﬁnite intercepts. The strong uniformity from √sNN of 5 to 200 GeV leads one to
+believe that the approximate Npart scaling (initial overlap geometry) is a result
+of the scaling with multiplicity (ﬁnal freeze-out geometry) and not the other way
+around.
+The parameter Rout, which mixes spatial and temporal information (see Section
+2.5), increases with multiplicity at each given collision energy, but does not follow
+a universal curve. However, the strikingly √sNN-independent multiplicity scaling
+of the geometric radii Rside and Rlongstrongly suggests that the observed increase
+of these radii with collision energy for √sNN > 5 GeV (see Section 5.1) is due
+simply to the rise of multiplicity with collision energy. This trend, as well as its
+violation at √sNN < 5 GeV, has been interpreted in terms of changing chemical
+composition of the source as the system evolves with energy from baryon to meson
+dominance (210).
+We note that the systematics in system size represent an initial sanity check
+for the femtoscopic technique. The obvious direct connection of the radii to the
+source geometry estimated in two ways refutes suggestions (159) that smaller,
+non-geometric length scales dominate experimentally extracted transverse radii.
+4.2
+Source Shape: Pair emission angle relative to ˆb
+The variation of femtoscopic radii with the pair emission angle relative to⃗b (φpair)
+can be used to probe the three-dimensional shape of the source (75; 160; 66; 161;
+162; 67; 68; 72). The anisotropic shape transverse to the beam direction—the
+coordinate-space analog to the elliptic ﬂow characterizing momentum-space—
+gives rise to cos(nφpair) (n even) oscillations in the squared transverse source
+radii R2
+out, R2
+side, R2
+out,side (66; 68).
+Just as one expects the source (and homogeneity regions) to be larger for
+decreasing |⃗b|, one also expects it to be rounder, reﬂected by small oscillations
+of the radii. Figure 6 for mid-rapidity pions from Au+Au collisions at RHIC
+conﬁrms this expectation. As |⃗b| increases, the oscillations indicate a transverse
+
+
+--- PDF PAGE 27 ---
+Femtoscopy in Heavy Ion Collisions
+27
+)
+2
+ (fm
+2
+o
+R
+10
+20
+30
+)
+2
+ (fm
+2
+l
+R
+20
+30
+)
+2
+ (fm
+2
+s
+R
+10
+15
+20
+25
+)
+2
+ (fm
+2
+os
+R
+-2
+0
+2
+0
+/2
+π
+π
+0
+/2
+π
+π
+0-5%
+10-20%
+40-80%
+ (radians)
+Φ
+Figure 6:
+Squared source radii mea-
+sured at mid-rapidity in Au+Au col-
+lisions at RHIC, as a function of pair
+emission angle relative to the reaction
+plane. Data for three centralities are
+shown. Figure from (134).
+0.2
+0.6
+1
+Au(2 AGeV)Au
+b = 4-8 fm
+-0.3 < ycm < 0.9
+pT = 0-0.4 GeV/c
+20
+40
+out
+side
+long
+-16
+0
+16
+0
+200
+out-long
+0
+200
+out-side
+0
+200
+400
+side-long
+Figure 7:
+Squared source radii mea-
+sured near mid-rapidity in mid-central
+Au+Au collisions at lowest-energy AGS
+settings, as a function of pair emission
+angle relative to the reaction plane. Fig-
+ure from (132).
+source increasingly elongated out of the reaction plane (134).1
+The strong in-plane expansion (163) does not fully convert the initial out-of-
+plane (overlap) geometry into an in-plane-extended source at freeze-out. This
+suggests a rather short evolution time; in essence, the system did not have time
+to reverse its deformation. However, this is only a hint, and a full dynamical
+transport calculation is required to extract physical timescales (90).
+Whereas at the highest RHIC energy, the freeze-out anisotropy is ∼1
+3 of the
+initial (134), at low AGS energies, the ﬁnal anisotropy is consistent with that of
+the initial overlap region (132), or perhaps slightly lower. because elliptic ﬂow
+vanishes—changes sign—at these energies (164), these trends make intuitive sense
+and suggest an underlying connection to the evolution dynamics. It would be
+desirable to map the source anisotropy at intermediate (AGS and SPS) energies,
+for which there may be interesting changes in the space-time systematics. At
+these energies, there have been intriguing hints of asymmetries in the homogeneity
+regions for pions (165; 166; 167; 168) and protons (169), and in the proton-pion
+separation (166; 73), although they have not been ﬁnalized.
+If the impact parameter direction ˆb—not simply the 2nd-order event-plane angle
+(unambiguous only over a range [0, π])—is known, then more detailed information
+may be obtained. In the left panel of Figure 2, the source is tilted with respect to
+the beam axis, toward ˆb. Just as anisotropic azimuthal geometry in the transverse
+plane is related to the structure of elliptic ﬂow (90; 100), a tilted geometry can
+reveal important information on the underlying nature of directed ﬂow (170;
+1The out-of-plane nature of the elongation may be read directly from Figure 6.
+Ignor-
+ing collective ﬂow or opacity eﬀects (e.g. 67) an out-of-plane-extended Source would produce
+R2
+side(φpair = 0◦) > R2
+side(φpair = 90◦), as seen in Figure 6. Collective ﬂow eﬀects complicate
+this picture (66; 72), but the sign of the oscillations are determined by geometric, not dynamic,
+eﬀects for realistic sources at RHIC (90; 72).
+
+
+--- PDF PAGE 28 ---
+28
+Lisa et al.
+Figure 8:
+The Yano-
+Koonin source rapidity
+is
+shown
+as
+a
+func-
+tion of the pion pair
+rapidity
+for
+central
+Au(Pb)+Au(Pb)
+col-
+lisions
+over
+a
+broad
+range of energies (open
+symbols are for π−π−,
+closed
+symbols
+for
+π+π+). Both quantities
+are
+in
+the
+center-of-
+mass
+frame
+of
+the
+colliding system.
+Data
+from (176;
+177;
+178;
+179).
+π
+π
+Y
+0
+1
+2
+YK
+Y
+0
+1
+2
+    5     0.10 GeV    E877
+  17     0.15 GeV    NA49
+  17     0.45 GeV    WA97
+  62     0.45 GeV    PHOBOS
+200     0.45 GeV    PHOBOS
+>
+T
+     <k
+s
+171; 67; 132). The structure in R2
+o,l and R2
+s,l shown in Figure 7 is generated by
+this tilt. The spatial tilt has been measured only at low AGS energies (132); a
+measurement at RHIC might reveal exotic geometric conﬁgurations generated by
+quark gluon plasma (QGP) formation (171; 172) and would impact the important
+issue of boost-invariance at mid-rapidity.
+4.3
+Boost invariance : Yππ
+In high-energy hadronic collisions, the initial parton distribution is expected to
+be approximately ﬂat in rapidity.
+This momentum rapidity distribution may
+correspond to producing matter that initially exhibits a boost-invariant Hubble-
+type scaling correlation between longitudinal ﬂow velocity and space-time points,
+vL,flow = z/t (173; 174). Relativistic hydrodynamics preserves boost-invariance
+of the initial conditions throughout its dynamical evolution (174). The combi-
+nation of the above arguments underlies expectations that in ultra-relativistic
+heavy ion collisions, particle production emerges from boost-invariant longitu-
+dinal ﬂow, and that dN/dy exhibits an approximately boost-invariant plateau
+around mid-rapidity.
+However, an extended plateau has never been observed
+from AGS through RHIC energies (3).
+because correlation measurements access spatio-temporal information, the ques-
+tion arises (78; 175) whether they allow us to test the relation vL,flow = z/t
+between the space-time rapidity and the momentum rapidity of the source. For
+boost-invariant sources, one can show that the pair momentum rapidity is equal
+to the Yano-Koonin source velocity, which is directly obtained from the Gaussian
+radius parameters, Yππ ≈YL,flow ≡tanh−1 vL,flow. However, even if the source
+density distribution shows signiﬁcant deviations from boost-invariance, this re-
+lation still holds approximately as long as the velocity proﬁle is boost invariant,
+and kT is suﬃciently large (78).
+Figure 8 reveals a roughly universal dependence of YYK
+on Yππ for pions
+from central collisions, depending weakly, if at all, on √sNN (see Section 2.5.3).
+This trend is particularly striking given the very diﬀerent center-of-mass projec-
+tile rapidities (∼1.55 and 5.5 for √sNN = 5 and 200 GeV, respectively) and
+
+
+--- PDF PAGE 29 ---
+Femtoscopy in Heavy Ion Collisions
+29
+corresponding widths of the pion distributions dN/dy.
+By way of caution, we note that the results from RHIC are limited to the
+region Yππ < 1.2, and that the deviations from boost-invariance are mostly in
+the lower energy data. Extending the RHIC results to more forward rapidities
+would provide a important test for both the velocity scaling at RHIC and the
+energy-independence that is exhibited in Figure 8.
+For central collisions, the roughly universal behavior approximately obeys the
+boost-invariant consistency relationship discussed above. Moreover, YL,flow shows
+a signiﬁcant kT dependence and falls below the linear relation in particular for
+small kT (178). Qualitatively, this is consistent with blast-wave models in which
+a boost-invariant longitudinal ﬂow is superimposed on a source density distri-
+bution of ﬁnite longitudinal width. However, a full dynamical understanding of
+the dependence is missing so far. The ﬂat YYK dependence on Yππ measured at
+the SPS (178) for the most peripheral collisions is counter-intuitive, and requires
+further study.
+The question of whether the source has boost-invariant space-time structure
+is an important one. There are many reports of very short evolution timescales
+(lifetimes) based on ﬁts to the data with Equation 24, which is based upon an
+assumption of boost-invariance (87). Relaxation of that assumption might lead
+to considerably larger estimates (180).
+4.4
+Collective dynamics: kT and particle mass
+As discussed in Section 2.7.2, the dynamic substructure of the source is encoded
+in space-momentum (xp) correlations. Longitudinal xp correlations, encoded in
+Rlong(kT ), are generally acknowledged (87; 72) to reﬂect longitudinal ﬂow. be-
+cause all transverse correlations are generated in the collision itself, considerably
+more attention has generally been paid to the transverse substructure than to
+the longitudinal ﬂow discussed in Section 4.3.
+The most common explanation for transverse xp correlations is collective trans-
+verse ﬂow (96). These correlations have mostly been studied through pion corre-
+lations, but transverse ﬂow implies also a systematic trend as the particle mass
+is varied.
+4.4.1
+kT dependence of pion radii
+Collective ﬂow generates a charac-
+teristic fall-oﬀof the pion source radii with kT , which is ubiquitously observed in
+data. Final results for the kT -dependence of Gaussian radii from central Au+Au
+(Pb+Pb) collisions exist at the AGS (86; 121), SPS (177; 137; 181; 178; 149),
+and RHIC (142; 182; 134; 118; 179; 122). As is clear from Figure 9, aside from a
+small variation in overall scale (discussed later), the kT dependence is startlingly
+similar for all energies.
+Figure 10 quantiﬁes the evolution of the mT-dependence of the pion source
+radii with √sNN, using ﬁts to Ri(mT ) ∼m−αi
+T
+. As discussed in Section 2.7.1,
+αi = 0.5 would represent expectations for instantaneous thermal emission for a
+three-dimensionally expanding ﬁreball in the limit of large mT .
+The similarity persists as Npart is varied.
+In Au+Au collisions at RHIC,
+Ri(mT ) (i = out, side, long) simply scale as N 1/3
+part, with perhaps some ﬂattening
+for Npart < 100 (118; 122). Very similar kT dependence for diﬀerent Npart is also
+observed in Pb+Pb collisions at SPS (149) and for Si+Au and Au+Au collisions
+at the AGS (121).
+
+
+--- PDF PAGE 30 ---
+30
+Lisa et al.
+2
+4
+6
+8
+2
+4
+6
+8
+2
+4
+6
+8
+E895
+E866
+CERES
+NA44
+WA97
+WA98
+PHENIX
+PHOBOS
+STAR
+Figure 9: World data set of published mT dependence of pion Bertsch-Pratt
+radii near mid-rapidity from Au+Au (Pb+Pb) collisions. Centrality selection is
+roughly top 10% of cross-section, but varies somewhat with experiment. Data
+from (86; 121; 149; 137; 178; 181; 182; 122; 179; 142; 118) Lines represent
+parameterized ﬁts; see text for details.
+In a ﬂow-dominated freeze-out scenario, the fall-oﬀof transverse radii with mT
+increases as ﬂow increases and/or temperature decreases (e.g. 72). Blast-wave ﬁts
+to spectra (183) indicate that freeze-out ﬂow and temperature vary signiﬁcantly
+with √sNN for √sNN ≲10 GeV. The overall approximate √sNN-independence
+of the αi parameters may reﬂect the fact that signiﬁcantly changing the slope of
+Ri(mT ) requires very large changes in ﬂow and temperature; on the other hand,
+it could be that the compensating eﬀects of smaller (larger) homogeneity lengths
+generated by larger ﬂow (temperature) cancel almost exactly in nature. Although
+Ri(mT ) almost certainly reﬂects strong collective ﬂow, determining the strength
+of that ﬂow requires other information, such as particle spectra (94; 72).
+because the radii fall oﬀroughly as 1/√mT (see Figure 10) and such a de-
+pendence has been discussed frequently in the literature (e.g. 184; 185), it is
+interesting to look at the overall scale parameter from a single-parameter ﬁt to
+R′
+i/√mT . The √sNN-dependence of R′
+side and R′
+long are shown in Figure 11. The
+scale of the longitudinal homogeneity length grows signiﬁcantly with √sNN, con-
+sistent with an increase of the system evolution time. However, R′ varies only
+very weakly with √sNN.
+4.4.2
+Systematics with particle mass
+Systematic studies for diﬀerent
+mass particles provide additional controls probing the space-time evolution of the
+source. In particular for kaons, the interpretation may be simpliﬁed owing to re-
+duced eﬀects of resonance feed-down (186) and a reduced scattering cross-section
+for K+ in nuclear matter, raising the possibility that kaon correlations could peer
+farther back to earlier stages of the collision (187). Indeed, the ﬁrst kaon mea-
+surements (188; 189; 190; 176) reported smaller source radii for kaons. However,
+the observation that radii for K+ and K−were very similar (189) was an early
+experimental indication that diﬀerent cross-sections were not the driving physics
+behind these smaller radii.
+This was supported by model calculations (191),
+which suggested that K+ and K−in fact scattered roughly equally in the dense
+medium created in heavy ion collisions. In this case, the smaller radii for kaons
+
+
+--- PDF PAGE 31 ---
+Femtoscopy in Heavy Ion Collisions
+31
+0
+0.25
+0.5
+0.75
+1
+0
+0.25
+0.5
+0.75
+1
+1
+10
+10
+2
+Figure 10: The excitation function of
+mT power-law fall-oﬀof pion source
+radii (Ri(mT ) ∼m−αi
+T
+). Shaded regions
+show αi = 0.5 ± 0.05.
+1.5
+2
+2.5
+3
+3.5
+1.5
+2
+2.5
+3
+3.5
+1
+10
+10
+2
+Figure 11: The excitation function of
+scale parameters R′
+i from ﬁts of the
+data in Figure 9 to Ri(mT ) = R′
+i/√mT .
+Note: this is a diﬀerent functional form
+than that used in Figure 10.
+results from their increased mass in a ﬂow ﬁeld, not diﬀerent cross-sections.
+If indeed ﬂow is generated in matter suﬃciently dense that individual cross-
+sections are unimportant, then all particles participate equally in collective trans-
+verse ﬂow. In this case, their source radii should approximately follow a common
+mT scaling (30; 159; 192; 8). Within uncertainties, ﬁrst results on kaon inter-
+ferometry by NA44 at the SPS in S+Pb (184) and Pb+PB (193) collisions were
+consistent with a 1/√mT scaling expected for isotropic Hubble ﬂow (30; 159; 192).
+In some more recent analyses (194), the common mT systematic for the trans-
+verse radii is less steep than for Rlong(mT ) (see Figure 10), as might be expected
+for more boost-invariant (non-isotropic) ﬂowing systems (8; 72).
+Figure 12 collects the mT dependence of homogeneity lengths for several en-
+ergies.
+The left panels show results for Si+Au collisions at √sNN=5.4 GeV,
+measured by E802 for pions (121) and kaons (188; 190). Femtoscopic radii for
+pions (137; 194; 149; 181) kaons (193), protons (195), and photons (196) mea-
+sured in Pb+Pb collisions at the SPS are shown in the center panels. The right
+panel shows the one-dimensional radius parameter Rinv measured at RHIC for
+pions, charged kaons, and protons (197), neutral kaons (198), and with Λ −p
+correlations (199).2 To compare across energies, Rinv results are included for the
+AGS and also for the SPS, where the Rinv values were calculated from the 3D ﬁt
+results by accounting for the boost along the outwards direction from the LCMS
+(in which Pz = 0) to the PCOM (pair center-of-mass, in which |
+⇀
+P|= 0) frame,
+R2
+inv = R2
+long + R2
+side + γ2R2
+out, where γ is given by mT /m of the pair.
+Note
+that for massless particles, such as photons, γ is given by kT /Qinv. For a given
+orientation of the photon pair momentum Rinv can be related to 3D radii in the
+2Protons and Λ baryons are not identical particles, of course. However, their masses are
+suﬃciently close to try including Rp−Λ
+inv
+on a mT -scaling plot.
+Adherence to the scaling is
+consistent with a ﬂow-dominated scenario in which homogeneity lengths depend only on mass.
+
+
+--- PDF PAGE 32 ---
+32
+Lisa et al.
+ (fm)
+inv
+R
+2
+4
+6
+ (fm)
+side
+R
+2
+4
+6
+8
+ (fm)
+long
+R
+2
+4
+6
+8
+0
+0.5
+1
+ (GeV)
+T
+m
+0
+0.5
+1
+0
+0.5
+1
+1.5
+4.8 GeV Si+Au AGS
+ 
+-π
+  2
++
+  2K
+  d/p
+17.3 GeV Pb+Pb SPS
+-π
+  2
++
+  2K
+  2p
+  d/p
+γ
+  2
+200 GeV Au+Au RHIC
+-π
+  2
++
+  2K
+-
+  2K
+  2p
+s
+0
+  2K
+Λ
+  p-
+Figure 12: Transverse mass dependence of homogeneity lengths from correlations
+between particles of (nearly) identical mass.
+LCMS frame through the following expression for the exponent of the Gaussian
+source term,
+Q2
+invR2
+inv
+=
+Q2
+inv
+ R2
+long cos2 θ + R2
+side sin2 θsin2φ + k2
+T /Q2
+invR2
+out sin2 θcos2φ
+
+=
+k2
+T R2
+out sin2 θcos2φ + Q2
+inv
+ R2
+long cos2 θ + R2
+side sin2 θsin2φ
+
+. (38)
+Thus Rout drops completely out of the source term and enters into the λ coeﬃ-
+cient (196), but as a function of kT . For this reason the 1D Qinv ﬁts from WA98
+are plotted alongside values of Rside and Rlong instead.
+This consistency between diﬀerent particle types may carry an important mes-
+sage. It calls into question theoretical scenarios which appear to explain Ri(mT )
+for particular particle types only (33). Further, the consistency with emission
+from a common ﬂow-dominated source may also support freeze-out scenarios in
+which the last scattering in the dense phase determines the homogeneity region,
+instead of milder rescatterings in the more dilute stage, which are dominated by
+particle species-dependent cross-sections (200; 201).
+4.5
+New possibilities: Non-identical particle correlations
+Almost all femtoscopic measurements to date have been done through correla-
+tions of identical particles, usually charged pions. With the availability of high-
+statistics data sets and new theoretical ideas (202), however, experiments are
+beginning to make full multi-dimensional analyses of non-identical particle cor-
+relations. These correlations are being used to test and reﬁne the treatment of
+Coulomb eﬀects in identical-particle correlation analyses, to explore violations of
+ﬂow-induced universal mT scaling, and to extract qualitatively new information
+
+
+--- PDF PAGE 33 ---
+Femtoscopy in Heavy Ion Collisions
+33
+on the space-time substructure of the source.
+4.5.1
+Opposite-sign pion correlations
+The most common non-identical
+particle femtoscopy measurements have involved π+ −π−correlations. Here, the
+natural assumption is that the homogeneity regions of these particles coincide.
+The primary interest is in whether the homogeneity volume is extracted from
+π± −π± correlations—driven by quantum statistics and Coulomb ﬁnal state in-
+teractions (with minimal strong FSI eﬀects)– is consistent with that extracted
+from π+ −π−correlations—determined only by Coulomb and strong FSI (118).
+This issue has obvious implications for the FSI weight F(q) discussed in Sec-
+tion 3.5.
+At the SPS, π+ −π−correlations from reactions with sulphur (203) and
+lead (177) beams were consistent with emission from a homogeneity region with
+spatial scale roughly the same as the radii from identical-particle correlations.
+Preliminary analysis of opposite-sign pion correlations from Au+Au collisions at
+the AGS (176; 73) similarly ﬁnd consistency with scales extracted from like-sign
+pion correlations. Recently, STAR reported (118) strong consistency at RHIC
+energies as well. Using large-statistics data sets, they further show that contribu-
+tions to the π+ −π−correlation function from strong-force interactions, though
+small, are nevertheless important in explaining the data in detail.
+4.5.2
+Other non-identical particle correlations in |⃗q|
+For statisti-
+cal reasons, most non-identical particle correlations are measured in one-dimensional
+|⃗q|-space, and thus probe only the average spatial separation between the two
+particles at freeze-out in the pair center-of-momentum frame (see Section 2.3).
+Because they are sensitive to the size of each particles emission source and this
+separation between them, it is often necessary to rely on the identical particle
+correlations for a proper interpretation of results.
+Despite these ambiguities, one-dimensional non-identical particle correlations
+may be used to test existing systematics and expectations of the freeze-out sce-
+nario. Conversely, if the freeze-out geometry may be taken as given, non-identical
+particle correlations may place constraints on hadronic scattering parameters, e.g.
+to measure the squared relative wave-function of a pion and a Ξ baryon. First
+studies along these lines are underway at RHIC (204).
+Wang and Pratt (58) suggested the measurement of p −Λ correlations, which
+may be more sensitive to large structure than p−p correlations, and which have a
+higher two-track reconstruction eﬃciency for some experiments. Published results
+from Au+Au collisions at the AGS (55) suggest a p −Λ separation distribution
+with a width similar to the proton homogeneity length and roughly consistent
+with mT scaling expectations (cf Section 4.4.2). Preliminary results at SPS (205)
+and RHIC (204; 206) give similar conclusions. because the p −Λ potential is not
+unambiguously known theoretically (58), it is unclear whether possible statisti-
+cally marginal violations of mT scaling (55) or diﬀerences between baryon and
+anti-baryon emission regions (204) are meaningful. To ﬁrst order, existing p −Λ
+correlations conﬁrm existing systematics.
+With the high-statistics and high-quality data sets at the largest collision ener-
+gies, truly exotic correlation studies are possible. Preliminary results (206) from
+RHIC on π −Ξ correlations look particularly promising. Here, the well-measured
+pion emission distribution may be used to study the strange baryon freeze-out
+conﬁguration. It may also provide information on the π−Ξ ﬁnal state interaction
+and scattering cross-section which in turn can be used to constrain our under-
+
+
+--- PDF PAGE 34 ---
+34
+Lisa et al.
+standing of the sources of collective ﬂow. Blast-wave calculations reproduce the
+preliminary π −Ξ correlations, suggesting that the Ξ ﬂow is determined by its
+mass, not its quark content.
+4.5.3
+New information: non-identical particle correlations with
+directional cuts on⃗q
+Non-identical particle correlation analyses as a func-
+tion of—or with cuts on—the relative direction of⃗q and⃗P reveal qualitatively
+new information (60; 61; 202, and Section 2). In particular, in addition to the
+root mean square (RMS) width of the separation distribution, the direction and
+size of the average separation between the particles is probed, although oﬀsets
+in time and space cannot be disentangled; this is shown as ∆r in Figure 3. The
+correlation functions selected for⃗q ∥⃗P and⃗q ∦⃗P diﬀer if ∆r̸ = 0. Further-
+more, collective ﬂow will induce position-momentum correlations detectable with
+directionally selected non-identical particle correlations (61; 72).
+These correlations are statistically challenging, and few results are available.
+At RHIC, STAR has reported (62) asymmetries in K± −π± correlations mea-
+sured in central Au+Au collisions. Blast-wave calculations with transverse ﬂow
+roughly adjusted to reproduce other observations at RHIC (72) describe the data
+semi-quantitatively. Preliminary studies of p−π correlations at the SPS (205) and
+RHIC (206) exhibit similar mass-ordered spatial asymmetries in the transverse
+plane. A preliminary study at the AGS (73) reported very large (∆rlong ≈10 fm)
+average p−π separations in the longitudinal (beam) and impact parameter direc-
+tion for forward-moving particles, suggesting strong longitudinal ﬂow; however,
+this result was never conﬁrmed.
+We expect full three-dimensional analyses of a wide range of non-identical par-
+ticle combinations to be available in the near future from RHIC experiments.
+Sophisticated analyses may probe non-trivial geometric substructure when se-
+lecting on reaction plane, including the sideward shift predicted by blast-wave
+calculations (72) when anisotropic ﬂow structure is present.
+5
+Interpretations of Experimental Results
+In this section, we ask what we can learn from the spectrum of results just
+presented. Beginning with the broadest, least detailed observations, we move to
+two fundamental quantities that may be directly extracted from the data, and
+ﬁnally on to comparisons with speciﬁc models of heavy ion collisions.
+5.1
+General Conclusions from Systematic Trends
+One of the ﬁrst messages to take away from the discussion of Section 4 is that
+the results are stable across detector and method; experimental systematics and
+uncertainties are under control. Whatever diﬃculties we may have in interpret-
+ing measurements, we may be conﬁdent that they do not have their origin in
+experimental artifact.
+The size and shape inferred from two-particle correlations tracked with colli-
+sion geometry as anticipated. Kinematic and mass dependences of femtoscopic
+measurements showed the expected clear signatures of strong collective ﬂow in
+the beam direction and perpendicular to it.
+At a generic level (ignoring quantitative predictions), we are ﬁrst given pause at
+the jejune nature of the √sNN-dependence of femtoscopic parameters. The most
+common example discussed is the pion source radii excitation function shown in
+
+
+--- PDF PAGE 35 ---
+Femtoscopy in Heavy Ion Collisions
+35
+Figure 13. In Section 4 we explored the trends in considerably greater detail, but
+the ﬁgure conveys the right message: Scanning √sNN through a range of two
+orders of magnitude changes ﬁnal-state geometry little.
+Based on rather generic arguments of soft points in the equation of state or
+entropy generation during a phase transition, there had been hopes for non-trivial
+structure in the excitation function, as the energy threshold for quark gluon
+plasma (QGP) creation was crossed (63; 207; 208; 209). General expectations
+were for long (relative to the explosion of a purely hadronic system) system
+evolution time scales if QGP was formed. Blast-wave analyses of data (e.g. 72)
+appear to rule out systems with lifetimes in the neighborhood of 20 fm/c or
+higher. However, owing to dynamic eﬀects, careful comparison with a dynamical
+model is required to extract detailed evolution information; this is discussed in
+Section 5.3.
+As discussed in Section 4.1, the weak increase with Routof the femtoscopic
+radii for central collisions shown in Figure 13 is mostly due simply to increasing
+multiplicity. The CERES collaboration (210). has suggested that this increase
+may be understood in terms of an energy-independent mean free path of 1 fm at
+freeze-out. Interestingly, this explanation also appears to describe the decrease
+of radii with Rout < 5GeV , when the diﬀerent cross-sections and abundances of
+pions and protons are accounted for. This observation emphasizes the importance
+of chemistry in the determination of the freeze-out geometry. However, it neglects
+the dynamical structure of the source (e.g., ﬂow) and the importance of the
+six-dimensional phase space density discussed in Section 2.9.
+We discuss this
+fundamental quantity next.
+5.2
+Phase Space Density and Entropy
+As shown in Section 2.9, average phase space densities, ¯f(p), can be calculated
+by combining source-size measurements with spectra. Pionic phase space den-
+sities have been estimated for 130A GeV collisions at RHIC (114), at the top
+SPS energies, and for several AGS energies (213). Figure 14 shows results for all
+three regions. In each case, the phase space densities were calculated via Equa-
+tion 28. For the SPS case, results were generated by applying Equation 28 to
+published spectra (214) and source-size measurements (215). We note that our
+calculations for the SPS are higher than previously published values at low pt
+(216). This discrepancy is likely due to the fact that in Reference (216), analytic
+parameterizations were used that diﬀer signiﬁcantly from published spectra at
+low pt.
+When applying Equation 28, an issue arises as to whether one should subtract
+the contribution from resonances to the spectra. Indeed, if the pions are created
+by decays so far outside the source volume that they do not contribute to the
+correlation function, they should not be considered as pions when calculating the
+phase space density. There are two strategies to correct for such pions. First,
+one could use spectra where such particles are subtracted and apply Equation 28
+literally. As a second option, one could use the spectra without subtractions, but
+then multiply the expression for ¯f by
+√
+λ. because most published spectra have
+been purged of the products of weak decays, the ﬁrst method is usually applied.
+However, published spectra still include the contribution from η’s, which decay
+thousands of fm away from the source. The η contribution was accounted for in
+the SPS calculation for Figure 14 by reducing the spectra by 5%.
+
+
+--- PDF PAGE 36 ---
+36
+Lisa et al.
+Figure 13:
+Panels (a-d):
+Excitation
+function
+of
+π−
+source
+parameters
+at mid-rapidity and low
+kT
+(∼
+0.17 GeV/c) in
+central
+Au+Au(Pb+Pb)
+collisions.
+PHENIX data
+are for kT ∼0.26 GeV/c
+and
+so
+fall
+somewhat
+below the trend.
+Panel
+(e): Transverse freeze-out
+anisotropy
+parame-
+ter
+from
+non-central
+(|⃗b|
+∼
+8
+fm) Au+Au
+collisions, estimated from
+the
+azimuthal
+depen-
+dence
+of
+source
+radii.
+Data are from (182; 122;
+142; 134; 118; 121; 149;
+181; 179; 137; 86; 132).
+Also shown are calcula-
+tions (86; 132; 137; 211)
+at several energies with
+the RQMD model (212);
+hashed
+region
+at
+other
+values
+of
+√sNN
+inter-
+polates
+between
+these
+calculations.
+0.5
+1
+RQMD
+STAR
+PHOBOS
+PHENIX
+WA98
+NA44
+CERES
+E866
+E895
+4
+6
+8
+4
+6
+5
+10
+0
+0.2
+1
+10
+10
+2
+Figure 14:
+Aver-
+age
+pionic
+phase
+space densities for
+central Au+Au and
+Pb+Pb
+collisions
+from the AGS
+to
+RHIC
+rise
+with
+beam
+energy
+but
+seem to plateau at
+SPS energies.
+Val-
+ues were calculated
+with Equation 28.
+The phase-space densities in Figure 14 show a steady rise with beam energy
+that seems to plateau at SPS energies. because the displayed phase space densities
+have been averaged over coordinate space, the peak values are higher (91; 106),
+by a factor of 2
+√
+2, if the spatial proﬁles are Gaussian. For a breakup temperature
+of 110 MeV, this requires a rather high chemical potential, near or above 80 MeV
+(217; 218; 219).
+
+
+--- PDF PAGE 37 ---
+Femtoscopy in Heavy Ion Collisions
+37
+Ratios of particle yields are consistent with chemical freeze-out at temperatures
+near 170 MeV (220; 221; 222). This suggests an interpretation where at higher
+densities the system is so strongly interacting that yields equilibrate until the
+system reaches this temperature and are then frozen during the subsequent freeze-
+out. At AGS energies, the increase in pion production brought on by increased
+beam energy results in more pions being pushed into a given amount of phase
+space as realized in Figure 14 by the rising phase space density. However, one
+would expect that as the excitation energy surpasses the threshold for a 170
+MeV temperature, the phase space density would reach a limiting value. because
+the average phase space density is preserved in an isentropic expansion with ﬁxed
+particle number (not exactly true if several masses are mixed together), one would
+expect phase space densities to saturate once energy densities reached this value.
+Indeed, the behavior in Figure 14 is consistent with this scenario.
+As shown in Section 2.9, entropy can be calculated from average phase space
+densities using Equation 30. Spectra and source-size measurements for baryons
+and mesons were used to estimate phase space densities and entropy for 130A
+GeV Au+Au collisions at RHIC. The total entropy in the central unit of rapidity
+was estimated at dS/dy = 4450 ± 10% (114).
+In a hydrodynamic expansion,
+entropy is conserved though viscosity, and shock waves might result in a roughly
+10% increase during the evolution. Thus, this measurement provides an upper
+bound for the entropy at τ ∼1 fm/c when thermalization ﬁrst occurs. At τ = 1
+fm/c, the volume for particles in this rapidity slice is determined by the geometric
+cross-sectional areas of the overlapping gold nuclei multiplied by cτ, thus an upper
+bound for the entropy density can be determined s ≤(dS/dy)/(τπR2). Knowing
+the energy density at τ = 1 fm/c would then provide a point in the equation
+of state, s vs.
+ǫ.
+The value of dS/dy estimated in (114) is consistent with
+lattice calculations if ǫ(τ = 1 fm/c) ∼7 GeV/fm3. Estimates of the original
+energy density from the ﬁnal-state measurement of dEt/dη are in the range of
+4.5 GeV/fm3 (223), but because these estimates neglect losses from longitudinal
+work or the energy from longitudinal thermal motion, the 7 GeV/fm3 value seems
+reasonable.
+5.3
+Dynamic Models and their Comparison with Data
+It is increasingly recognized that the comparison of dynamic models of heavy ion
+collisions to data is only insightful if it involves a suﬃciently large variety of ex-
+perimental data. A comparison of dynamic models to femtoscopic measurements
+alone (or to any other class of measurements alone) is of limited value, simply
+because for realistic models, the number of possible model-dependent parameter
+choices then tends to exceed the number of experimental constraints. In fact, all
+the model results that we review in the current subsection remain unsatisfactory
+with this respect: They either deviate signiﬁcantly from femtoscopic data, or
+they reproduce these data at the price of missing other important experimental
+information. In particular, there is so far no dynamically consistent model that
+reproduces quantitatively both the systematic trends discussed in Section 4 and
+the corresponding single inclusive spectra. In this situation, the scope of this sub-
+section is somewhat limited. We want to explain why a dynamical understanding
+of femtoscopic measurements is important. We shall also discuss the key physics
+input that enters current attempts of dynamic modeling and the uncertainties
+resulting from it.
+However, we shall try to bypass as far as possible model-
+
+
+--- PDF PAGE 38 ---
+38
+Lisa et al.
+dependent details and rather focus on the question of which qualitative changes
+in the underlying dynamics result in characteristic changes of femtoscopic data.
+Correlation measurements provide a snapshot of the geometrical distribution of
+particles at the time they decouple from the reaction. This geometrical distribu-
+tion provides a unique test of the dynamical evolution of the produced matter at
+the late stage. because the spatial extension, dynamical evolution, and lifetime of
+the produced system determines phase space density and thus particle reaction
+rates, any dynamic model for the latter has to be consistent with femtoscopic
+information. So far, correlation analyses have focused mainly on Boltzmann (or
+cascade) models, on hydrodynamic models, or on combinations of both (hybrid
+models). These model classes correspond to rather diﬀerent equations of state.
+The equations of state represented by cascade models tend to be stiﬀunless
+they incorporate large number of resonant scatterings.
+If particles collide via
+2 →1 →2 processes where the intermediate state has a ﬁnite lifetime, the equa-
+tion of state can be softened (224; 225). A prominent example of a cascade model
+is RQMD (191), Relativistic Quantum Molecular Dynamics; it is the only one
+which has been compared to data at AGS, SPS, and RHIC. Results for RQMD
+are shown in Figure 13. However, for RHIC energies, the dynamic consistency of
+RQMD is questionable because for most of its evolution, the model uses hadronic
+degrees of freedom, although RQMD simulations for RHIC yield an energy den-
+sity which stays above that of normal nuclear matter for a signiﬁcant duration
+(∼5 fm/c).
+As can be seen in Figure 15, RQMD, which models the expan-
+sion as a hadronic cascade, overpredicts Rout and Rlong at RHIC despite the fact
+that it underpredicts multiplicities. Another hadron cascade model, the Hadronic
+Rescattering Model (226; 227), based solely on hadronic rescattering with sudden
+collisions, gives smaller sources, which come closer to the data. Part of the dif-
+ference between the two hadronic cascades may derive from RQMD’s treatment
+of scatterings as resonant interactions with ﬁnite lifetimes, which diﬀers from the
+instantaneous collisions employed in the Hadronic Scattering Model. Figure 15
+also displays results for Molnar’s Parton Cascase (MPC) (228), which aims to
+provide a transparent partonic toy model by modeling the collision of light par-
+tons which undergo a one-to-one hadronization to pions. MPC, which has only
+instantaneous two-to-two scatterings, should have the stiﬀest eﬀective equation
+of state and underestimates the source radii.
+On of the most complicated transport codes available is A Multi-Phase Trans-
+port (AMPT) model.
+AMPT (229; 230) aims at a realistic description of all
+aspects of the reaction dynamics and includes a partonic cascade coupled to a
+hadronic cascade employing a full list of resonant interactions. AMPT provides a
+good ﬁt to experimental radii, though the kT fall-oﬀis stronger than that found
+in the data, which fall oﬀ∼m−1/2
+T
+. The more rapid decrease of radius parameters
+with respect to kT may be due to the continuous surface-like emission charac-
+teristic of microscopic models, which when combined with cooling gives a higher
+relative weight for high-energy particles to have been emitted earlier in time,
+before the reaction volume has reached its full spatial extent. Any modiﬁcation
+that would reduce this type of emission should improve agreement with data.
+Cautiously, one would conclude that the results in Figure 15 favor models with
+a stiﬀ, but not too stiﬀ, equation of state and no latent heat.
+This conclusion is further supported if one compares the results of cascade
+models with those of hydrodynamic simulations or hybrid models.
+Figure 16
+
+
+--- PDF PAGE 39 ---
+Femtoscopy in Heavy Ion Collisions
+39
+ (fm)
+out
+R
+2
+4
+6
+8
+ (fm)
+side
+/R
+out
+R
+0.5
+1
+1.5
+ (GeV/c)
+T
+k
+0
+0.5
+1
+ (fm)
+side
+R
+2
+4
+6
+8
+STAR
+PHENIX
+PHOBOS
+ (GeV/c)
+T
+k
+0.5
+1
+ (fm)
+long
+R
+2
+4
+6
+8
+ = 3 mb
+σ
+AMPT 
+ = 15 mb
+σ
+AMPT 
+ = 7.73
+χ
+MPC 
+RQMD v2.4
+HRM
+Figure 15: Pion radius parameters from four Boltzmann/cascade models are
+compared to experimental RHIC data. For Molnar’s Parton Cascase calculations,
+the reported radii are simply space-time variances. For the other models, radii
+are obtained from Gaussian ﬁts to correlation functions generated according to
+the methods described in Section 2.8. Measured data for positive and negative
+pions are indicated by closed and open symbols, respectively.
+compares results from RHIC to a three-dimensional hydrodynamic model of Hi-
+rano et al. (231) that investigates the eﬀects of resonance decays on chemical
+composition, the two-dimensional model of Heinz and Kolb (232), and a two-
+dimensional chiral model by Zseische et al. (233) that performs calculations for
+both ﬁrst order and cross-over transitions. In all cases, the more favorable calcu-
+lations are compared with the data: partial chemical freeze-out for Hirano, and
+cross-over transition for Zschiesche, but large discrepancies between the mod-
+els and the data still remain.
+The results from Zseische were taken from the
+cross-over transition for the lowest critical temperature, 80 MeV. Substituting
+a ﬁrst order phase transition or increasing the critical temperature to 130 MeV
+increased the value of Rout relative to Rside, thereby increasing the diﬀerences
+with the data. Hirano also reported a calculation under complete chemical equi-
+librium at freeze-out; this improves the agreement with v2, but at the expense of
+a much larger value of Rout/Rside.
+In general, these models invoke equations of state that are typically softer than
+those used in cascades and Boltzmann calculations, and they often have latent
+heats to accompany the transition from the partonic phase. As a consequence,
+lifetime and emission duration of the produced matter are signiﬁcantly larger
+than what one ﬁnds in cascade models, and such models often signiﬁcantly over-
+predict Rlong and Rout/Rside. The fact that Rside comes out smaller than the
+data in Figure 16 is mainly due to an attempt to compensate within the available
+
+
+--- PDF PAGE 40 ---
+40
+Lisa et al.
+ (fm)
+out
+R
+2
+4
+6
+8
+ (fm)
+side
+/R
+out
+R
+0.5
+1
+1.5
+2
+ (GeV/c)
+T
+k
+0
+0.5
+1
+ (fm)
+side
+R
+2
+4
+6
+8
+STAR
+PHENIX
+PHOBOS
+ (GeV/c)
+T
+k
+0.5
+1
+Hirano
+Soff
+Zschiesche
+Heinz-Kolb
+ (fm)
+long
+R
+2
+4
+6
+8
+Figure 16: Hydrodynamic (Zschiesche, Hirano, and Kolb) and hybrid hydrody-
+namic/cascade (Soﬀ) models calculations in comparison to RHIC data. Data are
+for 2π−(open symbols) and 2π+(closed symbols) source radii.
+model-parameter range the very large time-scales as much as possible. Purely
+hydrodynamic models can vary overall source volumes by adjusting the break-up
+criteria, but doing so can make it diﬃcult to ﬁt the three source dimensions,
+and their mT dependence, as well as other observables.
+Several prescriptions
+have been applied to improve the modeling of the breakup in the late stage
+to depend on microscopic considerations determined by free-space cross-sections
+without having an extra adjustable parameter, e.g. break-up density, (107; 108;
+106). An alternative to improve the description of breakup is the use of hybrid
+models, in which hydrodynamic evolution in the early stage is combined with
+cascading in the late stage. In Figure 16, we compare results of one such hybrid
+model, Ultrarelativistic Quantum Molecular Dynamics (URQMD) (109; 110), to
+results of hydrodynamic calculations. Similar results were obtained by Teaney
+et al. (111; 112). Compared to hydrodynamic simulations, hybrid descriptions
+do not seem to notably reduce the overpredicted lifetimes. They tend to emit
+most of the pions at a time near or above 15 fm/c and signiﬁcantly overpredict
+Rout/Rside ratios, whereas blast-wave parameterizations favor breakup times near
+or slightly below 10 fm/c. However, ﬁrm conclusions that the relative failure
+of hybrid models derives from the chosen equations of state cannot be made
+until comparisons are made between Boltzmann and hybrid calculations that use
+the same equation of state.
+Until such an analysis is performed, other issues
+will cloud the interpretation, such as whether viscous eﬀects or details of the
+hydrodynamic/Boltzmann interface dominate results and might even invalidate
+the hydrodynamic approach.
+Entropy and pressure are intimately related, in that knowing the entropy den-
+
+
+--- PDF PAGE 41 ---
+Femtoscopy in Heavy Ion Collisions
+41
+sity as a function of the energy density determines the pressure as a function of
+energy density. Whereas one can intuitively understand why a lower pressure
+would lead to longer lifetimes and larger source dimensions, the manifestations of
+changing the entropy are less transparent. One way to understand the eﬀects of
+changing the entropy is to associate higher entropy with a larger eﬀective number
+of light degrees of freedom. For instance, if one were to hadronize via a one-to-one
+parton-to-pion scheme, the volume per identical particle would change by a factor
+of the number of degrees of freedom. If the r.m.s. momentum is the same before
+and after hadronization, this would imply a change in entropy per particle equal
+to the logarithm of the ratio of eﬀective degrees of freedom, and if ∼40 light
+partonic degrees of freedom were immediately replaced by three pionic degrees of
+freedom, the system would lose ln(40/3) units of entropy per particle. To conserve
+entropy, a system must expand its volume by a similar ratio which implies an
+increase in radius parameters. Hydrodynamic models, which manifestly conserve
+entropy, use the energy stored in the latent heat to provide the heat necessary to
+preserve entropy during hadronization. Entropy conservation is more diﬃcult to
+enforce in microscopic approaches. This underlines the challenges involved in ap-
+plying microscopic simulations in an environment of strongly interacting matter
+with ill-deﬁned degrees of freedom, and it re-emphasizes the importance of gain-
+ing a better understanding of the validity of hydrodynamic calculations in such
+manifestly ﬁnite situations. It is peculiar that the entropy extracted from source-
+size and spectral measurements is consistent with the lattice-inspired equation
+of state (111; 112), whereas the source sizes extracted from hybrid models incor-
+porating similar equations of state signiﬁcantly overpredict source sizes. Part of
+this contradiction can be explained by increases in the populations of baryons,
+which, because they inherently have more entropy per particle than do pions, can
+account for much of the missing entropy (114). Thus, the HBT puzzle does not
+necessarily imply an entropy puzzle.
+The HBT puzzle is not so much that radius parameters cannot be ﬁt by models,
+but that our most sophisticated models, which incorporate a phase transition, fail
+to reproduce the data. The very gradual evolution of extracted source sizes as
+beam energies traverse a large range of energies is remarkable and puzzling in its
+own right. A simple explanation is that the equations of state do not dramatically
+change as the energy density changes from hadronic to super-hadronic densities,
+i.e., there is not even a hint of a latent heat. In fact, the failure of hydrodynamical
+models to reproduce femtoscopic measurements might be largely due to unrealis-
+tically large latent heats needed to reproduce elliptic ﬂow data (115). However,
+as emphasized above, a host of unresolved issues prevent more quantitative con-
+clusions. These qualiﬁers cannot be lifted until much more thorough analyses of
+models are performed that entail a systematic exploration of the sensitivity of
+model predictions to both parameters and assumptions. This would necessitate a
+tremendous commitment from the community, but without it, many conclusions
+about the matter created in relativistic heavy ion collisions will remain vague.
+6
+Summary
+Twenty-ﬁve years ago, the goal of femtoscopy was to demonstrate that one could
+measure a hadronic length scale with correlations, and if a result was on the order
+of a few Fermi, the analysis was deemed a success. In contrast, with the improved
+
+
+--- PDF PAGE 42 ---
+42
+Lisa et al.
+accuracy of measurements, the enormous increase in statistics, and the simulta-
+neous development of phenomenology and theory, femtoscopy is now considered a
+precision measurement. Ten percent deviations between theory and experiment
+are now taken seriously as evidence that the spatio-temporal description of a
+model is signiﬁcantly ﬂawed. At RHIC energies, all six dimensions of the correla-
+tion function have been exploited to provide truly three-dimensional insight into
+the phase space cloud for particles of any momentum with any direction.
+For relativistic heavy ion collisions, there were expectations that a transition
+from hadronic to partonic matter might be accompanied by a large latent heat,
+which would bring about a dramatic change in the dynamics as beam energies
+traversed the range for exploring the mixed phase. Within this range, it was
+expected that the latent heat and the associated softening of the equation of
+state would manifest itself by slowing the explosion with lifetimes approaching
+or exceeding 20 fm/c. The signal of the phase transition would have been an
+increase of the eﬀective lifetime for a range of beam energies followed by a return
+to more explosive and shorter-lived reactions at even higher energies.
+Extended lifetimes were not observed. Increasing beam energies from AGS to
+RHIC indeed causes larger energy densities and higher multiplicities, which push
+toward increasing the source volumes. However, much of this increase in multi-
+plicities is absorbed by higher phase space densities rather than larger source sizes.
+Combined with the increasing strength of radial ﬂow, which provides smaller re-
+gions of homogeneity relative to the overall source volume, the result is that the
+eﬀective dimensions change remarkably little over a wide range of beam energies.
+Furthermore, it appears that lifetimes of the reaction never leave the neighbor-
+hood of 10 fm/c. Not only does this represent a lack of evidence for a latent heat,
+it also suggests that there is no such latent heat.
+These conclusions remain only modestly guarded. Theory and phenomenol-
+ogy are progressing, but improvements in such aspects as mean-ﬁeld eﬀects or
+accounting for the smoothness approximation are not expected to change con-
+clusions by more than 10%. As with the improvements in including Coulomb
+eﬀects in Section 4, removing some of the distortions and aberrations from the
+analyses is likely to be signiﬁcant for ﬁne-tuning models, but should not alter the
+conclusion that there is no large latent heat associated with the reaction.
+The theory of modeling, i.e., generating the source functions, has the greatest
+need for progress. because femtoscopic measurements are determined solely by
+the geometry of breakup, changes in chemical or kinetic evolution may have
+a signiﬁcant impact on extracted source dimensions.
+The next generation of
+transport theories should be more ﬂexible and will probably incorporate numerous
+eﬀects such as in-medium mass changes, in-medium reduction of scattering cross-
+sections, viscous eﬀects, and dynamical solutions for chemical rates.
+Despite the progress listed above, measurement has only begun to address
+the rich expanse of information available in correlations. Nearly all the three-
+dimensional analyses have been focused on identical-pion correlations. The huge
+data sets of the recent and upcoming runs at RHIC make it possible to analyze
+source functions for many pairs of particles in six full dimensions. In addition to
+providing important veriﬁcation of identical-pion measurements, these analyses
+address other issues, such as whether all species ﬂow and break up together.
+This is not a ﬁeld for the complacent. As emphasized above, eﬀorts at RHIC
+are just beginning to explore wholly new classes of correlations. Energy densities
+at the LHC might surpass those at RHIC by the same factor that those at RHIC
+
+
+--- PDF PAGE 43 ---
+Femtoscopy in Heavy Ion Collisions
+43
+surpassed the AGS. Just as our visions of the future from twenty years ago proved
+largely naive, we should be prepared to be surprised with the femtoscopy of the
+next 25 years.
+Acknowledgements
+This work was supported by U.S. Department of Energy, Grants DE-FG02-
+03ER41259 and W-7405-ENG-48, and by U.S. National Science Foundation Grant
+PHY-0355007. The authors thank David Brown, Ulrich Heinz, Sergei Panitkin,
+Nu Xu, and Kacper Zalewski for sharing insights. For providing and explaining
+data, we thank Harry Appelsh¨auser, Giuseppe Bruno, Mike Heﬀner, Mercedes
+L´opez-Noriega, Michael Murray and the experimental collaborations who consci-
+entiously post data in numerical form and respond to querries. We thank Mark
+Meamber of the Physics Art Team at Lawrence Livermore National Laboratory
+for creating the illustrative ﬁgures.
+
+
+--- PDF PAGE 44 ---
+44
+Lisa et al.
+References
+1. Adams J, et al. nucl-ex/0501009
+2. Adcox K, et al. nucl-ex/0410003
+3. Back BB, et al. nucl-ex/0410022
+4. Arsene I, et al. nucl-ex/0410020
+5. Boal DH, Gelbke CK, Jennings
+BK.
+Rev. Mod. Phys.
+62:553
+(1990)
+6. Bauer W, Gelbke CK, Pratt S.
+Annu. Rev. Nucl. Part. Sci. 42:77
+(1992)
+7. Heinz UW, Jacak BV. Annu. Rev.
+Nucl. Part. Sci. 49:529 (1999)
+8. Wiedemann
+UA,
+Heinz
+UW.
+Phys. Rep. 319:145 (1999)
+9. Csorgo T. Heavy Ion Phys. 15:1
+(2002)
+10. Weiner RM. Phys. Rep. 327:249
+(2000)
+11. Tomasik B, Wiedemann UA. hep-
+ph/0210250
+12. Alexander G.
+Rep. Prog. Phys.
+66:481 (2003)
+13. Hanbury-Brown
+R,
+Twiss
+RQ.
+Nature 178:1046 (1956)
+14. Hanbury-Brown
+R,
+Twiss
+RQ.
+Philos. Mag. 45:663 (1954)
+15. Goldhaber G, Goldhaber S, Lee
+W-Y, Pais A. Phys. Rev. 120:300
+(1960)
+16. Kopylov GI, Podgoretsky MI. Sov.
+J. Nucl. Phys. 15:219 (1972)
+17. Kopylov GI, Lyuboshits VL, Pod-
+goretsky MI. JINR-P2-8069
+18. Kopylov GI, Podgoretsky MI. Sov.
+J. Nucl. Phys. 18:336 (1974)
+19. Kopylov GI. Phys. Lett. B50:472
+(1974)
+20. Koonin SE.
+Phys. Lett.
+B70:43
+(1977)
+21. Gyulassy M, Kauﬀmann SK, Wil-
+son LW.
+Phys. Rev. C
+20:2267
+(1979)
+22. Zajc WA, et al.
+Phys. Rev. C
+29:2173 (1984)
+23. Fung SY, et al. Phys. Rev. Lett.
+41:1592 (1978)
+24. Humanic TJ. Phys. Rev. C 34:191
+(1986)
+25. Baym
+G.
+Acta
+Phys.
+Pol.
+B29:1839 (1998)
+26. Kopylov GI, Podgoretsky MI. Sov.
+Phys.-JETP 42:211 (1976)
+27. Lednicky R, Lyuboshits VL.
+In
+Proc. Particle Correlations and
+Interferometry
+in
+Nuclear
+Col-
+lisions,
+p. 42. Nantes,
+France:
+World Sci. (1990)
+28. Lednicky R. nucl-th/0212089
+29. Lednicky R, Lyuboshits VL. Sov.
+J. Nucl. Phys. 35:770 (1982)
+30. Akkelin SV, Sinyukov YM. Phys.
+Lett. B356:525 (1995)
+31. Barz HW. Phys. Rev. C 59:2214
+(1999)
+32. Barz HW. Phys. Rev. C 53:2536
+(1996)
+33. Cramer JG, Miller GA, Wu JMS,
+Yoon J-H. nucl-th/0411031
+34. Chu MC, Gardner S, Matsui T,
+Seki R.
+Phys. Rev. C
+50:3079
+(1994)
+35. Kapusta JI, Li Y. nucl-th/0503075
+36. Pratt S.
+Phys. Lett.
+B301:159
+(1993)
+37. Heinz UW, Scotto P, Zhang QH.
+Ann. Phys. 288:325 (2001)
+38. Zhang QH, Scotto P, Heinz UW.
+Phys. Rev. C 58:3757 (1998)
+39. Csorgo T, Zimanyi J. Phys. Rev.
+Lett. 80:916 (1998)
+40. Zimanyi J, Csorgo T. Heavy Ion
+Phys. 9:241 (1999)
+41. Anchishkin D, Heinz UW, Renk P.
+Phys. Rev. C 57:1428 (1998)
+42. Zhang
+QH,
+Wiedemann
+UA,
+Slotta C, Heinz UW. Phys. Lett.
+B407:33 (1997)
+
+
+--- PDF PAGE 45 ---
+Femtoscopy in Heavy Ion Collisions
+45
+43. Pratt S.
+Phys. Rev. C
+56:1095
+(1997)
+44. Aichelin J. Nucl. Phys. A617:510
+(1997)
+45. Wiedemann UA, et al. Phys. Rev.
+C 56:614 (1997)
+46. Wiedemann UA, Ferenc D, Heinz
+UW. Phys. Lett. B449:347 (1999)
+47. Padula SS, Roldao CG. Phys. Rev.
+C 58:2907 (1998)
+48. Martin M, Kalechofsky H, Foka P,
+Wiedemann UA. Eur. Phys. J. C
+2:359 (1998)
+49. Barate R, et al.
+Phys. Lett.
+B478:50 (2000)
+50. Abreu P, et al.
+Phys. Lett.
+B471:460 (2000)
+51. Pratt S. Phys. Rev. D 33:72 (1986)
+52. Brown DA, Danielewicz P. Phys.
+Rev. C 64:014902 (2001)
+53. Brown DA, Wang F, Danielewicz
+P. Phys. Lett. B470:33 (1999)
+54. Brown DA, Danielewicz P. Phys.
+Lett. B398:252 (1997)
+55. Chung P, et al. Phys. Rev. Lett.
+91:162301 (2003)
+56. Verde G, et al.
+Phys. Rev. C
+65:054609 (2002)
+57. Verde G, et al.
+Phys. Rev. C
+67:034606 (2003)
+58. Wang F, Pratt S. Phys. Rev. Lett.
+83:3138 (1999)
+59. Pratt S, Petriconi S. Phys. Rev. C
+68:054901 (2003)
+60. Lednicky R, Lyuboshits VL, Er-
+azmus B, Nouais D.
+Phys. Lett.
+B373:30 (1996)
+61. Voloshin S, Lednicky R, Panitkin
+S, Xu N. Phys. Rev. Lett. 79:4766
+(1997)
+62. Adams J, et al. Phys. Rev. Lett.
+91:262302 (2003)
+63. Pratt S.
+Phys. Rev. D
+33:1314
+(1986)
+64. Bertsch
+GF.
+Nucl.
+Phys.
+A498:C173 (1989)
+65. Csorgo T, et al.
+Phys. Lett.
+B241:301 (1990)
+66. Wiedemann UA.
+Phys. Rev. C
+57:266 (1998)
+67. Lisa MA, Heinz UW, Wiedemann
+UA. Phys. Lett. B489:287 (2000)
+68. Heinz UW, Hummel A, Lisa MA,
+Wiedemann UA.
+Phys. Rev. C
+66:044903 (2002)
+69. Danielewicz P, Pratt S.
+nucl-
+th/0501003
+70. Chajecki Z, Gutierrez TD, Lisa
+MA, Lopez-Noriega M.
+nucl-
+ex/0505009
+71. Chapman S, Nix JR, Heinz UW.
+Phys. Rev. C 52:2694 (1995)
+72. Retiere F, Lisa MA. Phys. Rev. C
+70:044907 (2004)
+73. Miskowiec D. nucl-ex/9808003
+74. Heinz UW, Tomasik B, Wiede-
+mann UA, Wu YF.
+Phys. Lett.
+B382:181 (1996)
+75. Voloshin SA, Cleland WE. Phys.
+Rev. C 53:896 (1996)
+76. Wiedemann
+UA,
+Heinz
+UW.
+Phys. Rev. C 56:610 (1997)
+77. Yano FB, Koonin SE. Phys. Lett.
+B78:556 (1978)
+78. Wu YF, Heinz UW, Tomasik B,
+Wiedemann UA. Eur. Phys. J. C
+1:599 (1998)
+79. Chapman S, Scotto P, Heinz UW.
+Phys. Rev. Lett. 74:4400 (1995)
+80. Csorgo T, Lorstad B, Zimanyi J.
+Z. Phys. C 71:491 (1996)
+81. Heinz UW, Zhang QH. Phys. Rev.
+C 56:426 (1997)
+82. Heinz UW, Sugarbaker A. Phys.
+Rev. C 70:054908 (2004)
+83. Boggild H, et al.
+Phys. Lett.
+B455:77 (1999)
+
+
+--- PDF PAGE 46 ---
+46
+Lisa et al.
+84. Bearden IG, et al.
+Phys. Lett.
+B517:25 (2001)
+85. Adams J, et al. Phys. Rev. Lett.
+91:262301 (2003)
+86. Lisa MA, et al. Phys. Rev. Lett.
+84:2798 (2000)
+87. Makhlin AN, Sinyukov YuM. Z.
+Phys. C 39:69 (1988)
+88. Kolehmainen
+K.
+Phys.
+Lett.
+B180:203 (1986)
+89. Padula SS, Gyulassy M.
+Nucl.
+Phys. B339:378 (1990)
+90. Heinz UW, Kolb PF. Phys. Lett.
+B542:216 (2002)
+91. Tomasik B, Heinz UW. Phys. Rev.
+C 65:031902 (2002)
+92. Chojnacki
+M,
+Florkowski
+W,
+Csorgo T. Phys. Rev. C 71:044902
+(2005)
+93. Csorgo T, et al.
+Phys. Rev. C
+67:034904 (2003)
+94. Lee KS, Heinz UW, Schneder-
+mann E. Z. Phys. C 48:525 (1990)
+95. Schnedermann
+E,
+Sollfrank
+J,
+Heinz UW. Phys. Rev. C 48:2462
+(1993)
+96. Pratt S. Phys. Rev. Lett. 53:1219
+(1984)
+97. Sinyukov YuM, Akkelin SV, Xu N.
+Phys. Rev. C 59:3437 (1999)
+98. Molnar D, Gyulassy M.
+Phys.
+Rev. C 62:054907 (2000)
+99. Cheng S, et al.
+Phys. Rev. C
+65:024901 (2002)
+100. Kolb
+PF,
+Heinz
+U.
+nucl-
+th/0305084
+101. Huovinen P, et al.
+Phys. Lett.
+B503:58 (2001)
+102. Hirano T. nucl-th/0410017
+103. Heinz UW, Kolb PF. Nucl. Phys.
+A702:269 (2002)
+104. Teaney D. Phys. Rev. C 68:034913
+(2003)
+105. Cooper F, Frye G, Schonberg E.
+Phys. Rev. D 11:192 (1975)
+106. Tomasik
+B,
+Wiedemann
+UA.
+Phys. Rev. C 68:034905 (2003)
+107. Csernai LP, et al. hep-ph/0406082
+108. Sinyukov YuM, Akkelin SV, Hama
+Y.
+Phys. Rev. Lett.
+89:052301
+(2002)
+109. SoﬀS, Bass SA, Dumitru A. Phys.
+Rev. Lett. 86:3981 (2001)
+110. Bass SA, Dumitru A. Phys. Rev.
+C 61:064909 (2000)
+111. Teaney D, Lauret J, Shuryak EV.
+Nucl. Phys. A698:479 (2002)
+112. Teaney D, Lauret J, Shuryak EV.
+nucl-th/0110037
+113. Bertsch GF.
+Phys. Rev. Lett.
+72:2349 (1994)
+114. Pal
+S, Pratt S.
+Phys. Lett.
+B578:310 (2004)
+115. Huovinen P. nucl-th/0505036
+116. Danielewicz P, Bertsch GF. Nucl.
+Phys. A533:712 (1991)
+117. Llope WJ, et al.
+Phys. Rev. C
+52:2004 (1995)
+118. Adams J, et al.
+Phys. Rev. C
+71:044906 (2005)
+119. Lisa MA, et al. nucl-ex/0503017
+120. Boggild H, et al.
+Phys. Lett.
+B349:386 (1995)
+121. Ahle L, et al.
+Phys. Rev. C
+66:054906 (2002)
+122. Adler SS, et al. Phys. Rev. Lett.
+93:152302 (2004)
+123. Boggild H, et al.
+Phys. Lett.
+B302:510 (1993)
+124. Kopylov GI. Phys. Lett. B50:472
+(1974)
+125. Abreu P, et al.
+Phys. Lett.
+B286:201 (1992)
+126. Abbiendi G, et al. Eur. Phys. J.
+C 16:423 (2000)
+127. Uribe Duque J.
+Phys. Rev. D
+49:4373 (1994). UMI-93-29679
+
+
+--- PDF PAGE 47 ---
+Femtoscopy in Heavy Ion Collisions
+47
+128. Avery P, et al.
+Phys. Rev. D
+32:2294 (1985)
+129. Anderson M, et al. Nucl. Instrum.
+Methods A 499:659 (2003)
+130. Stavinskiy AV, et al. Nukleonica
+49:S23 (2004)
+131. Lisa MA, Gong WG, Gelbke CK,
+Lynch WG. Phys. Rev. C 44:2865
+(1991)
+132. Lisa MA, et al. Phys. Lett. B496:1
+(2000)
+133. Wells R. PhD thesis. Ohio State
+Univ., Columbus (2002)
+134. Adams J, et al. Phys. Rev. Lett.
+93:012301 (2004)
+135. Poskanzer
+AM,
+Voloshin
+SA.
+Phys. Rev. C 58:1671 (1998)
+136. Borghini N, Ollitrault JY. Phys.
+Rev. C 70:064905 (2004)
+137. Bearden IG, et al. Phys. Rev. C
+58:1656 (1998)
+138. Bowler MG. Phys. Lett. B270:69
+(1991)
+139. Sinyukov Yu, et al.
+Phys. Lett.
+B432:248 (1998)
+140. Chacon AD, et al. Phys. Rev. C
+43:2670 (1991)
+141. Brown DA, Danielewicz P, Heﬀner
+M, Soltz R. nucl-th/0404067
+142. Adler C, et al.
+Phys. Rev. Lett.
+87:082301 (2001)
+143. Csorgo T, Hegyi S, Zajc WA. Eur.
+Phys. J. C 36:67 (2004)
+144. Bartke J.
+Phys. Lett.
+B174:32
+(1986)
+145. Humanic TJ, et al.
+Z. Phys. C
+38:79 (1988)
+146. Bamberger A, et al.
+Phys. Lett.
+B203:320 (1988)
+147. Abbott T, et al. Phys. Rev. Lett.
+69:1030 (1992)
+148. Barrette J, et al.
+Phys. Lett.
+B333:33 (1994)
+149. Adamova D, et al.
+Nucl. Phys.
+A714:124 (2003)
+150. Barrette J, et al.
+Phys. Rev. C
+50:1077 (1994)
+151. Barrette J, et al.
+Phys. Rev. C
+60:054905 (1999)
+152. Boggild H, et al.
+Phys. Lett.
+B458:181 (1999)
+153. Lisa MA, et al. Phys. Rev. Lett.
+70:3709 (1993)
+154. Kotte R, et al. Eur. J. Phys. A
+23:271 (2005)
+155. Lisa MA, et al. Phys. Rev. Lett.
+71:2863 (1993)
+156. Lisa MA, et al.
+Phys. Rev. C
+49:2788 (1994)
+157. Kotte R, et al. Z. Phys. A 359:47
+(1997)
+158. Adler SS, et al.
+Phys. Rev. C
+71:034908 (2005)
+159. Csorgo T, Lorstad B. Phys. Rev.
+C 54:1390 (1996)
+160. Voloshin SA, Cleland WE. Phys.
+Rev. C 54:3212 (1996)
+161. Heiselberg H.
+Phys. Rev. Lett.
+82:2052 (1999)
+162. Heiselberg H, Levy A-M.
+Phys.
+Rev. C 59:2716 (1999)
+163. Ackermann KH, et al. Phys. Rev.
+Lett. 86:402 (2001)
+164. Pinkenburg C, et al.
+Phys. Rev.
+Lett. 83:1295 (1999)
+165. Miskowiec
+D.
+Nucl.
+Phys.
+A590:C473 (1995)
+166. Filimonov K, et al.
+Nucl. Phys.
+A661:198 (1999)
+167. Nishimura S, et al.
+Proc. 15th
+Winter Workshop on Nuclear Dy-
+namics, Park City, UT (1999)
+168. Aggarwal MM, et al. Nucl. Phys.
+A663:729 (2000)
+169. Panitkin SY. nucl-ex/9905007
+170. Csernai LP, Rohrich D.
+Phys.
+Lett. B458:454 (1999)
+
+
+--- PDF PAGE 48 ---
+48
+Lisa et al.
+171. Brachmann J, et al. Phys. Rev. C
+61:024909 (2000)
+172. Magas VK, Csernai LP, Strottman
+DD. hep-ph/0101125
+173. Shuryak EV.
+Phys. Rep.
+61:71
+(1980)
+174. Bjorken JD. Phys. Rev. D 27:140
+(1983)
+175. Heinz
+UW.
+Nucl.
+Phys.
+A610:C264 (1996)
+176. Miskowiec D, et al.
+Nucl. Phys.
+A610:C227 (1996)
+177. Appelshauser H, et al. Eur. Phys.
+J. C 2:661 (1998)
+178. Antinori F, et al.
+J. Phys. G
+27:2325 (2001)
+179. Back BB, et al. nucl-ex/0409001
+180. Renk T. Phys. Rev. C 69:044902
+(2004)
+181. Aggarwal MM, et al. Phys. Rev.
+C 67:014906 (2003)
+182. Adcox K, et al. Phys. Rev. Lett.
+88:192302 (2002)
+183. Xu N, Kaneta M.
+Nucl. Phys.
+A698:306 (2002)
+184. Beker H, et al.
+Phys. Rev. Lett.
+74:3340 (1995)
+185. Csorgo T, Lorstad B. Phys. Rev.
+C 54:1390 (1996)
+186. Gyulassy M, Padula SS.
+Phys.
+Rev. C 41:21 (1990)
+187. Schnetzer S, et al. Phys. Rev. Lett.
+49:989 (1982)
+188. Akiba Y, et al. Phys. Rev. Lett.
+70:1057 (1993)
+189. Beker H, et al. Z. Phys. C 64:209
+(1994)
+190. Cianciolo
+V.
+Nucl.
+Phys.
+A590:C459 (1995)
+191. Sorge H, Stocker H, Greiner W.
+Nucl. Phys. A498:C567 (1989)
+192. Wiedemann UA, Scotto P, Heinz
+UW. Phys. Rev. C 53:918 (1996)
+193. Bearden IG, et al. Phys. Rev. Lett.
+87:112301 (2001)
+194. Afanasiev SV, et al.
+Phys. Lett.
+B557:157 (2003)
+195. Appelshauser H, et al. Phys. Lett.
+B467:21 (1999)
+196. Aggarwal MM, et al. Phys. Rev.
+Lett. 93:022301 (2004)
+197. Heﬀner M. J. Phys. G G30:S1043
+(2004)
+198. Bekele S.
+J. Phys. G
+G30:S229
+(2004)
+199. Renault G. hep-ex/0404024
+200. Kapusta JI, Li Y.
+J. Phys. G
+30:S1069 (2004)
+201. Wong C-Y. hep-ph/0403025
+202. Lednicky R. nucl-th/0112011
+203. Alber T, et al. Z. Phys. C 73:443
+(1997)
+204. Renault G. hep-ex/0406066
+205. Blume C, et al.
+Nucl. Phys.
+A715:55 (2003)
+206. Kisiel A.
+J. Phys. G
+30:S1059
+(2004)
+207. Bertsch G, Gong M, Tohyama M.
+Phys. Rev. C 37:1896 (1988)
+208. Rischke DH, Gyulassy M.
+Nucl.
+Phys. A608:479 (1996)
+209. Harris JW, M¨uller B. Annu. Rev.
+Nucl. Part. Sci. 46:71 (1996)
+210. Adamova D, et al. Phys. Rev. Lett.
+90:022301 (2003)
+211. Hardtke D, Voloshin SA.
+Phys.
+Rev. C 61:024905 (2000)
+212. Sorge H.
+Phys. Rev. C
+52:3291
+(1995)
+213. Lisa MA, et al.
+Nucl. Phys.
+A698:185 (2002)
+214. Afanasiev SV, et al. Phys. Rev. C
+66:054902 (2002)
+215. Kniege S, et al. nucl-ex/0403034
+216. Ferenc D, et al.
+Phys. Lett.
+B457:347 (1999)
+
+
+--- PDF PAGE 49 ---
+Femtoscopy in Heavy Ion Collisions
+49
+217. Greiner C, Gong C, Muller B.
+Phys. Lett. B316:226 (1993)
+218. Pratt S, Haglin K. Phys. Rev. C
+59:3304 (1999)
+219. Akkelin SV, Sinyukov YuM. Phys.
+Rev. C 70:064901 (2004)
+220. Braun-Munzinger P, Redlich K,
+Stachel J. nucl-th/0304013
+221. Braun-Munzinger P, Magestro D,
+Redlich K, Stachel J. Phys. Lett.
+B518:41 (2001)
+222. Andronic A, Braun-Munzinger P,
+Redlich K, Stachel J. Phys. Lett.
+B571:36 (2003)
+223. Adcox K, et al. Phys. Rev. Lett.
+87:052301 (2001)
+224. Danielewicz P, Pratt S. Phys. Rev.
+C 53:249 (1996)
+225. Larionov AB, Eﬀenberger M, Le-
+upold S, Mosel U. Phys. Rev. C
+66:054604 (2002)
+226. Humanic
+TJ.
+Nucl.
+Phys.
+A715:641 (2003)
+227. Humanic TJ. nucl-th/0301055
+228. Molnar D, Gyulassy M.
+Phys.
+Rev. Lett. 92:052301 (2004)
+229. Lin ZW, Ko CM, Pal S. Phys. Rev.
+Lett. 89:152301 (2002)
+230. Lin ZW, Ko CM.
+J. Phys. G
+30:S263 (2004)
+231. Hirano T, Tsuda K. Phys. Rev. C
+66:054905 (2002)
+232. Heinz
+UW,
+Kolb
+PF.
+hep-
+ph/0204061
+233. Zschiesche D, Stocker H, Greiner
+W, Schramm S.
+Phys. Rev. C
+65:064902 (2002)

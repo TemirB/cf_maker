@@ -3,10 +3,12 @@
 #include <array>
 #include <vector>
 
+constexpr double kFitLimitTolerance = 1e-4;
+
 struct FitResult
 {
-    std::array<double, 6> R{};
-    std::array<double, 6> eR{};
+    std::array<double, 6> r{};
+    std::array<double, 6> e_r{};
     double lambda{};
     double e_lambda{};
     double chi2{};
@@ -22,12 +24,20 @@ struct FitResult
     [[nodiscard]] bool is_finite() const;
     [[nodiscard]] double chi2_ndf() const;
     [[nodiscard]] bool is_valid() const;
-    [[nodiscard]] double corr(int i, int j) const
+    [[nodiscard]] double correlation(int i, int j) const
     {
         return corr[static_cast<std::size_t>(i) * 7 + static_cast<std::size_t>(j)];
     }
 };
 
 [[nodiscard]] bool is_bad_fit(const FitResult& r);
+
+// Boundary and failed fits remain in the saved fit metadata, but are excluded
+// from ordinary physical graphs and model overlays.
+[[nodiscard]] bool is_usable_fit(const FitResult& result);
+
+// Prefer a usable result to a boundary result before comparing chi-square.
+// Failed, nonfinite and underdetermined candidates never replace each other.
+[[nodiscard]] bool is_better_fit(const FitResult& candidate, const FitResult& current);
 
 using FitGrid = std::vector<std::vector<std::vector<FitResult>>>;
