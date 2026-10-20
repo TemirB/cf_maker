@@ -119,6 +119,37 @@ void print_summary(long double chi2, std::size_t points, int free_parameters)
     }
     std::cout << '\n';
 }
+
+void print_largest_contributions(const TH3D& histogram, const std::vector<BinContribution>& rows,
+                                 long double chi2)
+{
+    std::vector<const BinContribution*> ordered;
+    ordered.reserve(rows.size());
+    for (const auto& row : rows) {
+        ordered.push_back(&row);
+    }
+    const auto count = std::min<std::size_t>(5, ordered.size());
+    std::partial_sort(ordered.begin(), ordered.begin() + count, ordered.end(),
+                      [](const BinContribution* left, const BinContribution* right) {
+                          return left->chi2 > right->chi2;
+                      });
+    const auto precision = std::cout.precision();
+    std::cout << std::setprecision(12) << "largest_chi2_contributions:\n";
+    long double largest_sum = 0;
+    for (std::size_t i = 0; i < count; ++i) {
+        const auto& row = *ordered[i];
+        largest_sum += row.chi2;
+        std::cout << "cell=" << histogram.GetBin(row.ix, row.iy, row.iz) << " xyz=(" << row.ix
+                  << ',' << row.iy << ',' << row.iz << ") q=(" << row.q_out << ',' << row.q_side
+                  << ',' << row.q_long << ") C2=" << row.value << " C2_fit=" << row.model
+                  << " sigma_C2=" << row.sigma << " pull=" << row.pull
+                  << " contribution=" << row.chi2
+                  << " share_percent=" << (chi2 > 0 ? 100 * row.chi2 / chi2 : 0) << '\n';
+    }
+    std::cout << "top" << count << "_share_percent="
+              << (chi2 > 0 ? 100 * largest_sum / chi2 : 0) << '\n';
+    std::cout.precision(precision);
+}
 } // namespace manual_chi2_detail
 
 // root -l -b -q 'tools/manual_chi2.C()'
@@ -252,6 +283,7 @@ void manual_chi2(const char* cf_path = "", int charge = 0, int centrality = 0, i
     print_summary(chi2, rows.size(), free_parameters);
     std::cout << "saved chi2=" << saved_chi2 << " ndf=" << saved_ndf
               << " delta_chi2=" << chi2 - saved_chi2 << '\n';
+    print_largest_contributions(*histogram, rows, chi2);
     write_csv(csv_path, rows);
     const long long ndf = static_cast<long long>(rows.size()) - free_parameters;
     const double tolerance = 1e-8 * std::max(1.0, std::abs(saved_chi2));
