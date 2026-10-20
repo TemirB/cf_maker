@@ -146,8 +146,8 @@ void print_largest_contributions(const TH3D& histogram, const std::vector<BinCon
                   << " contribution=" << row.chi2
                   << " share_percent=" << (chi2 > 0 ? 100 * row.chi2 / chi2 : 0) << '\n';
     }
-    std::cout << "top" << count << "_share_percent="
-              << (chi2 > 0 ? 100 * largest_sum / chi2 : 0) << '\n';
+    std::cout << "top" << count << "_share_percent=" << (chi2 > 0 ? 100 * largest_sum / chi2 : 0)
+              << '\n';
     std::cout.precision(precision);
 }
 } // namespace manual_chi2_detail
