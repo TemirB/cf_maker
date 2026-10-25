@@ -56,6 +56,26 @@ TGraphErrors* build_pvalue_graph(const Config& cfg, int ch, int centr)
     return g;
 }
 
+TGraphErrors* build_chi2_root_over_manual_graph(const Config& cfg, int ch, int centr)
+{
+    TGraphErrors* graph = make_styled_graph(
+        Form("g_chi2_root_over_manual_%s_centr_%s", charge::kNames[ch], centrality::kNames[centr]),
+        centr);
+    for (int bin = 0; bin < cfg.binning.count; ++bin) {
+        const auto& fit = cfg.fit_results[ch][centr][bin];
+        const auto ratio = fit.chi2_root_over_manual();
+        // This verifies arithmetic for every attempted fit, including failed
+        // and boundary attempts. Physical parameter plots keep their own filter.
+        if (fit.attempts <= 0 || !ratio) {
+            continue;
+        }
+        const int point = graph->GetN();
+        graph->SetPoint(point, bin_center(cfg.binning, bin), *ratio);
+        graph->SetPointError(point, 0, 0);
+    }
+    return graph;
+}
+
 namespace
 {
 struct MeanWithError

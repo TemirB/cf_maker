@@ -152,19 +152,27 @@ void decode_array(const nlohmann::json& values, std::array<double, N>& result)
 
 nlohmann::json encode_fit(const FitResult& fit)
 {
-    return {{"r", encode_array(fit.r)},
-            {"e_r", encode_array(fit.e_r)},
-            {"lambda", encode_double(fit.lambda)},
-            {"e_lambda", encode_double(fit.e_lambda)},
-            {"chi2", encode_double(fit.chi2)},
-            {"ndf", fit.ndf},
-            {"p_value", encode_double(fit.p_value)},
-            {"ok", fit.ok},
-            {"status", fit.status},
-            {"cov_status", fit.cov_status},
-            {"at_limit", fit.at_limit},
-            {"attempts", fit.attempts},
-            {"corr", encode_array(fit.corr)}};
+    nlohmann::json result = {{"r", encode_array(fit.r)},
+                             {"e_r", encode_array(fit.e_r)},
+                             {"lambda", encode_double(fit.lambda)},
+                             {"e_lambda", encode_double(fit.e_lambda)},
+                             {"chi2", encode_double(fit.chi2)},
+                             {"ndf", fit.ndf},
+                             {"p_value", encode_double(fit.p_value)},
+                             {"ok", fit.ok},
+                             {"status", fit.status},
+                             {"cov_status", fit.cov_status},
+                             {"at_limit", fit.at_limit},
+                             {"attempts", fit.attempts},
+                             {"corr", encode_array(fit.corr)}};
+    if (fit.chi2_comparison) {
+        const auto& comparison = *fit.chi2_comparison;
+        result["chi2_comparison"] = {{"root_chi2", encode_double(comparison.root_chi2)},
+                                     {"root_ndf", comparison.root_ndf},
+                                     {"manual_chi2", encode_double(comparison.manual_chi2)},
+                                     {"manual_ndf", comparison.manual_ndf}};
+    }
+    return result;
 }
 
 FitResult decode_fit(const nlohmann::json& value)
@@ -183,6 +191,14 @@ FitResult decode_fit(const nlohmann::json& value)
     fit.at_limit = value.at("at_limit").get<bool>();
     fit.attempts = value.at("attempts").get<int>();
     decode_array(value.at("corr"), fit.corr);
+    // Additive schema-1 diagnostics: old records carry no independently saved
+    // ROOT objective, so do not substitute their primary chi-square for it.
+    if (value.contains("chi2_comparison")) {
+        const auto& comparison = value.at("chi2_comparison");
+        fit.chi2_comparison = Chi2Comparison{
+            decode_double(comparison.at("root_chi2")), comparison.at("root_ndf").get<int>(),
+            decode_double(comparison.at("manual_chi2")), comparison.at("manual_ndf").get<int>()};
+    }
     if (fit.attempts < 0 || (fit.ok && fit.attempts == 0)) {
         throw std::runtime_error("invalid fit-result attempt count");
     }

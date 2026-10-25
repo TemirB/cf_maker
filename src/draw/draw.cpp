@@ -11,6 +11,7 @@
 #include <TFile.h>
 #include <TGraphErrors.h>
 #include <TLegend.h>
+#include <TLine.h>
 #include <TList.h>
 #include <TMultiGraph.h>
 #include <TPad.h>
@@ -84,7 +85,7 @@ void set_range_with_errors(TMultiGraph* mg, double padFrac)
     mg->SetMaximum(ymax);
 }
 
-bool draw_mg_or_report(TMultiGraph* mg, const char* option)
+bool draw_mg_or_report(TMultiGraph* mg, const char* option, const char* empty_message)
 {
     if (mg && mg->GetListOfGraphs()) {
         for (TObject* object : *mg->GetListOfGraphs()) {
@@ -98,7 +99,7 @@ bool draw_mg_or_report(TMultiGraph* mg, const char* option)
     TPaveText message(0.15, 0.42, 0.85, 0.6, "NDC");
     message.SetBorderSize(0);
     message.SetFillStyle(0);
-    message.AddText("No usable fits");
+    message.AddText(empty_message);
     message.DrawClone();
     return false;
 }
@@ -111,7 +112,13 @@ void write_mg_with_legend(TFile* file, TMultiGraph* mg, const char* canvasName, 
     file->cd();
 
     TCanvas c(canvasName, canvasName, 1000, 800);
-    if (!draw_mg_or_report(mg, "A")) {
+    if (kind == draw::GraphKind::Chi2RootOverManual) {
+        c.SetLeftMargin(0.14f);
+    }
+    const char* empty_message = kind == draw::GraphKind::Chi2RootOverManual
+                                    ? "No comparable ROOT/manual chi-square values"
+                                    : "No usable fits";
+    if (!draw_mg_or_report(mg, "A", empty_message)) {
         write_output_object(*file, c, canvasName);
         return;
     }
@@ -132,6 +139,31 @@ void write_mg_with_legend(TFile* file, TMultiGraph* mg, const char* canvasName, 
         mg->GetYaxis()->SetRangeUser(0.1, 257500.0);
         c.SetLogy();
         break;
+    case draw::GraphKind::Chi2RootOverManual: {
+        // Keep unity visible without magnifying machine-precision noise.
+        mg->GetYaxis()->CenterTitle();
+        double minimum = 0.99, maximum = 1.01;
+        for (TObject* object : *mg->GetListOfGraphs()) {
+            const auto* graph = dynamic_cast<TGraph*>(object);
+            if (!graph) {
+                continue;
+            }
+            for (int point = 0; point < graph->GetN(); ++point) {
+                const double value = graph->GetPointY(point);
+                if (std::isfinite(value)) {
+                    minimum = std::min(minimum, value);
+                    maximum = std::max(maximum, value);
+                }
+            }
+        }
+        const double padding = 0.05 * (maximum - minimum);
+        mg->SetMinimum(minimum - padding);
+        mg->SetMaximum(maximum + padding);
+        TLine reference(mg->GetXaxis()->GetXmin(), 1, mg->GetXaxis()->GetXmax(), 1);
+        reference.SetLineStyle(2);
+        reference.DrawClone();
+        break;
+    }
     case draw::GraphKind::FitOverCF:
         mg->GetYaxis()->SetRangeUser(0.8, 1.2);
         break;
@@ -144,6 +176,9 @@ void write_mg_with_legend(TFile* file, TMultiGraph* mg, const char* canvasName, 
     leg.SetBorderSize(0);
     leg.SetFillStyle(0);
     leg.SetTextSize(0.03f);
+    if (kind == draw::GraphKind::Chi2RootOverManual) {
+        leg.SetHeader("All attempted fits");
+    }
 
     for (auto& [obj, label] : legendEntries) {
         leg.AddEntry(obj, label.c_str(), "lp");

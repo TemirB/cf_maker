@@ -23,6 +23,17 @@ double FitResult::chi2_ndf() const
     return ndf > 0 ? chi2 / ndf : 0.0;
 }
 
+std::optional<double> FitResult::chi2_root_over_manual() const
+{
+    if (!chi2_comparison || !std::isfinite(chi2_comparison->root_chi2) ||
+        !std::isfinite(chi2_comparison->manual_chi2) || chi2_comparison->root_chi2 < 0 ||
+        chi2_comparison->manual_chi2 <= 0) {
+        return std::nullopt;
+    }
+    const double ratio = chi2_comparison->root_chi2 / chi2_comparison->manual_chi2;
+    return std::isfinite(ratio) ? std::optional<double>(ratio) : std::nullopt;
+}
+
 bool FitResult::is_valid() const
 {
     const bool basicValid = ok && is_finite() && lambda > 0. && lambda < 1.;

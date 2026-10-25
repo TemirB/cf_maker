@@ -75,6 +75,19 @@ void TestFitResult()
     r.r = {4.0, 4.0, 4.0, 0.0, 0.0, 0.0};
     CHECK(r.is_valid());
     CHECK(!is_bad_fit(r));
+    CHECK(!r.chi2_root_over_manual());
+    r.chi2_comparison = Chi2Comparison{8.0, 4, 4.0, 4};
+    CHECK(r.chi2_root_over_manual());
+    CHECK_NEAR(*r.chi2_root_over_manual(), 2.0, 1e-12);
+    for (const double unavailable : {0.0, -1.0, std::numeric_limits<double>::infinity(),
+                                     std::numeric_limits<double>::quiet_NaN()}) {
+        r.chi2_comparison->manual_chi2 = unavailable;
+        CHECK(!r.chi2_root_over_manual());
+        CHECK(r.is_finite());
+        CHECK(is_usable_fit(r));
+    }
+    r.chi2_comparison = Chi2Comparison{0.0, 4, 0.0, 4};
+    CHECK(!r.chi2_root_over_manual());
 
     r.r[0] = 10.0;
     CHECK(!r.is_valid());

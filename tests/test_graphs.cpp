@@ -147,7 +147,23 @@ int main()
     }
     {
         TMemFile output("graphs_output.root", "RECREATE");
-        make_dependency(cfg, &cf_file, &output);
+        Config comparison_cfg = cfg;
+        for (int bin = 1; bin <= 5; ++bin) {
+            comparison_cfg.fit_results[0][0][bin].chi2_comparison =
+                Chi2Comparison{4.0 * bin, 2, 4.0, 2};
+        }
+        comparison_cfg.fit_results[0][0][6].chi2_comparison = Chi2Comparison{0, 2, 0, 2};
+        std::unique_ptr<TGraphErrors> comparison(
+            build_chi2_root_over_manual_graph(comparison_cfg, 0, 0));
+        require(comparison->GetN() == 5,
+                "Diagnostic comparison dropped failed/boundary fits or plotted undefined 0/0");
+        for (int point = 0; point < comparison->GetN(); ++point) {
+            double x{}, y{};
+            comparison->GetPoint(point, x, y);
+            require(x == point + 1.5 && y == point + 1,
+                    "Chi-square diagnostic did not use independently saved values");
+        }
+        make_dependency(comparison_cfg, &cf_file, &output);
         auto& radii = read_multigraph(output, "mg_R_out_pos");
         auto* graph = dynamic_cast<TGraphErrors*>(radii.GetListOfGraphs()->At(0));
         require(graph != nullptr, "Missing radius graph");
@@ -156,6 +172,9 @@ int main()
         graph = dynamic_cast<TGraphErrors*>(lambda.GetListOfGraphs()->At(0));
         require(graph != nullptr, "Missing lambda graph");
         check_two_points(*graph, 1.0, 1.0);
+        auto& comparison_plot = read_multigraph(output, "mg_chi2_root_over_manual_pos");
+        graph = dynamic_cast<TGraphErrors*>(comparison_plot.GetListOfGraphs()->At(0));
+        require(graph && graph->GetN() == 5, "Missing native ROOT/manual diagnostic graph");
         require(cfg.fit_results[0][0][4].at_limit, "Boundary fit metadata was discarded");
         require(!cfg.fit_results[0][0][2].ok, "Failure metadata was discarded");
     }
@@ -164,9 +183,11 @@ int main()
     }
     {
         std::unique_ptr<TGraphErrors> chi2(build_chi2_ndf_graph(cfg, 0, 0));
+        std::unique_ptr<TGraphErrors> comparison(build_chi2_root_over_manual_graph(cfg, 0, 0));
         std::unique_ptr<TGraphErrors> pvalue(build_pvalue_graph(cfg, 0, 0));
         std::unique_ptr<TGraphErrors> ratio(build_fit_over_cf_graph(cfg, &cf_file, 0, 0));
-        require(chi2->GetN() == 0 && pvalue->GetN() == 0 && ratio->GetN() == 0,
+        require(chi2->GetN() == 0 && pvalue->GetN() == 0 && ratio->GetN() == 0 &&
+                    comparison->GetN() == 0,
                 "Entirely unavailable data produced graph points");
         TMemFile output("graphs_empty_output.root", "RECREATE");
         make_dependency(cfg, &cf_file, &output);

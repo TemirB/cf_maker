@@ -1,9 +1,18 @@
 #pragma once
 
 #include <array>
+#include <optional>
 #include <vector>
 
 constexpr double kFitLimitTolerance = 1e-4;
+
+struct Chi2Comparison
+{
+    double root_chi2{};
+    int root_ndf{};
+    double manual_chi2{};
+    int manual_ndf{};
+};
 
 struct FitResult
 {
@@ -20,9 +29,14 @@ struct FitResult
     bool at_limit = false;
     int attempts = 0;
     std::array<double, 49> corr{};
+    // Diagnostic only: absent for older files, unattempted fits and objectives
+    // unsupported by the independent sum. It never changes fit eligibility.
+    std::optional<Chi2Comparison> chi2_comparison;
 
     [[nodiscard]] bool is_finite() const;
     [[nodiscard]] double chi2_ndf() const;
+    // Zero manual chi-square, including 0/0, has no defined ratio.
+    [[nodiscard]] std::optional<double> chi2_root_over_manual() const;
     [[nodiscard]] bool is_valid() const;
     [[nodiscard]] double correlation(int i, int j) const
     {

@@ -40,9 +40,11 @@ void make_dependency(Config& cfg, TFile* cf3dFile, TFile* outFile)
         }
         auto mg_lambda = std::make_unique<TMultiGraph>();
         auto mg_chi2_ndf = std::make_unique<TMultiGraph>();
+        auto mg_chi2_comparison = std::make_unique<TMultiGraph>();
         auto mg_pvalue = std::make_unique<TMultiGraph>();
         auto mg_fit_over_cf = std::make_unique<TMultiGraph>();
         std::vector<std::pair<TObject*, std::string>> legend_entries;
+        std::vector<std::pair<TObject*, std::string>> comparison_legend;
 
         for (const int centr : cfg.selection.centralities) {
             std::array<TGraphErrors*, lcms::kCount> g_radii{};
@@ -55,6 +57,7 @@ void make_dependency(Config& cfg, TFile* cf3dFile, TFile* outFile)
             TGraphErrors* g_lambda = make_styled_graph(
                 Form("g_L_%s_centr_%s", charge::kNames[ch], centrality::kNames[centr]), centr);
             TGraphErrors* g_chi2_ndf = build_chi2_ndf_graph(cfg, ch, centr);
+            TGraphErrors* g_chi2_comparison = build_chi2_root_over_manual_graph(cfg, ch, centr);
             TGraphErrors* g_pvalue = build_pvalue_graph(cfg, ch, centr);
             TGraphErrors* g_fit_over_cf = build_fit_over_cf_graph(cfg, cf3dFile, ch, centr);
 
@@ -89,6 +92,10 @@ void make_dependency(Config& cfg, TFile* cf3dFile, TFile* outFile)
 
             mg_lambda->Add(g_lambda, "lp");
             mg_chi2_ndf->Add(g_chi2_ndf, "lp");
+            mg_chi2_comparison->Add(g_chi2_comparison, "lp");
+            if (g_chi2_comparison->GetN() > 0) {
+                comparison_legend.emplace_back(g_chi2_comparison, centrality::kNames[centr]);
+            }
             mg_fit_over_cf->Add(g_fit_over_cf, "lp");
             mg_pvalue->Add(g_pvalue, "lp");
         }
@@ -113,6 +120,21 @@ void make_dependency(Config& cfg, TFile* cf3dFile, TFile* outFile)
         mg_chi2_ndf->SetName(Form("mg_chi2_ndf_%s", charge::kNames[ch]));
         write_mg_with_legend(outFile, mg_chi2_ndf.get(), mg_chi2_ndf->GetName(), mode,
                              "#chi^{2}/ndf", legend_entries, draw::GraphKind::chi2_ndf);
+
+        set_range_with_errors(mg_chi2_comparison.get(), 0.1);
+        mg_chi2_comparison->SetName(Form("mg_chi2_root_over_manual_%s", charge::kNames[ch]));
+        write_mg_with_legend(outFile, mg_chi2_comparison.get(), mg_chi2_comparison->GetName(), mode,
+                             "#chi^{2}_{ROOT}/#chi^{2}_{manual}", comparison_legend,
+                             draw::GraphKind::Chi2RootOverManual);
+        if (cfg.general.images.need) {
+            auto* comparison_canvas =
+                dynamic_cast<TCanvas*>(outFile->Get(mg_chi2_comparison->GetName()));
+            if (comparison_canvas) {
+                const std::string image =
+                    dir + "/c_chi2_root_over_manual_" + charge::kNames[ch] + "." + ext;
+                save_canvas_quiet(comparison_canvas, image.c_str());
+            }
+        }
 
         set_range_with_errors(mg_fit_over_cf.get(), 0.1);
         mg_fit_over_cf->SetName(Form("mg_FitOverCF_%s", charge::kNames[ch]));

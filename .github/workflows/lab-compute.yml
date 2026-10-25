@@ -1,0 +1,190 @@
+name: Lab compute and publish
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+    inputs:
+      operation:
+        description: Local queue operation
+        type: choice
+        default: run
+        options: [run, status, cancel, retry-upload]
+      job_id:
+        description: Existing local job ID, required for cancel/retry-upload
+        type: string
+        required: false
+  schedule:
+    - cron: '*/15 * * * *'
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  lab:
+    if: >-
+      github.ref == 'refs/heads/master' &&
+      github.repository == vars.CF_LAB_REPOSITORY &&
+      github.event.repository.fork == false
+    runs-on: [self-hosted, cf-maker-lab]
+    timeout-minutes: 15
+    concurrency:
+      group: cf-maker-lab-control
+      cancel-in-progress: false
+      queue: max
+    env:
+      CF_LAB_CONFIG: ${{ vars.CF_LAB_CONFIG }}
+      CF_LAB_OPERATION: ${{ github.event_name == 'push' && 'run' || github.event_name == 'schedule' && 'status' || inputs.operation || 'status' }}
+      CF_LAB_REQUESTED_ID: ${{ inputs.job_id }}
+      CF_LAB_SUBMIT_ID: ${{ github.repository_id }}-${{ github.run_id }}
+    outputs:
+      ready: ${{ steps.collect.outputs.ready }}
+      job_id: ${{ steps.collect.outputs.job_id }}
+      lease_token: ${{ steps.collect.outputs.lease_token }}
+      pdf_sha256: ${{ steps.collect.outputs.pdf_sha256 }}
+      commit_sha: ${{ steps.collect.outputs.commit_sha }}
+      artifact_name: ${{ steps.collect.outputs.artifact_name }}
+    steps:
+      - name: Check out the trusted revision, including pinned submodules
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          submodules: recursive
+
+      - name: Submit or control the durable local queue
+        run: |
+          set -euo pipefail
+          case "$CF_LAB_CONFIG" in
+            /*) ;;
+            *) echo 'CF_LAB_CONFIG must name an absolute, external configuration file.' >&2; exit 1 ;;
+          esac
+          case "$CF_LAB_OPERATION" in
+            run)
+              python3 tools/lab_automation/lab.py --config "$CF_LAB_CONFIG" submit \
+                --source "$GITHUB_WORKSPACE" --job-id "$CF_LAB_SUBMIT_ID" \
+                --sha "$GITHUB_SHA" --run-id "$GITHUB_RUN_ID" \
+                --repository "$GITHUB_REPOSITORY" --event-name "$GITHUB_EVENT_NAME"
+              ;;
+            status)
+              if [ -n "$CF_LAB_REQUESTED_ID" ]; then
+                python3 tools/lab_automation/lab.py --config "$CF_LAB_CONFIG" \
+                  status --job-id "$CF_LAB_REQUESTED_ID" --full-logs
+              fi
+              ;;
+            cancel|retry-upload)
+              test -n "$CF_LAB_REQUESTED_ID" || { echo 'job_id is required.' >&2; exit 1; }
+              python3 tools/lab_automation/lab.py --config "$CF_LAB_CONFIG" \
+                "$CF_LAB_OPERATION" --job-id "$CF_LAB_REQUESTED_ID"
+              ;;
+            *) echo 'Unsupported operation.' >&2; exit 1 ;;
+          esac
+
+      - name: Collect one completed report for publication
+        id: collect
+        if: ${{ !cancelled() }}
+        run: |
+          set -euo pipefail
+          python3 tools/lab_automation/lab.py --config "$CF_LAB_CONFIG" collect \
+            --stage-dir "$RUNNER_TEMP/lab-delivery" \
+            --github-output "$GITHUB_OUTPUT" --github-summary "$GITHUB_STEP_SUMMARY"
+
+      - name: Show queue state and recent logs
+        if: ${{ !cancelled() }}
+        run: |
+          python3 tools/lab_automation/lab.py --config "$CF_LAB_CONFIG" \
+            status --github-summary "$GITHUB_STEP_SUMMARY"
+
+      - name: Transfer the sealed report to a hosted publisher
+        if: ${{ !cancelled() && steps.collect.outputs.ready == 'true' }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: ${{ steps.collect.outputs.artifact_name }}
+          path: ${{ runner.temp }}/lab-delivery/
+          if-no-files-found: error
+          retention-days: 30
+          compression-level: 0
+          include-hidden-files: false
+          overwrite: false
+
+  publish:
+    needs: lab
+    if: ${{ needs.lab.result == 'success' && needs.lab.outputs.ready == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: lab-reports-publisher
+    concurrency:
+      group: cf-maker-drive-latest
+      cancel-in-progress: false
+      queue: max
+    outputs:
+      version_id: ${{ steps.publish.outputs.version_id }}
+      latest_id: ${{ steps.publish.outputs.latest_id }}
+      latest_url: ${{ steps.publish.outputs.latest_url }}
+    steps:
+      - name: Download the sealed report from this workflow run
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: ${{ needs.lab.outputs.artifact_name }}
+          path: ${{ runner.temp }}/lab-delivery
+
+      - name: Check out trusted publishing code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          sparse-checkout: /tools/lab_automation/
+          sparse-checkout-cone-mode: false
+
+      - name: Publish history, then update the stable latest file
+        id: publish
+        env:
+          CF_DRIVE_CLIENT_ID: ${{ secrets.CF_DRIVE_CLIENT_ID }}
+          CF_DRIVE_CLIENT_SECRET: ${{ secrets.CF_DRIVE_CLIENT_SECRET }}
+          CF_DRIVE_REFRESH_TOKEN: ${{ secrets.CF_DRIVE_REFRESH_TOKEN }}
+          CF_DRIVE_ROOT_FOLDER_ID: ${{ vars.CF_DRIVE_ROOT_FOLDER_ID }}
+          CF_DRIVE_HISTORY_FOLDER_ID: ${{ vars.CF_DRIVE_HISTORY_FOLDER_ID }}
+        run: |
+          set -euo pipefail
+          python3 tools/lab_automation/publish.py publish --bundle "$RUNNER_TEMP/lab-delivery"
+
+  acknowledge:
+    needs: [lab, publish]
+    if: ${{ always() && needs.lab.outputs.ready == 'true' }}
+    runs-on: [self-hosted, cf-maker-lab]
+    timeout-minutes: 5
+    concurrency:
+      group: cf-maker-lab-control
+      cancel-in-progress: false
+      queue: max
+    env:
+      CF_LAB_CONFIG: ${{ vars.CF_LAB_CONFIG }}
+      CF_LAB_JOB_ID: ${{ needs.lab.outputs.job_id }}
+      CF_LAB_LEASE_TOKEN: ${{ needs.lab.outputs.lease_token }}
+      CF_LAB_PUBLISH_RESULT: ${{ needs.publish.result }}
+      CF_LAB_LATEST_URL: ${{ needs.publish.outputs.latest_url }}
+    steps:
+      - name: Check out trusted queue client
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+
+      - name: Record publication outcome without returning publisher secrets
+        run: |
+          set -euo pipefail
+          if [ "$CF_LAB_PUBLISH_RESULT" = success ]; then
+            python3 tools/lab_automation/lab.py --config "$CF_LAB_CONFIG" ack \
+              --job-id "$CF_LAB_JOB_ID" --lease-token "$CF_LAB_LEASE_TOKEN" \
+              --result success --latest-url "$CF_LAB_LATEST_URL"
+          else
+            python3 tools/lab_automation/lab.py --config "$CF_LAB_CONFIG" ack \
+              --job-id "$CF_LAB_JOB_ID" --lease-token "$CF_LAB_LEASE_TOKEN" \
+              --result failed --error 'Publication or artifact transfer did not complete.'
+          fi
+          python3 tools/lab_automation/lab.py --config "$CF_LAB_CONFIG" \
+            status --github-summary "$GITHUB_STEP_SUMMARY"

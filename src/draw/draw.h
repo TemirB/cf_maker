@@ -59,6 +59,7 @@ enum class GraphKind : char
     Cross,
     Lambda,
     chi2_ndf,
+    Chi2RootOverManual,
     FitOverCF,
     PValue
 };
@@ -67,7 +68,8 @@ enum class GraphKind : char
 void set_range_with_errors(TMultiGraph* mg, double padFrac = 0.10);
 
 // Draws a message when a multigraph has no points; returns whether axes exist.
-bool draw_mg_or_report(TMultiGraph* mg, const char* option = "APL");
+bool draw_mg_or_report(TMultiGraph* mg, const char* option = "APL",
+                       const char* empty_message = "No usable fits");
 
 void write_mg_with_legend(TFile* file, TMultiGraph* mg, const char* canvasName, const char* xTitle,
                           const char* yTitle,

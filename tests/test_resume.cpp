@@ -76,6 +76,16 @@ void check_grid(const FitGrid& expected, const FitGrid& actual)
                 check_double(left.e_lambda, right.e_lambda);
                 check_double(left.chi2, right.chi2);
                 check_double(left.p_value, right.p_value);
+                check(left.chi2_comparison.has_value() == right.chi2_comparison.has_value(),
+                      "chi-square comparison availability did not round-trip");
+                if (left.chi2_comparison) {
+                    check_double(left.chi2_comparison->root_chi2, right.chi2_comparison->root_chi2);
+                    check_double(left.chi2_comparison->manual_chi2,
+                                 right.chi2_comparison->manual_chi2);
+                    check(left.chi2_comparison->root_ndf == right.chi2_comparison->root_ndf &&
+                              left.chi2_comparison->manual_ndf == right.chi2_comparison->manual_ndf,
+                          "chi-square comparison degrees of freedom did not round-trip");
+                }
                 for (std::size_t i = 0; i < left.corr.size(); ++i) {
                     check_double(left.corr[i], right.corr[i]);
                 }
@@ -109,6 +119,7 @@ Config make_fixture(const std::filesystem::path& dir)
     fit.chi2 = 12.5;
     fit.ndf = 25;
     fit.p_value = 0.987;
+    fit.chi2_comparison = Chi2Comparison{12.500000000000002, 25, 12.5, 25};
     fit.ok = true;
     fit.status = 0;
     fit.cov_status = 3;
@@ -126,6 +137,8 @@ Config make_fixture(const std::filesystem::path& dir)
     failed.cov_status = 1;
     failed.at_limit = true;
     failed.attempts = 1;
+    failed.chi2_comparison = Chi2Comparison{std::numeric_limits<double>::infinity(), 0,
+                                            std::numeric_limits<double>::quiet_NaN(), 0};
 
     TFile input(cfg.input.file.c_str(), "RECREATE");
     TH3D den("bp_0_0_num_0", "", 8, -0.2, 0.2, 8, -0.2, 0.2, 8, -0.2, 0.2);
@@ -230,6 +243,31 @@ void test_metadata(const std::filesystem::path& dir, const Config& cfg)
     auto* stored = dynamic_cast<TObjString*>(bad_file.Get("cf_maker_fit_results"));
     check(stored != nullptr, "missing test metadata");
     auto metadata = nlohmann::json::parse(stored->GetString().Data());
+    // Schema-1 files written before this diagnostic was introduced must remain
+    // resumable, without inventing an original ROOT chi-square from chi2.
+    auto previous_metadata = metadata;
+    for (auto& charges : previous_metadata["fit_grid"]) {
+        for (auto& centralities : charges) {
+            for (auto& fit : centralities) {
+                fit.erase("chi2_comparison");
+            }
+        }
+    }
+    bad_file.cd();
+    TObjString previous(previous_metadata.dump().c_str());
+    previous.Write("cf_maker_fit_results", TObject::kOverwrite);
+    loaded = cfg;
+    build(loaded);
+    read_fit_results(bad_file, loaded);
+    Config previous_expected = cfg;
+    for (auto& charges : previous_expected.fit_results) {
+        for (auto& centralities : charges) {
+            for (auto& fit : centralities) {
+                fit.chi2_comparison.reset();
+            }
+        }
+    }
+    check_grid(previous_expected.fit_results, loaded.fit_results);
     check(metadata["identity"]["retry_selection"] == "usable-first-v1",
           "retry selection policy was not recorded");
     auto stale_selection = metadata;

@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "state_dir": "/REPLACE_WITH_PRIVATE_ABSOLUTE_PATH/cf-maker-state",
+  "config_files": ["config/kt.json", "config/y.json"],
+  "input_root": null,
+  "setup_script": null,
+  "jobs": 2,
+  "threads": 2,
+  "cxx": "g++",
+  "tools": {"make": "make", "root": "root", "latexmk": "latexmk", "gs": "gs"},
+  "max_recovery_attempts": 2,
+  "upload_lease_seconds": 3600,
+  "upload_retry_seconds": 900,
+  "artifact_log_limit_bytes": 10485760
+}

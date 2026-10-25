@@ -111,6 +111,42 @@ void check_integral_statistics()
     CHECK(centers && std::abs(centers->chi2 - 14.0) > 0.1);
 }
 
+void check_root_manual_comparison()
+{
+    // With all radii fixed at zero, lambda is the only fitted parameter and
+    // C_fit = 1 + lambda. The optimum is 1.2: chi2 = 4+1+0+1+4 = 10.
+    TH3D histogram("root_manual_comparison", "", 5, -0.2, 0.2, 1, -0.1, 0.1, 1, -0.1, 0.1);
+    for (int bin = 1; bin <= 5; ++bin) {
+        histogram.SetBinContent(bin, 1, 1, 1.0 + 0.1 * (bin - 1));
+        histogram.SetBinError(bin, 1, 1, 0.1);
+    }
+    histogram.SetEntries(5);
+    Config cfg;
+    cfg.input.type = "kt";
+    cfg.fit.lambda_min = 0;
+    cfg.fit.lambda_max = 1;
+    for (int parameter = 0; parameter < 6; ++parameter) {
+        cfg.fit.freeze[parameter] = 0;
+    }
+    std::unique_ptr<TF3> model(create_cf_3d_fit(cfg, 0, 0, 0));
+    const auto fit = fit_cf_3d(&histogram, model.get(), cfg.fit);
+    CHECK(fit.chi2_comparison);
+    CHECK(fit.chi2_comparison->root_ndf == 4);
+    CHECK(fit.chi2_comparison->manual_ndf == 4);
+    CHECK(std::abs(fit.chi2_comparison->root_chi2 - 10) < 1e-5);
+    CHECK(std::abs(fit.chi2_comparison->manual_chi2 - 10) < 1e-5);
+    CHECK(fit.chi2_comparison->root_chi2 == model->GetChisquare());
+    CHECK(fit.chi2_comparison->manual_chi2 == fit.chi2);
+    CHECK(fit.chi2_root_over_manual());
+    CHECK(std::abs(*fit.chi2_root_over_manual() - 1) < 1e-12);
+
+    // Likelihood objectives have no supported manual chi-square comparison.
+    cfg.fit.options = "RQLS0";
+    const auto likelihood = fit_cf_3d(&histogram, model.get(), cfg.fit);
+    CHECK(!likelihood.chi2_comparison);
+    CHECK(!likelihood.chi2_root_over_manual());
+}
+
 } // namespace
 
 int main()
@@ -118,6 +154,7 @@ int main()
     ROOT::Math::MinimizerOptions::SetDefaultMinimizer("Minuit2");
     check_manual_statistics();
     check_integral_statistics();
+    check_root_manual_comparison();
 
     const double hc2 = 0.197 * 0.197;
     const double R = 4.0;
@@ -169,6 +206,11 @@ int main()
     std::unique_ptr<TF3> fitted(create_cf_3d_fit(cfg, 0, 0, 0));
     const auto noisy = fit_cf_3d(&hCF, fitted.get(), cfg.fit);
     CHECK(noisy.ok);
+    CHECK(noisy.chi2_comparison);
+    CHECK(noisy.chi2_comparison->root_chi2 == fitted->GetChisquare());
+    CHECK(noisy.chi2_comparison->manual_chi2 == noisy.chi2);
+    CHECK(noisy.chi2_root_over_manual());
+    CHECK(std::abs(*noisy.chi2_root_over_manual() - 1) < 1e-12);
     CHECK(noisy.ndf == 20 * 20 * 20 - 4);
     CHECK(std::abs(noisy.chi2 - fitted->GetChisquare()) < 1e-6);
     CHECK(noisy.ndf == fitted->GetNDF());
@@ -178,6 +220,7 @@ int main()
     const FitResult missing = fit_cf_3d_with_retry(&empty, cfg, 0, 0, 0);
     CHECK(!missing.ok);
     CHECK(missing.attempts == 0);
+    CHECK(!missing.chi2_comparison);
 
     std::cout << "All tests passed\n";
     return 0;

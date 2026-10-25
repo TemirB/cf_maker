@@ -250,13 +250,19 @@ FitResult fit_cf_3d(TH3D* cf_hist, TF3* fit3d, const FitConfig& fitCfg)
     cf_hist->GetListOfFunctions()->Remove(fit3d);
 
     if (fit_ptr.Get()) {
+        // Preserve ROOT's own objective before replacing the public statistics
+        // with the independent sum. These values describe the same fit attempt.
+        const double root_chi2 = fit_ptr->Chi2();
+        const int root_ndf = fit_ptr->Ndf();
         if (const auto statistics = calculate_fit_statistics(*cf_hist, *fit3d, fitCfg)) {
             res.chi2 = statistics->chi2;
             res.ndf = statistics->ndf;
             res.p_value = statistics->p_value;
+            res.chi2_comparison =
+                Chi2Comparison{root_chi2, root_ndf, statistics->chi2, statistics->ndf};
         } else {
-            res.chi2 = fit_ptr->Chi2();
-            res.ndf = fit_ptr->Ndf();
+            res.chi2 = root_chi2;
+            res.ndf = root_ndf;
             res.p_value = fit_ptr->Prob();
         }
         res.status = fit_ptr->Status();
