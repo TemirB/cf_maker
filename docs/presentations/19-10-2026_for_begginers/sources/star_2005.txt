@@ -1,0 +1,3976 @@
+
+--- PDF PAGE 1 ---
+arXiv:nucl-ex/0411036v2  21 Sep 2005
+Pion interferometry in Au+Au collisions at √sNN = 200 GeV
+J. Adams,3 M.M. Aggarwal,29 Z. Ahammed,43 J. Amonett,20 B.D. Anderson,20 D. Arkhipkin,13
+G.S. Averichev,12 S.K. Badyal,19 Y. Bai,27 J. Balewski,17 O. Barannikova,32 L.S. Barnby,3
+J. Baudot,18 S. Bekele,28 V.V. Belaga,12 R. Bellwied,46 J. Berger,14 B.I. Bezverkhny,48
+S. Bharadwaj,33 A. Bhasin,19 A.K. Bhati,29 V.S. Bhatia,29 H. Bichsel,45 A. Billmeier,46
+L.C. Bland,4 C.O. Blyth,3 B.E. Bonner,34 M. Botje,27 A. Boucham,38 A.V. Brandin,25 A. Bravar,4
+M. Bystersky,11 R.V. Cadman,1 X.Z. Cai,37 H. Caines,48 M. Calder´on de la Barca S´anchez,17
+J. Castillo,21 D. Cebra,7 Z. Chajecki,44 P. Chaloupka,11 S. Chattopdhyay,43 H.F. Chen,36
+Y. Chen,8 J. Cheng,41 M. Cherney,10 A. Chikanian,48 W. Christie,4 J.P. Coﬃn,18
+T.M. Cormier,46 J.G. Cramer,45 H.J. Crawford,6 D. Das,43 S. Das,43 M.M. de Moura,35
+A.A. Derevschikov,31 L. Didenko,4 T. Dietel,14 S.M. Dogra,19 W.J. Dong,8 X. Dong,36
+J.E. Draper,7 F. Du,48 A.K. Dubey,15 V.B. Dunin,12 J.C. Dunlop,4 M.R. Dutta Mazumdar,43
+V. Eckardt,23 W.R. Edwards,21 L.G. Eﬁmov,12 V. Emelianov,25 J. Engelage,6 G. Eppley,34
+B. Erazmus,38 M. Estienne,38 P. Fachini,4 J. Faivre,18 R. Fatemi,17 J. Fedorisin,12 K. Filimonov,21
+P. Filip,11 E. Finch,48 V. Fine,4 Y. Fisyak,4 K. Fomenko,12 J. Fu,41 C.A. Gagliardi,39 J. Gans,48
+M.S. Ganti,43 L. Gaudichet,38 F. Geurts,34 V. Ghazikhanian,8 P. Ghosh,43 J.E. Gonzalez,8
+O. Grachov,46 O. Grebenyuk,27 D. Grosnick,42 S.M. Guertin,8 Y. Guo,46 A. Gupta,19
+T.D. Gutierrez,7 T.J. Hallman,4 A. Hamed,46 D. Hardtke,21 J.W. Harris,48 M. Heinz,2
+T.W. Henry,39 S. Hepplemann,30 B. Hippolyte,48 A. Hirsch,32 E. Hjort,21 G.W. Hoﬀmann,40
+H.Z. Huang,8 S.L. Huang,36 E.W. Hughes,5 T.J. Humanic,28 G. Igo,8 A. Ishihara,40 P. Jacobs,21
+W.W. Jacobs,17 M. Janik,44 H. Jiang,8 P.G. Jones,3 E.G. Judd,6 S. Kabana,2 K. Kang,41
+M. Kaplan,9 D. Keane,20 V.Yu. Khodyrev,31 J. Kiryluk,22 A. Kisiel,44 E.M. Kislov,12 J. Klay,21
+S.R. Klein,21 A. Klyachko,17 D.D. Koetke,42 T. Kollegger,14 M. Kopytine,20 L. Kotchenda,25
+M. Kramer,26 P. Kravtsov,25 V.I. Kravtsov,31 K. Krueger,1 C. Kuhn,18 A.I. Kulikov,12
+A. Kumar,29 R.Kh. Kutuev,13 A.A. Kuznetsov,12 M.A.C. Lamont,48 J.M. Landgraf,4 S. Lange,14
+F. Laue,4 J. Lauret,4 A. Lebedev,4 R. Lednicky,12 S. Lehocka,12 M.J. LeVine,4 C. Li,36 Q. Li,46
+Y. Li,41 G. Lin,48 S.J. Lindenbaum,26 M.A. Lisa,28 F. Liu,47 L. Liu,47 Q.J. Liu,45 Z. Liu,47
+T. Ljubicic,4 W.J. Llope,34 H. Long,8 R.S. Longacre,4 M. L´opez Noriega,28 W.A. Love,4 Y. Lu,47
+T. Ludlam,4 D. Lynn,4 G.L. Ma,37 J.G. Ma,8 Y.G. Ma,37 D. Magestro,28 S. Mahajan,19
+D.P. Mahapatra,15 R. Majka,48 L.K. Mangotra,19 R. Manweiler,42 S. Margetis,20 C. Markert,48
+L. Martin,38 J.N. Marx,21 H.S. Matis,21 Yu.A. Matulenko,31 C.J. McClain,1 T.S. McShane,10
+F. Meissner,21 Yu. Melnick,31 A. Meschanin,31 M.L. Miller,22 N.G. Minaev,31 C. Mironov,20
+A. Mischke,27 D.K. Mishra,15 J. Mitchell,34 B. Mohanty,43 L. Molnar,32 C.F. Moore,40
+D.A. Morozov,31 M.G. Munhoz,35 B.K. Nandi,43 S.K. Nayak,19 T.K. Nayak,43 J.M. Nelson,3
+P.K. Netrakanti,43 V.A. Nikitin,13 L.V. Nogach,31 S.B. Nurushev,31 G. Odyniec,21
+A. Ogawa,4 V. Okorokov,25 M. Oldenburg,21 D. Olson,21 S.K. Pal,43 Y. Panebratsev,12
+S.Y. Panitkin,4 A.I. Pavlinov,46 T. Pawlak,44 T. Peitzmann,27 V. Perevoztchikov,4 C. Perkins,6
+W. Peryt,44 V.A. Petrov,13 S.C. Phatak,15 R. Picha,7 M. Planinic,49 J. Pluta,44 N. Porile,32
+J. Porter,45 A.M. Poskanzer,21 M. Potekhin,4 E. Potrebenikova,12 B.V.K.S. Potukuchi,19
+D. Prindle,45 C. Pruneau,46 J. Putschke,23 G. Rakness,30 R. Raniwala,33 S. Raniwala,33
+O. Ravel,38 R.L. Ray,40 S.V. Razin,12 D. Reichhold,32 J.G. Reid,45 G. Renault,38 F. Retiere,21
+A. Ridiger,25 H.G. Ritter,21 J.B. Roberts,34 O.V. Rogachevskiy,12 J.L. Romero,7 A. Rose,46
+C. Roy,38 L. Ruan,36 R. Sahoo,15 I. Sakrejda,21 S. Salur,48 J. Sandweiss,48 I. Savin,13
+P.S. Sazhin,12 J. Schambach,40 R.P. Scharenberg,32 N. Schmitz,23 K. Schweda,21 J. Seger,10
+P. Seyboth,23 E. Shahaliev,12 M. Shao,36 W. Shao,5 M. Sharma,29 W.Q. Shen,37
+K.E. Shestermanov,31 S.S. Shimanskiy,12 E Sichtermann,21 F. Simon,23 R.N. Singaraju,43
+G. Skoro,12 N. Smirnov,48 R. Snellings,27 G. Sood,42 P. Sorensen,21 J. Sowinski,17
+J. Speltz,18 H.M. Spinka,1 B. Srivastava,32 A. Stadnik,12 T.D.S. Stanislaus,42 R. Stock,14
+A. Stolpovsky,46 M. Strikhanov,25 B. Stringfellow,32 A.A.P. Suaide,35 E. Sugarbaker,28
+C. Suire,4 M. Sumbera,11 B. Surrow,22 T.J.M. Symons,21 A. Szanto de Toledo,35 P. Szarwas,44
+A. Tai,8 J. Takahashi,35 A.H. Tang,27 T. Tarnowsky,32 D. Thein,8 J.H. Thomas,21
+S. Timoshenko,25 M. Tokarev,12 T.A. Trainor,45 S. Trentalange,8 R.E. Tribble,39 O.D. Tsai,8
+J. Ulery,32 T. Ullrich,4 D.G. Underwood,1 A. Urkinbaev,12 G. Van Buren,4 M. van Leeuwen,21
+
+
+--- PDF PAGE 2 ---
+2
+A.M. Vander Molen,24 R. Varma,16 I.M. Vasilevski,13 A.N. Vasiliev,31 R. Vernet,18 S.E. Vigdor,17
+Y.P. Viyogi,43 S. Vokal,12 S.A. Voloshin,46 M. Vznuzdaev,25 W.T. Waggoner,10 F. Wang,32
+G. Wang,20 G. Wang,5 X.L. Wang,36 Y. Wang,40 Y. Wang,41 Z.M. Wang,36 H. Ward,40
+J.W. Watson,20 J.C. Webb,17 R. Wells,28 G.D. Westfall,24 A. Wetzler,21 C. Whitten Jr.,8
+H. Wieman,21 S.W. Wissink,17 R. Witt,2 J. Wood,8 J. Wu,36 N. Xu,21 Z. Xu,4 Z.Z. Xu,36
+E. Yamamoto,21 P. Yepes,34 V.I. Yurevich,12 Y.V. Zanevsky,12 H. Zhang,4 W.M. Zhang,20
+Z.P. Zhang,36 P.A Zolnierczuk,17 R. Zoulkarneev,13 Y. Zoulkarneeva,13 and A.N. Zubarev12
+(STAR Collaboration)
+1Argonne National Laboratory, Argonne, Illinois 60439
+2University of Bern, 3012 Bern, Switzerland
+3University of Birmingham, Birmingham, United Kingdom
+4Brookhaven National Laboratory, Upton, New York 11973
+5California Institute of Technology, Pasedena, California 91125
+6University of California, Berkeley, California 94720
+7University of California, Davis, California 95616
+8University of California, Los Angeles, California 90095
+9Carnegie Mellon University, Pittsburgh, Pennsylvania 15213
+10Creighton University, Omaha, Nebraska 68178
+11Nuclear Physics Institute AS CR, 250 68 ˇReˇz/Prague, Czech Republic
+12Laboratory for High Energy (JINR), Dubna, Russia
+13Particle Physics Laboratory (JINR), Dubna, Russia
+14University of Frankfurt, Frankfurt, Germany
+15Insitute of Physics, Bhubaneswar 751005, India
+16Indian Institute of Technology, Mumbai, India
+17Indiana University, Bloomington, Indiana 47408
+18Institut de Recherches Subatomiques, Strasbourg, France
+19University of Jammu, Jammu 180001, India
+20Kent State University, Kent, Ohio 44242
+21Lawrence Berkeley National Laboratory, Berkeley, California 94720
+22Massachusetts Institute of Technology, Cambridge, MA 02139-4307
+23Max-Planck-Institut f¨ur Physik, Munich, Germany
+24Michigan State University, East Lansing, Michigan 48824
+25Moscow Engineering Physics Institute, Moscow Russia
+26City College of New York, New York City, New York 10031
+27NIKHEF, Amsterdam, The Netherlands
+28Ohio State University, Columbus, Ohio 43210
+29Panjab University, Chandigarh 160014, India
+30Pennsylvania State University, University Park, Pennsylvania 16802
+31Institute of High Energy Physics, Protvino, Russia
+32Purdue University, West Lafayette, Indiana 47907
+33University of Rajasthan, Jaipur 302004, India
+34Rice University, Houston, Texas 77251
+35Universidade de Sao Paulo, Sao Paulo, Brazil
+36University of Science & Technology of China, Anhui 230027, China
+37Shanghai Institute of Applied Physics, Shanghai 201800, China
+38SUBATECH, Nantes, France
+39Texas A&M University, College Station, Texas 77843
+40University of Texas, Austin, Texas 78712
+41Tsinghua University, Beijing 100084, China
+42Valparaiso University, Valparaiso, Indiana 46383
+43Variable Energy Cyclotron Centre, Kolkata 700064, India
+44Warsaw University of Technology, Warsaw, Poland
+45University of Washington, Seattle, Washington 98195
+46Wayne State University, Detroit, Michigan 48201
+47Institute of Particle Physics, CCNU (HZNU), Wuhan 430079, China
+48Yale University, New Haven, Connecticut 06520
+49University of Zagreb, Zagreb, HR-10002, Croatia
+We present a systematic analysis of two-pion interferometry in Au+Au collisions at √sNN = 200
+GeV using the STAR detector at RHIC. We extract the HBT radii and study their multiplicity,
+transverse momentum, and azimuthal angle dependence. The Gaussianess of the correlation func-
+tion is studied. Estimates of the geometrical and dynamical structure of the freeze-out source are
+
+
+--- PDF PAGE 3 ---
+3
+extracted by ﬁts with blast wave parameterizations. The expansion of the source and its relation
+with the initial energy density distribution is studied.
+1.
+INTRODUCTION
+In the late 1950’s two particle intensity inter-
+ferometry (HBT) was proposed and developed
+by the astronomers Hanbury-Brown and Twiss
+to measure the angular size of distant stars [1].
+In 1960, Goldhaber et al.
+applied this tech-
+nique to particle physics to study the angular
+distribution of identical pion pairs in p¯p anni-
+hilations [2].
+They observed an enhancement
+of pairs at small relative momenta that was ex-
+plained in terms of the symmetrization of the
+two-pion wave function.
+In
+ultra-relativistic
+heavy
+ion
+collisions,
+where a quark gluon plasma (QGP) is expected
+to be formed, HBT is a useful tool to study the
+space-time geometry of the particle-emitting
+source [3, 4]. It also contains dynamical infor-
+mation that can be explored by studying the
+transverse momentum dependence of the ap-
+parent source size [5, 6]. In non-central colli-
+sions, information on the anisotropic shape of
+the pion-emitting region at kinetic freeze-out
+can be extracted by measuring two-pion corre-
+lation functions as a function of the emission
+angle with respect the reaction plane, see, for
+example, [7, 8, 9].
+Experimentally, two-particle correlations are
+studied by constructing the correlation function
+as [4]:
+C(⃗q) = A(⃗q)
+B(⃗q).
+(1)
+Here A(⃗q) is the pair distribution in momentum
+diﬀerence⃗q =⃗p1 −⃗p2 for pairs of particles from
+the same event, and B(⃗q) is the corresponding
+distribution for pairs of particles from diﬀer-
+ent events. To good approximation this ratio
+is sensitive to the spatial extent of the emit-
+ting region and insensitive to the single particle
+momentum distribution, acceptance, and eﬃ-
+ciency eﬀects [4].
+At
+the
+Relativistic
+Heavy
+Ion
+Collider
+(RHIC), identical-pion HBT studies at √sNN
+= 130 GeV [10,
+11] lead to an apparent
+source size qualitatively similar to measure-
+ments at lower energies.
+In contrast to pre-
+dictions of larger sources based on QGP for-
+mation [12, 13], no long emission duration is
+seen. The extracted parameters do not agree
+with predictions of hydrodynamic models that,
+on the other hand, describe reasonably well
+the momentum-space structure of the emitting
+source and elliptic ﬂow [14]. This “HBT puzzle”
+could be related to the fact that the extracted
+timescales are smaller than those predicted by
+the hydrodynamical model [14]. More sophis-
+ticated approaches such as 3D hydrodynami-
+cal calculations [15] or multi-stage models [16]
+also cannot describe simultaneously the geom-
+etry and the dynamic of the system [17].
+Further detail may be obtained from non-
+central collisions, where the initial anisotropic
+collision geometry has an almond shape with its
+longer axis perpendicular to the reaction plane.
+This generates greater transverse pressure gra-
+dients in the reaction plane than perpendicular
+to it. This leads to preferential in-plane expan-
+sion [18, 19, 20, 21] which diminishes the ini-
+tial anisotropy as the source evolves. Thus, the
+source shape at freeze-out should be sensitive
+to the evolution of the pressure and the system
+lifetime. Hydrodynamic calculations [22] pre-
+dict that the source may still be out-of-plane
+extended after hydrodynamic evolution. How-
+ever a subsequent rescattering phase tends to
+make the source in-plane extended [23]. There-
+fore, the experimental freeze-out source shape
+might discriminate between diﬀerent scenarios
+of the system’s evolution.
+In this paper we present results of our sys-
+tematic studies of two-pion HBT correlations
+in Au+Au collisions at √sNN = 200 GeV
+measured in the STAR (Solenoidal Tracker at
+RHIC) detector at RHIC. We describe the anal-
+ysis procedure in detail and discuss several is-
+sues with importance to HBT such as diﬀerent
+ways of taking the ﬁnal state Coulomb inter-
+action into account, and the Gaussianess of the
+measured correlation function. The paper is or-
+ganized as follows: Section 2 introduces the ex-
+perimental setup as well as the event, particle
+and pair selections.
+In section 3, the analy-
+sis method is presented. In section 4, system-
+atic results are shown.
+We discuss these re-
+sults in section 5, where the centrality depen-
+dence of the transverse mass mT dependence
+of the HBT parameters is investigated, the ex-
+tracted parameters from a ﬁt to a blast wave
+parametrization are discussed in detail and the
+expansion of the source is studied. We summa-
+rize and conclude in section 6. Extended details
+about the analysis method, the results and the
+discussion can be found in reference [24].
+
+
+--- PDF PAGE 4 ---
+4
+2.
+EXPERIMENTAL SETUP, EVENT
+AND PARTICLE SELECTION
+2.1.
+STAR detector
+The STAR detector is an azimuthally sym-
+metric, large acceptance, solenoidal detector.
+The subsystems relevant for this analysis are
+a large Time Projection Chamber (TPC) lo-
+cated in a 0.5 Tesla solenoidal magnet, two zero-
+degree calorimeters (ZDCs) that detect spec-
+tator neutrons from the collision, and a cen-
+tral trigger barrel (CTB) that measures charged
+particle multiplicity. The latter two subsystems
+were used for online triggering only.
+The TPC [25] is the primary STAR detec-
+tor and the only detector used for the event
+reconstruction of the analysis presented here.
+It is 4.2 m long and covers the pseudorapidity
+region |η| < 1.8 with full azimuthal coverage
+(−π < φ < π). It is a gas chamber, with inner
+and outer radii of 50 and 200 cm respectively,
+in a uniform electric ﬁeld. The particles pass-
+ing through the gas release secondary electrons
+that drift to the readout end caps at both ends
+of the chamber. The readout system is based on
+multiwire proportional chambers, with readout
+pads. There are 45 pad-rows between the inner
+and the outer radii of the TPC. The induced
+charge from the electrons is shared over several
+adjacent pads, so the original track position is
+reconstructed to ∼500 µm precision.
+The STAR trigger detectors are the CTB and
+the ZDCs. In this analysis two trigger settings
+were used.
+Hadronic minimum-bias that re-
+quires a signal above threshold in both ZDCs,
+and hadronic central that requires low ZDC sig-
+nal and high CTB signal.
+2.2.
+Event selection and binning
+For this analysis, we selected events with a
+collision vertex position within ± 25 cm mea-
+sured along the beam axis from the center of
+the TPC. This event selection was applied to
+all data sets discussed here.
+We further binned events by centrality, where
+the centrality was characterized according to
+the measured multiplicity of charged hadrons
+with pseudorapidity (|η| < 0.5), and here we
+present results as a function of centrality bins.
+The six centrality bins correspond to 0–5%, 5–
+10%, 10–20%, 20–30%, 30–50%, and 50–80% of
+the total hadronic cross-section. A hadronic-
+central triggered data set of 1 million events
+was used only for the ﬁrst bin. The other ﬁve
+bins are from a minimum-bias triggered data
+set of 1.7 million events.
+Within each centrality bin, in order to form
+the background pairs for the correlation func-
+tion (see section 3.1), we only mixed “simi-
+lar” events. In this analysis, “similar” events
+have primary vertex relative z position within
+5 cm, multiplicities within the same centrality
+bin described above, and, for the azimuthally-
+sensitive analysis, estimated reaction plane ori-
+entations within 20◦.
+2.3.
+Particle selection
+We selected tracks in the rapidity region |y| <
+0.5. Particle identiﬁcation was done by corre-
+lating the speciﬁc ionization of the particles in
+the gas of TPC with their measured momen-
+tum. The energy lost by a particle as it trav-
+els through a gas depends on the velocity β at
+which it travels and it is described by the Bethe-
+Bloch formula [26].
+For a given momentum, each particle mass
+will have a diﬀerent velocity and a diﬀerent
+dE/dx as it goes through the gas of the TPC.
+For this analysis pions were selected by requir-
+ing the speciﬁc ionization to be within 2 stan-
+dard deviations (experimentally determined as
+a function of the particle momentum and event
+multiplicity) from the Bethe-Bloch value for pi-
+ons. To help remove kaons that could satisfy
+this condition, particles were also required to
+be farther than 2 standard deviations from the
+value for kaons. There is a small contamina-
+tion of electrons in the low momentum region,
+p < 400 MeV/c.
+Its eﬀect was studied with
+diﬀerent cuts and found to be unimportant.
+To reduce contributions from non-primary
+(decay) pions, we applied a cut of 3 cm to each
+track on the distance of closest approach of the
+extrapolated track to the primary vertex.
+In our previous HBT analysis [10], tracks
+were divided in diﬀerent bins according to their
+transverse momentum, pT , and only particles
+within a given bin were used to form correlation
+functions. In this analysis no such pT binning
+was applied. The pT range was set by limita-
+tions in the reconstruction of pions in the TPC,
+by the fact that we remove the kaon band and
+by the momentum pair cut described below and
+only tracks with 150 < pT < 800 MeV/c were
+accepted.
+
+
+--- PDF PAGE 5 ---
+5
+a)
+b)
+c)
+d)
+FIG. 1: Distribution of same number of hits in two
+tracks for four possible cases. Closed circles are hits
+assigned to one track, open circles are assigned to
+the other. a) SL = –0.5 (clearly two tracks) b) SL
+= 1 (possible split track) c) SL = 1 (possible split
+track) d) SL = 0.08 (likely two tracks).
+2.4.
+Pair cuts
+In this section we describe pair cuts and bin-
+ning. The ﬁrst two cuts discussed are intended
+to remove the eﬀects of two track reconstruc-
+tion defects that are important to HBT: split
+tracks (one single particle reconstructed as two
+tracks) and merged tracks (two particles with
+similar momenta reconstructed as one track).
+2.4.1.
+Split tracks
+Track splitting causes an enhancement of
+pairs at low relative momentum q. This false
+enhancement is created by single tracks recon-
+structed as two with similar momenta. In order
+to remove split tracks we compare the location
+of the hits for each track in the pair along the
+pad-rows in the TPC and assign a quantity to
+each pair, called Splitting Level (SL), calculated
+as follows:
+SL ≡
+P
+i Si
+Nhits1 + Nhits2
+where
+Si =
+(2)
+( +1 one track leaves a hit on pad-row
+−1 both tracks leave a hit on pad-row
+0
+neither track leaves a hit on pad-row,
+where i is the pad-row number, and Nhits1 and
+Nhits2 are the total number of hits associated
+to each track in the pair. If only one track has
+a hit in a pad-row +1 is added to the running
+quantity, if both tracks have a hit in the same
+pad-row, a sign of separate tracks, –1 is added
+to this quantity. After the sum is done, it is
+divided by the sum of hits in both tracks, this
+normalizes SL to a value between –0.5 (both
+tracks have hits in exactly same pad-rows) and
+1.0 (tracks do not have any hit in same pad-
+row).
+Figure 1 shows four diﬀerent cases for
+the same number of total hits: in case a) two
+ (GeV/c)
+inv
+q
+0
+0.02
+0.04
+0.06
+0.08
+0.1
+C
+0.4
+0.6
+0.8
+1
+1.2
+1.4
+1.6
+1.8
+No SL Cut
+SL < 0.8
+SL < 0.6
+SL < 0.4
+FIG. 2: 1D correlation function for diﬀerent values
+of SL (anti-splitting cut). The cut applied in the
+analysis is SL < 0.6. The horizontal lines indicate
+the bin width.
+diﬀerent tracks with SL = –0.5, in b) and c)
+two diﬀerent cases of possible split tracks with
+SL = 1, and in d) two diﬀerent tracks with SL
+= 0.08.
+We required every pair to have SL smaller
+than a certain value. This value was determined
+from the 1-dimensional correlation functions as
+a function of the relative momentum of the pair
+qinv, for diﬀerent values of SL; some of them are
+shown in Fig. 2. The relative momentum of the
+pair is deﬁned as qinv =
+p
+(q0)2 −|⃗q|2 where q0
+and⃗q are the components of the four-vector mo-
+mentum diﬀerence. We observe that when mak-
+ing this cut more restrictive (reducing the max-
+imum allowed value for SL) the enhancement is
+reduced until we reach SL = 0.6 when the cor-
+relation function becomes stable and does not
+change for lower values of SL. Therefore, all the
+pairs entering the correlation functions were re-
+quired to have SL < 0.6. Cutting at this value
+is also supported by simulation studies. While
+naturally track splitting can only give rise to
+false pairs, our SL cut also removes some real
+pairs which happen to satisfy the cut. There-
+fore, we apply the SL cut to both, “real” and
+“mixed” pairs, numerator and denominator of
+C(⃗q), Eq. (1).
+2.4.2.
+Merged tracks
+Once we have removed split tracks we can
+study the eﬀects of two particles reconstructed
+as one track. These merged tracks cause a re-
+duction of pairs at low relative momentum since
+the particles that have higher probability of be-
+ing merged are those with similar momenta. To
+eliminate the eﬀect of track merging, we re-
+quired that all pairs entering numerator and
+denominator of the correlation function had a
+
+
+--- PDF PAGE 6 ---
+6
+ (GeV/c)
+inv
+q
+0
+0.02
+0.04
+0.06
+0.08
+0.1
+C
+0.4
+0.6
+0.8
+1
+1.2
+1.4
+1.6
+1.8
+FMH < 100%
+FMH < 60%
+FMH < 20%
+FMH < 10%
+FMH < 5%
+FIG. 3: 1D correlation function for diﬀerent values
+of the maximum fraction of merged hits allowed.
+Cut applied in the analysis is fraction of merged
+hits (FMH) < 10%. The horizontal lines indicate
+the bin width.
+fraction of merged hits no larger than 10%.
+Two hits are considered merged if the probabil-
+ity of separating them is less than 99%. From
+simulation and data studies, this minimum sep-
+aration was determined to be 5 mm. By apply-
+ing this cut to “real” and “mixed” pairs, we
+introduce in the denominator the eﬀect that
+merged tracks have in the numerator: a reduc-
+tion of low q pairs. Note that tracks from diﬀer-
+ent events will originate from primary vertices
+at diﬀerent positions along the beam direction.
+Thus, even two tracks with identical momenta,
+which would surely be merged if they originated
+from the same event, may not be considered as
+a merged track when they formed a “mixed”
+pair if we would not account for the diﬀerent
+primary vertex position. Our procedure is to
+calculate (using a helix model) the pad-row hit
+positions of each track, assuming that the track
+originated at the center of the TPC [24]. These
+calculated hit positions are used in the merg-
+ing cut procedure described above. By apply-
+ing this cut to the numerator, we would remove
+“real” pairs that satisfy the cut.
+This would
+reduce the HBT ﬁt parameters for a correla-
+tion function that is not completely Gaussian,
+and needs to be taken into account as will be
+described in the next section.
+To
+determine
+the
+maximum
+fraction
+of
+merged hits allowed we proceed as we did for
+the anti-splitting cut.
+Figure 3 shows the 1-
+dimensional correlation functions as a function
+of qinv, for diﬀerent values of the maximum frac-
+tion of merged hits allowed. By requiring the
+fraction of merged hits to be less than 10% for
+every pair entering the correlation function, the
+eﬀect of merged tracks in the correlation func-
+tion was almost completely removed as will be
+discussed in section 3.
+2.4.3.
+kT cut and pair binning
+As already mentioned, no explicit pT cut was
+applied to single tracks beyond the require-
+ment for clean PID. However, in addition to
+the two cuts already described, pairs were re-
+quired to have an average transverse momen-
+tum (kT = (|⃗p1T | + |⃗p2T |)/2) between 150 and
+600 MeV/c.
+No diﬀerence was observed be-
+tween the extracted HBT parameters when ap-
+plying equivalent pT or kT cuts. However statis-
+tics improved when using the latter cut, as two
+pions from diﬀerent pT bins will be used in a
+kT -cut analysis, but not in a pT -cut analysis.
+Pairs were then binned by kT in 4 bins
+that correspond to [150,250] MeV/c, [250,350]
+MeV/c, [350,450] MeV/c, and [450,600] MeV/c.
+Here the results are presented as a function of
+the average kT (or mT =
+p
+k2
+T + m2π) in each
+of those bins.
+In addition, in the azimuthally-sensitive HBT
+analysis, to observe the particle source from
+a series of angles, pairs were also binned ac-
+cording to the angle Φ = φpair −Ψ2, where
+φpair is the azimuthal angle of the pair trans-
+verse momentum⃗kT and Ψ2 is the second-order
+event plane azimuthal angle.
+The ﬁrst-order
+event plane angle is not reconstructible with the
+STAR detector conﬁguration for this analysis.
+Because we use the second-order reaction plane,
+Φ is only deﬁned in the range [0,π].
+3.
+ANALYSIS METHOD
+3.1.
+Construction of correlation function
+The two-particle correlation function be-
+tween identical bosons with momenta⃗p1 and⃗
+p2 is deﬁned in Eq. (1). As already mentioned,
+A(⃗q) is the measured distribution of the mo-
+mentum diﬀerence for pairs of particles from
+the same event and B(⃗q) is obtained by mix-
+ing particles in separate events [27] and repre-
+sents the product of single particle probabili-
+ties. Each particle in one event is mixed with
+all the particles in a collection of events which
+in our case consists of 20 events. As discussed
+before, events in a given collection have pri-
+mary vertex z position within 5 cm, multiplici-
+ties within 5 to 30% of each other, and, for the
+azimuthally-sensitive analysis, estimated reac-
+tion plane orientations within 20◦.
+
+
+--- PDF PAGE 7 ---
+7
+3.2.
+Pratt-Bertsch parametrization
+In order to probe length scales diﬀerentially
+in beam and transverse directions, the rela-
+tive momentum⃗q is usually decomposed in the
+Pratt-Bertsch (or “out-side-long”) convention
+[28, 29, 30]. In this parametrization the relative
+momentum vector of the pair⃗q is decomposed
+into a longitudinal direction along the beam
+axis, ql, an outward direction parallel to the
+pair transverse momentum, qo, and a sideward
+direction perpendicular to those two, qs.
+We choose as the reference frame, the lon-
+gitudinal comoving system (LCMS) frame of
+the pair, in which the longitudinal component
+of the pair velocity vanishes. At midrapidity,
+in the LCMS frame, and with knowledge of
+the second-order but not the ﬁrst-order reac-
+tion plane, the correlation function is usually
+parameterized by a 3-dimensional Gaussian in
+the relative momentum components as [9]:
+C(⃗q) = 1 + λe−q2
+oR2
+o−q2
+sR2
+s−q2
+l R2
+l −2qoqsR2
+os.
+(3)
+For an azimuthally integrated analysis, the cor-
+relation function is symmetric under qs →−qs
+and R2
+os = 0.
+In principle, the possibility that the emission
+of particles is neither perfectly chaotic nor com-
+pletely coherent can be taken into account by
+adding the parameter λ to the correlation func-
+tion, which, in general, depends on kT . This
+λ parameter should be unity for a fully chaotic
+source and smaller than unity for a source with
+partially coherent particle emission.
+In the
+analysis presented here we have assumed com-
+pletely chaotic emission [31] and attribute the
+deviations from C(q = 0, k) = 2 to contribution
+from pions coming from long-lived resonances,
+and misidentiﬁed particles, such as electrons.
+While for the azimuthally integrated analysis
+the sign of the⃗q components is arbitrary, in the
+azimuthally-sensitive analysis, the sign of R2
+os
+is important because it tells us the azimuthal
+direction of the emitted particles, so the signs
+of qo and qs are kept and particles in every pair
+are ordered such that ql > 0.
+References [32, 33] give a detailed description
+of the relation between the HBT radius param-
+eters (R2
+o, R2
+s, R2
+l and R2
+os) and the space-time
+geometry of the ﬁnal freeze-out stage.
+3.3.
+Fourier components
+For a boost-invariant system, the Φ depen-
+dence of the HBT radii of Eq. (3) are [9]:
+R2
+µ(kT , Φ) = R2
+µ,0(kT ) +
+2
+X
+n=2,4,6···
+R2
+µ,n(kT ) cos(nΦ)
+(µ = o, s, l)
+R2
+µ(kT , Φ) =
+2
+X
+n=2,4,6···
+R2
+µ,n(kT ) sin(nΦ)
+(µ = os), (4)
+where Rµ,n(kT ) are the nth order Fourier coeﬃ-
+cients for the µ radius. These coeﬃcients, that
+are Φ independent, can be calculated as:
+R2
+µ,n(kT ) =
+(
+⟨R2
+µ(kT , Φ) cos(nΦ)⟩(µ = o, s, l)
+⟨R2
+µ(kT , Φ) sin(nΦ)⟩(µ = os).
+(5)
+As we will show, the 0th order Fourier co-
+eﬃcients correspond to the extracted HBT
+radii in an azimuthally integrated analysis. In
+this analysis we found that Fourier coeﬃcients
+above 2nd order are consistent with 0.
+3.4.
+Coulomb interaction and ﬁtting
+procedures
+Equation (3) applies only if the sole cause of
+correlation is quantum statistics and the corre-
+lation function is Gaussian. We come to this
+second point in section 4.1. In our case, signiﬁ-
+cant Coulomb eﬀects must also be accounted for
+(strong interactions are within reasonable limit
+here [33]). This Coulomb interaction between
+pairs, repulsive for like-sign particles, causes a
+reduction in the number of real pairs at low q
+reducing the experimental correlation function
+as seen in Fig. 4.
+3.4.1.
+Standard procedure
+Three diﬀerent procedures can be applied
+in order to take this interaction into account.
+One procedure that was used in our analysis at
+√
+sNN = 130 GeV [10] as well as by previous
+experiments, consists of ﬁtting the correlation
+function to
+C(qo, qs, ql) = A(⃗q)
+B(⃗q) = Kcoul(qinv)×
+(6)
+(1 + λe−q2
+oR2
+o−q2
+sR2
+s−q2
+l R2
+l −2qoqsR2
+os),
+normalized to unity at large⃗q, where Kcoul is
+the squared Coulomb wave-function integrated
+over the whole source, which in our case is a
+
+
+--- PDF PAGE 8 ---
+8
+1
+1.1
+1.2
+1.3
+1
+1.1
+1.2
+1.3
+ < 30 MeV/c
+ l
+,q
+s
+; q
+o
+q
+Raw C
+Standard CC C
+Standard fit
+Bowler-Sinyukov fit
+0
+0.05
+0.1
+1
+1.1
+1.2
+ < 30 MeV/c
+ l
+,q
+o
+; q
+s
+q
+0
+0.05
+0.1
+0.15
+1
+1.1
+1.2
+ < 30 MeV/c
+s
+,q
+o
+; q
+lq
+q (GeV/c)
+q (GeV/c)
+ C 
+ C 
+ C 
+FIG. 4: Projections of the 3 dimensional correla-
+tion function and corresponding ﬁts for negative
+pions from the 0–5% most central events and kT
+= [150,250] MeV/c according to the standard and
+Bowler-Sinyukov procedures.
+spherical Gaussian source of 5 fm radius. The
+eﬀect on the ﬁnal results of changing the radius
+of the spherical Gaussian source to calculate
+Kcoul was studied and found to be within rea-
+sonable limits. Traditionally, Eq. (6) has been
+expressed as
+C′(qo, qs, ql) =
+A(⃗q)
+B(⃗q)Kcoul(qinv)
+(7)
+= 1 + λe−q2
+oR2
+o−q2
+sR2
+s−q2
+l R2
+l −2qoqsR2
+os,
+and this new correlation function was called the
+Coulomb corrected correlation function since we
+introduce in the denominator a Coulomb factor
+with which we try to compensate the Coulomb
+interaction in the numerator. We call this stan-
+dard procedure. However, this procedure over-
+corrects the correlation function since it as-
+sumes that all pairs in the background are pri-
+mary pairs and need to be corrected [34].
+3.4.2.
+Dilution procedure
+In a second procedure, inspired by the previ-
+ous procedure and implemented before by the
+E802 collaboration [35], the Coulomb term is
+“diluted” according to the fraction of pairs that
+Coulomb interact as:
+K′
+coul(qinv) = 1 + f(Kcoul(qinv) −1),
+(8)
+where f has a value between 0 (no Coulomb
+weighting) and 1 (standard weight). The corre-
+lation function in this procedure is ﬁtted to:
+C(qo, qs, ql) = A(⃗q)
+B(⃗q) = K′
+coul(qinv)×
+(9)
+(1 + λe−q2
+oR2
+o−q2
+sR2
+s−q2
+l R2
+l −2qoqsR2
+os),
+normalized to unity at large⃗q. We call this the
+dilution procedure. A reasonable assumption is
+to take f = λ assuming that λ is the fraction
+of primary pions. This increases Ro by 10–15%
+and has a very small eﬀect on Rs and Rl as seen
+in Fig. 5. λ decreases by 10–15%.
+3.4.3.
+Bowler-Sinyukov procedure
+An advantage of the previous two techniques
+is that after “correcting” for Coulomb eﬀects,
+one winds up with a correlation function which
+may be ﬁt with a simple Gaussian form. How-
+ever if there exists more than one source of in-
+teraction, it is not valid to “correct” one way.
+For example, it is, in fact, the same pion pairs
+which Coulomb interact as which show quan-
+tum enhancement. This leads to a change in
+the expected form of the correlation function if
+not all particles participate in the interaction
+(i.e., λ̸ = 0) [36]. If λ = 1, all three methods
+are equivalent.
+In this analysis, we have implemented a new
+procedure, ﬁrst suggested by Bowler [37] and
+Sinyukov et al. [38], and recently advocated by
+the CERES collaboration [39], in which only
+pairs with Bose-Einstein interaction are con-
+sidered to Coulomb interact. The correlation
+function in this procedure is ﬁtted to:
+C(qo, qs, ql) = A(⃗q)
+B(⃗q) = (1 −λ)+
+(10)
+λKcoul(qinv)(1 + e−q2
+oR2
+o−q2
+sR2
+s−q2
+l R2
+l −2qoqsR2
+os),
+normalized
+to
+unity
+at
+large⃗
+q,
+where
+Kcoul(qinv) is the same as in the standard pro-
+cedure. The ﬁrst term on the right-hand side
+of Eq. (10) accounts for the pairs that do not
+interact and the second term for the pairs that
+(Coulomb and Bose-Einstein) interact. We call
+this Bowler-Sinyukov procedure. It has a simi-
+lar eﬀect on the HBT parameters as the dilution
+procedure as seen in Fig. 5. A similar procedure
+has been recently implemented by the Phobos
+collaboration [64]. In this procedure only pairs
+which are close in the pair center of mass frame
+are considered to Coulomb interact.
+It is worth mentioning that the parameters λ
+and Ro, and consequently the ratio Ro/Rs, ex-
+tracted using the standard procedure here are
+smaller than the parameters obtained in our
+
+
+--- PDF PAGE 9 ---
+9
+0.2
+0.4
+0.6
+0.2
+0.4
+0.6
+Standard
+Dilution
+Bowler-Sinyukov
+4
+5
+6
+4
+5
+6
+4
+5
+6
+0.2
+0.3
+0.4
+0.5
+4
+5
+6
+7
+4
+5
+6
+7
+0.2
+0.3
+0.4
+0.5
+0.8
+1
+1.2
+ (GeV/c)
+T
+k
+ 
+λ
+ 
+ (fm) 
+ o
+ R
+ (fm) 
+ s
+ R
+ (fm) 
+ l
+ R
+ 
+ s
+ / R
+ o 
+ R
+FIG. 5:
+HBT parameters for the three possible
+ﬁtting procedures to the correlation functions de-
+scribed in this paper depending on how Coulomb
+interaction is taken into account from the 0–5%
+most central events. Error bars contain only statis-
+tical uncertainties.
+previous analysis [10]. This is explained by a
+diﬀerent particle selection. In the analysis pre-
+sented here, the contribution from non-primary
+pions is larger than in the previous analysis,
+leading to smaller λ and Ro when using that
+procedure. However, the parameters obtained
+when applying the Bowler-Sinyukov procedure
+are almost not aﬀected by the contribution from
+non-primary pions.
+3.4.4.
+Comparison of methods
+Figure 4 shows the projections of the 3-
+dimensional correlation function according to
+the Pratt-Bertsch parametrization described in
+section 3.2 for an azimuthally integrated anal-
+ysis.
+The closed symbols represent the cor-
+relation function and the open symbols the
+Coulomb corrected correlation function accord-
+ing to the standard procedure. The lines are ﬁts
+to the data, the dashed line is the standard ﬁt
+to the Coulomb corrected correlation function,
+and the continuous line the Bowler-Sinyukov ﬁt
+to the uncorrected correlation function.
+The
+extracted parameters from both ﬁts are the pa-
+ (GeV/c)
+inv
+q
+0
+0.02
+0.04
+0.06
+0.08
+0.1
+0.12
+0.14
+C
+1
+1.1
+1.2
+1.3
+1.4
+ C
+-π
+- 
++
+π
+Theoretical C (Coulomb and strong)
+Standard Function
+Bowler-Sinyukov Function
+FIG. 6:
+1D correlation function for π+π−com-
+pared to Standard, Bowler-Sinyukov functions and
+a theoretical calculation that includes Coulomb and
+strong interactions.
+rameters for the lowest ⟨kT ⟩in Fig. 5.
+As a consistency check for the Bowler-
+Sinyukov procedure, we calculated the π+π−
+correlation function, dominated by Coulomb
+interaction, and compare to diﬀerent calcula-
+tions.
+In Fig. 6 lines indicate the standard
+(Kcoul(qinv)) and Bowler-Sinyukov ((1 −λ) +
+λKcoul(qinv)) Coulomb functions where λ was
+extracted from the ﬁt to the 3D like-sign cor-
+relation function.
+This latter λ is the same
+λ as dilution for unlike sign pions and takes
+into account the percentage of primary pions
+through λ. Clearly, the Bowler-Sinyukov func-
+tion (thick line) better reproduces the data
+(closed symbols) than the standard function
+(thin line). The small discrepancy between the
+Bowler-Sinyukov function and the data disap-
+pears when strong interaction (negligible for
+like-sign pions) is added to the Bowler-Sinyukov
+function as shown by the theoretical calculation
+[40] (open symbols). Between identical pions,
+there is a repulsive s-wave interaction for the
+isospin I=2 system [41].
+However, the range
+of this interaction is estimated to be ∼0.2 fm,
+while the characteristic separation between pi-
+ons in heavy ions collisions is ∼5 fm.
+Also,
+there are no doubly charged mesonic resonances
+that could decay into same charged pions that
+would strongly interact. For these reasons, the
+strong interaction will be ignored for like sign
+particles.
+3.4.5.
+Coulomb interaction with the source
+The Coulomb interaction between the out-
+going charged pions and the residual positive
+charge in the source is negligible [42, 43]. This
+is conﬁrmed by the good agreement observed
+between the parameters extracted from π+π+
+
+
+--- PDF PAGE 10 ---
+10
+0
+0.005
+0.01
+0.015
+0.02
+0.025
+0
+0.005
+0.01
+0.015
+0.02
+0.025
+0
+0.2
+0.4
+0.6
+0.8
+1
+1.2
+1.4
+1.6
+1.8
+2
+0
+0.005
+0.01
+0.015
+0.02
+0.025
+p (GeV/c)
+T
+ / p
+T
+ p
+δ
+ (rad)
+φ 
+δ
+ (rad)
+θ 
+δ
+FIG. 7: Momentum resolution for pions at midra-
+pidity expressed by the widths δpT /pT , δϕ and δθ
+as a function of p.
+and π−π−correlation functions as shown later
+in this paper, Fig. 14.
+3.5.
+Momentum resolution correction
+The limited single-particle momentum res-
+olution induces broadening of the correlation
+function and thus systematic underestimation
+of the HBT parameters.
+To determine the
+magnitude of this eﬀect we need to know the
+momentum resolution for the particles under
+consideration. We estimate our single-particle
+momentum resolution by embedding simulated
+particles into real events at the TPC pixel level
+and comparing the extracted and input mo-
+menta. Figure 7 shows the RMS spreads as a
+function of |⃗p| in pT and angles φ and θ, where θ
+is the angle between the momentum of the par-
+ticle and the beam axis and φ is the azimuthal
+angle of the particle. We see that the resolution
+in pT , given by δpT /pT (top panel of Fig. 7), has
+a width of about 1% for the momentum range
+under consideration.
+To account for this limited momentum res-
+olution, a correction, Kmomentum(⃗q), is applied
+to each measured correlation function:
+C(⃗q) = A(⃗p1meas,⃗p2meas)
+B(⃗p1meas,⃗p2meas)Kmomentum(⃗q). (11)
+The correction factor is calculated from the
+single-particle momentum resolution as follows:
+Kmomentum(⃗q) = C(⃗qideal)
+C(⃗qsmear) =
+A(⃗p1ideal,⃗p2ideal)
+B(⃗p1ideal,⃗p2ideal)
+A(⃗p1smear,⃗p2smear)
+B(⃗p1smear,⃗p2smear)
+,
+where the ideal and smear correlation func-
+tion are formed as follows. Numerator and de-
+nominator of the ideal correlation function are
+formed by pairs of pions from diﬀerent events.
+Each pair in the numerator is weighted, accord-
+ing with the Bowler-Sinyukov function, by:
+weight = (1 −λ) + λKcoul(qinv) ×
+(1 + e−q2
+oR2
+o−q2
+sR2
+s−q2
+l R2
+l −2qoqsR2
+os), (12)
+where Kcoul(qinv) is the same factor as de-
+scribed in section 3.4 and R2
+os = 0 in the az-
+imuthally integrated analysis. If the measured
+momentum were the “real” momentum, this
+ideal correlation function would be the “real”
+correlation function.
+However this is not the
+case, so we calculate a smeared correlation func-
+tion for which numerator and denominator are
+also formed by pairs of pions from diﬀerent
+events but their momenta have been smeared
+according to the extracted momentum resolu-
+tion. Pairs in the numerator are also weighted
+by the weight given by (12). This smeared cor-
+relation function is to the ideal correlation func-
+tion, as our “measured” correlation function is
+to the “real” correlation function, which allows
+us to calculate the correction factor.
+For the weight, certain values for the HBT
+parameters (λ, Ro, Rs, Rl and Ros) need to be
+assumed. Therefore, this procedure is iterative
+with the following steps:
+1. Fit the correlation function without mo-
+mentum resolution correction, and use
+the extracted HBT parameters for the
+ﬁrst weight.
+2. Construct the momentum resolution cor-
+rected correlation function.
+3. Fit it according to Eq. (10).
+4. If the extracted parameters agree with the
+parameters used to calculate the weight,
+those are the ﬁnal parameters.
+If they
+diﬀer from the parameters used, then use
+these latter extracted parameters for the
+new weight and go back to step 2.
+
+
+--- PDF PAGE 11 ---
+11
+Also, to be fully consistent, the Coulomb fac-
+tor Kcoul(qinv) (where qinv is calculated from
+pairs of pions from diﬀerent events) used in
+the ﬁt to extract the HBT parameters must be
+modiﬁed to account for momentum resolution
+as follows:
+Kcoul(qinv)
+= Kcoul(qinv,meas) Kcoul(qinv,ideal)
+Kcoul(qinv,smear)
+= K2
+coul(qinv,meas)
+Kcoul(qinv,smear).
+(13)
+For this analysis, after two iterations the ex-
+tracted parameters were consistent with the in-
+put parameters.
+We also checked that when
+convergence is reached, the “uncorrected” HBT
+parameters matched the smeared parameters.
+The correction increases the HBT radius pa-
+rameters between 1.0% for the lowest kT bin
+[150,250] MeV/c and 2.5% for the highest bin
+[450,600] MeV/c.
+3.6.
+Φ-dependent HBT analysis methods
+The study of HBT radii relative to the reac-
+tion plane angle was performed [44] by extend-
+ing the analysis techniques as presented in this
+section, to account for reaction plane resolu-
+tion and small instabilities in the ﬁts. We dis-
+cuss these here. For the azimuthally-sensitive
+analysis, each of the four radii extracted from
+the Bowler-Sinyukov ﬁt contains an implicit de-
+pendence on the azimuthal angle Φ between the
+pion pair and the reaction plane. Azimuthally-
+sensitive studies of the HBT radii
+ Rµ(Φ)
+
+[44]
+also must correct for ﬁnite resolution when es-
+timating the true reaction plane Ψrp [9]. Finite
+reaction plane resolution acts to decrease the
+measured amplitude of the radii oscillations,
+similar to its eﬀect on azimuthal particle dis-
+tributions relative to the reconstructed event
+plane Ψ2 (i.e., elliptic ﬂow [45]).
+The tech-
+nique for the resolution correction, which also
+corrects for ﬁnite Φ-bin width, was developed
+extensively in Ref. [9]. Here we discuss brieﬂy
+how this correction is implemented and the re-
+sulting eﬀect on the HBT radii.
+The basic principle behind the correction
+procedure is that, for a given⃗q-bin in the nu-
+merator A(⃗q) and denominator B(⃗q) of each
+correlation function, the measured contents for
+that⃗q-bin at diﬀerent Φ are modiﬁed due to
+the Ψrp resolution.
+The true angular depen-
+dence of Φ (for each⃗q-bin) can be extracted
+from the measured Φj by performing a Fourier
+decomposition of A(⃗q) and B(⃗q), which leads to
+the correction factors [9]
+A∆
+α,n(⃗q) = Aα,n(⃗q)sin(n∆/2)
+n∆/2
+,
+(14)
+Aexp
+α,n(⃗q) = A∆
+α,n(⃗q)
+
+cos (n(Ψ2−Ψrp))
+
+,
+where α refers to both cosine and sine series, ∆
+is the width of each Φ bin, and n is the Fourier
+component.
+The factors ⟨cos (n(Ψ2−Ψrp))⟩
+are the well-known correction factors for event
+plane resolution, obtained by extracting the
+anisotropic ﬂow coeﬃcients vn from the single
+particle spectrum [46, 47]. The same procedure
+is used to correct the denominator B(⃗q).
+In the present analysis, only the 2nd-order
+event plane (Ψ2) is measured. Using Eq. (14),
+the numerator A(⃗q) and denominator B(⃗q) for
+each⃗q-bin at each measured angle Φj can be
+corrected for both the eﬀects of angular binning
+and ﬁnite event plane resolution:
+A(⃗q, Φj) = Nexp(⃗q, Φj) +
+2
+nbin
+X
+n=1
+ζ2(∆)
+h
+Aexp
+c,2 (⃗q) cos(2Φj) +
+Aexp
+s,2 (⃗q) sin(2Φj)
+i
+,
+(15)
+with the correction parameter ζ2(∆) given by
+ζ2(∆) =
+∆
+sin(∆)⟨cos(2(Ψ2−Ψrp))⟩p
+−1. (16)
+The procedure is model independent; the quan-
+tities on the right hand side of Eq. (15) are all
+measured experimentally.
+For each set of Φj histograms, the correc-
+tion procedure modiﬁes both the numerators
+and denominators, and therefore the correla-
+tion functions as well.
+Figure 8 shows the squared HBT radii, ob-
+tained using Eq. (4), as a function of Φ for two
+combinations of centrality and kT . In each case,
+the oscillation amplitudes for the three trans-
+verse radii increases after the resolution correc-
+tion has been applied, while the mean shows
+little change.
+An additional technique employed in the
+azimuthally-sensitive HBT analysis is to use
+a common λ parameter for each centrality/kT
+bin. This step was undertaken to improve the
+quality of the ﬁts by restricting the λ parame-
+ter, under the assumption that λ should have
+no implicit Φ dependence. For an analysis with
+four Φ bins, this eﬀectively reduces the number
+of free parameters per centrality/kT bin (after
+
+
+--- PDF PAGE 12 ---
+12
+RP uncorrected
+RP res. corrected
+λ
+0.35
+0.4
+)
+2
+ (fm
+2
+o
+R
+22
+24
+26
+28
+)
+2
+ (fm
+2
+s
+R
+18
+20
+)
+2
+ (fm
+2
+l
+R
+31
+32
+33
+)
+2
+ (fm
+2
+os
+R
+-2
+0
+2
+λ
+0.5
+)
+2
+ (fm
+2
+o
+R
+16
+18
+)
+2
+ (fm
+2
+s
+R
+14
+15
+16
+)
+2
+ (fm
+2
+l
+R
+17
+)
+2
+ (fm
+2
+os
+R
+-2
+0
+2
+0
+/2
+π
+π
+0
+/2
+π
+π
+20-30%
+ < 0.25
+T
+0.15 < k
+10-20%
+ < 0.60
+T
+0.35 < k
+ (radians)
+Φ
+FIG. 8: Squared HBT radii relative to the reaction
+plane angle, without and with the reaction plane
+resolution applied, for two diﬀerent centrality-kT
+ranges.
+The solid lines show allowed ﬁts to the
+individual oscillations.
+normalization) from 20 [(4 radii + λ) ×NΦ] to
+17 [(4 radii ×NΦ) + λ]. Since ﬁtting all four
+correlation functions with a 17-parameter func-
+tion is arduous, we determined the average λ
+parameter from the four ﬁts and then re-ﬁt each
+of the four correlation functions with λ ﬁxed to
+its average.
+Figure 9 compares the ﬁt parameters ob-
+tained with and without averaging/ﬁxing λ, for
+two centrality/kT ranges.
+While the individ-
+ual radii show some deviations, the resulting
+Fourier coeﬃcients (which are represented by
+the symmetry-constrained drawn in Fig. 9) are
+consistent within errors for the two methods.
+λ
+Fixed 
+λ
+Variable 
+λ
+0.35
+0.4
+)
+2
+ (fm
+2
+o
+R
+22
+24
+26
+28
+)
+2
+ (fm
+2
+s
+R
+18
+20
+)
+2
+ (fm
+2
+l
+R
+30
+32
+34
+)
+2
+ (fm
+2
+os
+R
+-2
+0
+2
+λ
+0.5
+)
+2
+ (fm
+2
+o
+R
+16
+18
+)
+2
+ (fm
+2
+s
+R
+14
+15
+16
+)
+2
+ (fm
+2
+l
+R
+16
+17
+18
+)
+2
+ (fm
+2
+os
+R
+-2
+0
+2
+0
+/2
+π
+π
+0
+/2
+π
+π
+20-30%
+ < 0.25
+T
+0.15 < k
+10-20%
+ < 0.60
+T
+0.35 < k
+ (radians)
+Φ
+FIG. 9: Squared HBT radii relative to the reaction
+plane angle, for the case where the λ parameter is
+averaged and ﬁxed in the ﬁt, and the case where λ
+is a free ﬁt parameter for each Φ. The solid lines
+show allowed ﬁts to the individual oscillations.
+3.7.
+Systematic uncertainties associated
+with pair cuts
+The maximum fraction of merged hits cut
+described in section 2.4 introduces a system-
+atic variation on the HBT ﬁt parameters λ, R2
+o,
+R2
+s, and R2
+l , since it discriminates against low-q
+pairs which carry the correlation signal. This
+is a consequence of the non-Gaussianess of the
+correlation function. If it were a perfect Gaus-
+sian, this cut would not change the extracted
+parameters from the Gaussian ﬁt, it would only
+reduce the statistics in certain bins and there-
+fore the only eﬀect would be an increase in the
+statistical errors.
+In order to estimate this reduction we de-
+ﬁne a range in the number of merged hits in
+which the lower limit is 0 (i.e., no merging) and
+
+
+--- PDF PAGE 13 ---
+13
+B
+o
+q s
+q
+> 0
+o
+q
+> 0
+s
+p 1
+p 2
+p 1
+p 2
+q o > 0
+< 0
+q s
+q
+> 0
+o
+q
+< 0
+s
+q o > 0
+q s > 0
+p 1
+p 2
+p 1
+p 2
+pairs
+π −
+π −
+pairs
+π
+π + +
+q
+FIG. 10: For π−π−(π+π+), merging occurs more
+often between tracks with |qoqs| = qoqs (|qoqs|̸ =
+qoqs) than with |qoqs|̸ = qoqs (|qoqs| = qoqs). Note
+that exchanging the designations “1” and “2” does
+not change the sign of qoqs.
+the higher limit is the value for which we con-
+sider there is too much merging. This value is
+determined from the 0th order Fourier coeﬃ-
+cients, R2
+os,0 which is expected to be 0, Eq. (5).
+However, track merging introduces a deviation
+of R2
+os away from 0 caused by the preferential
+merging of track pairs with correlated trans-
+verse momenta, qo and qs as shown in Fig. 10.
+If we calculate the components of⃗q in the plane
+transverse to the beam as⃗pT,1 −⃗pT,2 where
+index 1 denotes the stiﬀer track and deﬁne⃗ˆρ
+as the direction of the radius of curvature of
+the stiﬀer track, then if⃗q ·⃗ˆρ is positive there is
+more merging on average. In the case of π−π−
+pairs, there is a higher degree of track merg-
+ing when |qoqs| = qoqs than when |qoqs|̸ = qoqs
+(top pairs). For π+π+ pairs the conditions are
+opposite (bottom pairs).
+When R2
+os for π+ or π−analysis clearly devi-
+ates from 0, we consider that there is too much
+merging and use that value of the maximum
+fraction of merged hits as the upper limit of the
+range. We calculate the change of each HBT ra-
+dius in this range and consider that to be the
+artiﬁcial reduction due to the cut for that spe-
+ciﬁc parameter. This reduction is included as a
+systematic error in the ﬁnal value. This is done
+for each centrality and each kT bin.
+As an example, Fig. 11 shows the 0th or-
+der (left) and 2nd divided by 0th order (right)
+Fourier coeﬃcients as a function of the maxi-
+mum fraction of merged hits allowed for the 5%
+ +
+π
+ -
+π
+2
+o,0
+R
+35
+40
+45
+50
+2
+s,0
+R
+24
+26
+2
+l,0
+R
+35
+40
+2
+os,0
+R
+-5
+0
+5
+2
+s,0
+ / R
+2
+o,2
+R
+-0.1
+0
+2
+s,0
+ / R
+2
+s,2
+R
+0
+0.05
+-0.05
+2
+l,0
+ / R
+2
+l,2
+R
+0
+0.05
+-0.05
+2
+s,0
+ / R
+2
+os,2
+R
+0
+0.05
+-0.05
+0
+0.5
+1
+0
+0.5
+1
+Max Frac Merged Hits
+FIG. 11: Fourier coeﬃcients as a function of the
+maximum fraction of merged hits for the 5% most
+central events and kT between 150 and 250 MeV/c.
+most central events and 150 < kT < 250 MeV.
+From R2
+os,0, located in the bottom left panel, we
+determined the upper limit of merged fraction
+to be 0.2 and the corresponding variations in
+the HBT radii to be 7% for Ro, 5% for Rs and
+10% for Rl. The systematic errors calculated
+according to this method are less or equal than
+10% for all radii, in all centralities and kT bins.
+4.
+PION HBT AT
+√
+sNN = 200 GEV
+4.1.
+How Gaussian is the measured
+correlation function?
+Interferometric length scales are usually ex-
+tracted from measured correlation functions by
+ﬁtting to a Gaussian functional form, as dis-
+cussed in 3.
+However, there is no reason to
+expect the measured correlation function to be
+completely Gaussian, and it is well-known that
+it seldom is. Seemingly-natural questions such
+as “how non-Gaussian is the correlation func-
+tion?” “how does the non-Gaussianness aﬀect
+extracted length scales?” or “what is the shape
+of the correlation function?”
+have, unfortu-
+nately, no unique, assumption-free answers.
+Often, non-Gaussian features are simply ig-
+nored in experimental analyses. Alternatively,
+
+
+--- PDF PAGE 14 ---
+14
+1
+1.1
+1
+NO EXPANSION
+ < 30 MeV/c
+ l
+,q
+s
+; q
+o
+q
+1
+1.1
+ ORDER EXP.
+th
+TO 6
+ < 30 MeV/c
+ l
+,q
+s
+; q
+o
+q
+1
+1.1
+ < 30 MeV/c
+ l
+,q
+o
+; q
+s
+q
+1
+1.1
+ < 30 MeV/c
+ l
+,q
+o
+; q
+s
+q
+0
+0.05
+0.1
+1
+1.1
+ < 30 MeV/c
+s
+,q
+o
+; q
+lq
+0
+0.05
+0.1
+0.15
+1
+1.1
+ < 30 MeV/c
+s
+,q
+o
+; q
+lq
+q (GeV/c)
+q (GeV/c)
+ C 
+ C 
+ C 
+ C 
+ C 
+ C 
+FIG. 12: Projections of the 3 dimensional correla-
+tion functions and ﬁts to Eq. (10) (left) and with
+the Edgeworth expansion to Eq. (17) to 6th order
+(right).
+0.2
+0.3
+0.4
+0.5
+No expansion
+ order
+th
+to 4
+ order
+th
+to 6
+4
+5
+6
+4
+5
+4
+5
+6
+0.2
+0.3
+0.4
+0.5
+4
+5
+6
+4
+5
+6
+0.2
+0.3
+0.4
+0.5
+0.8
+1
+1.2
+ (GeV/c)
+T
+k
+ (GeV/c)
+T
+k
+ λ
+ 
+ (fm) 
+o
+ R
+ (fm) 
+s
+ R
+ (fm) 
+l
+ R
+ 
+s
+ / R
+o
+ R
+FIG. 13: HBT parameters for 0–5% most central
+events for ﬁts to Eq. (10) and to Eq. (17) to 4th
+and to 6th orders. Error bars reﬂect only statistical
+uncertainties.
+the eﬀect of non-Gaussianness is estimated (e.g.
+by varying the range of q-values used in the ﬁt)
+and quoted as a systematic error on the HBT
+radii. Occasionally, some alternative functional
+form (e.g. a sum of two Gaussians, or an ex-
+ponential plus a Gaussian) is chosen ad-hoc by
+the experimenter based on the general “appear-
+ance” of the data.
+One disadvantage of this last approach is the
+diﬃculty in systematically comparing HBT re-
+sults obtained with diﬀerent functional forms.
+Since one might hope for evidence of “new”
+physics at RHIC, it is important to place RHIC
+HBT results into the context of previously-
+established systematics.
+Thus this paper
+mainly focusses on Gaussian HBT radius sys-
+tematics.
+However, to address non-Gaussian
+issues, here we move beyond ad-hoc meth-
+ods and adopt as a standard the Edgeworth
+expansion proposed by Cs¨org˝o and collabora-
+tors [48, 49, 50].
+Using the Bowler-Sinyukov
+Coulomb treatment, the correlation functions
+are ﬁtted to
+C(qo, qs, ql) = (1 −λ) + λKcoul(qinv)
++λKcoul(qinv) · e−q2
+oR2
+o−q2
+sR2
+s−q2
+l R2
+l ×
+h
+1 +
+∞
+X
+n=4,n even
+κo,n
+n!(
+√
+2)n Hn(qoRo)
+i
+×
+h
+1 +
+∞
+X
+n=4,n even
+κs,n
+n!(
+√
+2)n Hn(qsRs)
+i
+×
+h
+1 +
+∞
+X
+n=4,n even
+κl,n
+n!(
+√
+2)n Hn(qlRl)
+i
+,
+(17)
+where κi,n (i = o, s, l) are ﬁt parameters and
+Hn(qiRi) are the Hermite polynomials of order
+n:
+Hn(x) = (−1)nex2 dn
+dxn e−x2.
+(18)
+Only Hermite polynomials of even order are in-
+cluded in the expansion because the correlation
+function for identical particles must be invari-
+ant under (qo, qs, ql) →(−qo, −qs, −ql).
+At
+midrapidity
+and
+integrated
+over
+az-
+imuthal angle, the quantum interference term
+is factorizable into the qo, qs, and ql variables.
+Therefore, it may be uniquely decomposed in
+terms of any complete set of basis functions of
+these variables. Given a suﬃcient number of
+terms, any basis set will do. Thus, the poten-
+tial advantage of the Edgeworth decomposition
+(Eq. 17) is not that it is any more “model-
+independent” [49] than, say, a Tschebyscheﬀ
+decomposition, but that a functional expansion
+about a Gaussian shape might most econom-
+
+
+--- PDF PAGE 15 ---
+15
+ically describe the data.
+Since they are ap-
+proximately Gaussian, one hopes to capture the
+shape of measured correlation functions with
+only a few low-order terms.
+We ﬁt our correlation functions to the form
+given by Eq. (17) for two diﬀerent cases, up to
+n = 4 and up to n = 6 of the Hermite poly-
+nomials, and compare with ﬁts to Eq.
+(10)
+(without expansion). In Fig. 12 we show the
+ﬁts to projections of the correlation function for
+the 0–5% most central events and kT between
+150 and 250 MeV/c, with no expansion in the
+left column and with expansion up to 6th order
+in the right column. We observe a small im-
+provement in the ﬁt when we include the expan-
+sion. In Fig. 13 the extracted HBT parameters
+as a function of kT for the 0–5% most central
+events for the ﬁts without expansion, with ex-
+pansion up to 4th order and with expansion up
+to 6th order are shown. In Table I are the cor-
+responding values for the κ parameters. When
+comparing the extracted parameters including
+the expansion to 6th order to those extracted
+without the expansion, we observe that Ro de-
+creases by ∼2% for all kT bins, Rs changes
+between ∼–7% for the lowest kT bin [150,250]
+MeV/c and ∼+3% for the highest bin [450,600]
+MeV/c, and Rl decreases between ∼18% and
+∼8% for the lowest and highest kT bins re-
+spectively.
+In Table II are the corresponding
+χ2/dof for those same ﬁts. χ2/dof slightly im-
+proves when including the expansion up to 4th
+order and does not change with the expansion
+to 6th order. Similar trends are observed at all
+centralities.
+We do not consider the change in HBT radii
+when including an Edgeworth expansion to rep-
+resent a systematic uncertainty when compar-
+ing to Gaussian radii traditionally discussed in
+the literature. Rather, the diﬀerences reﬂects
+a deviation from the Gaussian shape tradition-
+ally assumed. Furthermore, the expansion pro-
+vides a more detailed, yet still compact, charac-
+terization of the measured correlation function.
+Further theoretical development of the formal-
+ism, outside the scope of this paper, is required
+to determine whether the expansion parameters
+convey important physical information beyond
+that carried by Gaussian radius parameters.
+4.2.
+mT dependence of the HBT
+parameters for most central collisions
+The HBT radius parameters measure the
+sizes of the homogeneity regions (regions emit-
+ting particles of a given momentum) [6]. Hence,
+for an expanding source, depending on the mo-
+0.2
+0.4
+0.6
+0.2
+0.4
+0.6
+  -
+ π
+ -
+π
+  +
+ π
+ +
+π
+4
+6
+4
+6
+4
+6
+4
+6
+4
+6
+4
+6
+0.2
+0.3
+0.4
+0.5
+0.6
+1
+1.1
+1.2
+1
+1.1
+1.2
+ (GeV/c)
+T
+m
+λ
+ (fm)
+o
+R
+ (fm)
+s
+R
+ (fm) 
+l
+ R
+s
+ / R
+o
+R
+FIG. 14: HBT parameters for 0–5% most central
+events for π+π+ and π−π−correlation functions.
+Error bars include statistical and systematic un-
+certainties.
+menta of the pairs of particles entering the cor-
+relation function, diﬀerent parts of the source
+are measured. The size of these regions are con-
+trolled by the velocity gradients and temper-
+ature [32, 51, 52].
+Therefore the dependence
+of the transverse radii on transverse mass mT
+contains dynamical information of the particle
+emitting source [5, 6].
+Figure 14 shows the HBT parameters λ, Ro,
+Rs, Rl and the ratio Ro/Rs for the 0–5% most
+central events as a function of mT for π+π+
+and π−π−correlation functions.
+We observe
+excellent agreement between the parameters
+extracted from the positively and negatively
+charged pion analyses.
+The λ parameter in-
+creases with mT . This is consistent with stud-
+ies at lower energies [10, 53, 54, 55], in which
+the increase was attributed to decreased con-
+tributions of pions from long-lived resonances
+at higher pT . The three HBT radii rapidly de-
+crease as a function of mT ; the decrease of the
+transverse radii (Ro and Rs) with mT is usu-
+ally attributed to the radial ﬂow [32, 51, 52];
+the strong decrease in Rl might be produced by
+the longitudinal ﬂow [6, 32, 52, 56, 57]. Ro falls
+
+
+--- PDF PAGE 16 ---
+16
+kT (MeV/c)
+150–250
+250–350
+350–450
+450–600
+λ
+0.30 ± 0.01
+0.42 ± 0.01
+0.45 ± 0.01
+0.47 ± 0.01
+λ (4th ord.)
+0.24 ± 0.01
+0.36 ± 0.01
+0.41 ± 0.01
+0.43 ± 0.01
+λ (6th ord.)
+0.23 ± 0.01
+0.35 ± 0.01
+0.41 ± 0.01
+0.44 ± 0.01
+Ro
+6.16 ± 0.01
+5.51 ± 0.01
+4.88 ± 0.02
+4.32 ± 0.02
+Ro (4th ord.) 6.07 ± 0.04
+5.40 ± 0.03
+4.75 ± 0.03
+4.14 ± 0.04
+κo,4
+0.37 ± 0.05
+0.36 ± 0.04
+0.33 ± 0.05
+0.40 ± 0.06
+Ro (6th ord.) 6.05 ± 0.05
+5.40 ± 0.04
+4.78 ± 0.04
+4.17 ± 0.04
+κo,4
+0.53 ± 0.11
+0.45 ± 0.10
+0.20 ± 0.11
+0.22 ± 0.13
+κo,6
+0.83 ± 0.39
+0.53 ± 0.38
+0.63 ± 0.44 –0.84 ± 0.53
+Rs
+5.39 ± 0.01
+4.93 ± 0.01
+4.53 ± 0.01
+4.14 ± 0.02
+Rs (4th ord.) 5.27 ± 0.03
+4.98 ± 0.03
+4.68 ± 0.03
+4.36 ± 0.03
+κs,4
+0.22 ± 0.04 –0.03 ± 0.04 –0.27 ± 0.04 –0.50 ± 0.05
+Rs (6th ord.) 5.01 ± 0.05
+4.74 ± 0.04
+4.57 ± 0.04
+4.26 ± 0.04
+κs,4
+0.99 ± 0.10
+0.79 ± 0.10
+0.16 ± 0.11 –0.07 ± 0.13
+κs,6
+3.07 ± 0.35
+3.21 ± 0.37
+1.71 ± 0.44
+1.80 ± 0.51
+Rl
+6.64 ± 0.02
+5.72 ± 0.02
+4.94 ± 0.02
+4.25 ± 0.02
+Rl (4th ord.)
+5.47 ± 0.04
+4.92 ± 0.03
+4.33 ± 0.04
+3.82 ± 0.04
+κl,4
+1.60 ± 0.06
+1.25 ± 0.05
+1.04 ± 0.06
+0.78 ± 0.06
+Rl (6th ord.)
+5.01 ± 0.05
+5.01 ± 0.04
+4.43 ± 0.04
+3.91 ± 0.04
+κl,4
+1.32 ± 0.07
+0.70 ± 0.07
+0.54 ± 0.09
+0.32 ± 0.11
+κl,6
+–1.76 ± 0.29 –2.82 ± 0.29 –2.41 ± 0.35 –2.12 ± 0.43
+TABLE I: HBT parameters and κ parameters for ﬁts of the correlations functions without and up to 4th
+and 6th order of the Edgeworth expansion for the 5% most central events. The extracted radii are also
+shown in Fig. 13.
+kT (MeV/c) No exp. To 4th order To 6th order
+150–250
+1.23
+1.09
+1.09
+250–350
+1.22
+1.05
+1.04
+350–450
+1.20
+1.02
+1.02
+450–600
+1.17
+1.01
+1.01
+TABLE II: χ2/dof for ﬁts of the correlations func-
+tions without and up to 4th and 6th order of
+the Edgeworth expansion for the 5% most central
+events.
+steeper than Rs with mT which is consistent
+with Ro being more aﬀected by radial ﬂow [58].
+In contrast to many model predictions [12, 59],
+Ro/Rs ∼1 which indicates short emission du-
+ration in a blast wave parametrization [58] as
+will be discussed in next section.
+Figure 15 compares our extracted HBT ra-
+dius parameters from π+π+ and π−π−correla-
+tion functions for the 0–30% most central events
+with those obtained by the PHENIX collabora-
+tion [60] at the same beam energy and central-
+ity. The same ﬁtting procedure has been used
+in both analysis. In general, very good agree-
+ment is observed in the three radii, although
+small discrepancies are seen in Ro at small kT .
+2
+4
+6
+2
+4
+          0-30%
+ STAR
+-
+π
+-
+π
+ STAR
++
+π
++
+π
+ PHENIX
+-
+π
+-
+π
+ PHENIX
++
+π
++
+π
+2
+4
+6
+0.2 0.4 0.6 0.8
+1
+1.2
+2
+4
+6
+0.2 0.4 0.6 0.8
+1
+1.2
+0.8
+1
+1.1
+ (GeV/c)
+T
+k
+ (GeV/c)
+T
+k
+ (fm)
+o
+R
+ (fm)
+s
+R
+ (fm)
+l
+R
+s
+ / R
+o
+R
+FIG.
+15:
+HBT
+parameters
+from
+STAR
+and
+PHENIX at the same beam energy for the 0–30%
+most central events. Error bars include statistical
+and systematic uncertainties.
+Figure 16 shows the HBT parameters vs. col-
+lision energy for midrapidity, low pT π−π−from
+central Au+Au, Pb+Pb or Pb+Au collisions.
+
+
+--- PDF PAGE 17 ---
+17
+1
+0.5
+0.5
+1
+E866
+E895
+NA44
+NA49
+WA97
+WA98
+CERES
+PHOBOS
+PHENIX
+STAR
+STAR
+4
+6
+4
+6
+4
+6
+4
+6
+4
+6
+4
+6
+1
+1
+102
+10
+1
+1.5
+1.5
+ (GeV)
+NN
+s
+λ
+ (fm)
+o
+R
+ (fm)
+s
+R
+ (fm) 
+l
+ R
+s
+ / R
+o
+R
+FIG. 16: Energy dependence of π−HBT parame-
+ters for central Au+Au, Pb+Pb, and Pb+Au col-
+lisions at midrapidity and ⟨kT ⟩
+≈
+0.2 GeV/c
+[10, 39, 53, 54, 55, 60, 61, 62, 63, 64].
+Open
+symbols indicate that ﬁtting was done according to
+the Bowler-Sinyukov procedure (or a similar one in
+the case of the results from Phobos). Error bars
+on NA44, NA49, CERES, PHENIX, Phobos and
+STAR results include systematic uncertainties; er-
+ror bars on other results are only statistical.
+In order to compare with our previous results
+at √sNN = 130 GeV, we applied similar cuts
+in our analysis as those described in [10] and ﬁt
+our correlation function according to the stan-
+dard procedure described in section 3.4 to ex-
+tract the HBT parameters at √sNN = 200
+GeV, closed circles at that energy in Fig. 16.
+We observe an increase of ∼10% in the trans-
+verse radii Ro and Rs. In the case of Rs, this
+increase could be attributed to a larger freeze-
+out volume for a larger pion multiplicity. Rl is
+consistent with our result at lower energy. The
+predicted increase by hydrodynamic models in
+the ratio Ro/Rs as a probe of the formation
+of QGP is not observed at √sNN = 200 GeV.
+More discussion on the lack of energy depen-
+dence of the HBT radii and its possible relation
+with the constant mean free path can be found
+in reference [65].
+0.2
+0.4
+0.6
+0-5%
+5-10%
+10-20%
+20-30%
+30-50%
+50-80%
+2
+4
+6
+2
+4
+6
+0.2
+0.3
+0.4
+0.5
+0.6
+2
+4
+6
+0.2
+0.3
+0.4
+0.5
+0.6
+1
+1.2
+ (GeV/c)
+T
+m
+ (GeV/c)
+T
+m
+λ
+ (fm)
+o
+R
+ (fm)
+s
+R
+ (fm) 
+l
+ R
+s
+ / R
+o
+R
+FIG. 17: HBT parameters vs. mT for 6 diﬀerent
+centralities. Error bars include statistical and sys-
+tematic uncertainties.
+We have also included in Fig. 16 the values
+for the HBT parameters at √sNN = 200 GeV
+extracted when applying the cuts discussed in
+section 2 and ﬁtting the correlation function ac-
+cording to the Bowler-Sinyukov procedure (sec-
+tion 3.4), open circles in the ﬁgure. This proce-
+dure is also used by the CERES collaboration.
+The smaller λ, Ro, and Rs can be explained by
+the diﬀerent cuts as already discussed in sec-
+tion 3.4. The larger value for Ro/Rs is due to
+the improved procedure of taking Coulomb in-
+teraction into account in the Bowler-Sinyukov
+procedure, section 3.4.
+4.3.
+Centrality dependence of the mT
+dependence
+We observe excellent agreement between the
+results for positively and negatively charged
+pion correlation functions for the most central
+collisions shown in the previous section. There-
+fore, we add the numerators and denominators
+of the correlation functions for positive and neg-
+ative pions in order to improve statistics; all
+the results shown in the rest of this section cor-
+respond to these added correlation functions.
+The centrality dependence of the source param-
+eters is presented in Fig. 17 where the HBT pa-
+rameters are shown as a function of mT for 6
+diﬀerent centralities. The λ parameter slightly
+increases with decreasing centrality. The three
+
+
+--- PDF PAGE 18 ---
+18
+ + 
+π
+ - 
+π
+)
+2
+ (fm
+2
+o,0
+R
+15
+20
+25
+30
+)
+2
+ (fm
+2
+s,0
+R
+10
+15
+20
+25
+)
+2
+ (fm
+2
+l,0
+R
+15
+20
+25
+30
+35
+2
+s,0
+ / R
+2
+o,2
+R
+-0.1
+-0
+0.05
+2
+s,0
+ / R
+2
+s,2
+R
+0
+0.05
+0.1
+2
+l,0
+ / R
+2
+l,2
+R
+0
+0.05
+2
+s,0
+ / R
+2
+os,2
+R
+0
+0.05
+0.1
+100
+200
+300
+400
+100
+200
+300
+400
+       
+participants
+N
+FIG. 18: Fourier coeﬃcients of azimuthal oscilla-
+tions of HBT radii vs. number of participating nu-
+cleons, for π+ and π−pairs separately (0.25 < kT <
+0.35 GeV/c). Left panels: means (0th-order FC) of
+oscillations; right panels: relative amplitudes (see
+text for details). Larger participant numbers cor-
+respond to more central collisions.
+radii increase with increasing centrality and Rl
+varies similar to Ro and Rs. For Ro and Rs this
+increase may be attributed to the initial geo-
+metrical overlap of the two nuclei. Ro/Rs ∼1,
+for all centralities.
+4.4.
+Azimuthally-sensitive HBT
+The results presented in [44] were for π+ and
+π−correlation functions combined before ﬁt-
+ting.
+Figure 18 shows the consistency of the
+Fourier coeﬃcients obtained with Eq. (5) as a
+function of number of participants.
+In section 3 we noted that the 0th order
+Fourier coeﬃcients correspond to the extracted
+HBT radii in an azimuthally integrated anal-
+ysis. This is conﬁrmed in Fig. 19 that shows
+the excellent agreement between them.
+The
+azimuthally integrated (traditional) HBT radii
+(closed symbols) agree within 1/10 fm with the
+0th-order Fourier coeﬃcients (open symbols)
+from the azimuthally-sensitive HBT analysis.
+5.
+DISCUSSION OF RESULTS
+As already mentioned in section 4.2, the de-
+pendence of the HBT radii on the transverse
+4
+5
+6
+Trad. / as HBT
+0-5%
+5-10%
+10-20%
+20-30%
+30-80%
+0.2
+0.3
+0.4
+0.5
+4
+5
+0.2
+0.3
+0.4
+0.5
+4
+5
+6
+ (GeV/c)
+T
+m
+ (GeV/c)
+T
+m
+ (fm)
+o
+ R
+ (fm)
+s
+ R
+ (fm)
+l
+ R
+FIG. 19:
+Comparison between the HBT radii
+obtained from and azimuthally integrated (tradi-
+tional) HBT analysis and the 0th-order Fourier co-
+eﬃcients from an azimuthally-sensitive HBT anal-
+ysis. Error bars include only statistical uncertain-
+ties.
+4
+6
+4
+0-5%
+5-10%
+10-20%
+20-30%
+30-50%
+50-80%
+0.2
+0.3
+0.4
+0.5 0.6
+4
+6
+0.2
+0.3
+0.4
+0.5
+0.6
+4
+6
+ (GeV/c)
+T
+m
+ (GeV/c)
+T
+m
+ (fm)
+o
+ R
+ (fm)
+s
+ R
+ (fm)
+l
+ R
+FIG. 20:
+HBT radius parameters for 6 diﬀer-
+ent centralities. The lines indicate power-law ﬁts
+(Ri(mT ) = R′
+i · (mT /mπ)−αi) to each parameter
+for each centrality.
+mass contains dynamical information about the
+particle emitting source.
+In order to extract
+this information, we ﬁt the mT dependence of
+the HBT radii for each centrality from Fig. 17
+using a simple power-law ﬁt: Ri(mT ) = R′
+i ·
+(mT /mπ)−αi (solid lines in Fig. 20).
+Figure
+21 shows the extracted ﬁt parameters for the
+three HBT radii, R′ in the top panel and α in
+
+
+--- PDF PAGE 19 ---
+19
+R’ (fm)
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+o
+Parameters for R
+s
+Parameters for R
+l
+Parameters for R
+0
+50
+100
+150
+200
+250
+300
+350
+400
+α
+0.2
+0.3
+0.4
+0.5
+0.6
+0.2
+0.3
+0.4
+0.5
+0.6
+participants
+N
+FIG. 21: Extracted parameters R′ in the top panel,
+α in the bottom from the power-law ﬁts to the HBT
+radius parameters (lines in Fig. 20).
+the lower panel, as a function of the number of
+participants, where Nparticipants has been calcu-
+lated from a Glauber model described in [66].
+Nparticipants increases with the centrality of the
+collision. R′ decreases with decreasing number
+of participants, which is consistent with the de-
+creasing initial source size. α is approximately
+constant for Rl which would indicate that the
+longitudinal ﬂow is similar for all centralities.
+However, for the transverse radii Ro and Rs, α
+seems to decrease for the most peripheral col-
+lisions which could be an indication of a small
+reduction of transverse ﬂow and/or an increase
+of temperature for those most peripheral colli-
+sions. This is consistent with the values for ﬂow
+and temperature extracted from blast wave ﬁts
+to pion, kaon, and proton transverse momen-
+tum spectra [67], as well as to HBT as will be
+discussed in next section. The drop of α with
+decreasing number of participants is faster in
+Ro than in Rs which could again indicate that
+Ro might be more aﬀected by radial ﬂow [58].
+5.1.
+Blast wave parametrization
+Hydrodynamic calculations that successfully
+reproduce transverse momentum spectra and
+elliptic ﬂow, fail to reproduce the HBT param-
+eters [59]. In most cases, these calculations un-
+derestimate Rs and overestimate Ro and Rl.
+Since Rs only probes the spatial extent of the
+source while Ro and Rl are also sensitive to the
+system lifetime and the duration of the parti-
+cle emission [5], they may be underestimating
+the system size and overestimating its evolution
+time and emission duration. We ﬁt our data
+with a blast wave parametrization designed to
+describe the kinetic freeze-out conﬁguration. In
+this section we will discuss the extracted pa-
+rameters and their physical implications.
+This blast wave parametrization [58] assumes
+that the system is contained within an inﬁnitely
+long cylinder along the beam line and requires
+longitudinal boost invariant ﬂow.
+It will be
+shown that this latter assumption is not nec-
+essarily correct. It also assumes uniform parti-
+cle density. The single set of free parameters in
+this parametrization is: the kinetic freeze-out
+temperature (T ); the maximum ﬂow rapidity
+(ρ = ˜r(ρ0 + ρa cos(2φ)), for an azimuthally in-
+tegrated analysis ρa = 0); the radii (R for the
+azimuthally integrated analysis and Rx, Ry for
+the azimuthally sensitive analysis) of the cylin-
+drical system; the system longitudinal proper
+time (τ =
+√
+t2 −z2); and the emission dura-
+tion (∆τ).
+We use this parametrization to ﬁt the az-
+imuthally integrated pion HBT radii, as well
+as the azimuthally sensitive pion HBT radii. In
+both ﬁts, T and ρ0 are ﬁxed to those extracted
+from a blast wave ﬁt to pion, kaon and proton
+transverse momentum spectra [67] and v2 [68].
+By doing this, the azimuthally integrated and
+azimuthally sensitive radii are ﬁtted with the
+same temperature and ρ0, and the edge source
+radii can be compared directly. Also, a 5% er-
+ror was added to all HBT radii before the ﬁt in
+order to reﬂect the blast wave systematic errors
+described in [58]. In the ﬁt, the transverse ﬂow
+rapidity linearly increases from zero at the cen-
+ter to a maximum value at the edge of the sys-
+tem.The best ﬁt parameters are summarized in
+Table III, for the azimuthally integrated analy-
+sis, and Table IV, for the azimuthally sensitive
+analysis.
+Most of the parameters, as well as their evo-
+lution with centrality, agree with similar stud-
+ies. Temperature decreases with increasing cen-
+trality and the average transverse ﬂow velocity
+(⟨βT ⟩=
+R
+arctanh(ρ0 r
+R)rdr/
+R
+rdr) increases
+with increasing centrality. Both results are con-
+sistent with those extracted from ﬁts to spec-
+tra only [67] and reﬂect increased rescattering,
+expansion and system evolution time with in-
+creasing centrality.
+Figure 22 shows the R parameter extracted
+from the blast wave ﬁt as they are in Table III.
+Also shown in that plot is Rgeom calculated as-
+
+
+--- PDF PAGE 20 ---
+20
+Centrality (%) T (MeV)
+ρ0
+R (fm)
+τ (fm/c)
+∆τ (fm/c) χ2/dof
+0–5
+97 ± 2
+1.03 ± 0.01 13.3 ± 0.2 9.0 ± 0.3 2.83 ± 0.19 3.13/9
+5–10
+98 ± 2
+1.00 ± 0.01 12.6 ± 0.2 8.7 ± 0.2 2.45 ± 0.17 2.71/9
+10–20
+98 ± 3
+0.98 ± 0.01 11.5 ± 0.2 8.1 ± 0.2 2.35 ± 0.16 2.61/9
+20–30
+100 ± 2 0.94 ± 0.01 10.5 ± 0.1 7.2 ± 0.1 2.10 ± 0.09 0.99/9
+30–50
+108 ± 2 0.86 ± 0.01 8.8 ± 0.1 5.9 ± 0.1 1.74 ± 0.12 2.13/9
+50–80
+113 ± 2 0.74 ± 0.01 6.5 ± 0.1 4.0 ± 0.2 1.73 ± 0.10 1.12/9
+TABLE III: Extracted parameters from a blast wave ﬁt to azimuthally integrated pion HBT radii, with T
+and ρ0 ﬁxed from ﬁts to pion, kaon, and proton transverse momentum spectra and v2.
+Cent. (%) T (MeV)
+ρ0
+ρ2
+Rx (fm)
+Ry (fm)
+τ (fm/c)
+∆τ (fm/c)
+χ2/dof
+0–5
+97 ± 2
+1.03 ± 0.01 0.03 ± 0.002 12.9 ± 0.1 13.4 ± 0.1 8.9 ± 0.2 3.16 ± 0.11 106.8/63
+5–10
+98 ± 2
+1.00 ± 0.01 0.04 ± 0.002 12.1 ± 0.1 12.9 ± 0.1 8.2 ± 0.2 2.73 ± 0.12 103.2/63
+10–20
+98 ± 3
+0.98 ± 0.01 0.05 ± 0.002 10.9 ± 0.1 11.9 ± 0.1 7.8 ± 0.2 2.59 ± 0.10 131.06/63
+20–30
+100 ± 1 0.94 ± 0.01 0.07 ± 0.002 9.7 ± 0.1 11.0 ± 0.1 6.9 ± 0.1 2.29 ± 0.10
+87.2/63
+30–80
+112 ± 2 0.82 ± 0.05 0.10 ± 0.005 7.4 ± 0.1
+8.7 ± 0.1 5.1 ± 0.2 1.94 ± 0.14 189.4/63
+TABLE IV: Extracted parameters from a blast wave ﬁt to azimuthally sensitive pion HBT radii, with T
+and ρ0 ﬁxed from ﬁts to pion, kaon, and proton transverse momentum spectra and v2.
+participants
+N
+0
+50
+100
+150
+200
+250
+300
+350
+400
+Edge Source Radius (fm)
+2
+4
+6
+8
+10
+12
+14
+ bin)
+T
+(lowest k
+s
+ R
+•
+2
+geom
+R
+From Blast Wave fit
+FIG. 22:
+Extracted freeze-out source radius ex-
+tracted from a blast wave ﬁt; source radius Rgeom
+from ﬁts to Rs (lines in Fig. 23); and 2 · Rs for
+the lowest kT bin as a function of number of par-
+ticipants. R from blast wave contains only uncer-
+tainties from ﬁt; Rgeom error bars contain system-
+atic uncertainties from the input parameters; 2·Rs
+contains the statistical and systematic uncertain-
+ties from Rs.
+suming a transverse expanding, longitudinally
+boost-invariant source, and a Gaussian trans-
+verse density proﬁle, by ﬁtting the mT depen-
+dence of Rs to [52]:
+Rs(mT ) =
+s
+R2geom
+1 + ρ2
+0( 1
+2 + mT
+T ),
+(19)
+where T is the freeze-out temperature and ρ0 is
+the surface transverse rapidity. Figure 23 shows
+such ﬁts to Rs for each centrality with T and
+ρ0 extracted from blast wave ﬁts to pion, kaon,
+and proton transverse momentum spectra (T
+ (GeV/c)
+T
+m
+0.2
+0.3
+0.4
+0.5
+0.6
+ (fm)
+s
+R
+4
+6
+0-5%
+5-10%
+10-20%
+20-30%
+30-50%
+50-80%
+0-5%
+5-10%
+10-20%
+20-30%
+30-50%
+50-80%
+0-5%
+5-10%
+10-20%
+20-30%
+30-50%
+50-80%
+0-5%
+5-10%
+10-20%
+20-30%
+30-50%
+50-80%
+FIG. 23: HBT parameter Rs. Lines represent the
+ﬁts Rs(mT ) =
+r
+R2geom/
+h
+1 + ρ2
+0( 1
+2 + mT
+T )
+i
+.
+= 90 MeV, ρ0 = 1.20 for the most central colli-
+sions and T = 120 MeV, ρ0 = 0.82 for the most
+peripheral bins) [67]. Fig. 22 shows good agree-
+ment between these two extracted radii that in-
+crease from ∼5 fm for the most peripheral col-
+lisions to ∼13 fm for the most central collisions
+following the growth of the system initial size.
+The diﬀerences may be explained by the poor
+quality of the ﬁts to Rs as seen in Fig. 23.
+As already mentioned, Rs carries only spa-
+tial information about the source [32, 33]. In
+the special case of vanishing space-momentum
+correlations (no transverse ﬂow or T →∞), the
+source spatial distribution may be modelled by
+a uniformly ﬁlled disk of radius R, which in
+this case is exactly two times Rs, the RMS of
+the distribution along a speciﬁc direction. In
+Fig. 22 we have included 2·Rs for our lowest kT
+
+
+--- PDF PAGE 21 ---
+21
+Centrality Rx,initial (fm) Ry,initial (fm)
+0–5%
+5.70 ± 0.01
+5.86 ± 0.01
+5–10%
+5.28 ± 0.01
+5.72 ± 0.01
+10–20%
+4.74 ± 0.01
+5.50 ± 0.01
+20–30%
+4.14 ± 0.01
+5.12 ± 0.01
+30–50%
+3.58 ± 0.01
+4.70 ± 0.01
+50–80%
+2.84 ± 0.01
+4.02 ± 0.01
+30–80%
+3.48 ± 0.01
+4.60 ± 0.01
+TABLE V: Initial in-plane (Rx,initial) and out-of-
+plane (Ry,initial) radii for 7 diﬀerent centrality bins.
+bin, kT = [150,250] MeV/c, in order to compare
+it with the extracted source radii. We observe
+the eﬀect of space-momentum correlations that
+reduce the size of the regions of homogeneity in
+the results from the most central collisions for
+which 2 · Rs is smaller than the extracted radii
+from the ﬁt.
+For an azimuthally asymmetric collision, the
+initial source has an elliptic shape with the
+larger axis perpendicular to the reaction plane
+(out-of-plane) and the shorter axis in the re-
+action plane (in-plane). In order to calculate
+the radii of the initial source in the x (in-
+plane) and y (out-of-plane) direction we ﬁrst
+get the initial distribution of particles in the
+almond shaped initial overlap from a Monte
+Carlo Glauber model calculation as described
+in [66].
+The in-plane (Rx,initial) and out-of-
+plane (Ry,initial) initial radii are calculated as
+the radii of the region that contains 95% of the
+particles.
+The values for the initial in-plane
+and out-of-plane edge radii are shown in Ta-
+ble V. The azimuthally integrated initial radius
+(Rinitial) can be calculated from those two radii
+as:
+Rinitial =
+s
+R2
+x,initial + R2
+y,initial
+2
+.
+(20)
+Figure 24 (bottom panel) shows R/Rinitial
+vs.
+number of participants for in-plane, out-
+of-plane and azimuthally integrated directions.
+The ﬁnal source radii are those extracted from
+the blast wave parametrization.
+R/Rinitial is
+the relative expansion of the source which is
+stronger in-plane than out-of-plane for the most
+peripheral collisions, and it is similar in both
+directions for the most central collisions. The
+azimuthally integrated radius indicates a strong
+relative expansion of the source for central col-
+lisions. This expansion seems to be very sim-
+ilar for all centralities, decreasing just for the
+most peripheral cases. Figure 24 (top panel)
+shows the overall expansion of the source given
+by R −Rinitial vs. number of participants.
+ (fm)
+initial
+R - R
+1
+2
+3
+4
+5
+6
+7
+8
+9
+)
+x
+In plane (R
+)
+y
+Out of plane (R
+Azim.Integrated (R)
+participants
+N
+0
+50
+100
+150
+200
+250
+300
+350
+400
+initial
+R/R
+1
+1.2
+1.4
+1.6
+1.8
+2
+2.2
+2.4
+FIG. 24: R−Rinitial (top panel) and R/Rinitial (bot-
+tom panel) for the azimuthally integrated analysis
+and in the x (in-plane) and y (out-of-plane) direc-
+tions for the azimuthally-sensitive case vs. number
+of participants.
+initial
+(dN/dy)/R
+0
+10
+20
+30
+40
+50
+60
+ (fm)
+initial
+R - R
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+)
+x
+In plane (R
+)
+y
+Out of plane (R
+Azim.Integrated (R)
+FIG. 25: R −Rinitial for the azimuthally integrated
+analysis and in the x (in-plane) and y (out-of-
+plane) directions for the azimuthally-sensitive case
+vs. (dN/dy)/Rinitial.
+While the absolute expansion (R−Rinitial) in-
+creases steadily going to more central collision,
+the relative expansion saturates when the num-
+ber of participant reaches 150.
+Furthermore,
+both absolute and relative expansions diﬀer sig-
+niﬁcantly in peripheral events when comparing
+the in-plane and out-of-plane directions, while
+they are similar for the most central. This is ex-
+pected arguing that the expansion, or in other
+word ﬂow, is driven by particle reinteractions
+
+
+--- PDF PAGE 22 ---
+22
+following the initial pressure gradients which
+in turn follow the initial energy density gradi-
+ents. As the centrality increases the diﬀerence
+between the initial energy density gradient in-
+plane and out-of-plane diminishes, which brings
+the expansions in-plane and out-of-plane closer
+together.
+The question is then what drives the trans-
+verse expansion.
+The diﬀerence between the
+in-plane and out-of-plane expansion at a given
+centrality shows that the initial energy density
+gradient matters.
+The initial energy density
+gradients are responsible for establishing the
+initial expansion velocity but the spatial expan-
+sion will also depend on for how long the system
+expands. The system lifetime is likely to de-
+pend on the initial energy density, which may
+be gauged by dividing the particle multiplic-
+ity (dN/dy) by the initial area estimated in the
+Glauber framework as done in [66]. Following
+this idea, we investigate how the transverse ex-
+pansion evolves while varying centrality, which
+aﬀects both the average energy density and the
+energy density gradient. We ﬁnd that the trans-
+verse expansion scales with (dN/dy)/Rinitial as
+shown in Fig. 25. This ﬁgure shows R −Rinitial
+vs.
+(dN/dy)/Rinitial, where dN/dy is for pi-
+ons as reported in [67] and Rinitial is the corre-
+sponding in-plane, out-of-plane or azimuthally
+integrated initial radius described above. This
+quantity scales neither as a gradient nor as an
+energy density but it appears to contain the rel-
+evant parameters that drive the transverse ex-
+pansion. We observe a clear scaling for Rx and
+Ry as well as for the azimuthally integrated ra-
+dius R, with (dN/dy)/Rinitial.
+For the same
+collisions, the in-plane expansion corresponds
+to a higher value of (dN/dy)/Rinitial than the
+corresponding out-of-plane expansion.
+The good ﬁt to the data obtained with the
+blast wave parametrization, consistent with ex-
+pansion, and the comparison in diﬀerent ways
+of the initial and ﬁnal sizes of the source clearly
+indicate that the results can be interpreted
+in terms of collective expansion that could be
+driven by the initial pressure gradient. How-
+ever, the time scales extracted from the ﬁt seem
+to be very small, smaller than the values pre-
+dicted by hydrodynamic models.
+From the dependence of Rl on mT shown in
+Fig. 26, and assuming boost-invariant longitu-
+dinal ﬂow, we can extract information about
+the evolution time-scale of the source, or proper
+time of freeze-out, by ﬁtting it to a formula ﬁrst
+suggested by Sinyukov and collaborators [6, 56]
+ (GeV/c)
+T
+m
+0.2
+0.3
+0.4
+0.5
+0.6
+ (fm)
+l
+R
+4
+6
+0-5%
+5-10%
+10-20%
+20-30%
+30-50%
+50-80%
+FIG. 26: Longitudinal HBT radius Rl. Lines rep-
+resent the ﬁts Rl = τ
+q
+T
+mT
+K2(mT /T )
+K1(mT /T ) for each cen-
+trality.
+participants
+N
+0
+50
+100
+150
+200
+250
+300
+350
+400
+ (fm/c)
+τ
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+ fit only
+l
+From R
+From Blast Wave fit
+FIG. 27: Evolution time τ vs. number of partici-
+pants as extracted from a ﬁt to Rl, lines in Figure
+26 (triangles), and from a blast wave ﬁt to HBT
+parameters and spectra (circles).
+and then improved by others [58]:
+Rl = τ
+s
+T
+mT
+K2(mT /T )
+K1(mT /T )
+(21)
+where T is the freeze-out temperature and K1
+and K2 are the modiﬁed Bessel functions of or-
+der 1 and 2.
+This expression for Rl also as-
+sumes vanishing transverse ﬂow and instanta-
+neous freeze-out in proper time (i.e., ∆τ = 0).
+The ﬁrst assumption is approximatively justi-
+ﬁed by the small dependence of Rl on ρ0 in
+full calculation [58]. The second approximation
+is justiﬁed by the small ∆τ from blast wave
+ﬁts, Table III.
+Figure 26 also shows the ﬁts
+to Rl (lines) using temperatures, T , consistent
+with spectra as for the ﬁt to Rs. The extracted
+values for the evolution time τ are shown in
+Fig. 27. The evolution time increases with cen-
+trality from τ ≈4 fm/c for the most periph-
+eral events to τ ≈9 fm/c for the most central
+events.
+In the same plot, the extracted evo-
+
+
+--- PDF PAGE 23 ---
+23
+    
+τ 
+ 
+T,max
+β
+0
+1
+2
+3
+4
+5
+6
+7
+8
+ (fm)
+initial
+R - R
+(fm)
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+)
+x
+In plane (R
+)
+y
+Out of plane (R
+Azim.Integrated (R)
+FIG. 28: R −Rinitial for the azimuthally integrated
+analysis and for the in-plane and out-of-plane di-
+rections vs. βT,max · τ. The line is a “y = x” line.
+lution time from the blast wave ﬁt is shown.
+Good agreement is observed between the two
+extracted proper times for all centralities. They
+are surprisingly small as compared with hydro-
+dynamical calculations that predict a freeze-out
+time of ∼15 fm/c in central collisions. These
+hydrodynamical calculations may over-predict
+the system lifetime or the assumption on which
+the extraction of τ is based in the blast wave
+parametrization, longitudinal boost invariant
+expansion, might not be completely justiﬁed.
+As a check for the consistency of the evo-
+lution time extracted from the blast wave ﬁt,
+Fig. 28 shows the ﬁnal source radius as ex-
+tracted from the blast wave ﬁt minus the ini-
+tial source size vs. βT,max · τ. This βT,max is
+the maximum ﬂow velocity and is expected to
+be the velocity at the edge of the expanding
+source at kinetic freeze-out. It has been calcu-
+lated from the ρ0 and ρa blast wave parameters
+as βT,max = tanh(ρ0 + ρa cos(2φ)). φ is 0 in-
+plane and π/2 out-of-plane [58], and ρa is 0 for
+the azimuthally integrated analysis and is given
+in Table IV for the azimuthally sensitive anal-
+ysis. The evolution time, τ, is the blast wave
+parameter shown in Fig. 27, and Table III. The
+systematic errors in βT,max · τ come from the
+ﬁnite size bin in centrality. If the extracted ra-
+dius and proper-time are right, the initial and
+ﬁnal edge radii should be related by the rela-
+tion Rﬁnal
+<
+Rinitial
++ βT,max · τ so that
+the points in the ﬁgure should all be clearly be-
+low the solid line (βT,max · τ
+= R −Rinitial).
+Since most points are above the line, a possible
+explanation is that τ is not properly calculated
+within the blast wave parametrization. A larger
+τ would move the points below the line.
+Figure 29 shows the emission duration time,
+∆τ as a function of number of participants. ∆τ
+increases with increasing centrality up to ∼3
+participants
+N
+0
+50
+100
+150
+200
+250
+300
+350
+400
+ (fm/c)
+τ 
+∆
+0
+0.5
+1
+1.5
+2
+2.5
+3
+3.5
+FIG. 29: Emission duration time ∆τ vs. number of
+participants as extracted using a blast ﬁt to HBT
+parameters and spectra.
+initial
+ ε
+0
+0.05
+0.1
+0.15
+0.2
+0.25
+0.3
+0.35
+0.4
+final
+ ε
+0
+0.02
+0.04
+0.06
+0.08
+0.1
+0.12
+0.14
+0.16
+0.18
+2
+s,0
+/R
+2
+s,2
+2R
+2
+BW fits to asHBT/spectra/v
+FIG. 30: Final source eccentricity (εﬁnal) as cal-
+culated from the Fourier coeﬃcients (2R2
+s,2/R2
+s,0)
+and from the ﬁnal in-plane and out-of-plane radii
+((R2
+y −R2
+x)/(R2
+y + R2
+x)) vs.
+initial eccentricity
+(εinitial).
+The most peripheral collisions corre-
+spond to the largest eccentricity. The line indicates
+εﬁnal = εinitial. Systematic errors of 30%, based on
+sensitivity to model parameters [58], are assigned
+to εﬁnal extracted from the Fourier coeﬃcients.
+fm/c. It is relatively small for all centralities,
+however it has increased with respect to the val-
+ues extracted from our analysis at √sNN = 130
+GeV [58] due to the improved procedure of tak-
+ing Coulomb interaction into account and the
+consequent increase in Ro.
+The freeze-out shape of the source in non-
+central collisions and its relation to the spatial
+anisotropy of the collision’s initial overlap re-
+gion give us another hint about the system life-
+time.
+The initial anisotropic collision geome-
+try generates greater transverse pressure gradi-
+ents in the reaction plane than perpendicular
+to it. This leads to a preferential in-plane ex-
+pansion [19, 20, 21] which diminishes the ini-
+tial anisotropy. A long-τ source would be less
+out-of-plane extended and perhaps in-plane ex-
+tended.
+The eccentricity of the initial over-
+
+
+--- PDF PAGE 24 ---
+24
+lap region has been calculated from the initial
+RMS of the distribution of particles, as given
+by the Monte Carlo Glauber calculation, in the
+in-plane and out-of-plane directions as:
+ε =
+(RRMS
+y,initial)2 −(RRMS
+x,initial)2
+(RRMS
+y,initial)2 + (RRMS
+x,initial)2 .
+(22)
+Figure 30 shows the relation between initial
+and ﬁnal eccentricities, with more peripheral
+collisions showing a larger ﬁnal anisotropy. The
+ﬁnal source eccentricity has been calculated
+from the Fourier coeﬃcients (2R2
+s,2/R2
+s,0), as
+well as from the ﬁnal in-plane and out-of-plane
+radii ((R2
+y −R2
+x)/(R2
+y +R2
+x)) extracted from the
+blast wave ﬁt to azimuthally sensitive HBT and
+spectra described above. The source at freeze-
+out remains out-of-plane extended indicating
+that the outward pressure and/or expansion
+time was not suﬃcient to quench or reverse the
+initial spatial anisotropy. The large elliptic ﬂow
+and small HBT radii observed at RHIC energies
+might favor a large pressure build-up in a short-
+lived system compared to hydrodynamic cal-
+culations. Also, out-of-plane freeze-out shapes
+tend to disfavor a long-lived hadronic rescat-
+tering phase following hydrodynamic expansion
+[23].
+This short hadronic phase is consistent
+with a short emission time.
+6.
+CONCLUSION
+We have presented a detailed description of
+a systematic HBT analysis in Au+Au collisions
+at √sNN = 200 GeV. We have analyzed the
+Gaussianess of the correlation function and con-
+clude that there is a deviation from a pure
+Gaussian, however it is not clear how this af-
+fects the HBT parameters, extracted assuming
+a Gaussian, that will be compared to models.
+We have studied the centrality dependence of
+the kT dependence of the HBT parameters and
+extracted geometrical and dynamical informa-
+tion on the source at freeze-out. We conclude
+that there is a signiﬁcant expansion in Au+Au
+collisions, and that the relative expansion does
+not signiﬁcantly depend on centrality. The sys-
+tem expands by a factor of at least 2.0 for most
+centralities. This is well established by HBT.
+The initial pressure gradient seems to be driv-
+ing the expansion. The extracted time scales
+from a blast wave ﬁt are small. The blast wave
+evolution time τ is small as compared with hy-
+drodynamical calculations which could suggest
+that the longitudinal boost invariant assump-
+tion has only limited validity.
+We thank the RHIC Operations Group and
+RCF at BNL, and the NERSC Center at LBNL
+for their support.
+This work was supported
+in part by the HENP Divisions of the Oﬃce
+of Science of the U.S. DOE; the U.S. NSF;
+the BMBF of Germany; IN2P3, RA, RPL, and
+EMN of France; EPSRC of the United King-
+dom; FAPESP of Brazil; the Russian Ministry
+of Science and Technology; the Ministry of Edu-
+cation and the NNSFC of China; Grant Agency
+of the Czech Republic, FOM and UU of the
+Netherlands, DAE, DST, and CSIR of the Gov-
+ernment of India; Swiss NSF; and the Polish
+State Committee for Scientiﬁc Research.
+[1] R. Hanbury-Brown and R. Q. Twiss, Nature
+178, 1046 (1956).
+[2] G. Goldhaber et al., Phys. Rev. 120, 300
+(1960).
+[3] W.
+Bauer,
+C.
+K.
+Gelbke
+and
+S.
+Pratt,
+Annu. Rev. Nucl. Part. Sci. 42, 77 (1992).
+[4] U.
+Heinz
+and
+B.
+V.
+Jacak,
+Ann. Rev. Nucl. Sci. 49, 529 (1999).
+[5] S. Pratt, Phys. Rev. Lett. 53, 1219 (1984).
+[6] A.
+N.
+Makhlin
+and
+Y.
+M.
+Sinyukov,
+Z. Phys. C39, 69 (1988).
+[7] S.
+A.
+Voloshin
+and
+W.
+E.
+Cleland,
+Phys. Rev. C53, 896 (1996).
+[8] S.
+A.
+Voloshin
+and
+W.
+E.
+Cleland,
+Phys. Rev. C54, 3212 (1996).
+[9] U.
+Heinz,
+A.
+Hummel,
+M.
+A.
+Lisa,
+U. A. Wiedemann, Phys. Rev. C66, 044903
+(2002).
+[10] C.
+Adler
+et
+al.
+(STAR
+Collaboration),
+Phys. Rev. Lett. 87, 082301 (2001).
+[11] K. Adcox et al. (PHENIX Collaboration),
+Phys. Rev. Lett. 88, 242301 (2002).
+[12] D.
+H.
+Rischke
+and
+M.
+Gyulassy,
+Nucl. Phys. A608, 479 (1996).
+[13] D. H. Rischke, Nucl. Phys. A610, 88c (1996).
+[14] P. F. Kolb and U. Heinz, nucl-th/0305084.
+[15] T. Hirano, nucl-th/0403042.
+[16] Z-W.
+Lin,
+C.
+M.
+Ko
+and
+S.
+Pal,
+Phys. Rev. Lett. 89, 152301 (2002).
+[17] The multistage AMPT model reproduces ﬂow
+with σ ≃3mb [69], after non-ﬂow eﬀects are
+removed from the data [16]. HBT projections
+are reproduced, however, only when σ ≃10
+mb. We thank Z-W. Lin from bringing this to
+our attention.
+[18] J. Y. Ollitrault, Phys. Rev. D46, 229 (1992).
+[19] P.
+F.
+Kolb,
+J.
+Sollfrank
+and
+U.
+Heinz,
+Phys. Rev. C62, 054909 (2000).
+[20] C.
+Adler
+et
+al.
+(STAR
+Collaboration),
+Phys. Rev. Lett. 87, 182301 (2001).
+
+
+--- PDF PAGE 25 ---
+25
+[21] S. A. Voloshin, Nucl. Phys. A715, 379c (2003).
+[22] P. F. Kolb and U. Heinz, Nucl. Phys. A715,
+653 (2003).
+[23] D.
+Teaney,
+J.
+Lauret
+and
+E.
+Shuryak,
+nucl-th/0110037.
+[24] M. L´opez Noriega, Ph.D. Thesis, Ohio State
+University (2004).
+[25] M.
+Anderson
+et
+al.,
+Nucl.
+In-
+strum. Meth. A499, 659 (2003).
+[26] W. Blum and L. Rolandi. Particle Detection
+with drift chambers. Springer-Verlag (1993).
+[27] G. I. Kopylov, Sov. J. Nucl. Phys. 25, 578
+(1977).
+[28] G. F. Bertsch, M. Gong and M. Tohyama,
+Phys. Rev. C37, 1428 (1998).
+[29] S. Pratt, Phys. Rev. D33, 1314 (1986).
+[30] S. Chapman, P. Scotto and U. W. Heinz,
+Phys. Rev. Lett. 74, 4400 (1005).
+[31] J.
+Adams
+et
+al.
+(STAR
+Collaboration),
+Phys. Rev. Lett. 91, 262301 (2003).
+[32] U. A. Wiedemann,
+Phys. Rev. C57,
+266
+(1998).
+[33] U.
+A.
+Wiedemann
+and
+U.
+Heinz,
+Phys. Rept. 319, 145 (1999).
+[34] S. Pratt, Phys. Rev. D33, 72 (1986).
+[35] L.
+Ahle
+et
+al.
+(E802
+Collaboration),
+Phys. Rev. C66, 054906 (2002).
+[36] We thank H. Appelsh¨auser for explaining this
+to us.
+[37] M. G. Bowler, Phys. Lett. B270, 69 (1991).
+[38] Yu. M. Sinyukov et al., Phys. Lett. B432, 249
+(1998).
+[39] D. Adamova et al. (CERES Collaboration),
+Nucl. Phys. A714, 124 (2003).
+[40] R. Lednicky and V. L. Lyuboshitz, Yad. Fiz
+35, 1316 (1982) [Sov. J. Nucl. Phys. 35, 770
+(1982)]. Fortran program provided by R. Led-
+nicky.
+[41] M. G. Bowler, Z. Phys. C39, 81 (1988).
+[42] W. A. Zajc, Phys. Rev. C29, 2173 (1984).
+[43] H. W. Barz, Phys. Rev. C59, 2214 (1999).
+[44] J.
+Adams
+et
+al.
+(STAR
+Collaboration),
+Phys. Rev. Lett. 93, 012301 (2004).
+[45] K. Ackermann et al. (STAR Collaboration),
+Phys. Rev. Lett. 86, 402 (2001).
+[46] S. Voloshin and Y. Zhang, Z. Phys. C70, 665
+(1996).
+[47] A.
+M.
+Poskanzer
+and
+S.
+A.
+Voloshin,
+Phys. Rev. C58, 1671 (1998).
+[48] T. Cs¨org˝o and A. T. Szerzo, hep-ph/9912220.
+[49] T. Cs¨org˝o and S. Hegyi, Phys. Lett. B489, 15
+(2000).
+[50] T.
+Cs¨org˝o,
+S.
+Hegyi
+and
+W.
+A.
+Zajc,
+nucl-th/0310042.
+[51] B. Tomasik, U. A. Wiedemann, U. Heinz,
+Nucl. Phys. A663, 753 (2000).
+[52] U. Wiedemann,
+P. Scotto and U. Heinz,
+Phys. Rev. C53, 918 (1996).
+[53] I. G. Bearden et al. (NA44 Collaboration),
+Phys. Rev. C58, 1656 (1998).
+[54] M.
+A.
+Lisa
+et
+al.
+(E895
+Collaboration),
+Phys. Rev. Lett. 84, 2798 (2000).
+[55] M. M. Aggarwal et al. (WA98 Collaboration),
+Eur. Phys. J. C. 16, 445 (2000).
+[56] S.
+V.
+Akkelin
+and
+Yu.
+M.
+Sinyukov,
+Phys. Lett. B356, 525 (1995).
+[57] M.
+Herrmann
+and
+G.
+F.
+Bertsch,
+Phys. Rev. C51, 328 (1995).
+[58] F. Reti`ere and M. A. Lisa, Phys. Rev. C70,
+044907 (2004).
+[59] U. Heinz and P. F. Kolb, hep-ph/0204061.
+[60] S. S. Adler et al. (PHENIX Collaboration),
+Phys. Rev. Lett. 93, 152302 (2004).
+[61] R.
+Soltz
+et
+al.
+(E866
+Collaboration),
+Nucl. Phys. A661, 448c (1999).
+[62] C.
+Blume
+et
+al.
+(NA49
+Collaboration),
+Nucl. Phys. A698, 104 (2002).
+[63] F.
+Antinori
+et
+al.
+(WA97
+Collaboration),
+J. Phys. G27, 2325 (2001).
+[64] B.B. Back et al. (Phobos Collaboration), sub-
+mitted to Phys. Rev. C., nucl-ex/0409001.
+[65] D. Adamova et al. (CERES Collaboration),
+Phys. Rev. Lett. 90, 022301 (2003).
+[66] J. Adams et al. (STAR Collaboration), sub-
+mitted to Phys. Rev. C., nucl-ex/0311017.
+[67] J.
+Adams
+et
+al.
+(STAR
+Collaboration),
+Phys. Rev. Lett. 92, 112301 (2004).
+[68] J. Adams et al. (STAR Collaboration), sub-
+mitted to Phys. Rev. C., nucl-ex/0409033.
+[69] Z-W. Lin, C. M. Ko, Phys. Rev. C 65, 034904
+(2002).

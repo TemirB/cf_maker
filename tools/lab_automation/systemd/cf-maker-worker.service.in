@@ -1,0 +1,16 @@
+[Unit]
+Description=cf_maker durable scientific queue
+
+[Service]
+Type=oneshot
+UMask=0077
+WorkingDirectory=@INSTALL_DIR@
+ExecStart="@PYTHON@" "@INSTALL_DIR@/lab.py" --config "@CONFIG@" worker
+TimeoutStartSec=infinity
+TimeoutStopSec=120
+KillMode=control-group
+Restart=on-failure
+RestartSec=10s
+
+[Install]
+WantedBy=default.target

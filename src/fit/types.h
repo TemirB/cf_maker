@@ -1,12 +1,23 @@
 #pragma once
 
 #include <array>
+#include <optional>
 #include <vector>
+
+constexpr double kFitLimitTolerance = 1e-4;
+
+struct Chi2Comparison
+{
+    double root_chi2{};
+    int root_ndf{};
+    double manual_chi2{};
+    int manual_ndf{};
+};
 
 struct FitResult
 {
-    std::array<double, 6> R{};
-    std::array<double, 6> eR{};
+    std::array<double, 6> r{};
+    std::array<double, 6> e_r{};
     double lambda{};
     double e_lambda{};
     double chi2{};
@@ -18,16 +29,29 @@ struct FitResult
     bool at_limit = false;
     int attempts = 0;
     std::array<double, 49> corr{};
+    // Diagnostic only: absent for older files, unattempted fits and objectives
+    // unsupported by the independent sum. It never changes fit eligibility.
+    std::optional<Chi2Comparison> chi2_comparison;
 
     [[nodiscard]] bool is_finite() const;
     [[nodiscard]] double chi2_ndf() const;
+    // Zero manual chi-square, including 0/0, has no defined ratio.
+    [[nodiscard]] std::optional<double> chi2_root_over_manual() const;
     [[nodiscard]] bool is_valid() const;
-    [[nodiscard]] double corr(int i, int j) const
+    [[nodiscard]] double correlation(int i, int j) const
     {
         return corr[static_cast<std::size_t>(i) * 7 + static_cast<std::size_t>(j)];
     }
 };
 
 [[nodiscard]] bool is_bad_fit(const FitResult& r);
+
+// Boundary and failed fits remain in the saved fit metadata, but are excluded
+// from ordinary physical graphs and model overlays.
+[[nodiscard]] bool is_usable_fit(const FitResult& result);
+
+// Prefer a usable result to a boundary result before comparing chi-square.
+// Failed, nonfinite and underdetermined candidates never replace each other.
+[[nodiscard]] bool is_better_fit(const FitResult& candidate, const FitResult& current);
 
 using FitGrid = std::vector<std::vector<std::vector<FitResult>>>;

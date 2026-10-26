@@ -1,0 +1,465 @@
+
+--- PDF PAGE 1 ---
+1
+ 
+International Conference on Critical Point and Onset on Deconfinement, online, 15-19 March 2021
+                      
+STAR results on femtoscopy at the BES program
+                                         Hanna Zbroszczyk for the STAR Collaboration
+                    e-mail: hanna.zbroszczyk@pw.edu.pl 
+                                       
+                                      
+Introduction
+-
+HIC and HBT method
+-
+Correlation femtoscopy
+-    RHIC / STAR / BES;
+Results 
+ - Identical pions
+ - Other systems
+Summary
+
+
+--- PDF PAGE 2 ---
+2
+Introduction
+
+
+--- PDF PAGE 3 ---
+3
+Heavy-Ion collision and HBT method
+long - beam axis
+out  - pair transverse p
+side - perpendicular to 
+         out and long
+made by Mike Lisa
+Homogeneity region
+
+
+--- PDF PAGE 4 ---
+4
+ 
+Correlation femtoscopy
+Size: ~10-15 m (fm)
+Time: ~10-23 s 
+Impossible 
+to measure directly!
+Femtoscopy (HIC) inspired by Hanbury 
+Brown and Twiss interferometry method 
+(Astronomy)
+but! 
+-
+different scales,
+-
+different measured quantities
+-
+different determined quantities
+Hanbury Brown, R.; Twiss, 
+Nature 178, 1046–1048 (1956) 
+
+
+--- PDF PAGE 5 ---
+5
+Identical pairs: 
+- Quantum Statistics- QS  
+- Final State Interactions- FSI: Coulomb, Strong
+Non-identical pairs:
+- Final State Interactions- FSI: Coulomb, Strong
+Two-particle correlations
+ 
+ - space-time sizes (and dynamics) 
+(can not be measured directly) 
+
+Close velocity correlations 
+(HBT + FSI) 
+ - momenta and momentum difference 
+(can be measured directly)
+Single- and two-particle distributions:
+
+
+
+The correlation function: 
+   
+            
+x1, x2
+→
+p1, p2
+P1(p) = E dN
+d3p = ∫d4xS(x, p)
+P2(p1, p2) = E1E2
+dN
+d3p1d3p2
+P2(p1, p2) = ∫d4x1S(x1, p1)d4x2S(x2, p2)Φ(x2, p2|x1, p1)
+C(p1, p2) =
+P2(p1, p2)
+P1(p1)P1(p2)
+UrQMD
+UrQMD
+
+
+--- PDF PAGE 6 ---
+6
+RHIC
+BRAHMS
+PHOBOS
+PHENIX
+STAR
+AGS
+TANDEMS
+Relativistic Heavy Ion Collider (RHIC) 
+Brookhaven National Laboratory (BNL), Upton
+
+
+--- PDF PAGE 7 ---
+7
+Beam Energy Scan Program
+RHIC Top Energy 
+p+p, p+Al, p+Au, d+Au,
+3He+Au, Cu+Cu, Cu+Au, 
+Ru+Ru, Zr+Zr, Au+Au, U+U
+QCD at high energy 
+density/temperature
+Properties of QGP, EoS
+Beam Energy Scan
+Au+Au  at 
+7.7-62 GeV 
+- QCD phase transition
+- Search for critical point
+- Turn-off of QGP signatures
+- Chiral symmetry restoration
+Fixed-Target Program
+Au+Au at 
+3.0-7.7 GeV
+High baryon density regime 
+ 
+with 
+420-720 MeV
+sNN =
+sNN =
+μB =
+
+
+--- PDF PAGE 8 ---
+8
+Results
+
+
+--- PDF PAGE 9 ---
+9
+Identical pion femtoscopy
+Phys. Rev. C 92 (2015) 14904
+→ Rside spatial source evolution in the transverse direction 
+→ Rout related to spatial and time components
+→ Rout/Rside signature of phase transition
+→ Rout
+2- Rside 
+2 = ∆τ2 βt
+2; ∆τ – emission time
+→ Rlong temperature of kinetic freeze-out and source lifetime
+HBT source sizes determined 
+for wide range of collision energy; 
+Non-monotonic behavior seen 
+in three directions
+
+
+--- PDF PAGE 10 ---
+10
+Identical pion femtoscopy
+Phys. Rev. C 92 (2015) 
+14904
+→ Rside spatial source evolution in the transverse direction 
+→ Rout related to spatial and time components
+→ Rout/Rside signature of phase transition
+→ Rout
+2- Rside 
+2 = ∆τ2 βt
+2; ∆τ – emission time
+→ Rlong temperature of kinetic freeze-out and source lifetime
+arXiv:2007.14005v4
+PRC accepted
+New data from 
+ = 4.5 GeV follow trend 
+observed for low collision energies
+sNN
+
+
+--- PDF PAGE 11 ---
+11
+Identical pion femtoscopy
+Phys. Rev. C 92 (2015) 14904
+System evolves faster in the reaction plane
+
+
+--- PDF PAGE 12 ---
+How to measure a phase transition?
+Clear evolution in the freeze-out shape indicated
+Lower energies: system more oblate (
+)
+Higher energies: system more prolate (
+)
+ = 4.5 GeV: round system (
+)
+ 
+Transition region between dynamics dominated 
+by stopping and boost-invariant dynamics.
+Rside > Rlong
+Rside < Rlong
+sNN
+Rside ≃Rlong
+arXiv:2007.14005v4
+PRC accepted
+arXiv:2007.14005v4
+PRC accepted
+12
+
+
+--- PDF PAGE 13 ---
+13
+How to measure a phase transition?
+
+Visible peak in 
+ near the 
+20 GeV 
+QCD calculations predict a peak near to the QGP transition 
+threshold - signature of first-order phase transition?
+Theoretical attention from hydro and transport models needed
+R2
+out −R2
+side = β2
+t Δτ2
+Rout
+Rside
+(
+sNN)
+sNN ≃
+arXiv:2007.14005v4
+PRC accepted
+Maximum  
+duration time 
+of the source
+arXiv:2007.14005v4; PRC accepted
+
+
+--- PDF PAGE 14 ---
+14
+Phys.Rev. C96 (2017) 
+no.2, 024911
+STAR Data
+1st order Phase Tr.
+Cross-over Tr.
+How to measure a phase transition?
+vHLEE+UrQMD model verify sensitivity  of HBT 
+measurements to the first-order phase transition  
+Pre-thermal phase
+Hydrodynamical phase
+Hydronic cascades
+UrQMD
+UrQMD
+vHLEE
+vHLLE (3+1)-D viscous hydrodynamics 
+Iu. Karpenko, P. Huovinen, H.Petersen, M. Bleicher  
+Phys.Rev. C 91, 064901 (2015), arXiv:1502.01978,1509.3751  
+ 
+HadronGas + Bag Model → 1st order PT 
+P.F. Kolb, et al, PR C 62, 054909 (2000) 
+Chiral EoS → crossover PT (XPT) 
+J. Steinheimer, et al, J. Phys. G 38, 035001 (2011)
+
+
+--- PDF PAGE 15 ---
+15
+Other systems: energy dependence
+Nucl. Phys. A 982 (2019), 
+359-362
+Opposite signs
+Same signs
+stat. uncertainties only
+stat. uncertainties only
+stat. uncertainties only
+not corrected for feed-down
+not corrected for feed-down
+Clear energy dependence seen
+STAR preliminary
+STAR preliminary
+STAR preliminary
+
+
+--- PDF PAGE 16 ---
+16
+P. Danielewicz and S.Pratt.
+Phys. Lett. B618: 60 2005
+P. Danielewicz and S.Pratt.
+Phys. Rev. C75:034907 2007
+Non-identical particle correlations - introduction
+Visible asymmetry 
+No asymmetry
+A. Kisiel
+Phys. Rev. C81:064906 2010
+A. Kisiel and D. A. Brown
+Phys. Rev. C80:064911 2009
+C00 → source size
+C11 → space-time asymmetry
+
+
+--- PDF PAGE 17 ---
+17
+Clear signal of 
+emission asymmetry
+Asymmetry does not
+disappear in lower
+energies
+Source dynamics: centrality and energy dependencies
+Nucl. Phys. A 982 (2019), 
+359-362
+Nucl. Phys. A 982 (2019), 
+359-362
+Opposite signs
+Same signs
+Same signs
+Opposite signs
+stat. uncertainties only
+stat. uncertainties only
+STAR preliminary
+STAR preliminary
+
+
+--- PDF PAGE 18 ---
+Like-sign 0-10% @ Au+Au 39 GeV
+Unlike-sign 0-10% @ Au+Au 39 GeV
+Heavier particles directed 
+towards edge of the source. 
+Heavier particles freeze-out 
+earlier
+Phys. Rev. C81:064906 2010
+
+ - the same for both particles
+ - smaller for heavier particles
+βf
+βf
+βt ∼1/mT
+Source dynamics: system dependence
+Nucl. Phys. A 982 (2019), 
+359-362
+stat. uncertainties only
+stat. uncertainties only
+stat. uncertainties only
+stat. uncertainties only
+Determined by Coulomb Interactions
+Determined by full FSI: Coulomb and 
+Strong interactions (kaon-proton)
+STAR preliminary
+STAR preliminary
+STAR preliminary
+STAR preliminary
+
+
+--- PDF PAGE 19 ---
+19
+Summary
+
+
+--- PDF PAGE 20 ---
+20
+Summary
+• Femtoscopic source parameters determined for a wide range of collisions energy; 
+• Non-monotonic behavior of 
+ seen in three directions;
+• New data for 
+ = 4.5 GeV follow trend observed for low collision energies;
+• Data for 
+  = 7.7 GeV and higher collision energies indicated that the system evolves  
+faster in the reaction plane;
+• System created for 
+ = 4.5 GeV is round-shaped (
+);
+• Visible peaks in around 
+ GeV at 
+ and 
+  
+consistent with prediction of QGP transition threshold;
+• vHLEE + UrQMD verify sensitivity of HBT measurements to changes in EOS; 
+• A clear energy dependence of source sizes for particles combinations other than pions;
+• A clear signal of emission asymmetry between nonidentical particle combinations;
+• Heavier particles directed towards the edge of the source or freeze-out earlier.
+R(
+sNN)
+sNN
+sNN
+sNN
+Rside ≃Rlong
+sNN ≃20
+Rout/Rside
+R2
+out −R2
+side
+Thank you for Your attention
+
+
+--- PDF PAGE 21 ---
+21
+Backup slides
+
+
+--- PDF PAGE 22 ---
+p-p CF, 
+R=2.75±0.01fm; χ2/NDF = 1.66;
+antiproton-antiproton CF,
+R=2.80±0.02fm , f0=7.41±0.19fm, 
+d0=2.14±0.27fm; χ2/NDF=1.61
+ Nature 527, 345–348(2015)
+      Strong interactions between anti-nucleons
+22
+Scattering length f0
+Effective range d0
+Elastic cross section σe
+f0 and d0 - parameters of 
+strong interaction 
+•
+f0 and d0 for the antiproton-antiproton interaction 
+consistent with parameters  for the proton-proton 
+interaction. 
+•
+Descriptions of the interaction among antimatter 
+(based on the simplest systems of anti-nucleons) 
+determined. 
+•
+A quantitative verification of matter-antimatter 
+symmetry in context of the forces responsible for the 
+binding of (anti)nuclei.
+ Nature 527, 345–348(2015)
+
+
+--- PDF PAGE 23 ---
+23
+Binding energy Ebin [MeV]
+Scattering length a0 [fm]
+Effective range reff [fm]
+for 3 scenarios: 
+K. Morita et al. Phys. Rev. C 94, 031901 
+(2016)
+Phys.Lett.B 790 (2019) 490
+V1
+V2
+V3
+Ebin 
+[MeV]
+-
+6.3
+26.9
+a0 [MeV] -1.12
+5.79
+1.29
+reff 
+[MeV]
+-1.16
+0.96
+0.65
+A comparison of the measured  correlation 
+functions from Au+Au collisions with 
+theoretical predictions
+Scattering length is positive and 
+favor pΩ bound state hypothesis  
+Strange Baryon Correlations (including p-
+)
+Ω

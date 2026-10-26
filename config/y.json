@@ -10,7 +10,7 @@
             "type": "rapidity"
         },
         "output": {
-            "dir": "y_run_3609_fpc"
+            "dir": "y_run_3609_fpc_new"
         }
     },
 
@@ -29,7 +29,6 @@
         },
         "freeze": {
             "r_os": 0.0,
-            "r_ol": 0.0,
             "r_sl": 0.0
         }
     },

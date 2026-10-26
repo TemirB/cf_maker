@@ -1,0 +1,9 @@
+[Unit]
+Description=Watch the cf_maker durable queue
+
+[Path]
+DirectoryNotEmpty=@QUEUE_DIR@
+Unit=cf-maker-worker.service
+
+[Install]
+WantedBy=default.target
