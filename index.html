@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CFMakerLabReports</title>
+  <meta name="description" content="Автоматизация научных расчётов cf_maker и сохранение PDF-отчётов в Google Drive.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+  <p class="label">cf_maker · научные отчёты</p>
+  <h1>CFMakerLabReports</h1>
+  <p class="intro">Личный инструмент для запуска научного анализа и сохранения PDF-отчётов в Google Drive.</p>
+  <p>Приложение предназначено для владельца проекта и его лабораторной работы. Оно использует проект cf_maker для анализа корреляционных функций и проверки результатов фитов.</p>
+  <h2>Как работает приложение</h2>
+  <ol>
+    <li>Изменения кода в GitHub запускают сборку и расчёты на настроенном лабораторном ПК.</li>
+    <li>После успешного расчёта формируется PDF с графиками и диагностикой.</li>
+    <li>Облачное задание GitHub Actions загружает отдельную версию отчёта в Google Drive и обновляет <code>latest.pdf</code>.</li>
+  </ol>
+  <h2>Доступ к Google Drive</h2>
+  <p>Приложение запрашивает разрешение <code>drive.file</code>. Оно используется для работы с файлами приложения: папкой отчётов, историей версий и последним успешным отчётом.</p>
+  <p>Порядок обработки данных, их хранения и отзыва доступа описан в <a href="privacy.html">политике конфиденциальности</a>.</p>
+  <nav aria-label="Ссылки проекта">
+    <a href="https://github.com/TemirB/cf_maker">Код и документация</a>
+    <a href="https://github.com/TemirB/cf_maker/issues">Связь с владельцем проекта</a>
+  </nav>
+  <footer>CFMakerLabReports · проект <a href="https://github.com/TemirB">TemirB</a></footer>
+</main>
+</body>
+</html>
