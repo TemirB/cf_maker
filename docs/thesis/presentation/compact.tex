@@ -1,0 +1,34 @@
+% Current analysis only: no historical results, theory chapter or bibliography.
+\documentclass[aspectratio=169,11pt]{beamer}
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\usepackage{graphicx}
+\setdefaultlanguage{russian}
+\setotherlanguage{english}
+\IfFontExistsTF{Arial}{
+  \setsansfont{Arial}
+  \newfontfamily\cyrillicfontsf{Arial}[Script=Cyrillic]
+}{
+  \setsansfont{FreeSans.otf}[BoldFont=FreeSansBold.otf,
+    ItalicFont=FreeSansOblique.otf,BoldItalicFont=FreeSansBoldOblique.otf]
+  \newfontfamily\cyrillicfontsf{FreeSans.otf}[Script=Cyrillic,
+    BoldFont=FreeSansBold.otf,ItalicFont=FreeSansOblique.otf,
+    BoldItalicFont=FreeSansBoldOblique.otf]
+}
+\IfFontExistsTF{Courier New}{
+  \setmonofont{Courier New}
+  \newfontfamily\cyrillicfonttt{Courier New}[Script=Cyrillic]
+}{
+  \setmonofont{FreeMono.otf}
+  \newfontfamily\cyrillicfonttt{FreeMono.otf}[Script=Cyrillic]
+}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}{\hspace{5mm}\ifdefined\ReportDiagnostic
+  {\color{red!70!black}\scriptsize Диагностический расчёт}\fi
+  \hfill\insertframenumber/\inserttotalframenumber\hspace{5mm}\vspace{2mm}}
+\setbeamercolor{frametitle}{fg=blue!55!black,bg=blue!4}
+\setbeamersize{text margin left=5mm,text margin right=5mm}
+\hypersetup{pdftitle={Фемтоскопия: результаты текущего расчёта}}
+\begin{document}
+\input{presentation-results.tex}
+\end{document}

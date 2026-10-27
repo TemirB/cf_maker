@@ -3,6 +3,7 @@ GO ?= go
 CONFIG ?= config/kt.json
 RESULTS ?=
 PRESENTATION_PLOTS ?= 12
+PRESENTATION_MODE ?= compact
 BUILD_DIR ?= build
 STRICT_ASSETS ?= 0
 
@@ -48,6 +49,7 @@ help:
 	  'RESULTS=/path/to/results  Готовый расчёт вместо выбора через CONFIG' \
 	  'GO=go                     Go нужен только для пересборки сборщика' \
 	  'PRESENTATION_PLOTS=12     Максимум графиков в PDF; 0 — все' \
+	  'PRESENTATION_MODE=compact Компактный отчёт; full — исходные слайды' \
 	  'STRICT_ASSETS=1           Прервать сборку, если отсутствуют исходные рисунки'
 
 check-latexmk:
@@ -80,17 +82,15 @@ report: check-tools
 	  -outdir="$(REPORT_BUILD_DIR)" -jobname=thesis report/compile.tex
 
 # XeTeX's image loader also needs the output tree in its explicit search path.
-ifeq ($(NEED_GO),1)
-$(PRESENTATION_BUILDER): ../../tools/presentation_builder/main.go
+$(PRESENTATION_BUILD_DIR)/presentation-builder: ../../tools/presentation_builder/main.go
 	mkdir -p "$(dir $@)"
 	"$(GO)" build -o "$@" "$<"
-endif
 
 presentation: check-presentation-tools $(PRESENTATION_BUILDER)
 	mkdir -p "$(PRESENTATION_BUILD_DIR)"
 	"$(PRESENTATION_BUILDER)" -config "$(CONFIG)" -repo-root "$(CURDIR)/../.." \
 	  -source-dir "$(CURDIR)" -build-dir "$(PRESENTATION_BUILD_DIR)" \
-	  -latexmk "$(LATEXMK)" -plots "$(PRESENTATION_PLOTS)" \
+	  -latexmk "$(LATEXMK)" -plots "$(PRESENTATION_PLOTS)" -mode "$(PRESENTATION_MODE)" \
 	  -strict-assets="$(if $(filter 1,$(STRICT_ASSETS)),true,false)" \
 	  $(if $(strip $(RESULTS)),-results "$(RESULTS)")
 

@@ -172,6 +172,15 @@ class PublishTest(unittest.TestCase):
     def send(self, bundle):
         return publish.publish_bundle(self.client, bundle, "root_folder", "history_folder")
 
+    def test_diagnostic_artifact_is_not_a_publishable_bundle(self):
+        (self.directory / "diagnostic.pdf").write_bytes(b"%PDF-1.7\ndiagnostic only\n%%EOF\n")
+        (self.directory / "diagnostic_manifest.json").write_text(json.dumps({
+            "status": "failed", "exit_code": 2, "publishable": False,
+            "pdf_path": "diagnostic.pdf"}))
+        with self.assertRaisesRegex(publish.PublishError, "manifest"):
+            publish.load_bundle(self.directory)
+        self.assertFalse(self.drive.calls)
+
     def test_success_saves_history_before_latest_and_verifies_both(self):
         bundle = self.bundle()
         result = self.send(bundle)

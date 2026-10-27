@@ -73,6 +73,8 @@ def load_config(path):
     for name in files:
         if Path(name).is_absolute() or ".." in Path(name).parts:
             raise ValueError("config_files must stay inside the source snapshot")
+    if config.get("presentation_mode", "compact") not in ("compact", "full"):
+        raise ValueError("presentation_mode must be compact or full")
     for name, default in (("jobs", 2), ("threads", 2), ("max_recovery_attempts", 2),
                           ("upload_lease_seconds", 3600), ("upload_retry_seconds", 900),
                           ("artifact_log_limit_bytes", 10485760)):
@@ -314,7 +316,7 @@ def run_stage(config, job_id, attempt, name, phase, command):
         raise StageFailure(name, code, "stage failed: " + name)
 
 
-def check_manifest(results, not_before):
+def check_manifest(results, not_before, expected_exit=0):
     path = Path(results) / "run_manifest.json"
     data = json.loads(path.read_text())
     fits = data.get("fits", {})
@@ -322,12 +324,17 @@ def check_manifest(results, not_before):
     earliest = dt.datetime.fromisoformat(not_before.replace("Z", "+00:00"))
     if started.tzinfo is None or earliest.tzinfo is None:
         raise ValueError("manifest timestamps must contain a timezone")
-    if (data.get("status") != "completed" or data.get("exit_code") != 0 or
+    expected_status = "completed" if expected_exit == 0 else "incomplete"
+    requested, usable, unusable = (fits.get(key) for key in ("requested", "usable", "unusable"))
+    valid_counts = (all(type(count) is int and count >= 0 for count in (requested, usable, unusable)) and
+                    requested > 0 and usable + unusable == requested and
+                    ((expected_exit == 0 and unusable == 0) or (expected_exit == 2 and unusable > 0)))
+    if (expected_exit not in (0, 2) or data.get("status") != expected_status or
+            data.get("exit_code") != expected_exit or
             not isinstance(data.get("run_id"), str) or not data["run_id"] or
             started < earliest - dt.timedelta(milliseconds=1) or not data.get("completed_at") or
-            fits.get("requested", 0) <= 0 or fits.get("usable") != fits.get("requested") or
-            fits.get("unusable") != 0):
-        raise ValueError("analysis manifest does not describe a fresh, fully successful computation")
+            not valid_counts):
+        raise ValueError("analysis manifest does not describe a fresh computation with matching exit code")
     declared = data["config"]["vars"]["output"]["dir"]
     if Path(declared).resolve() != Path(results).resolve():
         raise ValueError("manifest refers to another output directory")
@@ -371,7 +378,8 @@ def execute_job(config, job_id):
                                                   "BUILD_DIR={build}", "LATEXMK={latexmk}"])
     run("build", "build", "building", ["{make}", "build", "BUILD_DIR={build}",
                                          "JOBS={jobs}", "CXX={cxx}"])
-    pdfs, manifests = [], []
+    pdfs, manifests, failures = [], [], []
+    presentation_mode = config.get("presentation_mode", "compact")
     for name in config["config_files"]:
         original = source / name
         effective = json.loads(original.read_text())
@@ -390,29 +398,56 @@ def execute_job(config, job_id):
         values.update(config=str(generated), results=str(results), label=label,
                       docs=str(attempt / "docs" / label), audit_pdf=str(results / "chi2_audit.pdf"))
         analysis_started = utc_now()
-        run("compute", label + "-compute", "running", ["{build}/main", "{config}"])
-        manifest = check_manifest(results, analysis_started)
+        compute_failure = None
+        try:
+            run("compute", label + "-compute", "running", ["{build}/main", "{config}"])
+        except StageFailure as error:
+            if error.code != 2:
+                raise
+            compute_failure = error
+        try:
+            manifest = check_manifest(results, analysis_started, 2 if compute_failure else 0)
+        except (ValueError, OSError, KeyError):
+            if compute_failure:
+                raise compute_failure
+            raise
+        if compute_failure:
+            failures.append(dict(stage=compute_failure.stage, exit_code=compute_failure.code,
+                                 error=str(compute_failure)))
         manifests.append(dict(config=name, run_id=manifest["run_id"],
+                              status=manifest["status"], exit_code=manifest["exit_code"],
                               manifest_sha256=sha256(results / "run_manifest.json")))
         run("report", label + "-presentation", "running", [
             "{make}", "presentation", "CONFIG={config}", "RESULTS={results}", "BUILD_DIR={build}",
-            "DOCS_BUILD_DIR={docs}", "PRESENTATION_PLOTS=0", "LATEXMK={latexmk}"])
-        # The macro produces all contribution plots and native ROOT/manual diagnostics.
-        expression = ("tools/manual_chi2.C(" + json.dumps(str(results / "cf3d.root")) +
-                      ",-1,-1,-1,\"\"," + json.dumps(str(results / "chi2_audit.pdf")) + ")")
-        values["audit_expression"] = expression
-        run("audit", label + "-chi2-audit", "running", ["{root}", "-l", "-b", "-q", "{audit_expression}"])
+            "DOCS_BUILD_DIR={docs}", "PRESENTATION_MODE=" + presentation_mode,
+            "PRESENTATION_PLOTS=0", "LATEXMK={latexmk}"])
+        pdfs.append(check_pdf(results / "presentation.pdf", start_ns))
+        if presentation_mode == "full":
+            # Detailed per-cell contributions remain available separately from the compact deck.
+            expression = ("tools/manual_chi2.C(" + json.dumps(str(results / "cf3d.root")) +
+                          ",-1,-1,-1,\"\"," + json.dumps(str(results / "chi2_audit.pdf")) + ")")
+            values["audit_expression"] = expression
+            run("audit", label + "-chi2-audit", "running", ["{root}", "-l", "-b", "-q", "{audit_expression}"])
+            pdfs.append(check_pdf(results / "chi2_audit.pdf", start_ns))
         if sha256(results / "run_manifest.json") != manifests[-1]["manifest_sha256"]:
             raise ValueError("scientific results changed during report creation")
-        pdfs.extend([check_pdf(results / "presentation.pdf", start_ns),
-                     check_pdf(results / "chi2_audit.pdf", start_ns)])
-    values["report_pdf"] = str(attempt / "report.pdf")
+    values["report_pdf"] = str(attempt / ("diagnostic.pdf" if failures else "report.pdf"))
     default_merge = ["{gs}", "-q", "-dSAFER", "-dBATCH", "-dNOPAUSE", "-sDEVICE=pdfwrite",
                      "-sOutputFile={report_pdf}", *[str(path) for path in pdfs]]
     run("merge", "merge-report", "running", default_merge)
     pdf = check_pdf(values["report_pdf"], start_ns)
     if read_job(config, job_id).get("cancel_requested"):
         raise StageFailure("seal", 130, "cancelled before publication")
+    if failures:
+        update_job(config, job_id, status="failed", current_stage=failures[0]["stage"],
+                   failed_stage=failures[0]["stage"], completed_at=utc_now(),
+                   exit_code=failures[0]["exit_code"], computation_exit_code=failures[0]["exit_code"],
+                   error="; ".join(failure["error"] for failure in failures), failures=failures,
+                   diagnostic_pdf_path=str(pdf), diagnostic_pdf_sha256=sha256(pdf),
+                   diagnostic_pdf_size=pdf.stat().st_size, next_diagnostic_at=0,
+                   scientific_manifests=manifests, lease_token=None, lease_until=0,
+                   elapsed_seconds=(time.time_ns() - start_ns) / 1e9)
+        return
     update_job(config, job_id, status="uploading", current_stage="awaiting-publication",
                completed_at=utc_now(), exit_code=0, computation_exit_code=0,
                pdf_path=str(pdf), pdf_sha256=sha256(pdf), pdf_size=pdf.stat().st_size,
@@ -556,32 +591,49 @@ def collect(config, stage_dir, github_output=None, github_summary=None):
     now = time.time()
     with state_lock(config):
         for job in all_jobs(config):
+            diagnostic = (job["status"] == "failed" and job.get("computation_exit_code") == 2 and
+                          job.get("exit_code") == 2 and job.get("diagnostic_pdf_path") and
+                          not job.get("diagnostic_exported_at"))
             retryable = job["status"] == "failed" and job.get("failed_stage") == "upload"
-            if (job.get("cancel_requested") or not (job["status"] == "uploading" or retryable) or
-                    job.get("next_upload_at", 0) > now or job.get("lease_until", 0) > now):
+            if job.get("cancel_requested") or job.get("lease_until", 0) > now:
                 continue
-            if job.get("computation_exit_code") != 0:
+            if diagnostic:
+                if (job.get("next_diagnostic_at") or 0) > now:
+                    continue
+            elif (not (job["status"] == "uploading" or retryable) or
+                  job.get("computation_exit_code") != 0 or (job.get("next_upload_at") or 0) > now):
                 continue
-            job.update(status="uploading", exit_code=0, lease_token=secrets.token_hex(16),
+            job.update(lease_kind="diagnostic" if diagnostic else "report",
+                       lease_token=secrets.token_hex(16),
                        lease_until=now + config["upload_lease_seconds"], updated_at=utc_now())
+            if not diagnostic:
+                job.update(status="uploading", exit_code=0)
             atomic_json(job_dir(config, job["job_id"]) / "job.json", job)
             selected = job
             break
     if not selected:
-        write_github_outputs(github_output, {"ready": "false"})
+        write_github_outputs(github_output, {"ready": "false", "publishable": "false"})
         status(config, github_summary)
         return None
+    diagnostic = selected["lease_kind"] == "diagnostic"
+    prefix = "diagnostic_pdf" if diagnostic else "pdf"
+    filename = "diagnostic.pdf" if diagnostic else "report.pdf"
     try:
-        pdf = check_pdf(selected["pdf_path"])
-        if sha256(pdf) != selected["pdf_sha256"] or pdf.stat().st_size != selected["pdf_size"]:
+        pdf = check_pdf(selected[prefix + "_path"])
+        if sha256(pdf) != selected[prefix + "_sha256"] or pdf.stat().st_size != selected[prefix + "_size"]:
             raise ValueError("sealed PDF changed; publication refused")
         directory.mkdir(parents=True, exist_ok=True, mode=0o700)
-        shutil.copyfile(pdf, directory / "report.pdf")
+        shutil.copyfile(pdf, directory / filename)
         manifest = {key: selected[key] for key in ("schema_version", "job_id", "commit_sha", "run_id",
-                    "repository", "submitted_at", "started_at", "completed_at", "pdf_sha256", "pdf_size")}
-        manifest.update(status="uploading", exit_code=0, pdf_path="report.pdf",
+                    "repository", "submitted_at", "started_at", "completed_at")}
+        manifest.update(status=selected["status"], exit_code=selected["exit_code"], pdf_path=filename,
+                        pdf_sha256=selected[prefix + "_sha256"], pdf_size=selected[prefix + "_size"],
                         attempt=selected["attempts"], scientific_manifests=selected["scientific_manifests"])
-        atomic_json(directory / "manifest.json", manifest)
+        if diagnostic:
+            manifest.update(kind="diagnostic", publishable=False, computation_exit_code=2,
+                            failed_stage=selected.get("failed_stage"), error=selected.get("error"),
+                            failures=selected.get("failures", []))
+        atomic_json(directory / ("diagnostic_manifest.json" if diagnostic else "manifest.json"), manifest)
         logs = directory / "logs"
         logs.mkdir()
         atomic_json(logs / "stages.json", selected["stages"])
@@ -599,9 +651,10 @@ def collect(config, stage_dir, github_output=None, github_summary=None):
     except Exception:
         acknowledge(config, selected["job_id"], selected["lease_token"], "failed", "delivery staging failed")
         raise
-    values = dict(ready="true", job_id=selected["job_id"], lease_token=selected["lease_token"],
-                  pdf_sha256=selected["pdf_sha256"], commit_sha=selected["commit_sha"],
-                  artifact_name="cf-maker-" + selected["job_id"])
+    values = dict(ready="true", publishable="false" if diagnostic else "true",
+                  job_id=selected["job_id"], lease_token=selected["lease_token"],
+                  pdf_sha256=selected[prefix + "_sha256"], commit_sha=selected["commit_sha"],
+                  artifact_name=("cf-maker-diagnostic-" if diagnostic else "cf-maker-") + selected["job_id"])
     write_github_outputs(github_output, values)
     status(config, github_summary)
     return values
@@ -614,8 +667,20 @@ def acknowledge(config, job_id, lease_token, result, error="", latest_url=""):
             return
         if not lease_token or job.get("lease_token") != lease_token:
             raise ValueError("stale publication receipt")
+        kind = job.get("lease_kind", "report")
+        if kind not in ("report", "diagnostic"):
+            raise ValueError("unknown delivery lease kind")
         job.update(last_ack_token=lease_token, lease_token=None, lease_until=0, updated_at=utc_now())
-        if result == "success":
+        if kind == "diagnostic":
+            if result == "success":
+                job.update(diagnostic_exported_at=utc_now(), diagnostic_error=None,
+                           next_diagnostic_at=None)
+            else:
+                failures = job.get("diagnostic_failures", 0) + 1
+                delay = min(3600, config["upload_retry_seconds"] * 2 ** min(failures - 1, 8))
+                job.update(diagnostic_failures=failures, diagnostic_error=error,
+                           next_diagnostic_at=time.time() + delay)
+        elif result == "success":
             job.update(status="success", exit_code=0, published_at=utc_now(), error=None,
                        latest_url=latest_url, next_upload_at=None)
         else:

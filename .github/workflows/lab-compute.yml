@@ -43,6 +43,8 @@ jobs:
       CF_LAB_SUBMIT_ID: ${{ github.repository_id }}-${{ github.run_id }}
     outputs:
       ready: ${{ steps.collect.outputs.ready }}
+      publishable: ${{ steps.collect.outputs.publishable }}
+      artifact_uploaded: ${{ steps.transfer.outcome == 'success' }}
       job_id: ${{ steps.collect.outputs.job_id }}
       lease_token: ${{ steps.collect.outputs.lease_token }}
       pdf_sha256: ${{ steps.collect.outputs.pdf_sha256 }}
@@ -84,7 +86,7 @@ jobs:
             *) echo 'Unsupported operation.' >&2; exit 1 ;;
           esac
 
-      - name: Collect one completed report for publication
+      - name: Collect one sealed report or diagnostic artifact
         id: collect
         if: ${{ !cancelled() }}
         run: |
@@ -99,7 +101,8 @@ jobs:
           python3 tools/lab_automation/lab.py --config "$CF_LAB_CONFIG" \
             status --github-summary "$GITHUB_STEP_SUMMARY"
 
-      - name: Transfer the sealed report to a hosted publisher
+      - name: Upload the sealed report or diagnostic artifact
+        id: transfer
         if: ${{ !cancelled() && steps.collect.outputs.ready == 'true' }}
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
@@ -113,7 +116,7 @@ jobs:
 
   publish:
     needs: lab
-    if: ${{ needs.lab.result == 'success' && needs.lab.outputs.ready == 'true' }}
+    if: ${{ needs.lab.result == 'success' && needs.lab.outputs.ready == 'true' && needs.lab.outputs.publishable == 'true' }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     environment: lab-reports-publisher
@@ -165,6 +168,8 @@ jobs:
       CF_LAB_CONFIG: ${{ vars.CF_LAB_CONFIG }}
       CF_LAB_JOB_ID: ${{ needs.lab.outputs.job_id }}
       CF_LAB_LEASE_TOKEN: ${{ needs.lab.outputs.lease_token }}
+      CF_LAB_PUBLISHABLE: ${{ needs.lab.outputs.publishable }}
+      CF_LAB_ARTIFACT_UPLOADED: ${{ needs.lab.outputs.artifact_uploaded }}
       CF_LAB_PUBLISH_RESULT: ${{ needs.publish.result }}
       CF_LAB_LATEST_URL: ${{ needs.publish.outputs.latest_url }}
     steps:
@@ -174,10 +179,20 @@ jobs:
           ref: ${{ github.sha }}
           persist-credentials: false
 
-      - name: Record publication outcome without returning publisher secrets
+      - name: Record artifact or publication outcome without returning publisher secrets
         run: |
           set -euo pipefail
-          if [ "$CF_LAB_PUBLISH_RESULT" = success ]; then
+          if [ "$CF_LAB_PUBLISHABLE" = false ]; then
+            if [ "$CF_LAB_ARTIFACT_UPLOADED" = true ]; then
+              python3 tools/lab_automation/lab.py --config "$CF_LAB_CONFIG" ack \
+                --job-id "$CF_LAB_JOB_ID" --lease-token "$CF_LAB_LEASE_TOKEN" \
+                --result success
+            else
+              python3 tools/lab_automation/lab.py --config "$CF_LAB_CONFIG" ack \
+                --job-id "$CF_LAB_JOB_ID" --lease-token "$CF_LAB_LEASE_TOKEN" \
+                --result failed --error 'Diagnostic artifact transfer did not complete.'
+            fi
+          elif [ "$CF_LAB_PUBLISHABLE" = true ] && [ "$CF_LAB_PUBLISH_RESULT" = success ]; then
             python3 tools/lab_automation/lab.py --config "$CF_LAB_CONFIG" ack \
               --job-id "$CF_LAB_JOB_ID" --lease-token "$CF_LAB_LEASE_TOKEN" \
               --result success --latest-url "$CF_LAB_LATEST_URL"

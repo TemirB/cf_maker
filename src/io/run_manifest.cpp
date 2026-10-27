@@ -1,6 +1,7 @@
 #include "io/run_manifest.h"
 
 #include <chrono>
+#include <cmath>
 #include <ctime>
 #include <filesystem>
 #include <fstream>
@@ -13,6 +14,7 @@
 #include <nlohmann/json.hpp>
 
 #include "config/config.h"
+#include "core/binning.h"
 #include "core/fs.h"
 #include "fit/types.h"
 
@@ -56,6 +58,7 @@ nlohmann::json fit_summary(const Config& cfg)
     std::size_t usable = 0;
     std::size_t retried = 0;
     std::size_t at_limit = 0;
+    auto details = nlohmann::json::array();
     if (cfg.stages.cf3d || cfg.stages.dependency || cfg.stages.projections_1d) {
         for (const int ch : cfg.selection.charges) {
             for (const int centr : cfg.selection.centralities) {
@@ -73,15 +76,56 @@ nlohmann::json fit_summary(const Config& cfg)
                     if (fit.at_limit) {
                         ++at_limit;
                     }
+                    const bool usable_fit = is_usable_fit(fit);
+                    const bool diagnostic = !usable_fit && fit.attempts > 0 && fit.is_finite();
+                    std::string reason;
+                    if (!usable_fit) {
+                        if (fit.attempts == 0) {
+                            reason = "фит отсутствует";
+                        } else if (!fit.is_finite()) {
+                            reason = "неконечный результат";
+                        } else if (fit.at_limit) {
+                            reason = "параметр на границе";
+                        } else if (fit.ndf <= 0) {
+                            reason = "неположительное ndf";
+                        } else {
+                            reason = "результат минимизатора не принят";
+                        }
+                    }
+                    std::string cf_image, ratio_image;
+                    if (cfg.general.images.need && cfg.stages.projections_1d) {
+                        const auto tag = std::string(charge::kNames.at(ch)) + "_" +
+                                         centrality::kNames.at(centr) + "_" +
+                                         cfg.binning.file_names.at(b) + "." +
+                                         cfg.general.images.format;
+                        cf_image = (diagnostic ? "diagnostics/cfs_" : "all_1d_histos/cfs_") + tag;
+                        if (usable_fit || diagnostic) {
+                            ratio_image = (diagnostic ? "diagnostics/fit_over_cf_"
+                                                      : "dependency/fit_over_cf/fit_over_cf_") +
+                                          tag;
+                        }
+                    }
+                    details.push_back({{"ch", ch},
+                                       {"centr", centr},
+                                       {"bin", b},
+                                       {"usable", usable_fit},
+                                       {"finite", fit.is_finite()},
+                                       {"chi2", std::isfinite(fit.chi2) ? nlohmann::json(fit.chi2)
+                                                                        : nlohmann::json(nullptr)},
+                                       {"ndf", fit.ndf},
+                                       {"status", fit.status},
+                                       {"cov_status", fit.cov_status},
+                                       {"at_limit", fit.at_limit},
+                                       {"attempts", fit.attempts},
+                                       {"reason", reason},
+                                       {"cf_image", cf_image},
+                                       {"fit_over_cf_image", ratio_image}});
                 }
             }
         }
     }
-    return {{"requested", requested},
-            {"usable", usable},
-            {"unusable", requested - usable},
-            {"retried", retried},
-            {"at_limit", at_limit}};
+    return {{"requested", requested}, {"usable", usable},     {"unusable", requested - usable},
+            {"retried", retried},     {"at_limit", at_limit}, {"details", std::move(details)}};
 }
 
 void write_atomic(const std::filesystem::path& destination, const nlohmann::json& value,

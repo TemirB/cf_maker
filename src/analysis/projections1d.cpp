@@ -218,6 +218,7 @@ void draw_cf_over_fit(TCanvas* c, TH1D* cf, TH1D* fit, TPaveText* stats, std::st
 
     std::string name_fit_over_cf = name + " " + axis_name(axis);
     style_1d_cf(fit_over_cf.get(), name_fit_over_cf.data(), axis_name(axis).data(), style);
+    fit_over_cf->GetYaxis()->SetTitle("C_{2}^{fit}/C_{2}");
     fit_over_cf->GetYaxis()->SetRangeUser(projCfg.fit_over_cf_y_min_1d,
                                           projCfg.fit_over_cf_y_max_1d);
     fit_over_cf->GetXaxis()->SetRangeUser(-projCfg.axis_range_1d, projCfg.axis_range_1d);
@@ -277,11 +278,46 @@ void make_lcms_1d_projections(Config& cfg, TFile* in, TFile* out)
                     "fit/cf at charge=%s, centrality=%s, %s=%s", charge::kNames[ch_idx],
                     centrality::kNames[cent_idx], cfg.input.type.c_str(), bin.names[b].c_str());
                 std::unique_ptr<TCanvas> c_fit_over_cf;
+                // Keep rejected attempts out of ordinary model overlays. A separate
+                // canvas preserves the last finite attempt for the diagnostic report.
+                const bool diagnostic = !is_usable_fit(r) && r.attempts > 0 && r.is_finite();
+                std::unique_ptr<TCanvas> diagnostic_canvas;
+                std::unique_ptr<TPaveText> diagnostic_stats;
+                if (diagnostic) {
+                    diagnostic_canvas =
+                        std::make_unique<TCanvas>(("diagnostic_" + cf_name).c_str(),
+                                                  "UNUSABLE FIT: last finite attempt", 2400, 800);
+                    diagnostic_canvas->Divide(3, 1);
+                    fix_margin(diagnostic_canvas.get(), 3);
+                    diagnostic_stats = std::make_unique<TPaveText>(0.48, 0.62, 0.90, 0.88, "NDC");
+                    diagnostic_stats->SetFillColor(kWhite);
+                    diagnostic_stats->SetTextSize(0.032f);
+                    diagnostic_stats->SetTextColor(kRed + 1);
+                    diagnostic_stats->AddText("UNUSABLE FIT: last attempt");
+                    diagnostic_stats->AddText("Dashed model: diagnostics only");
+                    if (r.ndf > 0) {
+                        diagnostic_stats->AddText(Form("#chi^{2}/ndf = %.4g", r.chi2_ndf()));
+                    } else {
+                        diagnostic_stats->AddText("Nonpositive ndf");
+                    }
+                    diagnostic_stats->AddText(
+                        Form("status=%d, covariance=%d", r.status, r.cov_status));
+                    if (r.at_limit) {
+                        diagnostic_stats->AddText("Parameter at limit");
+                    }
+                }
                 if (is_usable_fit(r)) {
                     c_fit_over_cf = std::make_unique<TCanvas>(name_fit_over_cf.data(),
                                                               name_fit_over_cf.data(), 2400, 800);
                     c_fit_over_cf->SetTitle(name_fit_over_cf.data());
                     c_fit_over_cf->Divide(3, 1);
+                }
+                std::unique_ptr<TCanvas> diagnostic_ratio;
+                if (diagnostic) {
+                    diagnostic_ratio =
+                        std::make_unique<TCanvas>(("diagnostic_ratio_" + cf_name).c_str(),
+                                                  "UNUSABLE FIT / CF: diagnostic only", 2400, 800);
+                    diagnostic_ratio->Divide(3, 1);
                 }
 
                 std::vector<std::unique_ptr<TH1D>> keep_alive;
@@ -300,11 +336,30 @@ void make_lcms_1d_projections(Config& cfg, TFile* in, TFile* out)
                     save_canvas_to_file(out, cf.get(), fit.get(), stats.get(), style, cf_name, axis,
                                         cfg.projections);
                     draw_cf_and_fit(canvas.get(), cf.get(), fit.get(), stats.get(), lcms);
+                    if (diagnostic) {
+                        auto model = build_lcms_fit_from_3d_weighted(
+                            *den, r, axis, cfg.projections.slice_1d, cf_name);
+                        style_fit(model.get(), style);
+                        model->SetLineStyle(2);
+                        model->SetLineColor(kBlue + 1);
+                        model->GetXaxis()->SetRangeUser(-cfg.projections.axis_range_1d,
+                                                        cfg.projections.axis_range_1d);
+                        draw_cf_and_fit(diagnostic_canvas.get(), cf.get(), model.get(),
+                                        diagnostic_stats.get(), lcms);
+                        draw_cf_over_fit(diagnostic_ratio.get(), cf.get(), model.get(),
+                                         diagnostic_stats.get(), "Diagnostic fit/CF", lcms, style,
+                                         cfg.projections, keep_alive);
+                        keep_alive.push_back(std::move(model));
+                    }
 
                     keep_alive.push_back(std::move(cf));
                     keep_alive.push_back(std::move(fit));
                 }
 
+                if (diagnostic) {
+                    write_output_object(*out, *diagnostic_canvas);
+                    write_output_object(*out, *diagnostic_ratio);
+                }
                 if (cfg.general.images.need) {
                     auto image_name = Form("%s/cfs_%s_%s_%s.%s", dir.data(), charge::kNames[ch_idx],
                                            centrality::kNames[cent_idx], bin.file_names[b].c_str(),
@@ -316,6 +371,17 @@ void make_lcms_1d_projections(Config& cfg, TFile* in, TFile* out)
                         centrality::kNames[cent_idx], bin.file_names[b].c_str(), format.data());
                     if (c_fit_over_cf) {
                         save_canvas_quiet(c_fit_over_cf.get(), cf_over_fit_name);
+                    }
+                    if (diagnostic) {
+                        const auto diagnostic_dir = cfg.output.dir + "/diagnostics";
+                        ensure_dir(diagnostic_dir);
+                        const auto tag = std::string(charge::kNames[ch_idx]) + "_" +
+                                         centrality::kNames[cent_idx] + "_" + bin.file_names[b] +
+                                         "." + format;
+                        save_canvas_quiet(diagnostic_canvas.get(),
+                                          (diagnostic_dir + "/cfs_" + tag).c_str());
+                        save_canvas_quiet(diagnostic_ratio.get(),
+                                          (diagnostic_dir + "/fit_over_cf_" + tag).c_str());
                     }
                 }
             }

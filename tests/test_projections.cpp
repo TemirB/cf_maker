@@ -290,6 +290,28 @@ void check_data_only_projections(Config cfg, TMemFile& input)
             auto* canvas = dynamic_cast<TCanvas*>(output.Get(canvas_name.c_str()));
             check_unavailable_fit(*canvas, reasons[state]);
         }
+        auto* diagnostic = dynamic_cast<TCanvas*>(output.Get(("diagnostic_" + name).c_str()));
+        const bool finite_attempt =
+            unavailable[state].attempts > 0 && unavailable[state].is_finite();
+        if (static_cast<bool>(diagnostic) != finite_attempt) {
+            throw std::runtime_error(
+                "Diagnostic overlay is missing or fabricates an absent/nonfinite fit");
+        }
+        if (diagnostic) {
+            for (int pad = 1; pad <= 3; ++pad) {
+                bool dashed_model = false;
+                for (auto* object : *diagnostic->GetPad(pad)->GetListOfPrimitives()) {
+                    auto* histogram = dynamic_cast<TH1*>(object);
+                    if (histogram && std::string(histogram->GetName()).rfind("fit_", 0) == 0) {
+                        dashed_model = histogram->GetLineStyle() == 2;
+                    }
+                }
+                if (!dashed_model) {
+                    throw std::runtime_error(
+                        "Rejected fit diagnostic does not distinguish its model curve");
+                }
+            }
+        }
     }
 }
 } // namespace

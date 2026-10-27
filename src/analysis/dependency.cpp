@@ -9,6 +9,7 @@
 #include <TCanvas.h>
 #include <TFile.h>
 #include <TGraphErrors.h>
+#include <TLegend.h>
 #include <TMultiGraph.h>
 #include <TString.h>
 
@@ -19,6 +20,21 @@
 #include "draw/draw.h"
 #include "fit/types.h"
 #include "io/output.h"
+
+namespace
+{
+void draw_summary_legend(const std::vector<std::pair<TObject*, std::string>>& entries)
+{
+    TLegend legend(0.68, 0.68, 0.89, 0.89);
+    legend.SetBorderSize(0);
+    legend.SetFillStyle(0);
+    legend.SetTextSize(0.035f);
+    for (const auto& [object, label] : entries) {
+        legend.AddEntry(object, label.c_str(), "lp");
+    }
+    legend.DrawClone();
+}
+} // namespace
 
 void make_dependency(Config& cfg, TFile* cf3dFile, TFile* outFile)
 {
@@ -139,7 +155,7 @@ void make_dependency(Config& cfg, TFile* cf3dFile, TFile* outFile)
         set_range_with_errors(mg_fit_over_cf.get(), 0.1);
         mg_fit_over_cf->SetName(Form("mg_FitOverCF_%s", charge::kNames[ch]));
         write_mg_with_legend(outFile, mg_fit_over_cf.get(), mg_fit_over_cf->GetName(), mode,
-                             "<fit/CF>", legend_entries, draw::GraphKind::FitOverCF);
+                             "<C_{2}^{fit}/C_{2}>", legend_entries, draw::GraphKind::FitOverCF);
 
         mg_pvalue->SetName(Form("mg_Pvalue_%s", charge::kNames[ch]));
         write_mg_with_legend(outFile, mg_pvalue.get(), mg_pvalue->GetName(), mode, "p_{value}",
@@ -153,10 +169,16 @@ void make_dependency(Config& cfg, TFile* cf3dFile, TFile* outFile)
             for (int lcms = 0; lcms < 3; lcms++) {
                 c->cd(lcms + 1);
                 draw_mg_or_report(mg_radii[lcms].get());
+                draw_summary_legend(legend_entries);
             }
 
             c->cd(4);
+            if (auto* axis = mg_lambda->GetYaxis()) {
+                axis->UnZoom();
+            }
+            set_range_with_errors(mg_lambda.get());
             draw_mg_or_report(mg_lambda.get());
+            draw_summary_legend(legend_entries);
             std::string save_name = dir;
             save_name += "/";
             save_name += name;
@@ -175,16 +197,22 @@ void make_dependency(Config& cfg, TFile* cf3dFile, TFile* outFile)
 
             c->cd(1);
             gPad->SetLogy();
+            if (auto* axis = mg_chi2_ndf->GetYaxis()) {
+                axis->UnZoom();
+            }
+            set_range_with_errors(mg_chi2_ndf.get());
             if (draw_mg_or_report(mg_chi2_ndf.get())) {
                 mg_chi2_ndf->GetXaxis()->SetTitle(mode);
                 mg_chi2_ndf->GetYaxis()->SetTitle("#chi^{2}/ndf");
             }
+            draw_summary_legend(legend_entries);
 
             c->cd(2);
             if (draw_mg_or_report(mg_fit_over_cf.get())) {
                 mg_fit_over_cf->GetXaxis()->SetTitle(mode);
-                mg_fit_over_cf->GetYaxis()->SetTitle("<fit/CF>");
+                mg_fit_over_cf->GetYaxis()->SetTitle("<C_{2}^{fit}/C_{2}>");
             }
+            draw_summary_legend(legend_entries);
 
             std::string save_name = dir;
             save_name += "/";
@@ -193,6 +221,32 @@ void make_dependency(Config& cfg, TFile* cf3dFile, TFile* outFile)
             save_name += ext;
             if (cfg.general.images.need) {
                 save_canvas_quiet(c.get(), save_name.c_str());
+            }
+        }
+
+        if (cfg.general.images.need) {
+            std::vector<int> free_cross;
+            for (int parameter = 3; parameter < 6; ++parameter) {
+                if (!cfg.fit.freeze[parameter]) {
+                    free_cross.push_back(parameter);
+                }
+            }
+            if (!free_cross.empty()) {
+                const std::string name = std::string("c_free_cross_graphs_") + charge::kNames[ch];
+                TCanvas canvas(name.c_str(), "Free cross parameters",
+                               1000 * static_cast<int>(free_cross.size()), 800);
+                canvas.Divide(static_cast<int>(free_cross.size()), 1);
+                for (std::size_t index = 0; index < free_cross.size(); ++index) {
+                    canvas.cd(static_cast<int>(index) + 1);
+                    auto* graph = mg_radii[free_cross[index]].get();
+                    if (auto* axis = graph->GetYaxis()) {
+                        axis->UnZoom();
+                    }
+                    set_range_with_errors(graph);
+                    draw_mg_or_report(graph);
+                    draw_summary_legend(legend_entries);
+                }
+                save_canvas_quiet(&canvas, (dir + "/" + name + "." + ext).c_str());
             }
         }
 
