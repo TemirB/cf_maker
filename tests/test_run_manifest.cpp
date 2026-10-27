@@ -2,6 +2,7 @@
 #include <filesystem>
 #include <fstream>
 #include <iostream>
+#include <limits>
 #include <regex>
 #include <stdexcept>
 #include <string>
@@ -130,8 +131,10 @@ void test_complete_run(const std::filesystem::path& dir)
     check(completed.at("completed_at").get<std::string>() >=
               completed.at("started_at").get<std::string>(),
           "completion preceded the run start");
+    auto completed_counts = completed.at("fits");
+    completed_counts.erase("details");
     check(
-        completed.at("fits") ==
+        completed_counts ==
             nlohmann::json{
                 {"requested", 4}, {"usable", 4}, {"unusable", 0}, {"retried", 0}, {"at_limit", 0}},
         "completed fit counts do not reflect the selected tasks");
@@ -157,6 +160,7 @@ void test_incomplete_fit_summary(const std::filesystem::path& dir)
     fits[1].attempts = 2;
     fits[2].ok = false;
     fits[2].attempts = 2;
+    fits[2].chi2 = std::numeric_limits<double>::quiet_NaN();
     fits[3].ok = true;
     fits[3].ndf = 0;
     // An unselected task must not contribute to any diagnostic count.
@@ -167,8 +171,20 @@ void test_incomplete_fit_summary(const std::filesystem::path& dir)
     const auto manifest = read_json(std::filesystem::path(cfg.output.dir) / "run_manifest.json");
     check(manifest.at("status") == "incomplete" && manifest.at("exit_code") == 2,
           "diagnostic run was reported as complete");
+    auto counts = manifest.at("fits");
+    const auto details = counts.at("details");
+    counts.erase("details");
+    check(details.size() == 4 && details.at(0).at("ch") == 0 && details.at(0).at("centr") == 1,
+          "individual fit diagnostics did not retain the selected coordinates");
+    check(details.at(0).at("usable") == true && details.at(1).at("usable") == false &&
+              details.at(1).at("at_limit") == true && details.at(1).at("attempts") == 2 &&
+              details.at(1).at("chi2") == 10. &&
+              details.at(1).at("reason") == "параметр на границе",
+          "individual fit diagnostics lost quality or selection metadata");
+    check(details.at(2).at("chi2").is_null() && details.at(2).at("finite") == false,
+          "nonfinite statistic was not represented as a missing JSON value");
     check(
-        manifest.at("fits") ==
+        counts ==
             nlohmann::json{
                 {"requested", 4}, {"usable", 1}, {"unusable", 3}, {"retried", 2}, {"at_limit", 1}},
         "failed, boundary or underdetermined fits were counted as usable");

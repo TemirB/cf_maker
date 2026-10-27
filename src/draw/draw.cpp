@@ -223,7 +223,7 @@ void style_1d_cf(TH1* h, const std::string& name, const char* axis, draw::Style 
     }
     {
         yAxis->CenterTitle();
-        yAxis->SetTitle(Form("CF(q_{%s})", axis));
+        yAxis->SetTitle(Form("C_{2}(q_{%s})", axis));
         yAxis->SetLabelSize(style.label.size);
         yAxis->SetTitleSize(style.title.size);
         yAxis->SetTitleOffset(style.title.offset);

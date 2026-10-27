@@ -8,9 +8,11 @@ import (
 	"flag"
 	"fmt"
 	"io"
+	"math"
 	"os"
 	"os/exec"
 	"path/filepath"
+	"sort"
 	"strings"
 	"time"
 )
@@ -36,6 +38,28 @@ type config struct {
 		Names     []string `json:"names"`
 		FileNames []string `json:"file_names"`
 	} `json:"binning"`
+	Fit struct {
+		Freeze map[string]*float64 `json:"freeze"`
+	} `json:"fit"`
+}
+
+// Individual records are additive schema-1 diagnostics. Older manifests have
+// only aggregate counters and cannot support an honest good/bad classification.
+type FitDetail struct {
+	Charge         int      `json:"ch"`
+	Centrality     int      `json:"centr"`
+	Bin            int      `json:"bin"`
+	Usable         bool     `json:"usable"`
+	Finite         bool     `json:"finite"`
+	Chi2           *float64 `json:"chi2"`
+	Ndf            int      `json:"ndf"`
+	Status         int      `json:"status"`
+	CovStatus      int      `json:"cov_status"`
+	AtLimit        bool     `json:"at_limit"`
+	Attempts       int      `json:"attempts"`
+	CFImage        string   `json:"cf_image"`
+	FitOverCFImage string   `json:"fit_over_cf_image"`
+	Reason         string   `json:"reason"`
 }
 
 type manifest struct {
@@ -46,11 +70,12 @@ type manifest struct {
 	ExitCode      *int   `json:"exit_code"`
 	Config        config `json:"config"`
 	Fits          struct {
-		Requested int `json:"requested"`
-		Usable    int `json:"usable"`
-		Unusable  int `json:"unusable"`
-		Retried   int `json:"retried"`
-		AtLimit   int `json:"at_limit"`
+		Requested int         `json:"requested"`
+		Usable    int         `json:"usable"`
+		Unusable  int         `json:"unusable"`
+		Retried   int         `json:"retried"`
+		AtLimit   int         `json:"at_limit"`
+		Details   []FitDetail `json:"details"`
 	} `json:"fits"`
 	Images []struct {
 		Path string `json:"path"`
@@ -59,11 +84,20 @@ type manifest struct {
 }
 
 type plot struct {
-	source  string
-	asset   string
-	group   string
-	title   string
-	caption string
+	source   string
+	relative string
+	asset    string
+	group    string
+	title    string
+	caption  string
+}
+
+type CompactSlide struct {
+	Title   string
+	Kind    string
+	Plots   []plot
+	Note    string
+	Missing string
 }
 
 func main() {
@@ -83,6 +117,7 @@ func run(args []string) (err error) {
 	buildName := flags.String("build-dir", "docs/thesis/build/presentation", "presentation build directory")
 	latexmk := flags.String("latexmk", "latexmk", "latexmk executable")
 	maxPlots := flags.Int("plots", 12, "maximum plots in the results chapter; 0 means all")
+	mode := flags.String("mode", "compact", "report layout: compact (current results only) or full (thesis slides)")
 	strictAssets := flags.Bool("strict-assets", false, "fail when source presentation figures are missing")
 	executable := flags.String("executable", "", "analysis executable; set to run it before building")
 	if err := flags.Parse(args); err != nil {
@@ -96,6 +131,9 @@ func run(args []string) (err error) {
 	}
 	if *maxPlots < 0 {
 		return errors.New("-plots must be non-negative (0 includes all plots)")
+	}
+	if *mode != "compact" && *mode != "full" {
+		return errors.New("-mode must be compact or full")
 	}
 
 	repoRoot, err := filepath.Abs(*repoName)
@@ -152,7 +190,7 @@ func run(args []string) (err error) {
 
 	data, digest, manifestErr := readManifest(results)
 	if manifestErr != nil {
-		if *resultsName != "" || analysisExit != nil || !errors.Is(manifestErr, os.ErrNotExist) {
+		if *mode == "compact" || *resultsName != "" || analysisExit != nil || !errors.Is(manifestErr, os.ErrNotExist) {
 			return manifestErr
 		}
 		if err := clearChapter(); err != nil {
@@ -168,12 +206,12 @@ func run(args []string) (err error) {
 				return errors.New("analysis exit code and run manifest disagree")
 			}
 		}
-		if err := writeChapter(buildDir, results, data, digest, *maxPlots, chapterPath); err != nil {
+		if err := writeChapter(buildDir, results, data, digest, *maxPlots, chapterPath, *mode); err != nil {
 			return err
 		}
 	}
 
-	if err := compilePDF(*latexmk, sourceDir, buildDir, *strictAssets); err != nil {
+	if err := compilePDF(*latexmk, sourceDir, buildDir, *strictAssets, *mode); err != nil {
 		return err
 	}
 	pdfPath := filepath.Join(buildDir, "presentation.pdf")
@@ -280,36 +318,63 @@ func readManifest(results string) (manifest, string, error) {
 	return data, hex.EncodeToString(digest[:]), nil
 }
 
-func writeChapter(buildDir, results string, data manifest, digest string, maxPlots int, chapterPath string) error {
+func writeChapter(buildDir, results string, data manifest, digest string, maxPlots int, chapterPath, mode string) error {
 	plots, err := collectPlots(results, data)
 	if err != nil {
 		return err
 	}
-	selected := selectPlots(plots, maxPlots)
 	assetDir := filepath.Join(buildDir, "current-results", safeRunID(data.RunID))
 	if err := os.MkdirAll(assetDir, 0o755); err != nil {
 		return err
 	}
-	for i := range selected {
-		name := fmt.Sprintf("plot-%04d%s", i+1, strings.ToLower(filepath.Ext(selected[i].source)))
-		destination := filepath.Join(assetDir, name)
-		if err := copyFile(selected[i].source, destination); err != nil {
+	copied := make(map[string]string)
+	prepare := func(items []plot) error {
+		for i := range items {
+			asset, exists := copied[items[i].source]
+			if !exists {
+				name := fmt.Sprintf("plot-%04d%s", len(copied)+1, strings.ToLower(filepath.Ext(items[i].source)))
+				destination := filepath.Join(assetDir, name)
+				if err := copyFile(items[i].source, destination); err != nil {
+					return err
+				}
+				relative, err := filepath.Rel(buildDir, destination)
+				if err != nil {
+					return err
+				}
+				asset = filepath.ToSlash(relative)
+				copied[items[i].source] = asset
+			}
+			items[i].asset = asset
+		}
+		return nil
+	}
+	var text string
+	if mode == "compact" {
+		slides := select_compact_slides(data, plots)
+		for i := range slides {
+			if err := prepare(slides[i].Plots); err != nil {
+				return err
+			}
+		}
+		text = render_compact(data, slides)
+	} else {
+		selected := selectPlots(plots, maxPlots)
+		if err := prepare(selected); err != nil {
 			return err
 		}
-		selected[i].asset, err = filepath.Rel(buildDir, destination)
-		if err != nil {
-			return err
-		}
-		selected[i].asset = filepath.ToSlash(selected[i].asset)
+		text = render(data, selected, len(plots))
 	}
 	if _, latestDigest, err := readManifest(results); err != nil || latestDigest != digest {
 		return errors.New("analysis results changed while preparing slides")
 	}
-	text := render(data, selected, len(plots))
 	return writeAtomic(chapterPath, []byte(text))
 }
 
 func collectPlots(results string, data manifest) ([]plot, error) {
+	resolvedResults, err := filepath.EvalSymlinks(results)
+	if err != nil {
+		return nil, err
+	}
 	labels := makeLabels(data.Config)
 	plots := make([]plot, 0, len(data.Images))
 	seen := make(map[string]bool, len(data.Images))
@@ -324,7 +389,7 @@ func collectPlots(results string, data manifest) ([]plot, error) {
 		if err != nil {
 			return nil, fmt.Errorf("image from this run is missing: %s", source)
 		}
-		if !inside(results, resolved) {
+		if !inside(resolvedResults, resolved) {
 			return nil, fmt.Errorf("image path leaves results directory: %s", image.Path)
 		}
 		info, err := os.Stat(resolved)
@@ -340,6 +405,7 @@ func collectPlots(results string, data manifest) ([]plot, error) {
 			item = plot{group: "other", title: "Результат расчёта", caption: texEscape(filepath.Base(rel))}
 		}
 		item.source = resolved
+		item.relative = filepath.ToSlash(rel)
 		plots = append(plots, item)
 	}
 	return plots, nil
@@ -363,6 +429,8 @@ func makeLabels(cfg config) map[string]plot {
 			{"c_fit_quality_" + charge.slug, "quality", "Качество аппроксимации", "зависимость от " + mode},
 			{"c_pvalues_" + charge.slug, "pvalues", "Вероятности согласия", "зависимость от " + mode},
 			{"c_all_cross_graphs_" + charge.slug, "cross", "Перекрёстные параметры", "зависимость от " + mode},
+			{"c_free_cross_graphs_" + charge.slug, "free_cross", "Свободные перекрёстные параметры", "зависимость от " + mode},
+			{"c_chi2_root_over_manual_" + charge.slug, "chi2_comparison", "Сравнение ROOT и ручного расчёта", `$\chi^2_{\mathrm{ROOT}}/\chi^2_{\mathrm{manual}}$; зависимость от ` + mode},
 		} {
 			labels["dependency/"+item.file] = plot{group: item.group, title: item.title, caption: charge.label + ", " + item.caption}
 		}
@@ -394,7 +462,7 @@ func selectPlots(plots []plot, maximum int) []plot {
 	if maximum == 0 || len(plots) <= maximum {
 		return plots
 	}
-	order := []string{"radii", "quality", "1d", "2d", "pvalues", "fit_ratio", "cross", "other"}
+	order := []string{"radii", "quality", "chi2_comparison", "1d", "2d", "pvalues", "fit_ratio", "cross", "other"}
 	groups := make(map[string][]plot, len(order))
 	for _, item := range plots {
 		groups[item.group] = append(groups[item.group], item)
@@ -416,6 +484,318 @@ func selectPlots(plots []plot, maximum int) []plot {
 		}
 	}
 	return selected
+}
+
+func reduced_chi2(detail FitDetail) (float64, bool) {
+	if detail.Chi2 == nil || detail.Ndf <= 0 || math.IsNaN(*detail.Chi2) || math.IsInf(*detail.Chi2, 0) || *detail.Chi2 < 0 {
+		return 0, false
+	}
+	return *detail.Chi2 / float64(detail.Ndf), true
+}
+
+func same_fit(left, right FitDetail) bool {
+	return left.Charge == right.Charge && left.Centrality == right.Centrality && left.Bin == right.Bin
+}
+
+// A representative good fit has chi2/ndf closest to unity. Prefer a genuinely
+// unusable bad example; when all fits are usable show the worst and say so.
+func select_fit_examples(details []FitDetail) (*FitDetail, *FitDetail) {
+	ordered := append([]FitDetail(nil), details...)
+	sort.SliceStable(ordered, func(i, j int) bool {
+		left, right := ordered[i], ordered[j]
+		if left.Charge != right.Charge {
+			return left.Charge < right.Charge
+		}
+		if left.Centrality != right.Centrality {
+			return left.Centrality < right.Centrality
+		}
+		return left.Bin < right.Bin
+	})
+	var good, bad *FitDetail
+	good_distance := math.Inf(1)
+	for i := range ordered {
+		detail := &ordered[i]
+		value, valid := reduced_chi2(*detail)
+		if !detail.Usable || !detail.Finite || detail.Attempts <= 0 || !valid {
+			continue
+		}
+		distance := math.Abs(value - 1)
+		if good == nil || distance < good_distance {
+			good, good_distance = detail, distance
+		}
+	}
+	worst_value := -1.0
+	for i := range ordered {
+		detail := &ordered[i]
+		if detail.Usable {
+			continue
+		}
+		value, valid := reduced_chi2(*detail)
+		if !valid {
+			value = -1
+		}
+		if bad == nil || value > worst_value {
+			bad, worst_value = detail, value
+		}
+	}
+	if bad == nil {
+		for i := range ordered {
+			detail := &ordered[i]
+			value, valid := reduced_chi2(*detail)
+			if !detail.Usable || !detail.Finite || detail.Attempts <= 0 || !valid || good != nil && same_fit(*good, *detail) {
+				continue
+			}
+			if bad == nil || value > worst_value {
+				bad, worst_value = detail, value
+			}
+		}
+	}
+	return good, bad
+}
+
+func plot_for_path(plots []plot, path string) (plot, bool) {
+	if path == "" {
+		return plot{}, false
+	}
+	for _, item := range plots {
+		if item.relative == filepath.ToSlash(filepath.Clean(path)) {
+			return item, true
+		}
+	}
+	return plot{}, false
+}
+
+func plots_for_group(plots []plot, group string) []plot {
+	var selected []plot
+	for _, slug := range []string{"pos", "neg"} {
+		for _, item := range plots {
+			stem := strings.TrimSuffix(item.relative, filepath.Ext(item.relative))
+			if item.group == group && strings.HasSuffix(stem, "_"+slug) {
+				selected = append(selected, item)
+				break
+			}
+		}
+	}
+	return selected
+}
+
+func free_cross_terms(cfg config) []string {
+	var free []string
+	for _, key := range []string{"r_os", "r_ol", "r_sl"} {
+		value, exists := cfg.Fit.Freeze[key]
+		if !exists || value == nil {
+			free = append(free, key)
+		}
+	}
+	return free
+}
+
+func fit_caption(cfg config, detail FitDetail) string {
+	charge := map[int]string{0: `$\pi^+$`, 1: `$\pi^-$`}[detail.Charge]
+	centrality := map[int]string{0: "0--10", 1: "10--30", 2: "30--50", 3: "50--80"}[detail.Centrality]
+	bin := fmt.Sprintf("%d", detail.Bin)
+	if detail.Bin >= 0 && detail.Bin < len(cfg.Binning.Names) {
+		bin = cfg.Binning.Names[detail.Bin]
+	}
+	mode := "$y$"
+	if cfg.Vars.Input.Type == "kt" {
+		mode = "$k_T$"
+	}
+	return charge + ", центральность " + centrality + `\%, ` + mode + ": " + texEscape(bin)
+}
+
+func fit_diagnostic(detail FitDetail) string {
+	value := "недоступно"
+	if reduced, valid := reduced_chi2(detail); valid {
+		value = fmt.Sprintf("%.4g", reduced)
+	}
+	note := fmt.Sprintf(`$\chi^2/\mathrm{ndf}=%s$; status=%d, cov=%d, попыток=%d`, value, detail.Status, detail.CovStatus, detail.Attempts)
+	if !detail.Usable {
+		reason := detail.Reason
+		if reason == "" {
+			switch {
+			case detail.Attempts == 0:
+				reason = "фит отсутствует"
+			case !detail.Finite:
+				reason = "неконечные параметры"
+			case detail.AtLimit:
+				reason = "параметр на границе"
+			case detail.Ndf <= 0:
+				reason = "неположительное ndf"
+			default:
+				reason = "результат минимизатора не принят"
+			}
+		}
+		note += `\par\alert{Непригодный фит: ` + texEscape(reason) + `.}`
+		if detail.Finite && detail.Attempts > 0 {
+			note += ` Пунктирная кривая --- диагностическая попытка.`
+		}
+	}
+	return note
+}
+
+func select_compact_slides(data manifest, plots []plot) []CompactSlide {
+	good, bad := select_fit_examples(data.Fits.Details)
+	slides := make([]CompactSlide, 0, 10)
+	for index, detail := range []*FitDetail{good, bad} {
+		slide := CompactSlide{Title: "Хороший фит", Kind: "good", Missing: "Пригодный пример с сохранёнными метаданными не найден."}
+		if index == 1 {
+			slide.Title, slide.Kind = "Плохой фит", "bad"
+			slide.Missing = "Непригодный или второй пригодный пример не найден. Плохой фит не создаётся искусственно."
+		}
+		if detail != nil {
+			if index == 1 && detail.Usable {
+				slide.Title = "Худший из пригодных фитов"
+				slide.Note = "Непригодных фитов нет; выбран максимальный $\\chi^2/\\mathrm{ndf}$ среди остальных пригодных.\\par "
+			}
+			slide.Note += fit_caption(data.Config, *detail) + `\par ` + fit_diagnostic(*detail)
+			if item, exists := plot_for_path(plots, detail.CFImage); exists {
+				slide.Plots = []plot{item}
+			} else {
+				slide.Missing = "Проекция выбранного фита не экспортировалась в этом запуске."
+			}
+		} else if len(data.Fits.Details) == 0 {
+			slide.Missing = "В manifest этого расчёта нет индивидуальных метаданных фитов; качество примера не классифицируется."
+			if index == 0 {
+				slide.Title = "Проекции КФ: качество не классифицировано"
+				for _, item := range plots {
+					if item.group == "1d" {
+						slide.Plots = []plot{item}
+						slide.Note = slide.Missing + `\par ` + item.caption
+						break
+					}
+				}
+			}
+		}
+		slides = append(slides, slide)
+	}
+	for _, item := range plots_for_group(plots, "radii") {
+		slides = append(slides, CompactSlide{Title: "Радиусы и сила корреляции", Kind: "radii", Plots: []plot{item}, Note: item.caption})
+	}
+	if len(free_cross_terms(data.Config)) > 0 {
+		var cross_labels []string
+		for _, key := range free_cross_terms(data.Config) {
+			cross_labels = append(cross_labels, map[string]string{"r_os": `$R_{os}$`, "r_ol": `$R_{ol}$`, "r_sl": `$R_{sl}$`}[key])
+		}
+		cross := plots_for_group(plots, "free_cross")
+		if len(cross) == 0 {
+			cross = plots_for_group(plots, "cross")
+		}
+		slides = append(slides, CompactSlide{Title: "Свободные перекрёстные параметры", Kind: "cross", Plots: cross,
+			Missing: "Свободные перекрёстные параметры не экспортировались.",
+			Note:    `Свободные параметры: ` + strings.Join(cross_labels, ", ") + `.`})
+	}
+	for index, detail := range []*FitDetail{good, bad} {
+		title := "Отношение фита к КФ: хороший пример"
+		if index == 1 {
+			title = "Отношение фита к КФ: плохой пример"
+		}
+		if index == 1 && detail != nil && detail.Usable {
+			title = "Отношение фита к КФ: худший пригодный"
+		}
+		ratio := CompactSlide{Title: title, Kind: "fit_ratio", Missing: "Для выбранного примера отношение не экспортировалось.",
+			Note: `$C_2^{\mathrm{fit}}/C_2$; параметры кривой фиксированы.`}
+		if detail != nil {
+			if item, exists := plot_for_path(plots, detail.FitOverCFImage); exists {
+				ratio.Plots = []plot{item}
+				ratio.Note += `\par ` + fit_caption(data.Config, *detail)
+				if !detail.Usable {
+					ratio.Note += `; \alert{диагностическая попытка}.`
+				}
+			}
+		}
+		slides = append(slides, ratio)
+	}
+	slides = append(slides, CompactSlide{Title: "Качество фитов по всем центральностям", Kind: "quality", Plots: plots_for_group(plots, "quality"), Missing: "Сводные графики качества не экспортировались.", Note: `Слева: $\chi^2/\mathrm{ndf}$. Справа: среднее $C_2^{\mathrm{fit}}/C_2$ по области сравнения. Показаны пригодные фиты.`})
+	// This frame is mandatory even for old results: a missing comparison is
+	// explicitly reported instead of silently substituting the manual statistic.
+	slides = append(slides, CompactSlide{Title: "Сравнение ROOT и ручного chi2", Kind: "chi2_comparison", Plots: plots_for_group(plots, "chi2_comparison"), Missing: "Исходное chi2 ROOT или график сравнения отсутствует в этом расчёте. Нужен новый запуск анализа.", Note: `$\chi^2_{\mathrm{ROOT}}/\chi^2_{\mathrm{manual}}$ для всех попыток с определённым отношением; линия 1 означает совпадение. При $\chi^2_{\mathrm{manual}}=0$ отношение не определено.`})
+	slides = append(slides, CompactSlide{Title: "Статистика и статус расчёта", Kind: "statistics"})
+	return slides
+}
+
+func render_compact_stats(out *strings.Builder, data manifest) {
+	status := "Все запрошенные фиты пригодны."
+	if data.Status == "incomplete" {
+		status = `\alert{Диагностический расчёт: есть непригодные фиты.}`
+	}
+	fmt.Fprintf(out, "\\small\n%s\\par\\smallskip\n", status)
+	fmt.Fprintf(out, "Пригодно %d/%d; непригодно %d; повторных %d; на границах %d.\\par\\medskip\n", data.Fits.Usable, data.Fits.Requested, data.Fits.Unusable, data.Fits.Retried, data.Fits.AtLimit)
+	if len(data.Fits.Details) > 0 {
+		fmt.Fprint(out, "\\centering\\footnotesize\n\\begin{tabular}{lrrrr}\nВыборка & Всего & Пригодно & Повторно & Граница \\\\ \\hline\n")
+		for _, ch := range data.Config.Selection.Charges {
+			for _, centr := range data.Config.Selection.Centralities {
+				var requested, usable, retried, boundary int
+				for _, detail := range data.Fits.Details {
+					if detail.Charge == ch && detail.Centrality == centr {
+						requested++
+						if detail.Usable {
+							usable++
+						}
+						if detail.Attempts > 1 {
+							retried++
+						}
+						if detail.AtLimit {
+							boundary++
+						}
+					}
+				}
+				if requested > 0 {
+					charge := map[int]string{0: `$\pi^+$`, 1: `$\pi^-$`}[ch]
+					centrality := map[int]string{0: "0--10", 1: "10--30", 2: "30--50", 3: "50--80"}[centr]
+					fmt.Fprintf(out, "%s, %s\\%% & %d & %d & %d & %d \\\\\n", charge, centrality, requested, usable, retried, boundary)
+				}
+			}
+		}
+		fmt.Fprint(out, "\\end{tabular}\\par\\medskip\n")
+	}
+	fmt.Fprintf(out, "{\\scriptsize Вход: %s\\par Завершено (UTC): %s\\par Run ID: \\texttt{%s}\\par}\n", texEscape(filepath.Base(data.Config.Vars.Input.File)), texEscape(data.CompletedAt), texEscape(data.RunID))
+	fmt.Fprint(out, "{\\scriptsize Хороший пример: пригодный фит с $\\chi^2/\\mathrm{ndf}$ ближе к 1; плохой: непригодный с максимальным определённым $\\chi^2/\\mathrm{ndf}$. Радиусы и обычные сводные графики содержат только пригодные фиты.}\n")
+}
+
+func render_compact(data manifest, slides []CompactSlide) string {
+	var out strings.Builder
+	if data.Status == "incomplete" {
+		fmt.Fprint(&out, "\\def\\ReportDiagnostic{1}\n")
+	}
+	mode := "$y$"
+	if data.Config.Vars.Input.Type == "kt" {
+		mode = "$k_T$"
+	}
+	for _, slide := range slides {
+		fmt.Fprintf(&out, "\\begin{frame}{%s: %s}\n", mode, texEscape(slide.Title))
+		if slide.Kind == "statistics" {
+			render_compact_stats(&out, data)
+		} else {
+			fmt.Fprint(&out, "\\centering\n")
+			if len(slide.Plots) == 0 {
+				fmt.Fprintf(&out, "\\small %s\\par\\medskip\n", texEscape(slide.Missing))
+			} else if len(slide.Plots) > 1 {
+				for _, item := range slide.Plots {
+					fmt.Fprintf(&out, "\\begin{minipage}{.49\\linewidth}\\centering\\includegraphics[width=\\linewidth,height=.60\\textheight,keepaspectratio]{%s}\\par{\\scriptsize %s}\\end{minipage}\n", item.asset, item.caption)
+				}
+			} else {
+				height := ".68"
+				if slide.Kind == "good" || slide.Kind == "bad" {
+					height = ".56"
+				}
+				if len(slide.Plots) > 1 {
+					height = ".29"
+				}
+				for _, item := range slide.Plots {
+					fmt.Fprintf(&out, "\\includegraphics[width=.98\\linewidth,height=%s\\textheight,keepaspectratio]{%s}\\par\n", height, item.asset)
+					if len(slide.Plots) > 1 {
+						fmt.Fprintf(&out, "{\\scriptsize %s}\\par\n", item.caption)
+					}
+				}
+			}
+			if slide.Note != "" {
+				fmt.Fprintf(&out, "\\smallskip{\\scriptsize %s}\\par\n", slide.Note)
+			}
+		}
+		fmt.Fprint(&out, "\\end{frame}\n")
+	}
+	return out.String()
 }
 
 func render(data manifest, plots []plot, total int) string {
@@ -473,12 +853,16 @@ func render(data manifest, plots []plot, total int) string {
 	return out.String()
 }
 
-func compilePDF(latexmk, sourceDir, buildDir string, strictAssets bool) error {
+func compilePDF(latexmk, sourceDir, buildDir string, strictAssets bool, mode string) error {
 	args := []string{"-cd", "-xelatex", "-interaction=nonstopmode", "-halt-on-error", "-file-line-error"}
 	if strictAssets {
 		args = append(args, "-g", `-usepretex=\def\ThesisStrictAssets{1}`)
 	}
-	args = append(args, "-outdir="+buildDir, "-jobname=presentation", "presentation/main.tex")
+	entry := "presentation/compact.tex"
+	if mode == "full" {
+		entry = "presentation/main.tex"
+	}
+	args = append(args, "-outdir="+buildDir, "-jobname=presentation", entry)
 	command := exec.Command(latexmk, args...)
 	command.Dir = sourceDir
 	command.Stdout = os.Stdout

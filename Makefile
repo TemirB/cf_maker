@@ -31,6 +31,7 @@ endif
 PRESENTATION_BUILDER ?= $(if $(DEFAULT_PRESENTATION_BUILDER),$(DEFAULT_PRESENTATION_BUILDER),$(BUILD_DIR)/presentation-builder)
 RESULTS ?=
 PRESENTATION_PLOTS ?= 12
+PRESENTATION_MODE ?= compact
 DOCS_BUILD_DIR ?= docs/thesis/build
 STRICT_ASSETS ?= 0
 DOCS_OUTPUT_DIR := $(if $(filter /%,$(firstword $(DOCS_BUILD_DIR))),$(DOCS_BUILD_DIR),$(CURDIR)/$(DOCS_BUILD_DIR))
@@ -72,6 +73,7 @@ help:
 	  'make run-presentation CONFIG=config/y.json' \
 	  'make presentation RESULTS=/path/to/results' \
 	  'PRESENTATION_PLOTS=12     Максимум графиков в PDF; 0 — все' \
+	  'PRESENTATION_MODE=compact Компактный отчёт; full — исходные слайды' \
 	  'Перед сборкой активируйте установленный ROOT: source /path/to/root/bin/thisroot.sh'
 
 # Always configure first: a stale build tree may have lost VerifyGlobs.cmake.
@@ -139,23 +141,23 @@ demo: build
 	"$(BUILD_DIR)/main" "$(FIXTURE_DIR)/config.json"
 
 # Documents have their own dependencies and do not need a C++/ROOT build.
-docs:
+docs: $(PRESENTATION_BUILDER)
 	$(MAKE) -C docs/thesis all LATEXMK="$(LATEXMK)" \
 	  BUILD_DIR="$(DOCS_OUTPUT_DIR)" STRICT_ASSETS="$(STRICT_ASSETS)" \
 	  GO="$(GO)" PRESENTATION_BUILDER="$(abspath $(PRESENTATION_BUILDER))" \
 	  CONFIG="$(CONFIG)" RESULTS="$(RESULTS)" \
-	  PRESENTATION_PLOTS="$(PRESENTATION_PLOTS)"
+	  PRESENTATION_PLOTS="$(PRESENTATION_PLOTS)" PRESENTATION_MODE="$(PRESENTATION_MODE)"
 
 thesis:
 	$(MAKE) -C docs/thesis report LATEXMK="$(LATEXMK)" \
 	  BUILD_DIR="$(DOCS_OUTPUT_DIR)" STRICT_ASSETS="$(STRICT_ASSETS)"
 
-presentation:
+presentation: $(PRESENTATION_BUILDER)
 	$(MAKE) -C docs/thesis presentation LATEXMK="$(LATEXMK)" GO="$(GO)" \
 	  BUILD_DIR="$(DOCS_OUTPUT_DIR)" STRICT_ASSETS="$(STRICT_ASSETS)" \
 	  PRESENTATION_BUILDER="$(abspath $(PRESENTATION_BUILDER))" \
 	  CONFIG="$(CONFIG)" RESULTS="$(RESULTS)" \
-	  PRESENTATION_PLOTS="$(PRESENTATION_PLOTS)"
+	  PRESENTATION_PLOTS="$(PRESENTATION_PLOTS)" PRESENTATION_MODE="$(PRESENTATION_MODE)"
 
 check-presentation-tools:
 	$(MAKE) -C docs/thesis check-presentation-tools LATEXMK="$(LATEXMK)" GO="$(GO)" \
@@ -167,15 +169,13 @@ run-presentation: check-presentation-tools build $(PRESENTATION_BUILDER)
 	"$(abspath $(PRESENTATION_BUILDER))" -config "$(CONFIG)" \
 	  -repo-root "$(CURDIR)" -source-dir "$(CURDIR)/docs/thesis" \
 	  -build-dir "$(DOCS_OUTPUT_DIR)/presentation" -latexmk "$(LATEXMK)" \
-	  -plots "$(PRESENTATION_PLOTS)" \
+	  -plots "$(PRESENTATION_PLOTS)" -mode "$(PRESENTATION_MODE)" \
 	  -strict-assets="$(if $(filter 1,$(STRICT_ASSETS)),true,false)" \
 	  -executable "$(abspath $(BUILD_DIR)/main)"
 
-ifeq ($(wildcard $(PRESENTATION_BUILDER)),)
-$(PRESENTATION_BUILDER): tools/presentation_builder/main.go
+$(BUILD_DIR)/presentation-builder: tools/presentation_builder/main.go
 	mkdir -p "$(dir $@)"
 	"$(GO)" build -o "$@" "$<"
-endif
 
 docs-clean:
 	$(MAKE) -C docs/thesis clean LATEXMK="$(LATEXMK)" \

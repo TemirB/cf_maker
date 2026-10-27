@@ -6,6 +6,7 @@
   "setup_script": null,
   "jobs": 2,
   "threads": 2,
+  "presentation_mode": "compact",
   "cxx": "g++",
   "tools": {"make": "make", "root": "root", "latexmk": "latexmk", "gs": "gs"},
   "max_recovery_attempts": 2,

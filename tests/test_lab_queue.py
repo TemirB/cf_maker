@@ -61,8 +61,13 @@ if stage == "compute":
                 "started_at": "2000-01-01T00:00:00.000Z" if mode == "stale" else now,
                 "completed_at": now, "fits": {"requested": 1, "usable": 1, "unusable": 0},
                 "config": {"vars": {"output": {"dir": str(results.resolve())}}}}
+    incomplete = mode == "incomplete" or (mode == "incomplete-first" and results.name == "one")
+    if incomplete:
+        manifest.update(status="incomplete", exit_code=2, fits={"requested": 2, "usable": 1, "unusable": 1})
     (results / "run_manifest.json").write_text(json.dumps(manifest))
     (results / "cf3d.root").write_bytes(b"fake ROOT input for the fake audit")
+    if incomplete:
+        sys.exit(2)
 elif stage in ("report", "audit", "merge"):
     path = Path(extra[0])
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -167,7 +172,9 @@ class QueueTest(unittest.TestCase):
     def test_completed_report_receipt_and_duplicate_event_do_not_recompute(self):
         job = self.run_job()
         self.assertEqual((job["status"], job["attempts"], job["computation_exit_code"]), ("uploading", 1, 0))
+        self.assertNotIn("one-chi2-audit", [stage["stage"] for stage in job["stages"]])
         receipt = self.collect("delivery")
+        self.assertEqual(receipt["publishable"], "true")
         bundle = self.base / "delivery"
         manifest = json.loads((bundle / "manifest.json").read_text())
         self.assertEqual(manifest["pdf_sha256"], hashlib.sha256((bundle / "report.pdf").read_bytes()).hexdigest())
@@ -190,7 +197,75 @@ class QueueTest(unittest.TestCase):
                 self.assertEqual((job["status"], job["exit_code"]), ("failed", code))
                 self.assertIsNone(self.collect("refused" + str(index)))
                 self.assertNotIn("pdf_sha256", job)
+                if stage == "build":
+                    self.assertFalse((lab.job_dir(self.config, job["job_id"]) / "compute.calls").exists())
                 self.mode(stage, "ok")
+
+    def test_full_mode_keeps_detailed_chi2_audit_optional(self):
+        self.config["presentation_mode"] = "full"
+        job = self.run_job()
+        self.assertEqual(job["status"], "uploading")
+        self.assertIn("one-chi2-audit", [stage["stage"] for stage in job["stages"]])
+        self.assertTrue((Path(job["attempt_dir"]) / "results/one/chi2_audit.pdf").is_file())
+
+    def diagnostic_job(self):
+        second = self.source / "config/two.json"
+        second.write_bytes((self.source / "config/one.json").read_bytes())
+        self.commit()
+        self.config["config_files"].append("config/two.json")
+        self.mode("compute", "incomplete-first")
+        return self.run_job()
+
+    def test_bad_kt_fit_continues_second_analysis_and_exports_diagnostic_only(self):
+        job = self.diagnostic_job()
+        self.assertEqual((job["status"], job["exit_code"], job["computation_exit_code"]), ("failed", 2, 2))
+        self.assertEqual(job["failed_stage"], "one-compute")
+        self.assertNotIn("pdf_path", job)
+        self.assertEqual([stage["stage"] for stage in job["stages"]],
+                         ["report-tools", "build", "one-compute", "one-presentation",
+                          "two-compute", "two-presentation", "merge-report"])
+        self.assertEqual([item["status"] for item in job["scientific_manifests"]], ["incomplete", "completed"])
+        receipt = self.collect("diagnostic")
+        self.assertEqual(receipt["publishable"], "false")
+        bundle = self.base / "diagnostic"
+        self.assertTrue((bundle / "diagnostic.pdf").is_file())
+        self.assertTrue((bundle / "diagnostic_manifest.json").is_file())
+        self.assertFalse((bundle / "report.pdf").exists())
+        self.assertFalse((bundle / "manifest.json").exists())
+        self.assertEqual(hashlib.sha256((bundle / "diagnostic.pdf").read_bytes()).hexdigest(),
+                         job["diagnostic_pdf_sha256"])
+        with self.assertRaisesRegex(ValueError, "no sealed successful report"):
+            lab.retry_upload(self.config, "job1")
+        lab.acknowledge(self.config, "job1", receipt["lease_token"], "success")
+        final = lab.read_job(self.config, "job1")
+        self.assertEqual((final["status"], final["exit_code"], final["error"]),
+                         (job["status"], job["exit_code"], job["error"]))
+        self.assertTrue(final["diagnostic_exported_at"])
+        self.assertNotIn("published_at", final)
+        self.assertIsNone(self.collect("already-exported"))
+
+    def test_diagnostic_transfer_retries_without_overwriting_scientific_failure(self):
+        original = self.diagnostic_job()
+        receipt = self.collect("first-diagnostic")
+        lab.acknowledge(self.config, "job1", receipt["lease_token"], "failed", "network failure")
+        failed = lab.read_job(self.config, "job1")
+        self.assertEqual((failed["exit_code"], failed["failed_stage"], failed["error"]),
+                         (2, "one-compute", original["error"]))
+        self.assertGreater(failed["next_diagnostic_at"], time.time())
+        self.assertIsNone(self.collect("before-retry"))
+        with mock.patch.object(lab.time, "time", return_value=failed["next_diagnostic_at"] + 1):
+            retry = self.collect("diagnostic-retry")
+        self.assertEqual(retry["publishable"], "false")
+        lab.acknowledge(self.config, "job1", retry["lease_token"], "success")
+        self.assertEqual(lab.read_job(self.config, "job1")["status"], "failed")
+
+    def test_tampered_or_cancelled_diagnostic_cannot_be_delivered(self):
+        job = self.diagnostic_job()
+        Path(job["diagnostic_pdf_path"]).write_bytes(b"%PDF-1.7\nchanged diagnostic body\n%%EOF\n")
+        with self.assertRaisesRegex(ValueError, "changed"):
+            self.collect("changed-diagnostic")
+        self.quiet(lab.cancel, self.config, "job1")
+        self.assertIsNone(self.collect("cancelled-diagnostic"))
 
     def test_duplicate_push_delivery_ids_reuse_job_but_manual_run_is_explicit(self):
         first = self.quiet(lab.submit, self.config, self.source, "push-one", self.sha,
