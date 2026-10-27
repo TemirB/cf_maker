@@ -7,6 +7,7 @@
   "jobs": 2,
   "threads": 2,
   "presentation_mode": "compact",
+  "publish_incomplete_reports": true,
   "cxx": "g++",
   "tools": {"make": "make", "root": "root", "latexmk": "latexmk", "gs": "gs"},
   "max_recovery_attempts": 2,

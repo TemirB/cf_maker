@@ -383,6 +383,58 @@ def normalized_timestamp(value):
     return value.isoformat(timespec="microseconds").replace("+00:00", "Z")
 
 
+def validate_report_quality(manifest):
+    """Permit explicit fit-quality warnings without hiding computation failures."""
+    quality_fields = {"report_quality", "computation_exit_code", "fit_quality_warnings"}
+    legacy = not any(key in manifest for key in quality_fields)
+    if not legacy and not all(key in manifest for key in quality_fields):
+        raise PublishError("Manifest report quality, computation exit code and warnings must appear together")
+    quality = manifest.get("report_quality", "complete")
+    computation_exit = manifest.get("computation_exit_code", 0)
+    warnings = manifest.get("fit_quality_warnings", [])
+    if not isinstance(quality, str) or quality not in {"complete", "incomplete"}:
+        raise PublishError("Manifest report_quality must be complete or incomplete")
+    if type(computation_exit) is not int or computation_exit not in {0, 2}:
+        raise PublishError("Manifest computation_exit_code must be 0 or 2")
+    if not isinstance(warnings, list):
+        raise PublishError("Manifest fit_quality_warnings must be an array")
+    for warning in warnings:
+        if (not isinstance(warning, dict) or
+                not isinstance(warning.get("stage"), str) or not warning["stage"].strip() or
+                type(warning.get("exit_code")) is not int or warning["exit_code"] != 2 or
+                not isinstance(warning.get("error"), str) or not warning["error"].strip()):
+            raise PublishError("Every fit-quality warning must identify a stage, exit code 2 and error")
+    if quality == "incomplete":
+        if computation_exit != 2 or not warnings:
+            raise PublishError("Incomplete report requires computation exit code 2 and fit-quality warnings")
+    elif computation_exit != 0 or warnings:
+        raise PublishError("Complete report cannot conceal a computation failure or fit-quality warnings")
+
+    scientific = manifest.get("scientific_manifests")
+    if scientific is None and "scientific_manifests" not in manifest and quality == "complete":
+        return
+    if not isinstance(scientific, list) or quality == "incomplete" and not scientific:
+        raise PublishError("Manifest scientific_manifests must list the scientific run statuses")
+    incomplete_count = 0
+    for record in scientific:
+        if not isinstance(record, dict):
+            raise PublishError("Manifest scientific run record must be an object")
+        # Older successful bundles saved only config/run ID/digest references.
+        # This compatibility path never accepts an explicit incomplete status.
+        if legacy and "status" not in record and "exit_code" not in record:
+            continue
+        status, code = record.get("status"), record.get("exit_code")
+        if (type(code) is not int or not isinstance(status, str) or
+                (status, code) not in {("completed", 0), ("incomplete", 2)}):
+            raise PublishError("Scientific run status and exit code must be completed/0 or incomplete/2")
+        if status == "incomplete":
+            incomplete_count += 1
+    if quality == "incomplete" and incomplete_count == 0:
+        raise PublishError("Incomplete report must preserve at least one incomplete scientific run")
+    if quality == "complete" and incomplete_count:
+        raise PublishError("Complete report cannot contain an incomplete scientific run")
+
+
 def load_bundle(directory):
     directory = Path(directory)
     manifest_path = directory / "manifest.json"
@@ -406,7 +458,8 @@ def load_bundle(directory):
     if (type(manifest.get("schema_version")) is not int or manifest["schema_version"] != 1 or
             type(manifest.get("exit_code")) is not int or manifest["exit_code"] != 0 or
             manifest.get("status") != "uploading" or manifest.get("pdf_path") != "report.pdf"):
-        raise PublishError("Only successful schema-1 report.pdf bundles in uploading state may be published")
+        raise PublishError("Only finalized schema-1 report.pdf bundles in uploading state may be published")
+    validate_report_quality(manifest)
     if (not isinstance(manifest.get("commit_sha"), str) or
             not re.fullmatch(r"[0-9a-fA-F]{40}", manifest["commit_sha"]) or
             not isinstance(manifest.get("pdf_sha256"), str) or
