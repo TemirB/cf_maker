@@ -20,6 +20,9 @@ SCRIPT = Path(__file__).resolve().parents[1] / "tools/lab_automation/lab.py"
 SPEC = importlib.util.spec_from_file_location("lab_queue", SCRIPT)
 lab = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(lab)
+PUBLISH_SPEC = importlib.util.spec_from_file_location("queue_publisher", SCRIPT.with_name("publish.py"))
+publisher = importlib.util.module_from_spec(PUBLISH_SPEC)
+PUBLISH_SPEC.loader.exec_module(publisher)
 
 FAKE_STAGE = r'''
 import datetime as dt
@@ -179,6 +182,7 @@ class QueueTest(unittest.TestCase):
         manifest = json.loads((bundle / "manifest.json").read_text())
         self.assertEqual(manifest["pdf_sha256"], hashlib.sha256((bundle / "report.pdf").read_bytes()).hexdigest())
         self.assertEqual(manifest["scientific_manifests"], job["scientific_manifests"])
+        self.assertEqual(publisher.load_bundle(bundle).manifest["report_quality"], "complete")
         scientific = Path(job["attempt_dir"]) / "results/one/run_manifest.json"
         self.assertEqual(manifest["scientific_manifests"][0]["manifest_sha256"],
                          hashlib.sha256(scientific.read_bytes()).hexdigest())
@@ -208,13 +212,80 @@ class QueueTest(unittest.TestCase):
         self.assertIn("one-chi2-audit", [stage["stage"] for stage in job["stages"]])
         self.assertTrue((Path(job["attempt_dir"]) / "results/one/chi2_audit.pdf").is_file())
 
-    def diagnostic_job(self):
+    def diagnostic_job(self, publish=False):
+        if publish is not None:
+            self.config["publish_incomplete_reports"] = publish
         second = self.source / "config/two.json"
         second.write_bytes((self.source / "config/one.json").read_bytes())
         self.commit()
         self.config["config_files"].append("config/two.json")
         self.mode("compute", "incomplete-first")
         return self.run_job()
+
+    def test_unusable_fits_are_publishable_warnings_by_default(self):
+        job = self.diagnostic_job(publish=None)
+        self.assertEqual((job["status"], job["exit_code"], job["computation_exit_code"]), ("uploading", 0, 2))
+        self.assertEqual(job["report_quality"], "incomplete")
+        self.assertEqual(len(job["fit_quality_warnings"]), 1)
+        self.assertEqual(job["fit_quality_warnings"][0]["unusable_fits"], 1)
+        self.assertEqual([item["exit_code"] for item in job["scientific_manifests"]], [2, 0])
+        self.assertIn("two-presentation", [stage["stage"] for stage in job["stages"]])
+        self.assertNotIn("diagnostic_pdf_path", job)
+        receipt = self.collect("quality-warning-report")
+        self.assertEqual(receipt["publishable"], "true")
+        bundle = self.base / "quality-warning-report"
+        manifest = json.loads((bundle / "manifest.json").read_text())
+        self.assertEqual((manifest["exit_code"], manifest["computation_exit_code"], manifest["report_quality"]),
+                         (0, 2, "incomplete"))
+        self.assertEqual(manifest["fit_quality_warnings"], job["fit_quality_warnings"])
+        accepted = publisher.load_bundle(bundle)
+        self.assertEqual((accepted.manifest["report_quality"], accepted.manifest["computation_exit_code"]),
+                         ("incomplete", 2))
+        lab.acknowledge(self.config, "job1", receipt["lease_token"], "success", latest_url="https://example.invalid/latest")
+        final = lab.read_job(self.config, "job1")
+        self.assertEqual((final["status"], final["computation_exit_code"]), ("success", 2))
+        self.assertEqual(final["fit_quality_warnings"], job["fit_quality_warnings"])
+
+    def test_incomplete_report_retries_publication_without_recomputing(self):
+        original = self.diagnostic_job(publish=True)
+        first = self.collect("quality-warning-first")
+        lab.acknowledge(self.config, "job1", first["lease_token"], "failed", "network failure")
+        self.quiet(lab.retry_upload, self.config, "job1")
+        receipt = self.collect("quality-warning-retry")
+        self.assertEqual(receipt["publishable"], "true")
+        lab.acknowledge(self.config, "job1", receipt["lease_token"], "success")
+        final = lab.read_job(self.config, "job1")
+        self.assertEqual((final["attempts"], final["pdf_sha256"], final["computation_exit_code"]),
+                         (1, original["pdf_sha256"], 2))
+
+    def test_quality_warning_does_not_allow_a_fatal_computation_or_missing_marker(self):
+        job = self.diagnostic_job(publish=True)
+        for changes in ({"computation_exit_code": 7}, {"report_quality": "complete"},
+                        {"fit_quality_warnings": []},
+                        {"scientific_manifests": [{"status": "failed", "exit_code": 7}]}):
+            with self.subTest(changes=changes):
+                altered = dict(job, **changes)
+                lab.atomic_json(lab.job_dir(self.config, "job1") / "job.json", altered)
+                self.assertIsNone(self.collect("refused-warning"))
+                with self.assertRaisesRegex(ValueError, "no sealed successful report"):
+                    lab.retry_upload(self.config, "job1")
+
+    def test_legacy_successful_report_does_not_get_partial_quality_metadata(self):
+        self.run_job()
+        path = lab.job_dir(self.config, "job1") / "job.json"
+        job = json.loads(path.read_text())
+        job.pop("report_quality")
+        job.pop("fit_quality_warnings")
+        for item in job["scientific_manifests"]:
+            item.pop("status")
+            item.pop("exit_code")
+        lab.atomic_json(path, job)
+        receipt = self.collect("legacy-report")
+        self.assertEqual(receipt["publishable"], "true")
+        manifest = json.loads((self.base / "legacy-report/manifest.json").read_text())
+        for key in ("report_quality", "computation_exit_code", "fit_quality_warnings"):
+            self.assertNotIn(key, manifest)
+        self.assertEqual(publisher.load_bundle(self.base / "legacy-report").manifest, manifest)
 
     def test_bad_kt_fit_continues_second_analysis_and_exports_diagnostic_only(self):
         job = self.diagnostic_job()

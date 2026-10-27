@@ -172,6 +172,116 @@ class PublishTest(unittest.TestCase):
     def send(self, bundle):
         return publish.publish_bundle(self.client, bundle, "root_folder", "history_folder")
 
+    def quality_bundle(self, quality="incomplete", job="job1", run="10",
+                       submitted="2026-10-25T10:00:00Z"):
+        bundle = self.bundle(job, run, submitted)
+        incomplete = quality == "incomplete"
+        bundle.manifest.update(
+            report_quality=quality, computation_exit_code=2 if incomplete else 0,
+            fit_quality_warnings=[{"stage": "kt-compute", "exit_code": 2,
+                                   "error": "6/32 fits are unusable", "requested_fits": 32,
+                                   "unusable_fits": 6}] if incomplete else [],
+            scientific_manifests=[
+                {"config": "config/kt.json", "run_id": "science-kt",
+                 "status": "incomplete" if incomplete else "completed",
+                 "exit_code": 2 if incomplete else 0},
+                {"config": "config/y.json", "run_id": "science-y",
+                 "status": "completed", "exit_code": 0}])
+        (bundle.pdf.parent / "manifest.json").write_text(json.dumps(bundle.manifest), encoding="utf-8")
+        return publish.load_bundle(bundle.pdf.parent)
+
+    def test_explicit_incomplete_report_uploads_history_then_stable_latest_without_hiding_exit_2(self):
+        first = self.send(self.bundle())
+        bundle = self.quality_bundle(job="job2", run="11", submitted="2026-10-25T11:00:00Z")
+        original = copy.deepcopy(bundle.manifest)
+        result = self.send(bundle)
+        self.assertEqual(result["status"], "published")
+        self.assertEqual(result["latest_id"], first["latest_id"])
+        self.assertEqual(len(self.drive.role_files("history")), 2)
+        self.assertEqual(bundle.manifest, original)
+        self.assertEqual(bundle.manifest["exit_code"], 0)
+        self.assertEqual(bundle.manifest["computation_exit_code"], 2)
+        self.assertEqual(bundle.manifest["scientific_manifests"][0]["exit_code"], 2)
+        self.assertEqual(bundle.manifest["scientific_manifests"][0]["status"], "incomplete")
+        history_get = next(i for i, call in enumerate(self.drive.calls)
+                           if call[0] == "GET" and "/files/" + result["version_id"] + "?" in call[1])
+        latest_start = self.drive.calls.index(self.drive.latest_starts()[-1])
+        self.assertLess(history_get, latest_start)
+
+    def test_explicit_complete_report_and_legacy_scientific_references_remain_publishable(self):
+        complete = self.quality_bundle("complete")
+        result = self.send(complete)
+        self.assertEqual(result["status"], "published")
+        self.assertEqual(complete.manifest["computation_exit_code"], 0)
+        legacy = self.bundle("legacy", "11", "2026-10-25T11:00:00Z")
+        legacy.manifest["scientific_manifests"] = [{"config": "config/kt.json", "run_id": "old-science",
+                                                   "manifest_sha256": "b" * 64}]
+        (legacy.pdf.parent / "manifest.json").write_text(json.dumps(legacy.manifest), encoding="utf-8")
+        result = self.send(publish.load_bundle(legacy.pdf.parent))
+        self.assertEqual(result["status"], "published")
+
+    def test_incomplete_report_requires_explicit_consistent_quality_evidence(self):
+        bundle = self.quality_bundle()
+        original = copy.deepcopy(bundle.manifest)
+        invalid = [
+            {"report_quality": "failed"}, {"report_quality": None},
+            {"report_quality": "complete"}, {"computation_exit_code": 0},
+            {"computation_exit_code": 1}, {"computation_exit_code": 3},
+            {"computation_exit_code": True}, {"fit_quality_warnings": []},
+            {"fit_quality_warnings": None}, {"fit_quality_warnings": {}},
+            {"fit_quality_warnings": [{"stage": "kt-compute", "exit_code": 1, "error": "fatal"}]},
+            {"fit_quality_warnings": [{"stage": "kt-compute", "exit_code": True, "error": "fatal"}]},
+            {"fit_quality_warnings": [{"stage": "", "exit_code": 2, "error": "unusable"}]},
+            {"fit_quality_warnings": [{"stage": 2, "exit_code": 2, "error": "unusable"}]},
+            {"fit_quality_warnings": [{"stage": "kt-compute", "exit_code": 2, "error": ""}]},
+            {"fit_quality_warnings": [{"stage": "kt-compute", "exit_code": 2, "error": []}]},
+            {"fit_quality_warnings": ["kt-compute"]},
+            {"scientific_manifests": []}, {"scientific_manifests": None},
+            {"scientific_manifests": [{"status": "completed", "exit_code": 0}]},
+            {"scientific_manifests": [{"status": "failed", "exit_code": 1}]},
+            {"scientific_manifests": [{"status": "incomplete", "exit_code": 0}]},
+            {"scientific_manifests": [{"status": "completed", "exit_code": 2}]},
+            {"scientific_manifests": [{"status": "completed", "exit_code": False},
+                                      {"status": "incomplete", "exit_code": 2}]},
+            {"scientific_manifests": [{"status": "incomplete", "exit_code": 2},
+                                      {"config": "config/y.json"}]},
+            {"exit_code": 2}, {"status": "failed"}, {"pdf_path": "diagnostic.pdf"},
+        ]
+        manifest_path = bundle.pdf.parent / "manifest.json"
+        for change in invalid:
+            with self.subTest(change=change):
+                manifest_path.write_text(json.dumps(dict(original, **change)), encoding="utf-8")
+                with self.assertRaises(publish.PublishError):
+                    publish.load_bundle(bundle.pdf.parent)
+        for key in ("report_quality", "computation_exit_code", "fit_quality_warnings", "scientific_manifests"):
+            with self.subTest(missing=key):
+                changed = copy.deepcopy(original)
+                del changed[key]
+                manifest_path.write_text(json.dumps(changed), encoding="utf-8")
+                with self.assertRaises(publish.PublishError):
+                    publish.load_bundle(bundle.pdf.parent)
+        self.assertFalse(self.drive.calls)
+
+    def test_complete_and_legacy_reports_cannot_conceal_incomplete_scientific_runs(self):
+        bundle = self.quality_bundle("complete")
+        original = copy.deepcopy(bundle.manifest)
+        incomplete = [{"status": "incomplete", "exit_code": 2}]
+        manifest_path = bundle.pdf.parent / "manifest.json"
+        for change in ({"computation_exit_code": 2}, {"computation_exit_code": 7},
+                       {"computation_exit_code": False}, {"fit_quality_warnings": [{}]},
+                       {"scientific_manifests": incomplete}):
+            with self.subTest(change=change):
+                manifest_path.write_text(json.dumps(dict(original, **change)), encoding="utf-8")
+                with self.assertRaises(publish.PublishError):
+                    publish.load_bundle(bundle.pdf.parent)
+        legacy = {key: value for key, value in original.items()
+                  if key not in {"report_quality", "computation_exit_code", "fit_quality_warnings"}}
+        legacy["scientific_manifests"] = incomplete
+        manifest_path.write_text(json.dumps(legacy), encoding="utf-8")
+        with self.assertRaises(publish.PublishError):
+            publish.load_bundle(bundle.pdf.parent)
+        self.assertFalse(self.drive.calls)
+
     def test_diagnostic_artifact_is_not_a_publishable_bundle(self):
         (self.directory / "diagnostic.pdf").write_bytes(b"%PDF-1.7\ndiagnostic only\n%%EOF\n")
         (self.directory / "diagnostic_manifest.json").write_text(json.dumps({

@@ -75,6 +75,8 @@ def load_config(path):
             raise ValueError("config_files must stay inside the source snapshot")
     if config.get("presentation_mode", "compact") not in ("compact", "full"):
         raise ValueError("presentation_mode must be compact or full")
+    if type(config.get("publish_incomplete_reports", True)) is not bool:
+        raise ValueError("publish_incomplete_reports must be a boolean")
     for name, default in (("jobs", 2), ("threads", 2), ("max_recovery_attempts", 2),
                           ("upload_lease_seconds", 3600), ("upload_retry_seconds", 900),
                           ("artifact_log_limit_bytes", 10485760)):
@@ -413,7 +415,8 @@ def execute_job(config, job_id):
             raise
         if compute_failure:
             failures.append(dict(stage=compute_failure.stage, exit_code=compute_failure.code,
-                                 error=str(compute_failure)))
+                                 error=str(compute_failure), requested_fits=manifest["fits"]["requested"],
+                                 unusable_fits=manifest["fits"]["unusable"]))
         manifests.append(dict(config=name, run_id=manifest["run_id"],
                               status=manifest["status"], exit_code=manifest["exit_code"],
                               manifest_sha256=sha256(results / "run_manifest.json")))
@@ -431,14 +434,15 @@ def execute_job(config, job_id):
             pdfs.append(check_pdf(results / "chi2_audit.pdf", start_ns))
         if sha256(results / "run_manifest.json") != manifests[-1]["manifest_sha256"]:
             raise ValueError("scientific results changed during report creation")
-    values["report_pdf"] = str(attempt / ("diagnostic.pdf" if failures else "report.pdf"))
+    diagnostic_only = bool(failures) and not config.get("publish_incomplete_reports", True)
+    values["report_pdf"] = str(attempt / ("diagnostic.pdf" if diagnostic_only else "report.pdf"))
     default_merge = ["{gs}", "-q", "-dSAFER", "-dBATCH", "-dNOPAUSE", "-sDEVICE=pdfwrite",
                      "-sOutputFile={report_pdf}", *[str(path) for path in pdfs]]
     run("merge", "merge-report", "running", default_merge)
     pdf = check_pdf(values["report_pdf"], start_ns)
     if read_job(config, job_id).get("cancel_requested"):
         raise StageFailure("seal", 130, "cancelled before publication")
-    if failures:
+    if diagnostic_only:
         update_job(config, job_id, status="failed", current_stage=failures[0]["stage"],
                    failed_stage=failures[0]["stage"], completed_at=utc_now(),
                    exit_code=failures[0]["exit_code"], computation_exit_code=failures[0]["exit_code"],
@@ -449,7 +453,8 @@ def execute_job(config, job_id):
                    elapsed_seconds=(time.time_ns() - start_ns) / 1e9)
         return
     update_job(config, job_id, status="uploading", current_stage="awaiting-publication",
-               completed_at=utc_now(), exit_code=0, computation_exit_code=0,
+               completed_at=utc_now(), exit_code=0, computation_exit_code=2 if failures else 0,
+               report_quality="incomplete" if failures else "complete", fit_quality_warnings=failures,
                pdf_path=str(pdf), pdf_sha256=sha256(pdf), pdf_size=pdf.stat().st_size,
                scientific_manifests=manifests, lease_token=None, lease_until=0,
                next_upload_at=0, elapsed_seconds=(time.time_ns() - start_ns) / 1e9)
@@ -518,10 +523,39 @@ def cancel(config, job_id):
     print("Cancellation requested:", job_id)
 
 
+def report_is_publishable(job):
+    """Quality warnings may accompany a sealed report; fatal computations may not."""
+    code = job.get("computation_exit_code")
+    quality = job.get("report_quality", "complete")
+    warnings = job.get("fit_quality_warnings", [])
+    if type(code) is not int:
+        return False
+    if "report_quality" in job and "fit_quality_warnings" not in job:
+        return False
+    if code == 0:
+        if quality != "complete" or warnings != []:
+            return False
+        if "report_quality" not in job:
+            return True  # Sealed reports from the original schema-1 worker.
+        manifests = job.get("scientific_manifests")
+        return (isinstance(manifests, list) and bool(manifests) and
+                all(isinstance(item, dict) and item.get("status") == "completed" and
+                    type(item.get("exit_code")) is int and item["exit_code"] == 0 for item in manifests))
+    manifests = job.get("scientific_manifests")
+    return (code == 2 and quality == "incomplete" and isinstance(warnings, list) and bool(warnings) and
+            all(isinstance(item, dict) and type(item.get("exit_code")) is int and item["exit_code"] == 2
+                and isinstance(item.get("stage"), str) and bool(item["stage"].strip())
+                and isinstance(item.get("error"), str) and bool(item["error"].strip()) for item in warnings) and
+            isinstance(manifests, list) and bool(manifests) and
+            all(isinstance(item, dict) and type(item.get("exit_code")) is int and
+                (item.get("status"), item["exit_code"]) in (("completed", 0), ("incomplete", 2))
+                for item in manifests) and any(item["status"] == "incomplete" for item in manifests))
+
+
 def retry_upload(config, job_id):
     with state_lock(config):
         job = read_job(config, job_id)
-        if job.get("computation_exit_code") != 0 or not job.get("pdf_path"):
+        if not report_is_publishable(job) or not job.get("pdf_path"):
             raise ValueError("job has no sealed successful report; dispatch a new computation")
         if job["status"] == "success":
             print("Already published:", job_id)
@@ -551,18 +585,24 @@ def all_jobs(config):
 
 
 def status(config, summary_path=None, job_id=None, full_logs=False):
-    lines = ["| Job | Commit | Status | Attempt | Stage | Exit |", "|---|---|---|---:|---|---:|"]
+    lines = ["| Job | Commit | Status | Attempt | Stage | Exit | Excluded fits |",
+             "|---|---|---|---:|---|---:|---:|"]
     jobs = [read_job(config, job_id)] if job_id else all_jobs(config)
     for job in jobs[-30:]:
-        lines.append("| {job_id} | {commit} | {status} | {attempts} | {stage} | {exit} |".format(
+        lines.append("| {job_id} | {commit} | {status} | {attempts} | {stage} | {exit} | {excluded} |".format(
             **job, commit=job["commit_sha"][:12], stage=job.get("current_stage", ""),
-            exit=job.get("exit_code", "")))
+            exit=job.get("exit_code", ""), excluded=sum(warning.get("unusable_fits", 0)
+                for warning in job.get("fit_quality_warnings", []))))
     text = "\n".join(lines) + "\n"
     print(text)
     if summary_path:
         with Path(summary_path).open("a") as out:
             out.write(text)
     for job in jobs[-5:]:
+        for warning in job.get("fit_quality_warnings", []):
+            print("{} {}: {}/{} fits excluded; computation exit={}".format(
+                job["job_id"], warning["stage"], warning.get("unusable_fits", "?"),
+                warning.get("requested_fits", "?"), warning["exit_code"]))
         if job_id or job["status"] in ("building", "running", "failed"):
             print(job["job_id"], job.get("error") or "")
             for stage in (job["stages"] if full_logs else job["stages"][-1:]):
@@ -601,7 +641,7 @@ def collect(config, stage_dir, github_output=None, github_summary=None):
                 if (job.get("next_diagnostic_at") or 0) > now:
                     continue
             elif (not (job["status"] == "uploading" or retryable) or
-                  job.get("computation_exit_code") != 0 or (job.get("next_upload_at") or 0) > now):
+                  not report_is_publishable(job) or (job.get("next_upload_at") or 0) > now):
                 continue
             job.update(lease_kind="diagnostic" if diagnostic else "report",
                        lease_token=secrets.token_hex(16),
@@ -629,6 +669,9 @@ def collect(config, stage_dir, github_output=None, github_summary=None):
         manifest.update(status=selected["status"], exit_code=selected["exit_code"], pdf_path=filename,
                         pdf_sha256=selected[prefix + "_sha256"], pdf_size=selected[prefix + "_size"],
                         attempt=selected["attempts"], scientific_manifests=selected["scientific_manifests"])
+        if not diagnostic and "report_quality" in selected:
+            for field in ("report_quality", "computation_exit_code", "fit_quality_warnings"):
+                manifest[field] = selected[field]
         if diagnostic:
             manifest.update(kind="diagnostic", publishable=False, computation_exit_code=2,
                             failed_stage=selected.get("failed_stage"), error=selected.get("error"),
